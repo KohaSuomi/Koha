@@ -50,6 +50,7 @@ BEGIN {
       GetBorrowersToExpunge
 
       IssueSlip
+      &FineSlip
 
       checkuserpassword
       get_cardnumber_length
@@ -681,6 +682,65 @@ DELETE FROM borrower_modifications
 WHERE borrowernumber = 0 AND DATEDIFF( NOW(), timestamp ) > ?|;
     my $cnt=$dbh->do($sql, undef, ($days) );
     return $cnt eq '0E0'? 0: $cnt;
+}
+
+sub GetBorrowerFines {
+    my ($borrowernumber) = @_;
+    my $dbh       = C4::Context->dbh;
+    my $query = qq{
+        SELECT * FROM accountlines
+        LEFT JOIN borrowers ON borrowers.borrowernumber = accountlines.borrowernumber
+        LEFT JOIN items ON accountlines.itemnumber = items.itemnumber
+        WHERE accountlines.borrowernumber = ?
+        ORDER BY accountlines.timestamp
+    };
+    my $sth = $dbh->prepare( $query );
+    $sth->execute( $borrowernumber );
+    my $data = $sth->fetchall_arrayref({});
+    return $data;
+}
+
+sub FineSlip {
+    my ($borrowernumber, $branch) = @_;
+
+    #my $now       = POSIX::strftime("%Y-%m-%d", localtime);
+
+    my $issueslist = GetBorrowerFines($borrowernumber);
+
+    my $total = 0.0;
+
+    foreach my $it (@$issueslist){
+        my $dt = dt_from_string( $it->{'date'} );
+        $it->{'date_due'} = output_pref({ dt => $dt, dateonly => 1 });
+        $it->{'amount'} = sprintf('%.2f', $it->{'amount'});
+        $total = $total + $it->{'amount'};
+        $it->{'barcode'} = '-' if (!defined($it->{'barcode'}));
+    }
+    my @issues = sort { $b->{'timestamp'} <=> $a->{'timestamp'} } @$issueslist;
+
+    my %repeat = (
+        'fines' => [ map {
+            'fines' => $_,
+            'borrowers' => $_,
+            'items' => $_
+                     }, @issues ],
+        );
+
+    return  C4::Letters::GetPreparedLetter (
+        module => 'circulation',
+        letter_code => 'FINESLIP',
+        branchcode => $branch,
+        tables => {
+            'branches'    => $branch,
+            'borrowers'   => $borrowernumber,
+        },
+        substitute => {
+            'total.amount' => sprintf('%.2f', $total),
+            'total.fines' => scalar(@issues)
+        },
+        repeat => \%repeat,
+        message_transport_type => 'print',
+    );
 }
 
 END { }    # module clean-up code here (global destructor)

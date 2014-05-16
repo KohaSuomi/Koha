@@ -1576,3 +1576,26 @@ tables:
             - "This item must be renewed at the library."
             - "[% END %]"
             - "[% END %]"
+
+        - module: circulation
+          code: FINESLIP
+          branchcode: ""
+          name: "Patron fines -slip"
+          is_html: 1
+          title: "Fines and fees slip"
+          message_transport_type: pront
+          lang: default
+          content:
+            - "<<borrowers.firstname>> <<borrowers.surname>><br>"
+            - "<<borrowers.cardnumber>><br>"
+            - "Fines: <<total.fines>>"
+            - "<ul>"
+            - "<fines>"
+            - "<li>""
+            - "<<fines.date_due>>, <<fines.amount>><br>"
+            - "Barcode: <<items.barcode>><br>"
+            - "<<fines.description>>"
+            - "</li>"
+            - "</fines>"
+            - "</ul>"
+            - "Total: <<total.amount>>"
