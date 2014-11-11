@@ -60,6 +60,11 @@
         <li><a href="/cgi-bin/koha/reports/catalogue_out.pl">Items with no checkouts</a></li>
     </ul>
 
+    <h2>Vaara-kirjastot</h2>
+	<ul>
+		<li><a href="/cgi-bin/koha/reports/okm_reports.pl">OKM annual report</a></li>
+	</ul>
+    
     <h2>Other</h2>
     <ul>
         <li><a href="/cgi-bin/koha/reports/itemslost.pl">Items lost</a></li>
@@ -69,6 +74,7 @@
                 <li><a href="http://schema.koha-community.org/" target="blank">Koha database schema</a></li>
                 <li><a href="http://wiki.koha-community.org/wiki/SQL_Reports_Library" target="blank">Koha reports library</a></li>
         <li><a href="/cgi-bin/koha/admin/reporting/generate.pl">Reporting</a></li>
+        <li><a href="/cgi-bin/koha/reports/okm_reports.pl">OKM annual report</a></li>
 </ul></div>
 </div>
 

@@ -1,0 +1,123 @@
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha &rsaquo; Reports &rsaquo; OKM annual report</title>
+[% INCLUDE 'doc-head-close.inc' %]
+</head>
+<body id="rep_reports-home" class="rep">
+[% INCLUDE 'header.inc' %]
+[% INCLUDE 'circ-search.inc' %]
+
+<div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Home</a> &rsaquo; <a href="/cgi-bin/koha/reports/reports-home.pl">Reports</a> &rsaquo; OKM annual report</div>
+
+[% IF okm_report_errors %]<div id="le_report_errors">[% okm_report_errors %]</div>[% END %]
+[% IF okm_conf_errors %]<div class="dialog alert">[% okm_conf_errors %]</div>[% END %]
+
+[% IF okm_logs %]
+    <div id="logs">
+        <ul>
+            <h4>Errors when creating OKM statistics</h4>
+            <button id="removeLogEntries">Remove logs</button>
+            [% FOREACH entry IN okm_logs %]
+                <li>[% entry.entry %]</li>
+            [% END %]
+        </ul>
+    </div>
+[% END %]
+
+<div id="page" style="margin-left: 1em;">
+
+    <h1>OKM annual reports</h1>
+    <h6>See help for instructions</h6>
+
+    <br/><br/>
+    [% IF okm %][% INCLUDE 'okm_asHtml.inc' libraryGroups=okm.getLibraryGroups() %][% END %]
+    <div id="le_report_html">[% okm_report_html %]</div>
+    <div id="le_report_csv">[% okm_report_csv %]</div>
+
+    <br/>
+
+    <form action="/cgi-bin/koha/reports/okm_reports.pl" method="GET">
+        <fieldset class="action">
+            <label for="format">Download the report: </label>
+            <select name="format" id="format">
+                <option value="csv">Comma separated text</option>
+                <option value="tab">Tab separated text</option>
+                <option value="ods">Open Document Spreadsheet</option>
+            </select>
+            <input type="hidden" name="okm_statisticsId" id="mirrorStatisticalYear" value="[% okm_statisticsId %]" />
+            <input type="hidden" name="op" value="export" />
+            <input type="submit" name="submit" value="Download" />
+        </fieldset>
+    </form>
+
+    <div style="max-width: 600px">
+        <h5>Quote of the day!</h5>
+        [% quote %]
+    </div>
+
+    <br/>
+    <table id="available_reports">
+        <thead>
+            <tr>
+                <th>Report ID</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Statistical groups</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            [% FOREACH okm_report IN ready_okm_reports %]
+                <tr[% IF okm_report.selected %] class="highlighted-row"[% END %]>
+                    <td>[% okm_report.id %]</td>
+                    <td>[% okm_report.startdate %]</td>
+                    <td>[% okm_report.enddate %]</td>
+                    <td>
+                        [% IF okm_report.individualbranches %]
+                            [% IF okm_report.individualbranches == '*' || okm_report.individualbranches == '_A' %]
+                                All branches
+                            [% ELSE %]
+                                [% okm_report.individualbranches %]
+                            [% END %]
+                        [% ELSE %]
+                            OKM groups
+                        [% END %]</td>
+                    <td>
+                        <a href="/cgi-bin/koha/reports/okm_reports.pl?op=show&amp;okm_statisticsId=[% okm_report.id %]">Show</a>
+                    </td>
+                    <td>
+                        <a class="deleteButton" href="/cgi-bin/koha/reports/okm_reports.pl?op=delete&amp;okm_statisticsId=[% okm_report.id %]">Delete</a>
+                    </td>
+                </tr>
+            [% END %]
+        </tbody>
+    </table>
+</div> [%# #page %]
+
+<script type="text/javascript">
+
+var MSG_OKM_STAT_DELETE_WARNING = _("Are you sure you want to delete this report?\nRebuilding can only be done from the serve side.");
+var MSG_OKM_LOGS_DELETE_WARNING = _("Are you sure you want to delete all log entries?\nYour friendly support member must first identify the source of the error and fix it.");
+
+    $(document).ready( function () {
+
+        $(".deleteButton").click(function(e){
+            var ok = confirm(MSG_OKM_STAT_DELETE_WARNING);
+            if(! ok ) {
+                e.preventDefault();
+            }
+        });
+
+        $(".highlighted-row").children().addClass("highlighted-row");
+
+        $("#removeLogEntries").click(function (event) {
+            var ok = confirm(MSG_OKM_LOGS_DELETE_WARNING);
+            if(! ok ) {
+                e.preventDefault();
+                return;
+            }
+            window.location="/cgi-bin/koha/reports/okm_reports.pl?op=deleteLogs";
+        });
+    });
+</script>
+[% INCLUDE 'intranet-bottom.inc' %]

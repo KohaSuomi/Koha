@@ -310,6 +310,7 @@ INSERT INTO systempreferences ( `variable`, `value`, `options`, `explanation`, `
 ('OAI-PMH:DeletedRecord','persistent','Koha\'s deletedbiblio table will never be deleted (persistent), might be deleted (transient), or will never have any data in it (no)','transient|persistent|no','Choice'),
 ('OAI-PMH:MaxCount','50',NULL,'OAI-PMH maximum number of records by answer to ListRecords and ListIdentifiers queries','Integer'),
 ('OCLCAffiliateID','','','Use with FRBRizeEditions and XISBN. You can sign up for an AffiliateID here: http://www.worldcat.org/wcpa/do/AffiliateUserServices?method=initSelfRegister','free'),
+('OKM','--- \nblockStatisticsGeneration: 1\nitemTypeToStatisticalCategory: \n  BK: Books\n  CF: Others\n  CR: Others\n  MU: Recordings\njuvenileShelvingLocations: \n  - CHILD\n  - AV\n',NULL,'OKM statistics configuration and statistical type mappings','Textarea'),
 ('OnlinePayments', '', '', 'Maps Koha account types into online payment store item numbers and defines the interfaces that will be used for each branch', 'textarea'),
 ('OnlinePaymentMinTotal', '0', '', 'Defines a minimum amount of money that Borrower can pay through online payments', 'Integer'),
 ('OPACAcquisitionDetails','0','','Show the acquisition details at the OPAC','YesNo'),
