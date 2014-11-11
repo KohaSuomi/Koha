@@ -1,0 +1,60 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>OKM annual reports</h1>
+<br/>
+<h4>Libraries and library groups</h4>
+<h5>Statistical OKM library groups</h5>
+<p>Library groups are defined in the "Libraries and groups"-page (admin/branches.pl).<br/>
+Library groups that are statistical OKM groups are named as &lt;group_code&gt;_OKM. For ex. JOE_OKM, VAL_OKM, JUU_OKM. Only libraries that are in the properly named statistical groups are included in the statistics.</p>
+<h5>Main libraries</h5>
+<p>By default there is only one main library in each statistical group and that cannot currently be changed.</p>
+<h5>Branch libraries</h5>
+<p>Branch libraries are calculated by subtracting from the sum of libraries in the group, every other kind of library.</p>
+<h5>Institutional libraries</h5>
+<p>A library is calculated as a institutional libary if the name matches regexp /$\w\w\w_LA\w{1,3}^/ . Eg. JOE_LAKO, LIP_LASI, VAL_LAMA</p>
+<h5>Bookmobiles</h5>
+<p>A library is calculated as a bookmobile if the branchcode ends in AU</p>
+<h5>Bookboats</h5>
+<p>A library is calculated as a bookboat if the branchcode ends in VE</p>
+<br/>
+<h4>Languages</h4>
+<h5>Finnish material</h5>
+<p>An Item is counted as finnish language, if the first subfield 'a' of Field '084' is 'fin', or if the language is not given.</p>
+<h5>Swedish material</h5>
+<p>An Item is counted as swedish language, if the first subfield 'a' of Field '084' is 'swe'.</p>
+<h5>Other language material</h5>
+<p>An Item is counted as other language, if the first subfield 'a' of Field '084' is not 'fin' or 'swe', but is given.</p>
+<br/>
+<h4>Special statistical markers</h4>
+<h5>Juvenile material</h5>
+<p>An Item is counted as juvenile material if it is in one of the shelving locations defined in the system preference 'OKM'</p>
+<h5>Fiction</h5>
+<p>An Item is considered to be fiction, if it is in ykl-classes 81 to 85.</p>
+<h5>Musical recording</h5>
+<p>An Item is considered to be a musical recording, if it is in the ykl-class 78.</p>
+<br/>
+<h4>Acquisitions</h4>
+<p>An Item is considered to be acquired, if it has been ordered using the acquisitions module and received on the given timeframe.<br/>
+However, if the acquisitions-module is not used, the Item is considered acquired if it has been added to the collection on the given timeframe.</p>
+<br/>
+<h4>Issues</h4>
+<p>Issues are direct check-outs or renewals for material from our collection, given to our civilian borrowers (not ILL's or internal library use).<br/>
+An issue is counted if it hapened on the given timeframe and is not given for the following borrower categories: KIRJASTO, TILASTO, KAUKOLAINA.<br/>
+The issue is counted for the library from where the issue was given. For renewals from the OPAC, the library is considered to be the Item's current holding branch.<br/>
+Issues for deleted items are included to the statistics as well.</p>
+<br/>
+<h4>Serials</h4>
+<p>Serials are excluded from the collection, discards and acquisitions statistics. They are included in the total issues.</p>
+<br/>
+<h4>Discards</h4>
+<p>All Items discarded during the given timeframe, except Serial Items, are counted as discards.</p>
+<h5>Deleted Items</h5>
+<p>Deleted Items are not calculated to collections or acquisitions even if acquired during the timeframe, because no acquisitions data is preserved.<br/>
+Issues for deleted Items are calculated normally.</p>
+<br/>
+<h5>Give me statistics, or give me death!</h5>
+<p>https://en.wikipedia.org/wiki/Give_me_liberty%2C_or_give_me_death!<br/>
+This is a reference to a statement against foreign rule. A statement to resist being slowly bled dry by overseas bankers and monarchs. An equally valid quote during modern times.</p>
+<br/>
+
+[% INCLUDE 'help-bottom.inc' %]
