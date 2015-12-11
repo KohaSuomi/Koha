@@ -1058,6 +1058,46 @@ our $PERL_DEPS = {
         'min_ver'  => '5.01',
         # also required for Zebra installs: about page: bug 20061
     },
+    'Parallel::ForkManager' => {
+        usage      => 'Testing suite',
+        required   => 0,
+        min_ver    => '0.75',
+    },
+    'Sys::CPU' => {
+        usage      => 'Testing suite',
+        required   => 0,
+        min_ver    => '0.52',
+    },
+    'Net::OAuth2::AuthorizationServer' => {
+        usage    => 'REST API',
+        required => '0',
+        min_ver  => '0.16',
+    },
+    'CGI::Emulate::PSGI' => {
+        usage    => 'Plack',
+        required => '1',
+        min_ver  => '0.20',
+    },
+    'CGI::Compile' => {
+       usage    => 'Plack',
+       required => '1',
+       min_ver  => '0.17'
+    },
+    'Clone' => {
+        usage    => 'ILL, Test suite',
+        required => '1',
+        min_ver  => '0.37',
+    },
+    'Path::Tiny' => {
+        usage => 'core',
+        required => 1,
+        min_ver => '0.058',
+    },
+    'Net::Z3950::SimpleServer' => {
+        'usage'    => 'Z39.50 responder',
+        'required' => '0',
+        'min_ver'  => '1.15',
+    },
 
 };
 
