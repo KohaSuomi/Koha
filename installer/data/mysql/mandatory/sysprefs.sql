@@ -151,6 +151,7 @@ INSERT INTO systempreferences ( `variable`, `value`, `options`, `explanation`, `
 ('CustomCoverImages','0',NULL,'If enabled, the custom cover images will be displayed in the staff interface. CustomCoverImagesURL must be defined.','YesNo'),
 ('CustomCoverImagesURL','',NULL,'Define an URL serving book cover images, using the following patterns: %issn%, %isbn%, FIXME ADD MORE (use it with CustomCoverImages and/or OPACCustomCoverImages)','free'),
 ('dateformat','us','metric|us|iso|dmydot','Define global date format (us mm/dd/yyyy, metric dd/mm/yyy, ISO yyyy-mm-dd, dmydot dd.mm.yyyy)','Choice'),
+('DebarmentsToLiftAfterPayment', '', '', 'Lift these debarments after Borrower has paid his/her fees', 'textarea'),
 ('DebugLevel','2','0|1|2','Define the level of debugging information sent to the browser when errors are encountered (set to 0 in production). 0=none, 1=some, 2=most','Choice'),
 ('decreaseLoanHighHolds','0','','Decreases the loan period for items with number of holds above the threshold specified in decreaseLoanHighHoldsValue','YesNo'),
 ('decreaseLoanHighHoldsControl', 'static', 'static|dynamic', "Chooses between static and dynamic high holds checking", 'Choice'),

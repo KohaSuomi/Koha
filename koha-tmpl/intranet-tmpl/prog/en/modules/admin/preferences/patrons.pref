@@ -106,7 +106,17 @@ Patrons:
            class: integer
          - days. Leave empty to disable this behavior.
          - "<br><strong>NOTE:</strong> This system preference requires the misc/cronjobs/cleanup_database.pl cronjob. Ask your system administrator to schedule it."
-
+     -
+         - pref: DebarmentsToLiftAfterPayment
+           type: textarea
+           class: code
+         - Lift these debarments after Borrower has paid his/her fees
+         - "<p>Example, debarment is lifted after all fees are paid:</p>"
+         - "<pre>Debarment message:</pre>
+            <pre>  outstanding: 0</pre>"
+         - "<p>Example, debarment is lifted after payment with outstanding fees less or equal than 5:</p>"
+         - "<pre>Another debarment:</pre>
+            <pre>  outstanding: 5.00</pre>"
     Membership expiry:
      -
          - When renewing borrowers, base the new expiry date on

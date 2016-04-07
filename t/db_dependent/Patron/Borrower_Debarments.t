@@ -8,7 +8,7 @@ use Koha::Patrons;
 
 use t::lib::TestBuilder;
 
-use Test::More tests => 33;
+use Test::More tests => 35;
 
 use_ok('Koha::Patron::Debarments');
 
@@ -194,3 +194,25 @@ is( Koha::Patrons->find($borrowernumber3)->debarred,
     $debarreddate2, 'Koha::Patron->merge_with() transfers well debarred' );
 is( Koha::Patrons->find($borrowernumber3)->debarredcomment,
     $debarredcomment2, 'Koha::Patron->merge_with() transfers well debarredcomment' );
+
+# Test removing debartments after payment
+my $debarmentsRulesPref = C4::Context->preference("DebarmentsToLiftAfterPayment");
+C4::Context->set_preference("DebarmentsToLiftAfterPayment", "Test debarment:\n  outstanding: 0\nTest debarment 2:");
+
+AddDebarment({
+    borrowernumber => $borrowernumber,
+    comment => 'Test debarment',
+});
+AddDebarment({
+    borrowernumber => $borrowernumber,
+    comment => 'Test debarment 2',
+});
+
+$debarments = GetDebarments({ borrowernumber => $borrowernumber });
+is( @$debarments, 2, "GetDebarments returns 2 debarments before payment" );
+
+DelDebarmentsAfterPayment({ borrowernumber => $borrowernumber });
+C4::Context->set_preference("DebarmentsToLiftAfterPayment", $debarmentsRulesPref);
+
+$debarments = GetDebarments({ borrowernumber => $borrowernumber });
+is( @$debarments, 0, "GetDebarments returns 0 debarments after payment" );
