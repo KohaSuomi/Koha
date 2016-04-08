@@ -330,22 +330,28 @@ sub DelDebarmentsAfterPayment {
     my $total_due = $lines->total_outstanding;
 
     foreach my $debarment (@{ $debarments }){
-        if (exists $liftDebarmentRules->{$debarment->{'comment'}}) {
-            # Delete debarment IF:
-            # 1. there is no maximum outstanding fines defined for the liftDebarmentRule
-            #    and there is no outstanding fines.
-            # 2. there is a maximum outstanding fines amount defined
-            #    and total_due is smaller or equal than the defined maximum outstanding amount
-            # Otherwise, do not lift the debarment.
-            if (not defined $liftDebarmentRules->{$debarment->{'comment'}}->{'outstanding'}){
-                if ($total_due <= 0) {
-                    DelDebarment($debarment->{'borrower_debarment_id'});
-                }
+        my $rule;
+
+        foreach my $liftRule (keys %{ $liftDebarmentRules }){
+            my $comment = $debarment->{'comment'};
+            $rule = $liftRule if $comment =~ $liftRule;
+        }
+        next unless $rule;
+
+        # Delete debarment IF:
+        # 1. there is no maximum outstanding fines defined for the liftDebarmentRule
+        #    and there is no outstanding fines.
+        # 2. there is a maximum outstanding fines amount defined
+        #    and total_due is smaller or equal than the defined maximum outstanding amount
+        # Otherwise, do not lift the debarment.
+        if (not defined $liftDebarmentRules->{$rule}->{'outstanding'}){
+            if ($total_due <= 0) {
+                DelDebarment($debarment->{'borrower_debarment_id'});
             }
-            else {
-                if ($total_due <= $liftDebarmentRules->{$debarment->{'comment'}}->{'outstanding'}) {
-                    DelDebarment($debarment->{'borrower_debarment_id'});
-                }
+        }
+        else {
+            if ($total_due <= $liftDebarmentRules->{$rule}->{'outstanding'}) {
+                DelDebarment($debarment->{'borrower_debarment_id'});
             }
         }
     }
