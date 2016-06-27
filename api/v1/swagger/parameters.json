@@ -13,5 +13,8 @@
   },
   "checkoutIdPathParam": {
     "$ref": "parameters/checkout.json#/checkoutIdPathParam"
+  },
+  "itemnumberPathParam": {
+    "$ref": "parameters/item.json#/itemnumberPathParam"
   }
 }
