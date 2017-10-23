@@ -490,7 +490,7 @@ Links bib headings to authority records by checking
 each authority-controlled field in the C<MARC::Record>
 object C<$marc>, looking for a matching authority record,
 and setting the linking subfield $9 to the ID of that
-authority record.  
+authority record.
 
 If $allowrelink is false, existing authids will never be
 replaced, regardless of the values of LinkerKeepStale and
@@ -845,7 +845,7 @@ sub GetBiblioFromItemNumber {
     my $sth;
     if ($itemnumber) {
         $sth = $dbh->prepare(
-            "SELECT * FROM items 
+            "SELECT * FROM items
             LEFT JOIN biblio ON biblio.biblionumber = items.biblionumber
             LEFT JOIN biblioitems ON biblioitems.biblioitemnumber = items.biblioitemnumber
              WHERE items.itemnumber = ?"
@@ -853,7 +853,7 @@ sub GetBiblioFromItemNumber {
         $sth->execute($itemnumber);
     } else {
         $sth = $dbh->prepare(
-            "SELECT * FROM items 
+            "SELECT * FROM items
             LEFT JOIN biblio ON biblio.biblionumber = items.biblionumber
             LEFT JOIN biblioitems ON biblioitems.biblioitemnumber = items.biblioitemnumber
              WHERE items.barcode = ?"
@@ -865,7 +865,7 @@ sub GetBiblioFromItemNumber {
     return ($data);
 }
 
-=head2 GetISBDView 
+=head2 GetISBDView
 
   $isbd = &GetISBDView({
       'record'    => $marc_record,
@@ -1093,9 +1093,9 @@ sub GetMarcStructure {
 
     my $dbh = C4::Context->dbh;
     my $sth = $dbh->prepare(
-        "SELECT tagfield,liblibrarian,libopac,mandatory,repeatable 
-        FROM marc_tag_structure 
-        WHERE frameworkcode=? 
+        "SELECT tagfield,liblibrarian,libopac,mandatory,repeatable
+        FROM marc_tag_structure
+        WHERE frameworkcode=?
         ORDER BY tagfield"
     );
     $sth->execute($frameworkcode);
@@ -1110,8 +1110,8 @@ sub GetMarcStructure {
 
     $sth = $dbh->prepare(
         "SELECT tagfield,tagsubfield,liblibrarian,libopac,tab,mandatory,repeatable,authorised_value,authtypecode,value_builder,kohafield,seealso,hidden,isurl,link,defaultvalue,maxlength
-         FROM   marc_subfield_structure 
-         WHERE  frameworkcode=? 
+         FROM   marc_subfield_structure
+         WHERE  frameworkcode=?
          ORDER BY tagfield,tagsubfield
         "
     );
@@ -1167,7 +1167,7 @@ in tab 0-9. (used field)
 C<$results> is a ref to an array which each case containts a ref
 to a hash which each keys is the columns from marc_subfield_structure
 
-C<$frameworkcode> is the framework code. 
+C<$frameworkcode> is the framework code.
 
 =cut
 
@@ -1176,7 +1176,7 @@ sub GetUsedMarcStructure {
     my $query = q{
         SELECT *
         FROM   marc_subfield_structure
-        WHERE   tab > -1 
+        WHERE   tab > -1
             AND frameworkcode = ?
         ORDER BY tagfield, tagsubfield
     };
@@ -1215,7 +1215,7 @@ sub GetMarcSubfieldStructure {
 
   ($MARCfield,$MARCsubfield)=GetMarcFromKohaField($kohafield,$frameworkcode);
 
-Returns the MARC fields & subfields mapped to the koha field 
+Returns the MARC fields & subfields mapped to the koha field
 for the given frameworkcode or default framework if $frameworkcode is missing
 
 =cut
@@ -1627,7 +1627,7 @@ sub GetMarcPrice {
 
     my @listtags;
     my $subfield;
-    
+
     if ( $marcflavour eq "MARC21" || $marcflavour eq "NORMARC" ) {
         @listtags = ('345', '020');
         $subfield="c";
@@ -1637,7 +1637,7 @@ sub GetMarcPrice {
     } else {
         return;
     }
-    
+
     for my $field ( $record->field(@listtags) ) {
         for my $subfield_value  ($field->subfield($subfield)){
             #check value
@@ -1727,7 +1727,7 @@ sub GetMarcQuantity {
 
     my @listtags;
     my $subfield;
-    
+
     if ( $marcflavour eq "MARC21" ) {
         return 0
     } elsif ( $marcflavour eq "UNIMARC" ) {
@@ -1736,7 +1736,7 @@ sub GetMarcQuantity {
     } else {
         return;
     }
-    
+
     for my $field ( $record->field(@listtags) ) {
         for my $subfield_value  ($field->subfield($subfield)){
             #check value
@@ -1764,7 +1764,7 @@ Now takes $category and $value pair too.
   my $auth_value_desc =GetAuthorisedValueDesc(
     '','', 'DVD' ,'','','CCODE');
 
-If the optional $opac parameter is set to a true value, displays OPAC 
+If the optional $opac parameter is set to a true value, displays OPAC
 descriptions rather than normal ones when they exist.
 
 =cut
@@ -2293,7 +2293,7 @@ sub GetMarcAuthors {
   $marcurls = GetMarcUrls($record,$marcflavour);
 
 Returns arrayref of URLs from MARC data, suitable to pass to tmpl loop.
-Assumes web resources (not uncommon in MARC21 to omit resource type ind) 
+Assumes web resources (not uncommon in MARC21 to omit resource type ind)
 
 =cut
 
@@ -2778,14 +2778,14 @@ This function returns a host field populated with data from the host record, the
 sub PrepHostMarcField {
     my ($hostbiblionumber,$hostitemnumber, $marcflavour) = @_;
     $marcflavour ||="MARC21";
-    
+
     require C4::Items;
     my $hostrecord = GetMarcBiblio($hostbiblionumber);
 	my $item = C4::Items::GetItem($hostitemnumber);
-	
+
 	my $hostmarcfield;
     if ( $marcflavour eq "MARC21" || $marcflavour eq "NORMARC" ) {
-	
+
         #main entry
         my $mainentry;
         if ($hostrecord->subfield('100','a')){
@@ -2795,13 +2795,13 @@ sub PrepHostMarcField {
         } else {
             $mainentry = $hostrecord->subfield('111','a');
         }
-	
+
         # qualification info
         my $qualinfo;
         if (my $field260 = $hostrecord->field('260')){
             $qualinfo =  $field260->as_string( 'abc' );
         }
-	
+
 
     	#other fields
         my $ed = $hostrecord->subfield('250','a');
@@ -2839,9 +2839,9 @@ sub PrepHostMarcField {
         $hostmarcfield = MARC::Field->new(
             461, '', '',
             '0' => $hostbiblionumber,
-            't' => $hostrecord->subfield('200','a'), 
+            't' => $hostrecord->subfield('200','a'),
             '9' => $hostitemnumber
-        );	
+        );
     };
 
     return $hostmarcfield;
@@ -2849,7 +2849,7 @@ sub PrepHostMarcField {
 
 =head2 TransformHtmlToXml
 
-  $xml = TransformHtmlToXml( $tags, $subfields, $values, $indicator, 
+  $xml = TransformHtmlToXml( $tags, $subfields, $values, $indicator,
                              $ind_tag, $auth_type )
 
 $auth_type contains :
@@ -3125,7 +3125,7 @@ sub TransformHtmlToMarc {
   $result = TransformMarcToKoha( $record, $frameworkcode )
 
 Extract data from a MARC bib record into a hashref representing
-Koha biblio, biblioitems, and items fields. 
+Koha biblio, biblioitems, and items fields.
 
 If passed an undefined record will log the error and return an empty
 hash_ref
@@ -3260,7 +3260,7 @@ name with the table name would require changing lots
 of code and templates, and exposing more of the DB
 structure than is good to the UI templates, particularly
 since biblio and bibloitems may well merge in a future
-version.  In the future, it would also be good to 
+version.  In the future, it would also be good to
 separate DB access and UI presentation field names
 more.
 
@@ -3287,7 +3287,7 @@ sub _disambiguate {
 
 =head2 get_koha_field_from_marc
 
-  $result->{_disambiguate($table, $field)} = 
+  $result->{_disambiguate($table, $field)} =
      get_koha_field_from_marc($table,$field,$record,$frameworkcode);
 
 Internal function to map data from the MARC record to a specific non-MARC field.
@@ -3688,7 +3688,7 @@ sub _koha_modify_biblioitem_nonmarc {
     # re-calculate the cn_sort, it may have changed
     my ($cn_sort) = GetClassSort( $biblioitem->{'biblioitems.cn_source'}, $biblioitem->{'cn_class'}, $biblioitem->{'cn_item'} );
 
-    my $query = "UPDATE biblioitems 
+    my $query = "UPDATE biblioitems
     SET biblionumber    = ?,
         volume          = ?,
         number          = ?,
@@ -4017,7 +4017,7 @@ sub ModBiblioMarc {
 
     $count = &CountBiblioInOrders( $biblionumber);
 
-This function return count of biblios in orders with $biblionumber 
+This function return count of biblios in orders with $biblionumber
 
 =cut
 
@@ -4025,7 +4025,7 @@ sub CountBiblioInOrders {
  my ($biblionumber) = @_;
     my $dbh            = C4::Context->dbh;
     my $query          = "SELECT count(*)
-          FROM  aqorders 
+          FROM  aqorders
           WHERE biblionumber=? AND (datecancellationprinted IS NULL OR datecancellationprinted='0000-00-00')";
     my $sth = $dbh->prepare($query);
     $sth->execute($biblionumber);
@@ -4315,7 +4315,7 @@ sub getHostRecord {
 
     if ($resultSetSize == 1) {
         my $marcrecord = MARC::Record->new_from_xml( $recordXMLs->[0], 'UTF-8', 'MARC21' );
-        my $record = TransformMarcToKoha( C4::Context->dbh,$marcrecord,q{} );
+        my $record = TransformMarcToKoha( $marcrecord, '' );
         return $record;
     }
     elsif ($resultSetSize > 1) {
@@ -4337,7 +4337,7 @@ sub getComponentRecords {
     if ($resultSetSize && !$error) {
         foreach my $componentRecordXML (@$componentPartRecordXMLs) {
             my $marcrecord = MARC::Record->new_from_xml( $componentRecordXML, 'UTF-8', $marcflavour );
-            my $componentBiblio = TransformMarcToKoha( C4::Context->dbh,$marcrecord,q{} );
+            my $componentBiblio = TransformMarcToKoha( $marcrecord, '' );
             push @componentBiblios, $componentBiblio;
         }
     }
