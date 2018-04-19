@@ -618,4 +618,6 @@ $template->param(
     logged_in_user            => $logged_in_user,
 );
 
+C4::Log::logaction("MEMBERS", "VIEW", $borrowernumber, "Check out page") if (C4::Context->preference("BorrowersViewLog") && $borrowernumber);
+
 output_html_with_http_headers $query, $cookie, $template->output;

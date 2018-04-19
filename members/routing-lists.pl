@@ -56,4 +56,6 @@ $template->param(
     routinglistview   => 1,
 );
 
+C4::Log::logaction("MEMBERS", "VIEW", $borrowernumber, "Routing lists page") if C4::Context->preference("BorrowersViewLog");
+
 output_html_with_http_headers $query, $cookie, $template->output;

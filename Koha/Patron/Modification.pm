@@ -25,6 +25,7 @@ use Koha::Exceptions::Patron::Modification;
 use Koha::Patron::Attribute;
 use Koha::Patron::Attributes;
 use Koha::Patron::Modifications;
+use C4::Log qw( logaction );
 
 use JSON qw( from_json );
 use List::MoreUtils qw( any uniq );
@@ -155,6 +156,59 @@ sub approve {
             };
         }
     );
+
+    return $self->delete();
+}
+
+=head2 getModifiedPatronFieldsForLogs
+
+    $updatedfields = getModifiedPatronFieldsForLogs($data);
+
+    Returns string of fields that will be changed
+
+=cut
+
+sub getModifiedPatronFieldsForLogs {
+    my ($data, $olddata) = @_;
+
+    my $logdata;
+
+    foreach my $key ( keys %$data ) {
+        my $od = defined $olddata->{$key} ? $olddata->{$key} : 'undef';
+        my $nd = defined $data->{$key} ? $data->{$key} : 'undef';
+        $logdata .= $key.": $od => $nd, " if ( $olddata->{$key} ne $data->{$key});
+    }
+
+    $logdata =~ s/,\s+$//;
+
+    return $logdata;
+}
+
+=head2 deny
+
+$m->deny();
+
+Logs denied requests
+
+=cut
+
+sub deny {
+    my ($self) = @_;
+
+    my $data = $self->unblessed();
+
+    delete $data->{timestamp};
+    delete $data->{verification_token};
+    delete $data->{extended_attributes};
+    delete $data->{changed_fields};
+
+    foreach my $key ( keys %$data ) {
+        delete $data->{$key} unless ( defined( $data->{$key} ) );
+    }
+    my $patron = Koha::Patrons->find( $self->borrowernumber );
+    my $logdata = getModifiedPatronFieldsForLogs($data, $patron->unblessed);
+
+    logaction("MEMBERS", "MODIFY", $self->borrowernumber, "Denied patron's change request: $logdata") if C4::Context->preference("BorrowersLog");
 
     return $self->delete();
 }

@@ -89,6 +89,8 @@ $template->param(
     count_total_actual_state => $count_total_actual_state,
 );
 
+C4::Log::logaction("MEMBERS", "VIEW", $borrowernumber, "Statistics page") if C4::Context->preference("BorrowersViewLog");
+
 output_html_with_http_headers $input, $cookie, $template->output;
 
 
