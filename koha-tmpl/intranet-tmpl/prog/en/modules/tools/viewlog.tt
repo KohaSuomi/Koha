@@ -187,6 +187,12 @@
 						<input type="hidden" name="do_it" value="1" />
 					</fieldset>
 			</form>
+            [% IF ( object ) %]
+                <div style="width:100%; position:relative; height:12px;">
+                    <button id="sendLogs" data-toggle="modal" data-target="#sendModal" class="btn btn-default" style="position: absolute; right: 0; font-size:12px;"><i class="fa fa-envelope" aria-hidden="true"></i> Send to patron</button>
+                    [% INCLUDE 'tools-viewlog-send.inc' %]
+                </div>
+            [% END %]
                 [% END %]
                 [% IF ( do_it ) %]
                     [% IF ( total ) %]

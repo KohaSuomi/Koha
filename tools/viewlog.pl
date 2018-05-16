@@ -31,6 +31,8 @@ use C4::Items;
 use C4::Debug;
 use C4::Search;    # enabled_staff_search_views
 use Koha::Patron::Images;
+use Koha::Auth::Token;
+use Koha::Patron::Attribute;
 
 use vars qw($debug $cgi_debug);
 
@@ -55,6 +57,7 @@ my $dateto   = $input->param("to");
 my $basename = $input->param("basename");
 my $output   = $input->param("output") || "screen";
 my $src      = $input->param("src") || ""; # this param allows us to be told where we were called from -fbcit
+my $email = $input->param("email");
 
 my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
     {
@@ -100,6 +103,50 @@ $template->param(
     C4::Search::enabled_staff_search_views,
     object => $object,
 );
+
+if ($email) {
+
+    my $tokenizer = new Koha::Auth::Token;
+    my $resultSet = Koha::Database->new()->schema()->resultset(Koha::Patron::Attribute->_type());
+
+    my $tokenParams = {};
+    $tokenParams->{borrowernumber} = $object;
+    $tokenParams->{code} = 'LTOKEN';
+
+    $tokenizer->setToken($resultSet, 'attribute', $tokenParams);
+
+    my $token = $tokenizer->getToken($resultSet, $tokenParams);
+
+    # create link
+    my $opacbase = C4::Context->preference('OPACBaseURL') || '';
+    my $tokenLink = $opacbase
+      . "/cgi-bin/koha/mydata.pl?borrowernumber=".$object."&token=".$token->attribute;
+
+    my $patron = Koha::Patrons->find( $object );
+
+    # prepare the email
+    my $letter = C4::Letters::GetPreparedLetter(
+        module      => 'members',
+        letter_code => 'PATRON_LOGS',
+        branchcode  => $patron->branchcode,
+        lang        => $patron->lang,
+        substitute =>
+          { mydataurl => $tokenLink, user => $patron->userid },
+    );
+
+    # define to/from emails
+    my $kohaEmail = C4::Context->preference('KohaAdminEmailAddress');    # from
+
+    C4::Letters::EnqueueLetter(
+        {
+            letter                 => $letter,
+            borrowernumber         => $object,
+            to_address             => $email,
+            from_address           => $kohaEmail,
+            message_transport_type => 'email',
+        }
+    );
+}
 
 if ($do_it) {
 
