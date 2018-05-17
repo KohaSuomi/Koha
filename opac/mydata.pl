@@ -51,7 +51,7 @@ $tokenParams->{code} = 'LTOKEN';
 
 my $dbtoken = $tokenizer->getToken($resultSet, $tokenParams);
 
-if ( $token eq $dbtoken && $bornumber eq $borrowernumber) {
+if ( $token eq $dbtoken->attribute && $bornumber eq $borrowernumber) {
 
 	my $interface = C4::Context->preference("LogInterface");
 	my $interfaceUrl;
