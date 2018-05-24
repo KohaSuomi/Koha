@@ -4,6 +4,7 @@
 [% INCLUDE 'doc-head-close.inc' %]
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css" />
 [% BLOCK cssinclude %][% END %]
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment-with-locales.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
 <script type="text/javascript" src="[% interface %]/[% theme %]/lib/knockoutjs/knockout-3.4.2.js"></script>
@@ -19,8 +20,11 @@
         line-height: 26px;
     }
     .button-area {
-        top: 50px;
+        top: 110px;
         right: 0;
+    }
+    .even{
+        background-color: #efefef;
     }
     @media (max-width:768px) {
         .button-area {
@@ -29,44 +33,69 @@
     }
 </style>
 </head>
-<body id="opac_mydata">
+<div id="main">
     <div class="container">
         <div class="row ml-0 mt-3 position-relative" >
-            <h1>My logs</h1>
+            <div class="w-100 mb-3"><h1>My data</h1></div>
+            <div class="w-100">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#" data-bind="click: logData">Logs</a></li>
+                  <li><a href="#" data-bind="click: personalData">Personal data</a></li>
+                </ul>
+            </div>
             <div class="button-area position-absolute">
                 <button data-bind="click: loadPDF" class="btn btn-default"><i class="fa fa-download" aria-hidden="true"></i> Download as PDF</button>
-                <a data-bind="attr: {href: jsonurl, download: jsonfile}" class="btn btn-default"><i class="fa fa-download" aria-hidden="true"></i> Download as JSON</a>
+                <a id="loadJSON" class="btn btn-default"><i class="fa fa-download" aria-hidden="true"></i> Download as JSON</a>
             </div>
             <div class="w-100 mb-5"></div>
         </div>
-        <div id="editor"></div>
-        <div id="loglist">
-            <div class="row ml-0 mt-3" >
+        <div id="logList">
+            <div class="row ml-0 mt-4" >
                 <div class="col-md-3 pl-0 d-none d-md-block d-lg-block d-xl-block"><h3>Timestamp</h3></div>
                 <div class="col-md-2 pl-1 d-none d-md-block d-lg-block d-xl-block"><h3>Action</h3></div>
                 <div class="col-md-6 pl-1 d-none d-md-block d-lg-block d-xl-block"><h3>Info</h3></div>
                 <div class="w-100 mb-3"></div>
             </div>
-            <div class="row ml-0 mt-3" data-bind="foreach: logs">
-                <div class="col-md-3 pl-0"><span data-bind="text: moment(timestamp).format('lll')"></span></div>
-                <div class="col-md-2 pl-0"><span data-bind="text: action"></span></div>
-                <div class="col-md-6 pl-0"><span data-bind="text: info"></span></div>
-                <div class="w-100"><hr/></div>
+            <div data-bind="if: dataurl">
+                <div class="row mt-3 ml-0" data-bind="foreach: logs">
+                    <div class="row w-100 pt-3 pb-3 pl-1 pr-1 mt-3 ml-0" data-bind="css: { 'even': ($index() % 2 == 0) }">
+                        <div class="col-md-3 pl-0"><span data-bind="text: moment(timestamp).format('lll')"></span></div>
+                        <div class="col-md-2 pl-0"><span data-bind="text: action"></span></div>
+                        <div class="col-md-6 pl-0"><span data-bind="text: info"></span></div>
+                    </div>
+                </div>
             </div>
         </div>
+        <div id="personalList" class="hidden">
+            <div class="row ml-0 mt-4" >
+                <div class="col-md-12 pl-0 d-none d-md-block d-lg-block d-xl-block"><h3>Personal data</h3></div>
+                <div class="w-100 mb-3"></div>
+            </div>
+                <div data-bind="if: dataurl">
+                    <div class="row ml-0 mt-3" data-bind="foreach: personal">
+                        <!-- <div class="col-md-3 pl-0"><span data-bind="text: moment(timestamp).format('lll')"></span></div>
+                        <div class="col-md-2 pl-0"><span data-bind="text: action"></span></div>
+                        <div class="col-md-6 pl-0"><span data-bind="text: info"></span></div> -->
+                        <div class="w-100"><hr/></div>
+                    </div>
+                </div>
+            </div>
+        <div>
+        <div data-bind="ifnot: dataurl">Data url is not defined</div>
+        <div class="w-100 text-center mt-5 spinner-wrapper hidden"><i class="fa fa-spinner fa-spin" style="font-size:80px;"></i></div>
     </div>
 <script type="text/javascript">
-    var JsonData;
-    [% IF ( url ) %]
-        var JsonUrl = '[% url %]';
-        $.getJSON(JsonUrl, function(data) { 
-            JsonData = data;
-            // Now use this data to update your view models, 
-            // and Knockout will update your UI automatically 
-        });
-    [% ELSE %]
-        JsonData = '[% logdata %]';
-    [% END %]
+    myDataTranslations = {
+        'Timestamp': _("Timestamp"),
+        'My data': _("My data"),
+        'Action': _("Action"),
+        'Info': _("Info"),
+        'Personal data': _("Personal data"),
+
+    };
+    var borrowernumber = '[% borrowernumber %]';
+    var logurl = '[% logurl %]';
+    var personalurl = '[% personalurl %]';
     ko.applyBindings(new MyDataView());
 </script>
 [% INCLUDE 'opac-bottom.inc' is_popup=1 %]

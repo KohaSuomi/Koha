@@ -1,12 +1,12 @@
 Logging:
     Interface:
         -
-            - pref: LogInterface
-              choices:
-                  local: "Local interface"
-                  remote: "Remote interface"
-            - for fetching patron's logging data. Add used remote JSON interface url.
-            - pref: RemoteInterfaceUrl
+            - Defined
+            - pref: LogInterfaceURL
+            - URL for fetching JSON log data with AJAX.
+            - Defined
+            - pref: PersonalInterfaceURL
+            - URL for fetching JSON personal data with AJAX.
     Logging:
         -
             - pref: LetterLog

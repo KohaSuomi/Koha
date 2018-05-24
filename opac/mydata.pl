@@ -40,8 +40,10 @@ my ( $template, $borrowernumber, $cookie ) = get_template_and_user(
         query           => $input,
         type            => "opac",
         authnotrequired => 0,
+        debug           => 1,
     }
 );
+
 my $tokenizer = new Koha::Auth::Token;
 my $resultSet = Koha::Database->new()->schema()->resultset(Koha::Patron::Attribute->_type());
 
@@ -51,38 +53,13 @@ $tokenParams->{code} = 'LTOKEN';
 
 my $dbtoken = $tokenizer->getToken($resultSet, $tokenParams);
 
-if ( $token eq $dbtoken->attribute && $bornumber eq $borrowernumber) {
+if ( defined $dbtoken && $token eq $dbtoken->attribute && $bornumber eq $borrowernumber) {
 
-	my $interface = C4::Context->preference("LogInterface");
-	my $interfaceUrl;
-	my @logdata;
-
-	if ($interface eq "local") {
-
-		my $logs = C4::Log::GetLogs(undef, undef, undef, undef , undef, $bornumber, undef);
-		foreach my $log (@${logs}) {
-			my $parselog;
-			$parselog->{action} = $log->{action};
-			$parselog->{timestamp} = $log->{timestamp};
-			$parselog->{info} = $log->{info};
-			if ($log->{info} =~ m/VAR/) {
-				$log->{info} =~ tr/\/\'//d;
-				$log->{info} =~ tr/,//d;
-				my @info = $log->{info} =~ /action => (.*?)\n/;
-				$parselog->{info} = $info[0];
-			}
-			$parselog->{info} =~ tr/'//d;
-			push (@logdata, $parselog);
-		}
-
-	} else {
-		$interfaceUrl = C4::Context->preference("RemoteInterfaceUrl");
-	}
-	$template->param(url =>, $interfaceUrl, logdata => encode_json(\@logdata));
-
+    my $logUrl = C4::Context->preference('LogInterfaceURL');
+    my $personalUrl = C4::Context->preference('PersonalInterfaceURL');
+    $template->param(borrowernumber => $bornumber, logurl => $logUrl, personalurl => $personalUrl);
     $tokenizer->delete($resultSet, $tokenParams);
-
-	output_html_with_http_headers $input, '', $template->output;
+	output_html_with_http_headers $input, $cookie, $template->output;
 } else {
 	print $input->redirect("/cgi-bin/koha/opac-main.pl");
 }
