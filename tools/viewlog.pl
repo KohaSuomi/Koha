@@ -146,6 +146,7 @@ if ($email) {
             message_transport_type => 'email',
         }
     );
+    $template->param(object => $object);
 }
 
 if ($do_it) {
