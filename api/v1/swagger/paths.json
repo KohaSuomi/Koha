@@ -8,6 +8,9 @@
   "/accountlines/{accountlines_id}/payment": {
     "$ref": "paths/accountlines.json#/~1accountlines~1{accountlines_id}~1payment"
   },
+  "/alldata": {
+    "$ref": "paths/alldata.json#/~1alldata"
+  },
   "/auth/session": {
     "$ref": "paths/auth.json#/~1auth~1session"
   },
