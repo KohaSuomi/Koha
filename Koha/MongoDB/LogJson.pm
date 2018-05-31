@@ -34,7 +34,8 @@ sub logs_borrower
           $jsonstring.="\n,\n";
        }
        $jsonstring.="{\n";
-       $jsonstring.="\"sourceuser\":\"".$row->{sourceuser}."\",\n";
+       # uncomment next line if stuff hash is public
+       #$jsonstring.="\"sourceuser\":\"".$row->{sourceuser}."\",\n";
        $jsonstring.="\"cardnumber\":\"".$row->{objectcardnumber}."\",\n";
        $jsonstring.="\"action\":\"".$row->{action}."\",\n";
        $jsonstring.="\"info\":\"".$row->{info}."\",\n";
