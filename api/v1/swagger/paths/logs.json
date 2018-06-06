@@ -98,5 +98,57 @@
         }
       }
     }
+  },
+  "/mongologs": {
+    "get": {
+      "x-mojo-to": "Log#getMongo",
+      "operationId": "getMongoLog",
+      "tags": ["logs"],
+      "produces": [
+        "application/json"
+      ],
+      "parameters": [{
+        "name": "object",
+        "in": "query",
+        "description": "borrowernumber",
+        "required": true,
+        "type": "string"
+      }],
+      "x-koha-authorization": {
+        "allow-owner": true,
+          "permissions": {
+            "borrowers": "view_borrowers"
+          }
+      },
+      "responses": {
+        "200": {
+          "description": "Getting logs succeeded",
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions.json#/mongolog"
+            }
+          }
+        },
+        "404": {
+          "description": "Missing log data",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "500": {
+          "description": "Internal error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      }
+    }
   }
 }

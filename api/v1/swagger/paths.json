@@ -104,8 +104,8 @@
   "/lists/{listname}/contents": {
     "$ref": "paths/lists.json#/~1lists~1{listname}~1contents"
   },
-  "/logpatron": {
-    "$ref": "paths/logpatron.json#/~1logpatron"
+  "/mongologs": {
+    "$ref": "paths/logs.json#/~1mongologs"
   },
   "/logs": {
     "$ref": "paths/logs.json#/~1logs"

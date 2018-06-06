@@ -17,40 +17,38 @@ sub logs_borrower
    my $borrowernumber=$args[1];
    my $config = new Koha::MongoDB::Config;
    my $logs = new Koha::MongoDB::Logs;
-   my $jsonstring="";
-   my $count=0;
+   my $client = $config->mongoClient();
+   my $settings=$config->getSettings();
+   my $user_logs=$client->ns($settings->{database}.'.user_logs');
+   my @logArray;
 
    try
    {
-     my $client = $config->mongoClient();
-     my $settings=$config->getSettings();
-     my $user_logs=$client->ns($settings->{database}.'.user_logs');
+     
      my $resultset=$user_logs->find({"objectborrowernumber" => $borrowernumber});
-     $jsonstring="{\n\"log marks\":[";
      while(my $row = $resultset->next)
      {
-       if($count > 0)
-       {
-          $jsonstring.="\n,\n";
-       }
-       $jsonstring.="{\n";
-       # uncomment next line if stuff hash is public
-       #$jsonstring.="\"sourceuser\":\"".$row->{sourceuser}."\",\n";
-       $jsonstring.="\"cardnumber\":\"".$row->{objectcardnumber}."\",\n";
-       $jsonstring.="\"action\":\"".$row->{action}."\",\n";
-       $jsonstring.="\"info\":\"".$row->{info}."\",\n";
-       $jsonstring.="\"timestamp\":\"".$row->{timestamp}."\"\n";
-       $jsonstring.="}";
-       $count++; 
+        my $jsonObject;
+        $jsonObject->{cardnumber} = $row->{objectcardnumber};
+        $jsonObject->{action} = $row->{action};
+        $jsonObject->{info} = $row->{info};
+        $jsonObject->{timestamp} = $row->{timestamp};
+        push (@logArray, $jsonObject);
+
      }
-     $jsonstring.="\n]\n}";
    }
    catch
    {
-     $jsonstring="";
+      if (!$client) {
+        Koha::Exception::ConnectionFailed->throw(error => $cal[3].'():>'."No MongoDB connection");
+      }
+      if (!$user_logs) {
+        my @cal = caller(0);
+        Koha::Exception::UnknownObject->throw(error => $cal[3].'():>'."Cannot fetch the patron data from MongoDB");
+      } 
    };
-  
-   return($jsonstring);
+
+   return(\@logArray);
 }
 
 1;
