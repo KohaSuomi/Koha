@@ -30,6 +30,7 @@ sub mock_preference {
     my ( $pref, $value ) = @_;
 
     $preferences{lc($pref)} = $value;
+    C4::Context->clear_syspref_related_caches(lc($pref));
 
     my $context = new Test::MockModule('C4::Context');
     $context->mock('preference', sub {

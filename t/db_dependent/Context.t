@@ -9,6 +9,7 @@ use vars qw($debug $koha $dbh $config $ret);
 use t::lib::Mocks;
 
 use Koha::Database;
+use Koha::Caches;
 
 BEGIN {
     $debug = $ENV{DEBUG} || 0;
@@ -47,6 +48,40 @@ C4::Context->set_preference('SillyPreference','random');
 C4::Context->clear_syspref_cache();
 my $SillyPeference = C4::Context->preference('SillyPreference');
 is($SillyPeference,'random','SillyPreference saved as specified');
+
+subtest 'test clear_syspref_related_caches()' => sub {
+    C4::Context->set_preference('OpacHiddenItems','oldval');
+    is(C4::Context->preference('OpacHiddenItems'), 'oldval', 'Init syspref');
+
+    my $cache = Koha::Caches->get_instance();
+    $cache->set_in_cache(
+        'OpacHiddenItems-parsed', { 'test' => 'test' }
+    );
+    $cache->set_in_cache(
+        'OpacHiddenItems-parsed-opac', { 'test-opac' => 'test-opac' }
+    );
+    $cache->set_in_cache(
+        'OpacHiddenItems-parsed-nope', { 'test-nope' => 'test-nope' }
+    );
+
+    is_deeply($cache->get_from_cache('OpacHiddenItems-parsed'),
+       { 'test' => 'test' }, 'Found cached value');
+    is_deeply($cache->get_from_cache('OpacHiddenItems-parsed-opac'),
+       { 'test-opac' => 'test-opac' }, 'Found cached value');
+    is_deeply($cache->get_from_cache('OpacHiddenItems-parsed-nope'),
+       { 'test-nope' => 'test-nope' }, 'Found cached value');
+
+    C4::Context->set_preference('OpacHiddenItems','newval');
+    is(C4::Context->preference('OpacHiddenItems'), 'newval', 'Changed syspref');
+
+    is($cache->get_from_cache('OpacHiddenItems-parsed'), undef,
+       'cleared systempreference\'s related cache');
+    is($cache->get_from_cache('OpacHiddenItems-parsed-opac'), undef,
+       'cleared systempreference\'s related cache');
+    is_deeply($cache->get_from_cache('OpacHiddenItems-parsed-nope'), ,
+       { 'test-nope' => 'test-nope' }, 'This cached value was not cleared '
+       .'because it was not configured to do so');
+};
 C4::Context->clear_syspref_cache();
 C4::Context->enable_syspref_cache();
 $dbh->rollback;

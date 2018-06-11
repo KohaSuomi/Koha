@@ -481,6 +481,57 @@ sub clear_syspref_cache {
     $syspref_cache->flush_all;
 }
 
+=head2 clear_syspref_related_caches
+
+  C4::Context->clear_syspref_related_caches();
+
+Some features in Koha cache other values depending on a value of a specific
+system preference. Because of this, we need to be able to clear any related caches
+when the value of a system preference is modified.
+
+An example of this is parsed YAML configuration of a system preference. By caching
+the parsed YAML, we can optimize our code by avoiding the need of parsing the YAML
+on each call. As the system preference gets modified, we then need to be able to
+clear parsed YAML from the cache.
+
+=cut
+
+sub clear_syspref_related_caches {
+    my ($self, $variable) = @_;
+
+    $variable = lc($variable);
+
+    #
+    # {
+    #    'systempreference_name' (lowercase) => {
+    #        'cache_instance' => [
+    #            'cache_key', 'cache_key2'
+    #        ],
+    #    }
+    # }
+    my $map = {
+        'opachiddenitems' => {
+            '' => [
+                'OpacHiddenItems-parsed', 'OpacHiddenItems-parsed-opac'
+            ],
+        },
+    };
+
+    return 0 unless exists $map->{$variable};
+
+    foreach my $cache_instance (keys %{$map->{$variable}}) {
+        my $cache = $cache_instance
+                    ? Koha::Caches->get_instance($cache_instance)
+                    : Koha::Caches->get_instance();
+
+        foreach my $cache_key ( @{$map->{$variable}->{$cache_instance}}) {
+            $cache->clear_from_cache($cache_key);
+        }
+    }
+
+    return 1;
+}
+
 =head2 set_preference
 
   C4::Context->set_preference( $variable, $value, [ $explanation, $type, $options ] );
@@ -528,6 +579,8 @@ sub set_preference {
             }
         )->store();
     }
+
+    $self->clear_syspref_related_caches($variable);
 
     if ( $use_syspref_cache ) {
         $syspref_cache->set_in_cache( "syspref_$variable", $value );
