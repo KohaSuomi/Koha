@@ -8,9 +8,6 @@
   "/accountlines/{accountlines_id}/payment": {
     "$ref": "paths/accountlines.json#/~1accountlines~1{accountlines_id}~1payment"
   },
-  "/alldata": {
-    "$ref": "paths/alldata.json#/~1alldata"
-  },
   "/auth/session": {
     "$ref": "paths/auth.json#/~1auth~1session"
   },
@@ -145,6 +142,9 @@
   },
   "/patrons/password/recovery/complete": {
     "$ref": "paths/patrons.json#/~1patrons~1password~1recovery~1complete"
+  },
+  "/patrons/alldata": {
+    "$ref": "paths/patrons.json#/~1patrons~1alldata"
   },
   "/payments/transaction/{invoicenumber}": {
     "$ref": "paths/payments/transactions.json#/~1payments~1transactions~1{invoicenumber}"

@@ -1044,7 +1044,6 @@
         }
       ],
       "consumes": ["application/json"],
-      "produces": ["application/json"],
       "responses": {
         "204": {
           "description": "Success"
@@ -1275,6 +1274,63 @@
         },
         "500": {
           "description": "Internal server error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      }
+    }
+  },
+  "/patrons/alldata": {
+    "get": {
+      "x-mojo-to": "Patron#getalldata",
+      "operationId": "getAlldata",
+      "tags": ["patrons"],
+      "produces": [
+        "application/json"
+      ],
+      "parameters": [{
+        "name": "borrowernumber",
+        "in": "query",
+        "description": "borrowernumber",
+        "required": true,
+        "type": "string"
+      },
+      {
+        "name": "section",
+        "in": "query",
+        "description": "Get data by sections",
+        "required": false,
+        "type": "string",
+        "enum": ["personal", "checkouts", "holds", "accountlines", "notices", "messages", "debarments", "suggestions"]
+      }],
+      "x-koha-authorization": {
+        "allow-owner": true,
+          "permissions": {
+            "borrowers": "view_borrowers"
+          }
+      },
+      "responses": {
+        "200": {
+          "description": "Getting all data succeeded",
+          "schema": {
+            "type": "object"
+          }
+        },
+        "404": {
+          "description": "Missing all data",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "500": {
+          "description": "Internal error",
           "schema": {
             "$ref": "../definitions.json#/error"
           }
