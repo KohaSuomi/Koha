@@ -1733,7 +1733,7 @@ sub _do_column_fixes_for_mod {
         (not defined $item->{'withdrawn'} or $item->{'withdrawn'} eq '')) {
         $item->{'withdrawn'} = 0;
     }
-    if (exists $item->{location}
+    if (exists $item->{location} && defined($item->{location})
         and $item->{location} ne 'CART'
         and $item->{location} ne 'PROC'
         and not $item->{permanent_location}
@@ -2403,7 +2403,7 @@ sub _SearchItems_build_where_fragment {
         push @columns, Koha::Database->new()->schema()->resultset('Biblioitem')->result_source->columns;
         my @operators = qw(= != > < >= <= like);
         my $field = $filter->{field};
-        if ( (0 < grep /^$field$/, @columns) or (substr($field, 0, 5) eq 'marc:') ) {
+        if (defined($field) && ((0 < grep /^$field$/, @columns) or (substr($field, 0, 5) eq 'marc:') )) {
             my $op = $filter->{operator};
             my $query = $filter->{query};
 
