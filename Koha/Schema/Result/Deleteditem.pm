@@ -53,6 +53,12 @@ __PACKAGE__->table("deleteditems");
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
+=head2 datereceived
+
+  data_type: 'timestamp'
+  datetime_undef_if_invalid: 1
+  is_nullable: 1
+
 =head2 booksellerid
 
   data_type: 'mediumtext'
@@ -192,7 +198,7 @@ __PACKAGE__->table("deleteditems");
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
-  default_value: current_timestamp
+  default_value: 'current_timestamp()'
   is_nullable: 0
 
 =head2 location
@@ -270,6 +276,13 @@ __PACKAGE__->table("deleteditems");
   is_nullable: 1
   size: 32
 
+=head2 new
+
+  accessor: undef
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 32
+
 =head2 new_status
 
   data_type: 'varchar'
@@ -288,12 +301,6 @@ __PACKAGE__->table("deleteditems");
   is_nullable: 1
   size: 10
 
-=head2 datereceived
-
-  data_type: 'timestamp'
-  datetime_undef_if_invalid: 1
-  is_nullable: 1
-
 =head2 circulation_level
 
   data_type: 'varchar'
@@ -305,6 +312,11 @@ __PACKAGE__->table("deleteditems");
   data_type: 'varchar'
   is_nullable: 1
   size: 10
+
+=head2 holding_id
+
+  data_type: 'integer'
+  is_nullable: 1
 
 =cut
 
@@ -319,6 +331,12 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 30 },
   "dateaccessioned",
   { data_type => "date", datetime_undef_if_invalid => 1, is_nullable => 1 },
+  "datereceived",
+  {
+    data_type => "timestamp",
+    datetime_undef_if_invalid => 1,
+    is_nullable => 1,
+  },
   "booksellerid",
   { data_type => "mediumtext", is_nullable => 1 },
   "homebranch",
@@ -379,7 +397,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "timestamp",
     datetime_undef_if_invalid => 1,
-    default_value => \"current_timestamp",
+    default_value => "current_timestamp()",
     is_nullable => 0,
   },
   "location",
@@ -408,22 +426,20 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 32 },
   "stocknumber",
   { data_type => "varchar", is_nullable => 1, size => 32 },
+  "new",
+  { accessor => undef, data_type => "varchar", is_nullable => 1, size => 32 },
   "new_status",
   { data_type => "varchar", is_nullable => 1, size => 32 },
   "genre",
   { data_type => "varchar", is_nullable => 1, size => 10 },
   "sub_location",
   { data_type => "varchar", is_nullable => 1, size => 10 },
-  "datereceived",
-  {
-    data_type => "timestamp",
-    datetime_undef_if_invalid => 1,
-    is_nullable => 1,
-  },
   "circulation_level",
   { data_type => "varchar", is_nullable => 1, size => 10 },
   "reserve_level",
   { data_type => "varchar", is_nullable => 1, size => 10 },
+  "holding_id",
+  { data_type => "integer", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -439,8 +455,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("itemnumber");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2016-03-31 17:10:17
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:npNexLgE7AxLp6iVy1FxgQ
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8G8Gq0eoR10b3dfq/46ntg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

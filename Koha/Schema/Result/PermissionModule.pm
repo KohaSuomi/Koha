@@ -95,24 +95,24 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 permissions
+=head2 permissions_olds
 
 Type: has_many
 
-Related object: L<Koha::Schema::Result::Permission>
+Related object: L<Koha::Schema::Result::PermissionsOld>
 
 =cut
 
 __PACKAGE__->has_many(
-  "permissions",
-  "Koha::Schema::Result::Permission",
+  "permissions_olds",
+  "Koha::Schema::Result::PermissionsOld",
   { "foreign.module" => "self.module" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-08-03 18:53:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0p9fkT+XinNSQXJa/egQPw
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GrsuaLd7/9B9pC2h02o5lQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

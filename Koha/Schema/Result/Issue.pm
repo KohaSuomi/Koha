@@ -86,7 +86,7 @@ __PACKAGE__->table("issues");
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
-  default_value: current_timestamp
+  default_value: 'current_timestamp()'
   is_nullable: 0
 
 =head2 issuedate
@@ -151,7 +151,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "timestamp",
     datetime_undef_if_invalid => 1,
-    default_value => \"current_timestamp",
+    default_value => "current_timestamp()",
     is_nullable => 0,
   },
   "issuedate",
@@ -241,8 +241,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-05-03 04:12:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ozRQZiF1LlOJy4KI53OpFw
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wpfqIeps/3fnYXI5jClHMA
 
 __PACKAGE__->belongs_to(
     "borrower",

@@ -428,6 +428,51 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 collections_owning_branchcodes
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::Collection>
+
+=cut
+
+__PACKAGE__->has_many(
+  "collections_owning_branchcodes",
+  "Koha::Schema::Result::Collection",
+  { "foreign.owningBranchcode" => "self.branchcode" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 collections_tracking_origin_branchcodes
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::CollectionsTracking>
+
+=cut
+
+__PACKAGE__->has_many(
+  "collections_tracking_origin_branchcodes",
+  "Koha::Schema::Result::CollectionsTracking",
+  { "foreign.origin_branchcode" => "self.branchcode" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 collections_tracking_transfer_branches
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::CollectionsTracking>
+
+=cut
+
+__PACKAGE__->has_many(
+  "collections_tracking_transfer_branches",
+  "Koha::Schema::Result::CollectionsTracking",
+  { "foreign.transfer_branch" => "self.branchcode" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 course_items
 
 Type: has_many
@@ -533,6 +578,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 holdings
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::Holding>
+
+=cut
+
+__PACKAGE__->has_many(
+  "holdings",
+  "Koha::Schema::Result::Holding",
+  { "foreign.holdingbranch" => "self.branchcode" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 items_holdingbranches
 
 Type: has_many
@@ -634,8 +694,8 @@ Composing rels: L</branchrelations> -> categorycode
 __PACKAGE__->many_to_many("categorycodes", "branchrelations", "categorycode");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-04-26 16:17:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:99U1YQ4iSum4LbBha4hDTQ
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lADxOgzD3E2Jdrkgz3+8yA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

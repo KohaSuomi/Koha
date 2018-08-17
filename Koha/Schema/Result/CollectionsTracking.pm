@@ -50,12 +50,14 @@ items.itemnumber
 =head2 origin_branchcode
 
   data_type: 'varchar'
+  is_foreign_key: 1
   is_nullable: 1
   size: 10
 
 =head2 transfer_branch
 
   data_type: 'varchar'
+  is_foreign_key: 1
   is_nullable: 1
   size: 10
 
@@ -75,7 +77,7 @@ items.itemnumber
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
-  default_value: current_timestamp
+  default_value: 'current_timestamp()'
   is_nullable: 0
 
 =cut
@@ -98,9 +100,9 @@ __PACKAGE__->add_columns(
     is_nullable    => 0,
   },
   "origin_branchcode",
-  { data_type => "varchar", is_nullable => 1, size => 10 },
+  { data_type => "varchar", is_foreign_key => 1, is_nullable => 1, size => 10 },
   "transfer_branch",
-  { data_type => "varchar", is_nullable => 1, size => 10 },
+  { data_type => "varchar", is_foreign_key => 1, is_nullable => 1, size => 10 },
   "transferred",
   { data_type => "tinyint", default_value => 0, is_nullable => 1 },
   "date_added",
@@ -113,7 +115,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "timestamp",
     datetime_undef_if_invalid => 1,
-    default_value => \"current_timestamp",
+    default_value => "current_timestamp()",
     is_nullable => 0,
   },
 );
@@ -147,9 +149,49 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
+=head2 origin_branchcode
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-08-18 13:01:05
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:s8ZFSmMJt313bz3XdlhITQ
+Type: belongs_to
+
+Related object: L<Koha::Schema::Result::Branch>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "origin_branchcode",
+  "Koha::Schema::Result::Branch",
+  { branchcode => "origin_branchcode" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
+
+=head2 transfer_branch
+
+Type: belongs_to
+
+Related object: L<Koha::Schema::Result::Branch>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "transfer_branch",
+  "Koha::Schema::Result::Branch",
+  { branchcode => "transfer_branch" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:IVayKdF2pYytMN7Vz9hHyQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
