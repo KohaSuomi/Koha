@@ -414,7 +414,7 @@ __PACKAGE__->table("borrowers");
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
-  default_value: current_timestamp
+  default_value: 'current_timestamp()'
   is_nullable: 0
 
 =head2 lastseen
@@ -619,7 +619,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "timestamp",
     datetime_undef_if_invalid => 1,
-    default_value => \"current_timestamp",
+    default_value => "current_timestamp()",
     is_nullable => 0,
   },
   "lastseen",
@@ -667,7 +667,7 @@ __PACKAGE__->set_primary_key("borrowernumber");
 
 __PACKAGE__->add_unique_constraint("cardnumber", ["cardnumber"]);
 
-=head2 C<othernames_3>
+=head2 C<othernames>
 
 =over 4
 
@@ -677,7 +677,7 @@ __PACKAGE__->add_unique_constraint("cardnumber", ["cardnumber"]);
 
 =cut
 
-__PACKAGE__->add_unique_constraint("othernames_3", ["othernames"]);
+__PACKAGE__->add_unique_constraint("othernames", ["othernames"]);
 
 =head2 C<userid>
 
@@ -798,6 +798,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 batch_overlay_reports
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::BatchOverlayReport>
+
+=cut
+
+__PACKAGE__->has_many(
+  "batch_overlay_reports",
+  "Koha::Schema::Result::BatchOverlayReport",
+  { "foreign.borrowernumber" => "self.borrowernumber" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 borrower_attributes
 
 Type: has_many
@@ -858,21 +873,6 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 borrower_syncs
-
-Type: has_many
-
-Related object: L<Koha::Schema::Result::BorrowerSync>
-
-=cut
-
-__PACKAGE__->has_many(
-  "borrower_syncs",
-  "Koha::Schema::Result::BorrowerSync",
-  { "foreign.borrowernumber" => "self.borrowernumber" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 borrower_permissions
 
 Type: has_many
@@ -884,6 +884,21 @@ Related object: L<Koha::Schema::Result::BorrowerPermission>
 __PACKAGE__->has_many(
   "borrower_permissions",
   "Koha::Schema::Result::BorrowerPermission",
+  { "foreign.borrowernumber" => "self.borrowernumber" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 borrower_syncs
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::BorrowerSync>
+
+=cut
+
+__PACKAGE__->has_many(
+  "borrower_syncs",
+  "Koha::Schema::Result::BorrowerSync",
   { "foreign.borrowernumber" => "self.borrowernumber" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -1218,21 +1233,6 @@ __PACKAGE__->might_have(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 ratings
-
-Type: has_many
-
-Related object: L<Koha::Schema::Result::Rating>
-
-=cut
-
-__PACKAGE__->has_many(
-  "ratings",
-  "Koha::Schema::Result::Rating",
-  { "foreign.borrowernumber" => "self.borrowernumber" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
 =head2 payments_transactions
 
 Type: has_many
@@ -1244,6 +1244,21 @@ Related object: L<Koha::Schema::Result::PaymentsTransaction>
 __PACKAGE__->has_many(
   "payments_transactions",
   "Koha::Schema::Result::PaymentsTransaction",
+  { "foreign.borrowernumber" => "self.borrowernumber" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 ratings
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::Rating>
+
+=cut
+
+__PACKAGE__->has_many(
+  "ratings",
+  "Koha::Schema::Result::Rating",
   { "foreign.borrowernumber" => "self.borrowernumber" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -1288,6 +1303,26 @@ Related object: L<Koha::Schema::Result::SmsProvider>
 
 __PACKAGE__->belongs_to(
   "sms_provider",
+  "Koha::Schema::Result::SmsProvider",
+  { id => "sms_provider_id" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "SET NULL",
+    on_update     => "CASCADE",
+  },
+);
+
+=head2 sms_provider_2
+
+Type: belongs_to
+
+Related object: L<Koha::Schema::Result::SmsProvider>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "sms_provider_2",
   "Koha::Schema::Result::SmsProvider",
   { id => "sms_provider_id" },
   {
@@ -1429,8 +1464,8 @@ Composing rels: L</aqorder_users> -> ordernumber
 __PACKAGE__->many_to_many("ordernumbers", "aqorder_users", "ordernumber");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-05-09 21:24:02
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7llO928plwtX2Q+I9nQA8A
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XA++bZQFCqda0DpHqutlHw
 
 __PACKAGE__->belongs_to(
     "guarantor",

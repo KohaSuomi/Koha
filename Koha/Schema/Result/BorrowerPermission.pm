@@ -114,13 +114,13 @@ __PACKAGE__->belongs_to(
 
 Type: belongs_to
 
-Related object: L<Koha::Schema::Result::Permission>
+Related object: L<Koha::Schema::Result::PermissionsOld>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "permission",
-  "Koha::Schema::Result::Permission",
+  "Koha::Schema::Result::PermissionsOld",
   { permission_id => "permission_id" },
   { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
@@ -141,8 +141,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2015-08-03 18:53:48
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oeu9FDU0R/YXazuSik1yfA
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pGQ9JQ4w+9fDcK4uhTKBng
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

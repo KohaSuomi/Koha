@@ -79,7 +79,7 @@ __PACKAGE__->table("marc_subfield_structure");
   data_type: 'varchar'
   is_foreign_key: 1
   is_nullable: 1
-  size: 32
+  size: 20
 
 =head2 authtypecode
 
@@ -153,7 +153,7 @@ __PACKAGE__->add_columns(
   "tab",
   { data_type => "tinyint", is_nullable => 1 },
   "authorised_value",
-  { data_type => "varchar", is_foreign_key => 1, is_nullable => 1, size => 32 },
+  { data_type => "varchar", is_foreign_key => 1, is_nullable => 1, size => 20 },
   "authtypecode",
   { data_type => "varchar", is_nullable => 1, size => 20 },
   "value_builder",
@@ -213,8 +213,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07045 @ 2016-08-30 11:59:32
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/gnyZuGje+sg82HfxMLI0g
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OCs9xUafFZYsB8mH4iuuFA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

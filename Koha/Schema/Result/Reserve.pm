@@ -94,7 +94,7 @@ __PACKAGE__->table("reserves");
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
-  default_value: current_timestamp
+  default_value: 'current_timestamp()'
   is_nullable: 0
 
 =head2 itemnumber
@@ -185,7 +185,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "timestamp",
     datetime_undef_if_invalid => 1,
-    default_value => \"current_timestamp",
+    default_value => "current_timestamp()",
     is_nullable => 0,
   },
   "itemnumber",
@@ -315,8 +315,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2015-12-26 12:22:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:v9+wPKUT381CLNlusQ4LMA
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cLsd1LZGJeXJ6u7ozhL1hA
 
 __PACKAGE__->belongs_to(
   "borrower",

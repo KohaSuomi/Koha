@@ -56,6 +56,7 @@ __PACKAGE__->table("collections");
 
   accessor: 'owning_branchcode'
   data_type: 'varchar'
+  is_foreign_key: 1
   is_nullable: 1
   size: 10
 
@@ -91,6 +92,7 @@ __PACKAGE__->add_columns(
   {
     accessor => "owning_branchcode",
     data_type => "varchar",
+    is_foreign_key => 1,
     is_nullable => 1,
     size => 10,
   },
@@ -130,9 +132,29 @@ __PACKAGE__->belongs_to(
   },
 );
 
+=head2 owning_branchcode
 
-# Created by DBIx::Class::Schema::Loader v0.07039 @ 2014-11-06 15:26:36
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gb7EYny5ULsZw8rYQQ/hjA
+Type: belongs_to
+
+Related object: L<Koha::Schema::Result::Branch>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "owning_branchcode",
+  "Koha::Schema::Result::Branch",
+  { branchcode => "owningBranchcode" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DIdhFAol06cFNOagU6OxIQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

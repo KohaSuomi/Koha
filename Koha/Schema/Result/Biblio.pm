@@ -75,7 +75,7 @@ __PACKAGE__->table("biblio");
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
-  default_value: current_timestamp
+  default_value: 'current_timestamp()'
   is_nullable: 0
 
 =head2 datecreated
@@ -114,7 +114,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "timestamp",
     datetime_undef_if_invalid => 1,
-    default_value => \"current_timestamp",
+    default_value => "current_timestamp()",
     is_nullable => 0,
   },
   "datecreated",
@@ -163,6 +163,36 @@ Related object: L<Koha::Schema::Result::ArticleRequest>
 __PACKAGE__->has_many(
   "article_requests",
   "Koha::Schema::Result::ArticleRequest",
+  { "foreign.biblionumber" => "self.biblionumber" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 batch_overlay_diff_headers
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::BatchOverlayDiffHeader>
+
+=cut
+
+__PACKAGE__->has_many(
+  "batch_overlay_diff_headers",
+  "Koha::Schema::Result::BatchOverlayDiffHeader",
+  { "foreign.biblionumber" => "self.biblionumber" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 batch_overlay_diffs
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::BatchOverlayDiff>
+
+=cut
+
+__PACKAGE__->has_many(
+  "batch_overlay_diffs",
+  "Koha::Schema::Result::BatchOverlayDiff",
   { "foreign.biblionumber" => "self.biblionumber" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -227,6 +257,21 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 holdings
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::Holding>
+
+=cut
+
+__PACKAGE__->has_many(
+  "holdings",
+  "Koha::Schema::Result::Holding",
+  { "foreign.biblionumber" => "self.biblionumber" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 items
 
 Type: has_many
@@ -237,6 +282,21 @@ Related object: L<Koha::Schema::Result::Item>
 
 __PACKAGE__->has_many(
   "items",
+  "Koha::Schema::Result::Item",
+  { "foreign.biblionumber" => "self.biblionumber" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 items_2s
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::Item>
+
+=cut
+
+__PACKAGE__->has_many(
+  "items_2s",
   "Koha::Schema::Result::Item",
   { "foreign.biblionumber" => "self.biblionumber" },
   { cascade_copy => 0, cascade_delete => 0 },
@@ -348,7 +408,7 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2017-01-13 08:36:25
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jis7Sm5+9lVKav+o18JLtA
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Kn50FvfD7Qs6QgAd6ONCeg
 
 1;

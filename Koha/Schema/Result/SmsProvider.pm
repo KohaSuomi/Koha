@@ -95,9 +95,24 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 borrowers_2s
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2015-12-31 16:48:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:U3LGi1zy3YN2Amin+bhXlA
+Type: has_many
+
+Related object: L<Koha::Schema::Result::Borrower>
+
+=cut
+
+__PACKAGE__->has_many(
+  "borrowers_2s",
+  "Koha::Schema::Result::Borrower",
+  { "foreign.sms_provider_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9IvHngmmhTTZzDrecXoxhQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -137,7 +137,7 @@ __PACKAGE__->table("aqorders");
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
-  default_value: current_timestamp
+  default_value: 'current_timestamp()'
   is_nullable: 0
 
 =head2 rrp
@@ -357,7 +357,7 @@ __PACKAGE__->add_columns(
   {
     data_type => "timestamp",
     datetime_undef_if_invalid => 1,
-    default_value => \"current_timestamp",
+    default_value => "current_timestamp()",
     is_nullable => 0,
   },
   "rrp",
@@ -574,6 +574,26 @@ __PACKAGE__->belongs_to(
   },
 );
 
+=head2 currency_2
+
+Type: belongs_to
+
+Related object: L<Koha::Schema::Result::Currency>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "currency_2",
+  "Koha::Schema::Result::Currency",
+  { currency => "currency" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "SET NULL",
+    on_update     => "SET NULL",
+  },
+);
+
 =head2 invoiceid
 
 Type: belongs_to
@@ -625,8 +645,8 @@ Composing rels: L</aqorder_users> -> borrowernumber
 __PACKAGE__->many_to_many("borrowernumbers", "aqorder_users", "borrowernumber");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2016-10-28 15:05:37
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FyZsBWGJ8wsPkFdYUAetmg
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+xx2l/XdNaoL8Ap0vKPumg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

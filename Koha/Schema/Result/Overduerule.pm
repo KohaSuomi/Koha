@@ -177,26 +177,9 @@ __PACKAGE__->set_primary_key("overduerules_id");
 
 __PACKAGE__->add_unique_constraint("overduerules_branch_cat", ["branchcode", "categorycode"]);
 
-=head1 RELATIONS
 
-=head2 overduerules_transport_types
-
-Type: has_many
-
-Related object: L<Koha::Schema::Result::OverduerulesTransportType>
-
-=cut
-
-__PACKAGE__->has_many(
-  "overduerules_transport_types",
-  "Koha::Schema::Result::OverduerulesTransportType",
-  { "foreign.overduerules_id" => "self.overduerules_id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07042 @ 2016-01-06 12:00:28
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Opfa1YZ3IeQRRbyrbKAkNQ
+# Created by DBIx::Class::Schema::Loader v0.07048 @ 2018-08-17 15:31:53
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zekl3Lkde+vkDvRZFNpV2A
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
