@@ -55,6 +55,14 @@
     "ccode_description": {
       "type": ["string", "null"],
       "description": "ccode description as printed in the staff client"
+    },
+    "sub_location": {
+      "type": ["string", "null"],
+      "description": "authorized value for the sub location associated with this item (MARC21 952$S)"
+    },
+    "sub_description": {
+      "type": ["string", "null"],
+      "description": "subloc description as printed in the staff client"
     }
   }
 }
