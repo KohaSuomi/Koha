@@ -188,6 +188,7 @@ sub swaggerize {
         ccode_description => $ccode_desc,
         sub_location => $item->sub_location,
         sub_description => $subloc_desc,
+        holding_id => $item->holding_id,
     };
     $hash->{'hold_queue_length'} = Koha::Holds->search({
         itemnumber => $item->itemnumber
