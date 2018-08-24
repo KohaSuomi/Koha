@@ -43,5 +43,6 @@ print "\n\n";
 print "--------------------------------------------------------------------------------------------------------\n";
 print "INSTALL THESE INDIVIDUALLY\n";
 print "--------------------------------------------------------------------------------------------------------\n";
-my $missing = system("perl koha_perl_deps.pl -m -u");
+my $path = $ENV{KOHA_PATH}.'koha_perl_deps.pl';
+my $missing = system("perl $path -m -u");
 print "$missing\n";
