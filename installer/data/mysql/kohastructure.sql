@@ -984,13 +984,14 @@ CREATE TABLE `holdings` ( -- table that stores summary holdings information
   `biblionumber` int(11) NOT NULL default 0, -- foreign key from biblio table used to link this record to the right bib record
   `biblioitemnumber` int(11) NOT NULL default 0, -- foreign key from the biblioitems table to link record to additional information
   `frameworkcode` varchar(4) NOT NULL default '', -- foreign key from the biblio_framework table to identify which framework was used in cataloging this record
-  `holdingbranch` varchar(10) default NULL, -- foreign key from the branches table for the library that owns this record (MARC21 852$a)
-  `location` varchar(80) default NULL, -- authorized value for the shelving location for this record (MARC21 852$b)
+  `holdingbranch` varchar(10) default NULL, -- foreign key from the branches table for the library that owns this record (MARC21 852$b)
+  `location` varchar(80) default NULL, -- authorized value for the shelving location for this record (MARC21 852$c)
+  `ccode` varchar(80) default NULL, -- collection code the holding is part of (MARC21 852$b)
   `callnumber` varchar(255) default NULL, -- call number (852$h+$i in MARC21)
-  `suppress` tinyint(1) default NULL, -- Boolean indicating whether the record is suppressed in OPAC
+  `suppress` tinyint(1) default NULL, -- Boolean indicating whether the record is suppressed in OPAC (MARC21 942$n)
   `timestamp` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP, -- date and time this record was last touched
   `datecreated` DATE NOT NULL, -- the date this record was added to Koha
-	`deleted_on` DATETIME DEFAULT NULL, -- the date this record was deleted
+  `deleted_on` DATETIME DEFAULT NULL, -- the date this record was deleted
   PRIMARY KEY  (`holding_id`),
   KEY `hldnoidx` (`holding_id`),
   KEY `hldbinoidx` (`biblioitemnumber`),

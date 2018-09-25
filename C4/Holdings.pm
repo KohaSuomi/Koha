@@ -487,13 +487,15 @@ sub _koha_add_holding {
             location = ?,
             callnumber = ?,
             suppress = ?,
+            ccode = ?,
             datecreated = NOW()
         ";
 
     my $sth = $dbh->prepare($query);
     $sth->execute(
         $biblionumber, $biblioitemnumber, $frameworkcode,
-        $holding->{holdingbranch}, $holding->{location}, $holding->{callnumber}, $holding->{suppress}
+        $holding->{holdingbranch}, $holding->{location}, $holding->{callnumber}, $holding->{suppress},
+        $holding->{ccode},
     );
 
     my $holding_id = $dbh->{'mysql_insertid'};
@@ -525,14 +527,15 @@ sub _koha_modify_holding {
                holdingbranch = ?,
                location = ?,
                callnumber = ?,
-               suppress = ?
+               suppress = ?,
+               ccode = ?
         WHERE  holding_id = ?
         "
       ;
     my $sth = $dbh->prepare($query);
 
     $sth->execute(
-        $frameworkcode, $holding->{holdingbranch}, $holding->{location}, $holding->{callnumber}, $holding->{suppress}, $holding_id
+        $frameworkcode, $holding->{holdingbranch}, $holding->{location}, $holding->{callnumber}, $holding->{suppress}, $holding->{ccode}, $holding_id
     ) if $holding_id;
 
     if ( $dbh->errstr || !$holding_id ) {
@@ -765,6 +768,11 @@ sub TransformMarcHoldingToKoha {
     # The next call acknowledges HLD as the authoritative framework
     # for holdings to MARC mappings.
     my $mss = C4::Biblio::GetMarcSubfieldStructure( 'HLD' ); # Do not change framework
+
+    #Inject these columns, whose values cannot be configured via the koha.marc_subfield_structure-table, since 852$b is shared between ccode and branch
+    $mss->{'holdings.ccode'} = $mss->{'holdings.ccode'}; # these keys are created with undef if not exists
+    $mss->{'holdings.holdingbranch'} = $mss->{'holdings.holdingbranch'};
+
     foreach my $kohafield ( keys %{ $mss } ) {
         my ( $table, $column ) = split /[.]/, $kohafield, 2;
         next unless $tables{$table};
@@ -787,22 +795,85 @@ sub TransformMarcHoldingToKohaOneField {
     my ( $kohafield, $marc ) = @_;
 
     my ( @rv, $retval );
+
     my @mss = GetMarcHoldingSubfieldStructureFromKohaField($kohafield);
-    foreach my $fldhash ( @mss ) {
-        my $tag = $fldhash->{tagfield};
-        my $sub = $fldhash->{tagsubfield};
-        foreach my $fld ( $marc->field($tag) ) {
-            if( $sub eq '@' || $fld->is_control_field ) {
-                push @rv, $fld->data if $fld->data;
-            } else {
-                push @rv, grep { $_ } $fld->subfield($sub);
+
+    # If there exists a mapping for the given holdings-column, use it, otherwise check the more complex algorithms for extracting it.
+    if (@mss && $mss[0]) {
+        # Multiple MARC fields*subfields can be concatenated here.
+        foreach my $fldhash ( @mss ) {
+            my $tag = $fldhash->{tagfield};
+            my $sub = $fldhash->{tagsubfield};
+            foreach my $fld ( $marc->field($tag) ) {
+                if( $sub eq '@' || $fld->is_control_field ) {
+                    push @rv, $fld->data if $fld->data;
+                } else {
+                    push @rv, grep { $_ } $fld->subfield($sub);
+                }
             }
         }
-    }
-    return unless @rv;
-    $retval = join ' | ', uniq(@rv);
+        return unless @rv;
+        $retval = join ' | ', uniq(@rv);
 
-    return $retval;
+        return $retval;
+    }
+
+    # branchcode is in the 852$b[0] (first instance)
+    elsif ($kohafield eq 'holdings.holdingbranch') {
+        my @f852s = $marc->field('852');
+        foreach my $f852 ($marc->field('852')) {
+            my @sfbs = $f852->subfield('b');
+            $retval = $sfbs[0];
+            next unless $retval;
+            my @branch = Koha::Libraries->search({'-or' => [branchcode => $retval, branchname => $retval]}); #Manually check for referential integrity, or NULL the holdings.branch
+            $retval = @branch ? $branch[0]->branchcode : undef;
+            return $retval if defined($retval); #Pick only the first instance of 852$b, it is not possible to have multiple branchcodes due to the way koha.holdings is structured.
+        }
+        return undef; #Maybe we should bark/die here? It is not possible to have a koha.holdings-row without the branchcode in the DB due to FK
+    }
+
+    # ccode is in the 852$b[1] (second instance)
+    elsif ($kohafield eq 'holdings.ccode') {
+        my @f852s = $marc->field('852');
+        foreach my $f852 ($marc->field('852')) {
+            my @sfbs = $f852->subfield('b');
+            $retval = $sfbs[1];
+            next unless $retval;
+            my @ccode = Koha::AuthorisedValues->search({'-and' => [category => 'CCODE', '-or' => [authorised_value => $retval, lib => $retval]]}); #Manually check for referential integrity, or NULL the holdings.ccode
+            $retval = @ccode ? $ccode[0]->authorised_value : undef;
+            return $retval if defined($retval); #Pick only the first instance of the second 852$b.
+        }
+        return undef; #ccode is completely optional
+    }
+
+    # permanent_location is in the 852$c, only one can be chosen
+    elsif ($kohafield eq 'holdings.location') {
+        my @f852s = $marc->field('852');
+        foreach my $f852 ($marc->field('852')) {
+            my @sfcs = $f852->subfield('c');
+            $retval = $sfcs[0];
+            next unless $retval;
+            my @location = Koha::AuthorisedValues->search({'-and' => [category => 'LOC', '-or' => [authorised_value => $retval, lib => $retval]]}); #Manually check for referential integrity, or NULL the holdings.ccode
+            $retval = @location ? $location[0]->authorised_value : undef;
+            return $retval if defined($retval); #Pick only one instance.
+        }
+        return undef; #location is not mandatory afaik.
+    }
+
+    # holdings.callnumber is built from 852$[khim]. Defining multiple instances of 'holdings.callnumber' to koha.marc_subfield_structure.kohafield doesn't work atm as C4::Biblio::GetMarcSubfieldStructure flattens them.
+    # As the HLD-framework is not editable in the frameworks editor (why would the MFHD be implemented differently in different Koha-installations?), it is easier to just hard-code these rules.
+    elsif ($kohafield eq 'holdings.callnumber') {
+        my @f852s = $marc->field('852');
+        my @sbF; #java.lang.StringBuilder for the single 852-instance
+        foreach my $f852 ($marc->field('852')) {
+            push(@sbF, $f852->subfield('k'));
+            push(@sbF, $f852->subfield('h'));
+            push(@sbF, $f852->subfield('i'));
+            push(@sbF, $f852->subfield('m'));
+            push(@rv, join(' ', @sbF));
+        }
+        return join(' | ', @rv);
+    }
 }
 
 =head2 TransformKohaToMarc
