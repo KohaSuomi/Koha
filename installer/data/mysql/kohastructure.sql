@@ -1006,7 +1006,7 @@ CREATE TABLE `holdings` ( -- table that stores summary holdings information
 --
 
 DROP TABLE IF EXISTS `holdings_metadata`;
-CREATE TABLE holdings_metadata (
+CREATE TABLE `holdings_metadata` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `holding_id` INT(11) NOT NULL,
   `format` VARCHAR(16) NOT NULL,
