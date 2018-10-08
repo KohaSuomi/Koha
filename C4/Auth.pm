@@ -27,6 +27,7 @@ use CGI::Session;
 use Scalar::Util qw(blessed);
 use Try::Tiny;
 use YAML::Syck;
+use C4::AuthExtra;
 
 require Exporter;
 use C4::Context;
@@ -820,6 +821,11 @@ sub checkauth {
             $ip          = $session->param('ip');
             $lasttime    = $session->param('lasttime');
             $userid      = $s_userid;
+           
+            ###################################
+            $timeout = C4::AuthExtra::get_timeout($userid,$timeout);            
+            ###################################           
+
             $sessiontype = $session->param('sessiontype') || '';
         }
         if ( ( $query->param('koha_login_context') && ( $q_userid ne $s_userid ) )
@@ -1427,6 +1433,11 @@ sub check_api_auth {
             my $ip       = $session->param('ip');
             my $lasttime = $session->param('lasttime');
             my $userid   = $session->param('id');
+            
+            #############################
+            $timeout =C4::AuthExtra::get_timeout($userid,$timeout);
+            ###############################
+
             if ( $lasttime < time() - $timeout ) {
 
                 # time out
@@ -1687,6 +1698,11 @@ sub check_cookie_auth {
         my $ip       = $session->param('ip');
         my $lasttime = $session->param('lasttime');
         my $userid   = $session->param('id');
+
+        ####################################
+        $timeout = C4::AuthExtra::get_timeout($userid,$timeout);
+        ####################################
+
         if ( $lasttime < time() - $timeout ) {
 
             # time out
