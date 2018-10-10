@@ -628,6 +628,7 @@ for (my $i=0;$i<@servers;$i++) {
             $template->param(limit_cgi_not_only_host_items=> $limit_cgi_not_only_host_items);
             $template->param(limit_cgi => $limit_cgi);
             $template->param(query_cgi => $query_cgi);
+            $template->param(full_query => $ENV{QUERY_STRING});
             $template->param(query_desc => $query_desc);
             $template->param(limit_desc => $limit_desc);
             $template->param(offset     => $offset);

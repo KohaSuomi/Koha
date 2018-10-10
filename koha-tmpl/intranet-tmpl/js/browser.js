@@ -30,15 +30,15 @@ KOHA.browser = function (searchid, biblionumber) {
     var browseRecords = function (movement) {
         var newSearchPos = me.curPos + movement;
         if (newSearchPos > current_search.results.length - 1) {
-            window.location = '/cgi-bin/koha/catalogue/search.pl?' + decodeURIComponent(current_search.query) + '&limit=' + decodeURIComponent(current_search.limit) + '&sort=' + current_search.sort + '&gotoPage=detail.pl&gotoNumber=first&searchid=' + me.searchid + '&offset=' + newSearchPos;
+            window.location = '/cgi-bin/koha/catalogue/search.pl?' + decodeURIComponent(current_search.full_query.replace(/&offset(=[^&]*)?|^offset(=[^&]*)?&?/g, '')) + '&gotoPage=detail.pl&gotoNumber=first&searchid=' + me.searchid + '&offset=' + newSearchPos;
         } else if (newSearchPos < 0) {
-            window.location = '/cgi-bin/koha/catalogue/search.pl?' + decodeURIComponent(current_search.query) + '&limit=' + decodeURIComponent(current_search.limit) + '&sort=' + current_search.sort + '&gotoPage=detail.pl&gotoNumber=last&searchid=' + me.searchid + '&offset=' + (me.offset - current_search.pagelen);
+            window.location = '/cgi-bin/koha/catalogue/search.pl?' + decodeURIComponent(current_search.full_query.replace(/&offset(=[^&]*)?|^offset(=[^&]*)?&?/g, '')) + '&gotoPage=detail.pl&gotoNumber=last&searchid=' + me.searchid + '&offset=' + (me.offset - current_search.pagelen);
         } else {
             window.location = window.location.href.replace('biblionumber=' + biblionumber, 'biblionumber=' + current_search.results[newSearchPos]);
         }
     }
 
-    me.create = function (offset, query, limit, sort, newresults, total) {
+    me.create = function (offset, query, limit, sort, newresults, total, full_query) {
         if (current_search) {
             if (offset === current_search.offset - newresults.length) {
                 current_search.results = newresults.concat(current_search.results);
@@ -51,6 +51,7 @@ KOHA.browser = function (searchid, biblionumber) {
         if (!current_search) {
             current_search = { offset: offset,
                 query: query,
+                full_query: full_query,
                 limit: limit,
                 sort:  sort,
                 pagelen: newresults.length,
@@ -89,7 +90,7 @@ KOHA.browser = function (searchid, biblionumber) {
 
             $(document).ready(function () {
                 if (me.curPos > -1) {
-                    var searchURL = '/cgi-bin/koha/catalogue/search.pl?' + decodeURIComponent(current_search.query) + '&limit=' + decodeURIComponent(current_search.limit) + '&sort=' + current_search.sort + '&searchid=' + me.searchid + '&offset=' + me.offset;
+                    var searchURL = '/cgi-bin/koha/catalogue/search.pl?' + decodeURIComponent(current_search.full_query.replace(/&offset(=[^&]*)?|^offset(=[^&]*)?&?/g, '')) + '&offset=' + me.offset;
                     var prevbutton;
                     var nextbutton;
                     if (me.curPos === 0 && current_search.offset === 1) {
