@@ -772,6 +772,8 @@ sub TransformMarcHoldingToKoha {
     #Inject these columns, whose values cannot be configured via the koha.marc_subfield_structure-table, since 852$b is shared between ccode and branch
     $mss->{'holdings.ccode'} = $mss->{'holdings.ccode'}; # these keys are created with undef if not exists
     $mss->{'holdings.holdingbranch'} = $mss->{'holdings.holdingbranch'};
+    $mss->{'holdings.callnumber'} = $mss->{'holdings.callnumber'};
+    $mss->{'holdings.location'} = $mss->{'holdings.location'};
 
     foreach my $kohafield ( keys %{ $mss } ) {
         my ( $table, $column ) = split /[.]/, $kohafield, 2;
