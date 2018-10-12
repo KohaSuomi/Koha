@@ -1025,7 +1025,7 @@ sub CanBookBeIssued {
         }
     }
 
-    unless ( $ignore_reserves ) {
+    unless ( $ignore_reserves || (C4::Context->preference('AllowCheckoutIfOtherItemsAvailable') && _other_items_satisfy_holds($item->{itemnumber})) ) {
         # See if the item is on reserve.
         my ( $restype, $res ) = C4::Reserves::CheckReserves( $item->{'itemnumber'} );
         if ($restype) {

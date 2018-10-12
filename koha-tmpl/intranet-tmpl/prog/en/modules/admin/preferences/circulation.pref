@@ -459,6 +459,12 @@ Circulation:
                   yes: Block
                   no: Allow
             - his/her auto renewals.
+        -
+            - pref: AllowCheckoutIfOtherItemsAvailable
+              choices:
+                  yes: Allow
+                  no: "Don't allow"
+            - a patron to checkout an item with unfilled holds if other available items can fill that hold.
     Checkin Policy:
         -
             - pref: BlockReturnOfWithdrawnItems
