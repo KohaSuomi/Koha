@@ -1,0 +1,34 @@
+[% INCLUDE 'help-top.inc' %]
+
+<h1>Cataloging MFHD</h1>
+
+<p>This help introduces some non-obvious behaviours of the MFHD editor</p>
+
+<h2>Field 852</h2>
+
+<h3>Subfield b</h3>
+
+<p>
+  According to the Marc21 Format for Holdings Records, Koha's collection code and branch, map to different repetitions/instances of subfield $b.
+  This behaviour cannot be replicated using Koha's KohaToMARC mapping rules.
+</p>
+
+<p>
+  Hence the cataloguing tool implicitly maps the 
+  <ul>
+    <li>first repetition of this subfield to koha.holdings.branch <hint>The branch/location of the Item</hint></li>
+    <li>second repetition of this subfield to koha.holdings.ccode <label>The collection the Item is part of</label></li>
+  </ul>
+  The downside is, that one cannot use Koha's authorised values lists to help select these values.
+</p>
+
+<p>
+  The cataloguer must take care to use the long version (description) of the relevant values, or the short code.<br/>
+  One can check that the values are mapped correctly, from the holdings-summary within the bibliographic record details view.
+</p>
+
+<p>
+  It is possible to override this behaviour, simply by mapping some Koha database column to the subfield in the Koha's Cataloguing frameworks section.
+</p>
+
+[% INCLUDE 'help-bottom.inc' %]
