@@ -35,12 +35,12 @@
                 [%- END -%]
 <br />
                 [%- IF ( loop_order.order_internalnote ) -%]
-<p class=\"ordernote\"><strong>Internal note: </strong>[% loop_order.order_internalnote|html %] [<a href=\"/cgi-bin/koha/acqui/modordernotes.pl?ordernumber=[% loop_order.ordernumber %]&amp;referrer=/cgi-bin/koha/acqui/parcel.pl%3Finvoiceid=[% invoiceid %]&type=internal\">Change internal note</a>]</p>
+<p class=\"ordernote\"><strong>Internal note: </strong>[% loop_order.order_internalnote | html | replace('\n','<br />') %] [<a href=\"/cgi-bin/koha/acqui/modordernotes.pl?ordernumber=[% loop_order.ordernumber %]&amp;referrer=/cgi-bin/koha/acqui/parcel.pl%3Finvoiceid=[% invoiceid %]&type=internal\">Change internal note</a>]</p>
                 [%- ELSE -%]
 [<a href=\"/cgi-bin/koha/acqui/modordernotes.pl?ordernumber=[% loop_order.ordernumber %]&amp;referrer=/cgi-bin/koha/acqui/parcel.pl%3Finvoiceid=[% invoiceid %]&type=internal\">Add internal note</a>]
                 [%- END -%]
                 [%- IF ( loop_order.order_vendornote ) -%]
-<p class=\"ordernote\"><strong>Vendor note: </strong>[% loop_order.order_vendornote|html %]</p>
+<p class=\"ordernote\"><strong>Vendor note: </strong>[% loop_order.order_vendornote | html | replace('\n','<br />') %]</p>
                 [%- ELSE -%]
 [<a href=\"/cgi-bin/koha/acqui/modordernotes.pl?ordernumber=[% loop_order.ordernumber %]&amp;referrer=/cgi-bin/koha/acqui/parcel.pl%3Finvoiceid=[% invoiceid %]&type=vendor\">Add vendor note</a>]
                 [%- END -%]
@@ -59,26 +59,32 @@
                     "<a href=\"orderreceive.pl?ordernumber=[% loop_order.ordernumber %]&amp;invoiceid=[% invoiceid %]\">Receive</a><br /><a href=\"#\" onclick=\"transfer_order_popup([% loop_order.ordernumber %]); return false;\">Transfer</a>",
                 "dt_canceldelete":
                     "[% IF ( loop_order.left_holds_on_order ) -%]
-<span class=\"button\" title=\"Can't cancel order, ([% loop_order.holds_on_order %]) holds are linked with this order cancel holds first\">Can't cancel order</span><br>
+                     [%- cannot_cancel_title = BLOCK %]Can't cancel order, ([% loop_order.holds_on_order %]) holds are linked with this order cancel holds first[% END -%]
+<span class=\"button\" title=\"[% cannot_cancel_title %]\">Can't cancel order</span><br>
                         [%- ELSE -%]
 <a href=\"/cgi-bin/koha/acqui/cancelorder.pl?ordernumber=[% loop_order.ordernumber %]&biblionumber=[% loop_order.biblionumber %]&referrer=[% "/cgi-bin/koha/acqui/parcel.pl?invoiceid=$invoiceid" | uri %]\">Cancel order</a><br />
                         [%- END -%]
                         [%- IF ( loop_order.can_del_bib ) -%]
 <a href=\"/cgi-bin/koha/acqui/cancelorder.pl?ordernumber=[% loop_order.ordernumber %]&biblionumber=[% loop_order.biblionumber %]&del_biblio=1&referrer=[% "/cgi-bin/koha/acqui/parcel.pl?invoiceid=$invoiceid" | uri %]\">Cancel order and catalog record</a><br />
                         [%- ELSE -%]
-<span class=\"button\" title=\"Can't delete catalog record, see constraints below\">Can't cancel order and delete catalog record</span><br>
+                        [%- cannot_delete_title = BLOCK%]Can't delete catalog record, see constraints below[% END -%]
+<span class=\"button\" title=\"[% cannot_delete_title %]\">Can't cancel order and delete catalog record</span><br>
                         [%- END -%]
                         [%- IF ( loop_order.left_item ) -%]
-<b title=\"Can't delete catalog record, because of [% loop_order.items %] existing item(s)\" >[% loop_order.items %] item(s) left</b><br>
+                        [%- cannot_delete_title = BLOCK %]Can't delete catalog record, because of [% loop_order.items %] existing item(s)[% END -%]
+<b title=\"[% cannot_delete_title %]\" >[% loop_order.items %] item(s) left</b><br>
                         [%- END -%]
                         [%- IF ( loop_order.left_biblio ) -%]
-<b title=\"Can't delete catalog record, delete other orders linked to it first\">[% loop_order.biblios %] order(s) left</b><br>
+                        [%- cannot_delete_title = BLOCK %]Can't delete catalog record, delete other orders linked to it first[% END -%]
+<b title=\"[% cannot_delete_title %]\">[% loop_order.biblios %] order(s) left</b><br>
                         [%- END -%]
                         [%- IF ( loop_order.left_subscription ) -%]
-<b title=\"Can't delete catalog record, delete subscriptions first\">[% loop_order.subscriptions %] subscription(s) left</b><br>
+                        [%- cannot_delete_title = BLOCK %]Can't delete catalog record, delete subscriptions first[% END -%]
+<b title=\"[% cannot_delete_title %]\">[% loop_order.subscriptions %] subscription(s) left</b><br>
                         [%- END -%]
                         [%- IF ( loop_order.left_holds ) -%]
-<b title=\"Can't delete catalog record or order, cancel holds first\">[% loop_order.holds %] hold(s) left</b>
+                        [%- cannot_delete_title = BLOCK %]Can't delete catalog record or order, cancel holds first[% END -%]
+<b title=\"[% cannot_delete_title %]\">[% loop_order.holds %] hold(s) left</b>
                         [%- END -%]
 "
             }[% UNLESS loop.last %],[% END %]
