@@ -24,6 +24,7 @@ INSERT INTO systempreferences ( `variable`, `value`, `options`, `explanation`, `
 ('AllowHoldPolicyOverride','0',NULL,'Allow staff to override hold policies when placing holds','YesNo'),
 ('AllowHoldsOnDamagedItems','1','','Allow hold requests to be placed on damaged items','YesNo'),
 ('AllowHoldsOnPatronsPossessions','1',NULL,'Allow holds on records that patron have items of it','YesNo'),
+('AllowCheckoutIfOtherItemsAvailable','0',NULL,'If enabled, allow a patron to checkout an item with unfilled holds if other available items can fill that hold.','YesNo'),
 ('AllowCheckoutNotes', '0', NULL, 'Allow patrons to submit notes about checked out items.','YesNo'),
 ('AllowItemsOnHoldCheckout','0','','Do not generate RESERVE_WAITING and RESERVED warning when checking out items reserved to someone else. This allows self checkouts for those items.','YesNo'),
 ('AllowItemsOnHoldCheckoutSCO','0','','Do not generate RESERVE_WAITING and RESERVED warning in the SCO module when checking out items reserved to someone else. This allows self checkouts for those items.','YesNo'),

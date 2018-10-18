@@ -1025,7 +1025,7 @@ sub CanBookBeIssued {
         }
     }
 
-    unless ( $ignore_reserves ) {
+    unless ( $ignore_reserves || (C4::Context->preference('AllowCheckoutIfOtherItemsAvailable') && _other_items_satisfy_holds($item->{itemnumber})) ) {
         # See if the item is on reserve.
         my ( $restype, $res ) = C4::Reserves::CheckReserves( $item->{'itemnumber'} );
         if ($restype) {
@@ -2634,6 +2634,87 @@ sub GetOpenIssue {
 
 }
 
+=head2 _other_items_satisfy_holds
+
+  $otheritemssatisfyholds = _other_items_satisfy_holds($itemnumber);
+
+Internal function, find out whether item's holds can be satisfied by other items.
+
+C<$itemnumber> is the itemnumber of the item to check for.
+
+=cut
+sub _other_items_satisfy_holds {
+    my ($itemnumber) = @_;
+    my ( $resfound, $resrec, undef ) = C4::Reserves::CheckReserves($itemnumber, undef, undef, 1);
+
+    # This item can fill one or more unfilled reserve, can those unfilled reserves
+    # all be filled by other available items?
+    if ( $resfound )
+    {
+        my $schema = Koha::Database->new()->schema();
+
+        my $item_holds = $schema->resultset('Reserve')->search( { itemnumber => $itemnumber, found => undef } )->count();
+        if ($item_holds) {
+            # There is an item level hold on this item, no other item can fill the hold
+            $resfound = 1;
+        }
+        else {
+
+            # Get all other items that could possibly fill reserves
+            my @itemnumbers = $schema->resultset('Item')->search(
+                {
+                    biblionumber => $resrec->{biblionumber},
+                    onloan       => undef,
+                    notforloan   => 0,
+                    -not         => { itemnumber => $itemnumber }
+                },
+                { columns => 'itemnumber' }
+            )->get_column('itemnumber')->all();
+
+            my $size = @itemnumbers;
+            # Get all other reserves that could have been filled by this item
+            my @borrowernumbers;
+            while (1) {
+                my ( $reserve_found, $reserve, undef ) =
+                  C4::Reserves::CheckReserves( $itemnumber, undef, undef, $size+1, \@borrowernumbers );
+
+                if ($reserve_found) {
+                    push( @borrowernumbers, $reserve->{borrowernumber} );
+                }
+                else {
+                    last;
+                }
+            }
+
+            # If the count of the union of the lists of reservable items for each borrower
+            # is equal or greater than the number of borrowers, we know that all reserves
+            # can be filled with available items. We can get the union of the sets simply
+            # by pushing all the elements onto an array and removing the duplicates.
+            my @reservable;
+            my %borrowers;
+            ITEM: foreach my $i (@itemnumbers) {
+                my $item = GetItem($i);
+                next if IsItemOnHoldAndFound($i);
+                for my $b (@borrowernumbers) {
+                    my $borr = $borrowers{$b}//= C4::Members::GetMember(borrowernumber => $b);
+                    next unless IsAvailableForItemLevelRequest($item, $borr);
+                    next unless CanItemBeReserved($b,$i);
+
+                    push @reservable, $i;
+                    if (@reservable >= @borrowernumbers) {
+                        $resfound = 0;
+                        last ITEM;
+                    }
+                    last;
+                }
+            }
+        }
+    }
+
+    return !$resfound;
+}
+
+
 =head2 GetBiblioIssues
 
   $issues = GetBiblioIssues($biblionumber);
@@ -2770,73 +2851,9 @@ sub CanBookBeRenewed {
     my $borrower = C4::Members::GetMember( borrowernumber => $borrowernumber )
       or return;
 
-    my ( $resfound, $resrec, undef ) = C4::Reserves::CheckReserves($itemnumber, undef, undef, 1);
-
-    # This item can fill one or more unfilled reserve, can those unfilled reserves
-    # all be filled by other available items?
-    if ( $resfound
-        && C4::Context->preference('AllowRenewalIfOtherItemsAvailable') )
-    {
-        my $schema = Koha::Database->new()->schema();
-
-        my $item_holds = $schema->resultset('Reserve')->search( { itemnumber => $itemnumber, found => undef } )->count();
-        if ($item_holds) {
-            # There is an item level hold on this item, no other item can fill the hold
-            $resfound = 1;
-        }
-        else {
-
-            # Get all other items that could possibly fill reserves
-            my @itemnumbers = $schema->resultset('Item')->search(
-                {
-                    biblionumber => $resrec->{biblionumber},
-                    onloan       => undef,
-                    notforloan   => 0,
-                    -not         => { itemnumber => $itemnumber }
-                },
-                { columns => 'itemnumber' }
-            )->get_column('itemnumber')->all();
-
-            my $size = @itemnumbers;
-            # Get all other reserves that could have been filled by this item
-            my @borrowernumbers;
-            while (1) {
-                my ( $reserve_found, $reserve, undef ) =
-                  C4::Reserves::CheckReserves( $itemnumber, undef, undef, $size+1, \@borrowernumbers );
-                  
-                if ($reserve_found) {
-                    push( @borrowernumbers, $reserve->{borrowernumber} );
-                }
-                else {
-                    last;
-                }
-            }
-
-            # If the count of the union of the lists of reservable items for each borrower
-            # is equal or greater than the number of borrowers, we know that all reserves
-            # can be filled with available items. We can get the union of the sets simply
-            # by pushing all the elements onto an array and removing the duplicates.
-            my @reservable;
-            my %borrowers;
-            ITEM: foreach my $i (@itemnumbers) {
-                my $item = GetItem($i);
-                next if IsItemOnHoldAndFound($i);
-                for my $b (@borrowernumbers) {
-                    my $borr = $borrowers{$b}//= C4::Members::GetMember(borrowernumber => $b);
-                    next unless IsAvailableForItemLevelRequest($item, $borr);
-                    next unless CanItemBeReserved($b,$i);
-
-                    push @reservable, $i;
-                    if (@reservable >= @borrowernumbers) {
-                        $resfound = 0;
-                        last ITEM;
-                    }
-                    last;
-                }
-            }
-        }
-    }
-    return ( 0, "on_reserve" ) if $resfound;    # '' when no hold was found
+    my ( $resfound, undef, undef ) = C4::Reserves::CheckReserves($itemnumber, undef, undef, 1);
+    return ( 0, "on_reserve" ) if !C4::Context->preference('AllowRenewalIfOtherItemsAvailable') && $resfound;
+    return ( 0, "on_reserve" ) if !_other_items_satisfy_holds($itemnumber);
 
     return ( 1, undef ) if $override_limit;
 
