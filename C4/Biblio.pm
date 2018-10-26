@@ -3336,7 +3336,7 @@ sub TransformHtmlToMarc {
         }
     }
 
-    $record->append_fields(@fields);
+    $record->insert_fields_ordered(@fields);
     return $record;
 }
 
