@@ -54,7 +54,7 @@ RemoteAPIs.Driver.KohaSuomi._maybeUseDefaultConfig = function(remoteAPI) {
 RemoteAPIs.Driver.KohaSuomi.records_get = function(remoteAPI, biblio, callback) {
     remoteAPI = RemoteAPIs.Driver.KohaSuomi._maybeUseDefaultConfig(remoteAPI);
     $.ajax({
-        "url": remoteAPI.host+'/'+remoteAPI.basePath+"/records/"+biblio.biblionumber,
+        "url": remoteAPI.host+'/'+remoteAPI.basePath+"/biblios/"+biblio.biblionumber+"/componentparts",
         "method": "GET",
         "async": true,
         "dataType": "json",
@@ -70,19 +70,46 @@ RemoteAPIs.Driver.KohaSuomi.records_get = function(remoteAPI, biblio, callback) 
         }
     });
 };
-RemoteAPIs.Driver.KohaSuomi.records_add = function(remoteAPI, recordXml, callback) {
+RemoteAPIs.Driver.KohaSuomi.records_add = function(remoteAPI, params, callback) {
     remoteAPI = RemoteAPIs.Driver.KohaSuomi._maybeUseDefaultConfig(remoteAPI);
     $.ajax({
-        url: remoteAPI.host+'/'+remoteAPI.basePath+"/records",
+        url: remoteAPI.host+'/'+remoteAPI.basePath,
+        headers: {
+            'Authorization': remoteAPI.apiToken,
+        },
         method: "POST",
         async: true,
         dataType: "json",
         contentType: "application/x-www-form-urlencoded",
-        data: {marcxml: recordXml},
+        data: JSON.stringify(params),
         xhrFields: {
             withCredentials: (remoteAPI.authentication != "none") ? true : false
         },
         success: function (jqXHR, textStatus, errorThrown) {
+            if(callback) callback(remoteAPI, null, jqXHR);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            callback(remoteAPI, RemoteAPIs.Driver.KohaSuomi._getErrorMsg(jqXHR), jqXHR);
+        }
+    });
+};
+RemoteAPIs.Driver.KohaSuomi.records_check = function(remoteAPI, biblio, record, callback) {
+    remoteAPI = RemoteAPIs.Driver.KohaSuomi._maybeUseDefaultConfig(remoteAPI);
+    $.ajax({
+        url: remoteAPI.host+'/'+remoteAPI.searchPath,
+        headers: {
+            'Authorization': remoteAPI.apiToken,
+        },
+        method: "POST",
+        async: true,
+        dataType: "json",
+        contentType: "application/x-www-form-urlencoded",
+        data: JSON.stringify({marcxml: record.biblio.marcxml, interface: remoteAPI.interface}),
+        xhrFields: {
+            withCredentials: (remoteAPI.authentication != "none") ? true : false
+        },
+        success: function (jqXHR, textStatus, errorThrown) {
+            $.extend( jqXHR, {biblionumber:biblio.biblionumber, interface: remoteAPI.interface, componentparts: record.componentparts} );
             callback(remoteAPI, null, jqXHR);
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -93,10 +120,33 @@ RemoteAPIs.Driver.KohaSuomi.records_add = function(remoteAPI, recordXml, callbac
 RemoteAPIs.Driver.KohaSuomi.records_delete = function(remoteAPI, biblionumber, callback) {
     remoteAPI = RemoteAPIs.Driver.KohaSuomi._maybeUseDefaultConfig(remoteAPI);
     $.ajax({
-        "url": remoteAPI.host+'/'+remoteAPI.basePath+"/records/"+biblionumber,
+        "url": remoteAPI.host+'/'+remoteAPI.basePath+"/biblios/"+biblionumber,
         "method": "DELETE",
         "async": true,
         "accepts": "application/json",
+        "contentType": "application/json; charset=utf8",
+        "xhrFields": {
+            withCredentials: (remoteAPI.authentication != "none") ? true : false
+        },
+        "success": function (jqXHR, textStatus, errorThrown) {
+            callback(remoteAPI, null, jqXHR);
+        },
+        "error": function (jqXHR, textStatus, errorThrown) {
+            callback(remoteAPI, RemoteAPIs.Driver.KohaSuomi._getErrorMsg(jqXHR), jqXHR);
+        }
+    });
+};
+
+RemoteAPIs.Driver.KohaSuomi.reports_get = function(remoteAPI, id, callback) {
+    remoteAPI = RemoteAPIs.Driver.KohaSuomi._maybeUseDefaultConfig(remoteAPI);
+    $.ajax({
+        "url": remoteAPI.host+'/'+remoteAPI.reportPath+"/"+id,
+        headers: {
+            'Authorization': remoteAPI.apiToken,
+        },
+        "method": "GET",
+        "async": true,
+        "dataType": "json",
         "contentType": "application/json; charset=utf8",
         "xhrFields": {
             withCredentials: (remoteAPI.authentication != "none") ? true : false

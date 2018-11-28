@@ -21,6 +21,7 @@ use Modern::Perl;
 
 use Mojo::URL;
 use Scalar::Util qw(blessed);
+use Digest::SHA qw(hmac_sha256_hex);
 
 use Koha::RemoteAPIs;
 
@@ -54,8 +55,12 @@ sub _validate {
         $params->{basePath} = Mojo::URL->new($params->{basePath});
     }
 
+    if ($params->{apiToken}) {
+        $params->{apiToken} = Digest::SHA::hmac_sha256_hex($params->{apiToken});
+    }
+
     Koha::RemoteAPIs::isSupportedAPI($params->{api}); #Validate against supported api names
-    Koha::RemoteAPIs::isSupportedAuthentication($params->{authentication}); #Validate against supported authentications
+    Koha::RemoteAPIs::isSupportedAuthentication($params->{authentication}, $params->{apiToken}); #Validate against supported authentications
 
     return @_;
 }
@@ -65,6 +70,7 @@ sub host {              return shift->{host};    }
 sub basePath {          return shift->{basePath};}
 sub api {               return shift->{api};     }
 sub authentication {    return shift->{authentication};}
+sub apiToken {          return shift->{apiToken};}
 sub name {              return shift->{name};    }
 
 sub toHash {
