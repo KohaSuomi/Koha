@@ -49,6 +49,9 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
     this.setOperationsMenuLocation = function (event) {
         self.menuActivationClickLocation = {left: event.pageX, top: event.pageY};
     };
+    this.parseRecord = function (record) {
+        return Cataloguing.RecordPusher.parseRecord(record);
+    }
     this.castRemoteAPI = function (remoteAPIorId) {
         if (remoteAPIorId instanceof Object) {
             return remoteAPIorId;
@@ -61,24 +64,64 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
             alert("Cataloguing.RecordPusher.pushToRemote("+remoteAPIOrId+"):> Unknown remote API id '"+remoteAPIOrId+"' given. Don't know where to push?");
             return;
         }
-        if (! confirm("Are you sure you want to push Record '"+self.activeBiblio.biblionumber+"' to '"+remoteAPIPushDestination.name+"' ?")) {
-            return;
-        }
-
+        // if (! confirm("Are you sure you want to push Record '"+self.activeBiblio.biblionumber+"' to '"+remoteAPIPushDestination.name+"' ?")) {
+        //     return;
+        // }
+        self.displayModal(remoteAPIPushDestination);
         RemoteAPIs.Driver.KohaSuomi.records_get("local", self.activeBiblio, function (remoteAPI, error, result) {
             if (error) {
-                alert("Cataloguing.RecordPusher.pushToRemote():> Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_get() failed with "+error);
+                alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_get() failed with "+error);
                 return;
             }
-            RemoteAPIs.Driver.records_add(remoteAPIPushDestination, result.marcxml, function (remoteAPI, error, result) {
+            RemoteAPIs.Driver.records_check(remoteAPIPushDestination, self.activeBiblio, result, function (remoteAPI, error, result, recordXml) {
                 if (error) {
-                    alert("Cataloguing.RecordPusher.pushToRemote():> Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_add() failed with "+error);
+                    alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_check() failed with "+error);
                     return;
                 }
-                self.displayMenu(remoteAPI, result.biblionumber, result.marcxml, result.links);
+                self.displayContent(remoteAPI, result);
             });
         });
     };
+    this.submitToRemote = function (remoteAPIOrId, params, reload) {
+        var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
+        RemoteAPIs.Driver.records_add(remoteAPIPushDestination, params, function (remoteAPI, error, result, recordXml) {
+            if (error) {
+                alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_add() failed with "+error);
+                return;
+            }
+        });
+        if (reload) {
+            $('#import').replaceWith('<button id="reload" type="button" class="btn btn-secondary">Lataa sivu</button>');
+            $( "#reload" ).click(function( event ) {
+                window.location.href = window.location.href;
+            });
+        } else {
+            $( "#pushRecordOpModal" ).find("#report").click();
+        }
+
+    }
+    this.submitcomponentParts = function (remoteAPIOrId, componentparts, username) {
+        var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
+        $.each(componentparts, function (index, record) {
+            RemoteAPIs.Driver.records_add(remoteAPIPushDestination, {source_id: record.biblionumber, interface: remoteAPIOrId.interface, marc: record.marcxml, target_id: null, username: username}, undefined, function (remoteAPI, error, result, recordXml) {
+                if (error) {
+                    alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_add() failed with "+error);
+                    return;
+                }
+            });
+        });
+    }
+    this.getReports = function (remoteAPIOrId, id) {
+        var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
+        RemoteAPIs.Driver.reports_get(remoteAPIPushDestination, id, function (remoteAPI, error, results) {
+            if (error) {
+                alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.reports_get() failed with "+error);
+                return;
+            }
+            self.showReports(remoteAPI, results);
+            $( "#pushRecordOpModal" ).find("#spinner-wrapper").addClass("hidden");;
+        });
+    }
     this.deleteFromRemote = function (remoteAPIOrId, biblionumber) {
         var remoteAPI = this.castRemoteAPI(remoteAPIOrId);
         if (!remoteAPI) {
@@ -123,6 +166,109 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
         this.operationsMenuContainer.find("#pushRecordOpMenu").css(self.menuActivationClickLocation);
         this.operationsMenuContainer.find("#pushRecordOpMenu .menu-button").click(); //Open up the radial menu
     };
+    this.displayModal = function (remoteAPI) {
+        this.operationsMenuContainer.find("#pushRecordOpModal").remove();
+        var html = $('<div id="pushRecordOpModal" class="modal fade" role="dialog">\
+                        <div class="modal-dialog">\
+                            <div class="modal-content">\
+                                <div class="modal-header">\
+                                <ul class="nav nav-pills">\
+                                            <li class="nav-item">\
+                                                <a id="exporter" class="nav-link" style="background-color:#007bff; color:#fff;" href="#">Siirto</a>\
+                                            </li>\
+                                            <li class="nav-item">\
+                                                <a id="report" class="nav-link" href="#">Tapahtumat</a>\
+                                            </li>\
+                                        </ul>\
+                                </div>\
+                                <div id="spinner-wrapper" class="modal-body row text-center">\
+                                    <i class="fa fa-spinner fa-spin" style="font-size:36px"></i>\
+                                </div>\
+                                <div id="export-wrapper" class="modal-body">\
+                                </div>\
+                                <div id="report-wrapper" class="modal-body hidden">\
+                                </div>\
+                                <div class="modal-footer">\
+                                    <button id="export" type="button" class="btn btn-success hidden">Vie</button>\
+                                    <button id="import" type="button" class="btn btn-primary hidden">Tuo</button>\
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Sulje</button>\
+                                </div>\
+                            </div>\
+                        </div>\
+                    </div>');
+        this.operationsMenuContainer.append(html);
+        $('#pushRecordOpModal').modal('toggle');
+        
+    };
+    this.displayContent = function (remoteAPI, result) {
+        $( "#spinner-wrapper" ).addClass("hidden");
+        var selfAPI = remoteAPIs["self"];
+        var sourceboxes = false;
+        var source = Cataloguing.RecordPusher.parseRecord(result.sourcerecord, sourceboxes);
+        var html;
+        var buttons;
+        if (!result.targetrecord) {
+            html = $('<div id="exportRecord">'+source+'</div>');
+            $('#export').removeClass("hidden");
+        } else {
+            var targetboxes = false;
+            var target = Cataloguing.RecordPusher.parseRecord(result.targetrecord, targetboxes);
+            html = $('<div class="col-sm-6"><h3>Paikallinen</h4><hr/>'+source+'</div><div class="col-sm-6"><h3>'+result.interface+'</h4><hr/>'+target+'</div>');
+            if (remoteAPI.type == "export" && !result.source_id) {$('#export').removeClass("hidden");}
+            if (selfAPI) {$('#import').removeClass("hidden");}
+            $('.modal-dialog').addClass("modal-lg");
+        }
+        this.operationsMenuContainer.find("#export-wrapper").append(html);
+        var username = $(".loggedinusername").html().trim();
+        $( "#exporter" ).click(function( event ) {
+            event.preventDefault();
+            $("#report").removeAttr("style");
+            $(this).css({"background-color": "#007bff", "color": "#fff"});
+            $( "#report-wrapper" ).addClass("hidden");
+            $( "#export-wrapper" ).removeClass("hidden");
+            $( "#spinner-wrapper" ).addClass("hidden");
+        });
+        $( "#report" ).click(function( event ) {
+            event.preventDefault();
+            $( "#spinner-wrapper" ).removeClass("hidden");
+            $("#report-wrapper").find(".table-responsive").remove();
+            $("#exporter").removeAttr("style");
+            $(this).css({"background-color": "#007bff", "color": "#fff"});
+            $( "#export-wrapper" ).addClass("hidden");
+            $( "#report-wrapper" ).removeClass("hidden");
+            self.getReports(remoteAPI, self.activeBiblio.biblionumber);
+        });
+        $( "#export" ).click(function( event ) {
+            event.preventDefault();
+            var count = 0;
+            $("input:checkbox[name=record]:not(:checked)").each(function(){
+                if ($(this).val() == "leader") {
+                    delete result.sourcerecord[$(this).val()];
+                } else {
+                    result.sourcerecord.fields.splice($(this).val()-count,1);
+                    count++;
+                }
+            });
+            self.submitToRemote(remoteAPI, {marc: result.sourcerecord, interface: remoteAPI.interface, source_id: self.activeBiblio.biblionumber, target_id: result.target_id, username: username}, 0);
+            if (!result.targetrecord) {
+                self.submitcomponentParts(remoteAPI, result.componentparts, username);
+            }
+        });
+        $( "#import" ).click(function( event ) {
+            var sourceid;
+            if (result.source_id) {
+                sourceid = result.source_id;
+            } else {
+                sourceid = resuld.target_id;
+            }
+            self.submitToRemote(selfAPI, {marc: result.targetrecord, interface: selfAPI.interface, source_id: sourceid, target_id: self.activeBiblio.biblionumber, username: username}, 1);
+        });
+
+    };
+    this.showReports = function (remoteAPI, result) {
+        var html = Cataloguing.RecordPusher.parseReports(result, self.activeBiblio.biblionumber, remoteAPI.interface);
+        $("#report-wrapper").append(html);
+    };
 };
 
 /**
@@ -140,10 +286,12 @@ Cataloguing.RecordPusher.template_dropdownMenuList = function (recordPusher) {
     }
 
     var html =  '<li class="divider" role="presentation"></li>\n'+
-                '<li role="presentation"><a href="#" tabindex="-1" class="menu-inactive" role="menuitem"><strong>Push to remote:</strong></a></li>\n'+
+                '<li role="presentation"><a href="#" tabindex="-1" class="menu-inactive" role="menuitem"><strong>Push / Pull:</strong></a></li>\n'+
                 '<li class="divider" role="presentation"></li>\n';
     Object.keys(remoteAPIs).sort().forEach(function(v, i, a) { var api =remoteAPIs[v];
-        html += '<li><a href="#" id="pushTarget_'+api.id+'">'+api.name+'</a></li>\n';
+        if (api.id != "self") {
+            html += '<li><a href="#" id="pushTarget_'+api.id+'">'+api.name+'</a></li>\n';
+        }
     });
     return $(html);
 }
@@ -153,4 +301,61 @@ Cataloguing.RecordPusher.dropdownMenuListBindEvents = function (recordPusher, di
         recordPusher.pushToRemote($(this).attr("id").substr(11));
         event.preventDefault();
     });
+}
+Cataloguing.RecordPusher.parseRecord = function (record, checkbox) {
+    var html = '<div>';
+    html += '<li class="row"> <div class="col-xs-3">';
+    if (checkbox) { html += '<input type="checkbox" value="leader" name="record" checked> '}
+    html += '<b>000</b></div><div class="col-xs-9">'+record.leader+'</li>';
+    record.fields.forEach(function(v,i,a){
+        if ($.isNumeric(v.tag)) {
+            html += '<li class="row"><div class="col-xs-3">';
+        } else {
+            html += '<li class="row hidden"><div class="col-xs-3">';
+        }
+        if (checkbox) { html += '<input type="checkbox" value="'+i+'" name="record" checked> '}
+        html += '<b>'+v.tag;
+        if (v.ind1) {html += ' '+v.ind1}
+        if (v.ind2) {html += ' '+v.ind2}
+        html += '</b></div><div class="col-xs-9">';
+        if (v.subfields) {
+            v.subfields.forEach(function(v,i,a){
+                html += '<b>_'+v.code+'</b>'+v.value+'<br/>';
+            });
+        } else {
+            html += v.value;
+        }
+        html += '</div></li>';
+    });
+    html += '</div>';
+    return html;
+}
+Cataloguing.RecordPusher.parseReports = function (reports, biblionumber, interface) {
+    var html = '<div class="table-responsive">';
+    if (reports.length != 0) {
+        html += '<table class="table table-striped table-sm">';
+        html += '<thead>\
+                <tr>\
+                <th>Tapahtuma</th>\
+                <th>Aika</th>\
+                <th>Tila</th>\
+                </tr>\
+            </thead><tbody>';
+        reports.forEach(function(v,i,a){
+            if (interface == v.interface_name) {
+                html += '<tr>';
+                if (v.target_id == biblionumber) {html += '<td style="padding:0 5px;">tuonti</td>'} else {html += '<td style="padding:0 5px;">vienti</td>'};
+                html += '<td style="padding:0 5px;">'+v.timestamp+'</td>';
+                if (v.status == 'success') {html += '<td style="padding:0 5px; color:green;">onnistui</td>'};
+                if (v.status == 'failed') {html += '<td style="padding:0 5px; color:red;">epäonnistui</td>'};
+                if (v.status == 'pending') {html += '<td style="padding:0 5px; color:orange;">odottaa</td>'};
+                html += '</tr>';
+            }
+        });
+        html += '</tbody></table>';
+    } else {
+        html += '<div><h2>Ei siirtoja</h2></div>'
+    }
+    html += '</div>';
+    return html;
 }
