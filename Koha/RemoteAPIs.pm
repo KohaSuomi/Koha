@@ -109,9 +109,10 @@ sub isSupportedAPI {
 =cut
 
 sub isSupportedAuthentication {
-    my ($authentication) = @_;
-    return 1 if $authentication =~ m!cookies|none!;
-    Koha::Exception::UnknownProtocol->throw(error => "Parameter \$authentication '".$authentication."' is not supported. Supported authentication protocols are 'cookies|none'");
+    my ($authentication, $token) = @_;
+    return 1 if ($authentication eq "token" && defined $token) || $authentication =~ m!cookies|none!;
+    Koha::Exception::BadParameter->throw(error => "Parameter apiToken for authentication is not defined") if ($authentication eq "token" && !defined $token);
+    Koha::Exception::UnknownProtocol->throw(error => "Parameter \$authentication '".$authentication."' is not supported. Supported authentication protocols are 'cookies|token|none'");
 }
 
 sub toJSON {
