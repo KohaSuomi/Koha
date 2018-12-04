@@ -266,7 +266,7 @@ function parseKeyValue(key, value) {
 
 	var hash;
 	if (value != "" && value != null && value != 0) {
-		hash = {"key": key, "value": TrimInfo(value)};
+		hash = {"key": key, "value": TrimInfo(value.toString())};
 	}
 
 	return hash
