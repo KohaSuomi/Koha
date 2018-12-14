@@ -20,6 +20,7 @@ use Koha::Procurement::OrderProcessor::Basket;
 use Koha::Procurement::EditX::LibraryShipNotice::MarcHelper;
 use Koha::Procurement::Logger;
 use Koha::Procurement::Config;
+use Koha::Procurement::Overlay;
 
 has 'schema' => (
     is      => 'rw',
@@ -42,12 +43,20 @@ has 'config' => (
     writer => 'setConfig'
 );
 
+has 'overlay' => (
+    is      => 'rw',
+    isa => 'Koha::Procurement::Overlay',
+    reader => 'getOverlay',
+    writer => 'setOverlay'
+);
+
 sub BUILD {
     my $self = shift;
     my $schema = Koha::Database->new()->schema();
     $self->setSchema($schema);
     $self->setLogger(new Koha::Procurement::Logger);
     $self->setConfig(new Koha::Procurement::Config);
+    $self->setOverlay(new Koha::Procurement::Overlay);
 }
 
 
@@ -419,6 +428,7 @@ sub createBiblioMetadata {
 
             if($biblioMetadata->id){
                 $result = $biblioMetadata->id;
+                $self->getOverlay()->setToActiveRecords($self->getConfig()->getSettings(), $marc, $biblio);
             }
             else{
                 die('Bibliometaid not set after db save.')
