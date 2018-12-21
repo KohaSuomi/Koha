@@ -17,6 +17,9 @@
   "borrowerSelfServiceStatus": {
     "$ref": "definitions/borrowerSelfServiceStatus.json"
   },
+  "borrowerSelfServiceBlock": {
+    "$ref": "definitions/borrowerSelfServiceBlock.json"
+  },
   "city": {
     "$ref": "definitions/city.json"
   },
