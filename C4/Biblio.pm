@@ -563,7 +563,7 @@ sub LinkBibHeadingsToAuthorities {
         next unless defined $heading;
 
         # check existing $9
-        my $current_link = $field->subfield('9');
+        my $current_link = $field->subfield('0');
 
         if ( defined $current_link && (!$allowrelink || !C4::Context->preference('LinkerRelink')) )
         {
@@ -577,8 +577,8 @@ sub LinkBibHeadingsToAuthorities {
               ->{ $heading->display_form() }++;
             next if defined $current_link and $current_link == $authid;
 
-            $field->delete_subfield( code => '9' ) if defined $current_link;
-            $field->add_subfields( '9', $authid );
+            $field->delete_subfield( code => '0' ) if defined $current_link;
+            $field->add_subfields( '0', $authid );
             $num_headings_changed++;
         }
         else {
@@ -598,7 +598,7 @@ sub LinkBibHeadingsToAuthorities {
                         $marcrecordauth->leader('     nz  a22     o  4500');
                         SetMarcUnicodeFlag( $marcrecordauth, 'MARC21' );
                     }
-                    $field->delete_subfield( code => '9' )
+                    $field->delete_subfield( code => '0' )
                       if defined $current_link;
                     my $authfield =
                       MARC::Field->new( $authority_type->auth_tag_to_report,
@@ -654,7 +654,7 @@ sub LinkBibHeadingsToAuthorities {
                     $results{'linked'}->{ $heading->display_form() }++;
                 }
                 else {
-                    $field->delete_subfield( code => '9' );
+                    $field->delete_subfield( code => '0' );
                     $num_headings_changed++;
                     $results{'unlinked'}->{ $heading->display_form() }++;
                 }
@@ -2459,7 +2459,7 @@ sub GetMarcSeries {
         for my $series_subfield (@subfields) {
 
             # ignore $9, used for authority link
-            next if ( $series_subfield->[0] eq '9' );
+            next if ( $series_subfield->[0] eq '0' );
 
             my $volume_number;
             my $code      = $series_subfield->[0];
