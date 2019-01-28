@@ -353,7 +353,7 @@ sub create_input {
 
     # it's a subfield $9 linking to an authority record - see bug 2206
     }
-    elsif ($subfield eq "9" and
+    elsif ($subfield eq "0" and
            exists($tagslib->{$tag}->{'a'}->{authtypecode}) and
            defined($tagslib->{$tag}->{'a'}->{authtypecode}) and
            $tagslib->{$tag}->{'a'}->{authtypecode} ne '') {
@@ -592,7 +592,7 @@ sub build_tabs {
                         next
                           if ( ( $tagslib->{$tag}->{$subfield}->{hidden} <= -4 )
                             or ( $tagslib->{$tag}->{$subfield}->{hidden} >= 5 ) )
-                            and not ( $subfield eq "9" and
+                            and not ( $subfield eq "0" and
                                       exists($tagslib->{$tag}->{'a'}->{authtypecode}) and
                                       defined($tagslib->{$tag}->{'a'}->{authtypecode}) and
                                       $tagslib->{$tag}->{'a'}->{authtypecode} ne ""
@@ -641,7 +641,7 @@ sub build_tabs {
                     next
                       if ( ( $tagslib->{$tag}->{$subfield}->{hidden} <= -4 )
                         or ( $tagslib->{$tag}->{$subfield}->{hidden} >= 5 ) )
-                      and not ( $subfield eq "9" and
+                      and not ( $subfield eq "0" and
                                 exists($tagslib->{$tag}->{'a'}->{authtypecode}) and
                                 defined($tagslib->{$tag}->{'a'}->{authtypecode}) and
                                 $tagslib->{$tag}->{'a'}->{authtypecode} ne ""

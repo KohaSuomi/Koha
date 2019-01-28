@@ -1,0 +1,123 @@
+#!/usr/bin/perl
+
+#-----------------------------------
+# Copyright 2019 Koha-Suomi Oy
+#
+# This file is part of Koha.
+#
+# Koha is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2 of the License, or (at your option) any later
+# version.
+#
+# Koha is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with Koha; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#-----------------------------------
+
+use Modern::Perl;
+use Getopt::Long;
+
+use C4::Context;
+use Koha::RecordProcessor;
+use C4::Biblio::Chunker;
+use C4::Biblio;
+use MARC::Field;
+
+my ($help, $confirm, $verbose);
+
+GetOptions(
+  'h|help'      => \$help,
+  'v|verbose:i' => \$verbose,
+  'c|confirm'   => \$confirm,
+);
+
+my $usage = << 'ENDUSAGE';
+
+Changes authority linking field from 9 to 0
+
+  -h --help    This nice help!
+
+  -v --verbose More chatty output, something between 0 - 3 or undef.
+
+  -c --confirm Confirm that you want to mangle your bibliographic records
+
+
+EXAMPLE:
+
+perl batchAuthorityLinking.pl -v 3 -c
+
+ENDUSAGE
+
+if ($help) {
+    print $usage;
+    exit 0;
+}
+
+use Koha::Logger;
+C4::Context->setCommandlineEnvironment();
+Koha::Logger->setConsoleVerbosity($verbose);
+my $logger = Koha::Logger->new();
+
+our $authorityfields = {
+    '100' => 1,
+    '110' => 1,
+    '111' => 1,
+    '130' => 1,
+    '245' => 1,
+    '400' => 1,
+    '410' => 1,
+    '440' => 1,
+    '490' => 1,
+    '600' => 1,
+    '610' => 1,
+    '611' => 1,
+    '630' => 1,
+    '650' => 1,
+    '651' => 1,
+    '652' => 1,
+    '653' => 1,
+    '654' => 1,
+    '655' => 1,
+    '656' => 1,
+    '657' => 1,
+    '690' => 1,
+    '700' => 1,
+    '710' => 1,
+    '711' => 1,
+    '730' => 1,
+    '751' => 1,
+    '800' => 1,
+    '810' => 1,
+    '811' => 1,
+    '830' => 1
+    };
+
+my $chunker = C4::Biblio::Chunker->new(undef, undef, undef, $verbose);
+while (my $chunk = $chunker->getChunkAsMARCRecord()) {
+    foreach my $r (@$chunk) {
+        foreach my $field ($r->fields) {
+            my @subfield_data;
+            if ($authorityfields->{$field->tag}) {
+                if ($field->subfields) {
+                    for my $subfield ($field->subfields) {
+                        if ($subfield->[0] eq "9") {
+                            $subfield->[0] = "0";
+                            print "Changed 9 field to 0 from ".$r->{biblionumber}."\n" if (defined $verbose && $verbose >= 0);
+                        }
+                        push @subfield_data, $subfield->[0], $subfield->[1];
+                    }
+                }
+            }
+            $field->replace_with(MARC::Field->new(
+                $field->tag(), $field->indicator(1), $field->indicator(2),
+                @subfield_data)
+            ) if @subfield_data; 
+        }
+        C4::Biblio::ModBiblio($r, $r->{biblionumber}, $r->{frameworkcode}) if $confirm;
+    }
+}

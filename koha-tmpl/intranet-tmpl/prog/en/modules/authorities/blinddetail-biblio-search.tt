@@ -113,7 +113,7 @@
                 [% IF ( clear ) %]
                     if (subfield){subfield.value="" ;}
                 [% ELSE %]
-                    if(code.value=='9'){
+                    if(code.value=='0'){
                         subfield.value = "[% authid |replace("'", "\'") |replace('"', '\"') |replace('\n', '\\n') |replace('\r', '\\r') %]";
                         break;
                     }

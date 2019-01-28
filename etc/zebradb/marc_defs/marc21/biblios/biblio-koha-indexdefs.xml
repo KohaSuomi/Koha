@@ -273,7 +273,7 @@
     <target_index>Number-govt-pub:w</target_index>
   </index_data_field>
   <!--record.abs line 90: melm 100$9      Cross-Reference:w,Koha-Auth-Number-->
-  <index_subfields tag="100" subfields="9">
+  <index_subfields tag="100" subfields="0">
     <target_index>Cross-Reference:w</target_index>
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
@@ -299,7 +299,7 @@
     <target_index>Personal-name:w</target_index>
   </index_data_field>
   <!--record.abs line 93: melm 110$9      Koha-Auth-Number-->
-  <index_subfields tag="110" subfields="9">
+  <index_subfields tag="110" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 94: melm 110        Author,Author:p,Author:s,Author-title,Author-name-corporate,Name,Name-and-title,Corporate-name-->
@@ -314,7 +314,7 @@
     <target_index>Corporate-name:w</target_index>
   </index_data_field>
   <!--record.abs line 95: melm 111$9      Koha-Auth-Number-->
-  <index_subfields tag="111" subfields="9">
+  <index_subfields tag="111" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 96: melm 111        Author,Author:p,Author:s,Author-title,Author-name-corporate,Name,Name-and-title,Conference-name-->
@@ -337,7 +337,7 @@
     <target_index>Music-key:w</target_index>
   </index_subfields>
   <!--record.abs line 99: melm 130$9      Koha-Auth-Number-->
-  <index_subfields tag="130" subfields="9">
+  <index_subfields tag="130" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 100: melm 130        Title,Title:p,Title-uniform-->
@@ -420,7 +420,7 @@
     <target_index>Author-in-order:s</target_index>
   </index_subfields>
   <!--record.abs line 115: melm 245$9      Cross-Reference:w,Koha-Auth-Number-->
-  <index_subfields tag="245" subfields="9">
+  <index_subfields tag="245" subfields="0">
     <target_index>Cross-Reference:w</target_index>
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
@@ -492,7 +492,7 @@
     <target_index>Title-series:w</target_index>
   </index_subfields>
   <!--record.abs line 126: melm 400$9      Koha-Auth-Number-->
-  <index_subfields tag="400" subfields="9">
+  <index_subfields tag="400" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 127: melm 400        Author,Author-name-personal,Name,Personal-name-->
@@ -513,7 +513,7 @@
     <target_index>Title-series:w</target_index>
   </index_subfields>
   <!--record.abs line 130: melm 410$9      Koha-Auth-Number-->
-  <index_subfields tag="410" subfields="9">
+  <index_subfields tag="410" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 131: melm 410        Author,Corporate-name-->
@@ -541,7 +541,7 @@
     <target_index>Title-series:p</target_index>
   </index_subfields>
   <!--record.abs line 140: melm 440$9      Koha-Auth-Number-->
-  <index_subfields tag="440" subfields="9">
+  <index_subfields tag="440" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 141: melm 440        Title-series:w,Title-series:p,Title,Title-series-->
@@ -557,7 +557,7 @@
     <target_index>Title-series:p</target_index>
   </index_subfields>
   <!--record.abs line 143: melm 490$9      Koha-Auth-Number-->
-  <index_subfields tag="490" subfields="9">
+  <index_subfields tag="490" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 144: melm 490        Title,Title-series-->
@@ -650,7 +650,7 @@
     <target_index>Subject:p</target_index>
   </index_subfields>
   <!--record.abs line 162: melm 600$9      Koha-Auth-Number-->
-  <index_subfields tag="600" subfields="9">
+  <index_subfields tag="600" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 164: melm 600        Name,Personal-name,Subject-name-personal,Subject,Subject:p-->
@@ -675,7 +675,7 @@
     <target_index>Subject:p</target_index>
   </index_subfields>
   <!--record.abs line 167: melm 610$9      Koha-Auth-Number-->
-  <index_subfields tag="610" subfields="9">
+  <index_subfields tag="610" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 168: melm 610        Name,Subject,Subject:p,Corporate-name-->
@@ -699,7 +699,7 @@
     <target_index>Subject:p</target_index>
   </index_subfields>
   <!--record.abs line 171: melm 611$9      Koha-Auth-Number-->
-  <index_subfields tag="611" subfields="9">
+  <index_subfields tag="611" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 172: melm 611        Conference-name,Name,Subject,Subject:p-->
@@ -722,7 +722,7 @@
     <target_index>Subject:p</target_index>
   </index_subfields>
   <!--record.abs line 175: melm 630$9      Koha-Auth-Number-->
-  <index_subfields tag="630" subfields="9">
+  <index_subfields tag="630" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 176: melm 630        Subject,Subject:p-->
@@ -730,11 +730,11 @@
     <target_index>Subject:w</target_index>
     <target_index>Subject:p</target_index>
   </index_data_field>
-  <index_subfields tag="648" subfields="9">
+  <index_subfields tag="648" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 177: melm 650$9      Koha-Auth-Number    -->
-  <index_subfields tag="650" subfields="9">
+  <index_subfields tag="650" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 178: melm 650        Subject,Subject:p-->
@@ -743,7 +743,7 @@
     <target_index>Subject:p</target_index>
   </index_data_field>
   <!--record.abs line 179: melm 651$9      Koha-Auth-Number    -->
-  <index_subfields tag="651" subfields="9">
+  <index_subfields tag="651" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 180: melm 651        Name-geographic,Subject,Subject:p-->
@@ -753,7 +753,7 @@
     <target_index>Subject:p</target_index>
   </index_data_field>
   <!--record.abs line 181: melm 652$9      Koha-Auth-Number    -->
-  <index_subfields tag="652" subfields="9">
+  <index_subfields tag="652" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--melm 653$a      Index-term-uncontrolled    -->
@@ -764,7 +764,7 @@
     <target_index>Subject:p</target_index>
   </index_subfields>
   <!--record.abs line 183: melm 653$9      Koha-Auth-Number    -->
-  <index_subfields tag="653" subfields="9">
+  <index_subfields tag="653" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 184: melm 653        Subject,Subject:p-->
@@ -773,7 +773,7 @@
     <target_index>Subject:p</target_index>
   </index_data_field>
   <!--record.abs line 185: melm 654$9      Koha-Auth-Number    -->
-  <index_subfields tag="654" subfields="9">
+  <index_subfields tag="654" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 186: melm 654        Subject,Subject:p-->
@@ -789,7 +789,7 @@
     <target_index>Subject:p</target_index>
   </index_subfields>
   <!--record.abs line 187: melm 655$9      Koha-Auth-Number    -->
-  <index_subfields tag="655" subfields="9">
+  <index_subfields tag="655" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 188: melm 655        Subject,Subject:p-->
@@ -798,7 +798,7 @@
     <target_index>Subject:p</target_index>
   </index_data_field>
   <!--record.abs line 189: melm 656$9      Koha-Auth-Number    -->
-  <index_subfields tag="656" subfields="9">
+  <index_subfields tag="656" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 190: melm 656        Subject,Subject:p-->
@@ -807,7 +807,7 @@
     <target_index>Subject:p</target_index>
   </index_data_field>
   <!--record.abs line 191: melm 657$9      Koha-Auth-Number    -->
-  <index_subfields tag="657" subfields="9">
+  <index_subfields tag="657" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 192: melm 657        Subject,Subject:p-->
@@ -841,11 +841,11 @@
     <target_index>Subject:w</target_index>
     <target_index>Subject:p</target_index>
   </index_data_field>
-  <index_subfields tag="662" subfields="9">
+  <index_subfields tag="662" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 197: melm 690$9      Koha-Auth-Number    -->
-  <index_subfields tag="690" subfields="9">
+  <index_subfields tag="690" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 198: melm 690        Subject,Subject:p-->
@@ -853,23 +853,23 @@
     <target_index>Subject:w</target_index>
     <target_index>Subject:p</target_index>
   </index_data_field>
-  <index_subfields tag="691" subfields="9">
+  <index_subfields tag="691" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
-  <index_subfields tag="696" subfields="9">
+  <index_subfields tag="696" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
-  <index_subfields tag="697" subfields="9">
+  <index_subfields tag="697" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
-  <index_subfields tag="698" subfields="9">
+  <index_subfields tag="698" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
-  <index_subfields tag="699" subfields="9">
+  <index_subfields tag="699" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 200: melm 700$9      Cross-Reference,Koha-Auth-Number-->
-  <index_subfields tag="700" subfields="9">
+  <index_subfields tag="700" subfields="0">
     <target_index>Cross-Reference:w</target_index>
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
@@ -914,7 +914,7 @@
     <target_index>Name-and-title:w</target_index>
   </index_subfields>
   <!--record.abs line 211: melm 710$9      Koha-Auth-Number    -->
-  <index_subfields tag="710" subfields="9">
+  <index_subfields tag="710" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 212: melm 710        Author,Author:p,Corporate-name,Name-->
@@ -935,7 +935,7 @@
     <target_index>Title-uniform:w</target_index>
   </index_subfields>
   <!--record.abs line 216: melm 711$9      Koha-Auth-Number    -->
-  <index_subfields tag="711" subfields="9">
+  <index_subfields tag="711" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 218: melm 711        Author,Author:p,Author-name-corporate,Name,Conference-name-->
@@ -955,7 +955,7 @@
     <target_index>Music-key:w</target_index>
   </index_subfields>
   <!--record.abs line 221: melm 730$9      Koha-Auth-Number-->
-  <index_subfields tag="730" subfields="9">
+  <index_subfields tag="730" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 222: melm 730        Title,Title:p,Title-uniform-->
@@ -975,7 +975,7 @@
     <target_index>Name-geographic:w</target_index>
   </index_subfields>
   <!--record.abs line 225: melm 751$9      Koha-Auth-Number-->
-  <index_subfields tag="751" subfields="9">
+  <index_subfields tag="751" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 226: melm 751        Name-geographic-->
@@ -1053,16 +1053,16 @@
   <index_subfields tag="787" subfields="w">
     <target_index>Record-control-number:w</target_index>
   </index_subfields>
-  <index_subfields tag="796" subfields="9">
+  <index_subfields tag="796" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
-  <index_subfields tag="797" subfields="9">
+  <index_subfields tag="797" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
-  <index_subfields tag="798" subfields="9">
+  <index_subfields tag="798" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
-  <index_subfields tag="799" subfields="9">
+  <index_subfields tag="799" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 244: melm 800$a      Name-and-title,Title-series:w,Title-series:p-->
@@ -1080,7 +1080,7 @@
     <target_index>Title-series:p</target_index>
   </index_subfields>
   <!--record.abs line 247: melm 800$9      Koha-Auth-Number-->
-  <index_subfields tag="800" subfields="9">
+  <index_subfields tag="800" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 248: melm 800$w      Record-control-number-->
@@ -1113,7 +1113,7 @@
     <target_index>Record-control-number:w</target_index>
   </index_subfields>
   <!--record.abs line 253: melm 810$9      Koha-Auth-Number-->
-  <index_subfields tag="810" subfields="9">
+  <index_subfields tag="810" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 254: melm 810        Author,Corporate-name,Author-name-corporate,Name-->
@@ -1130,7 +1130,7 @@
     <target_index>Title-series:p</target_index>
   </index_subfields>
   <!--record.abs line 256: melm 811$9      Koha-Auth-Number-->
-  <index_subfields tag="811" subfields="9">
+  <index_subfields tag="811" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 258: melm 811$t      Author-title,Name-and-title,Title,Title-series:w,Title-series:p-->
@@ -1157,7 +1157,7 @@
     <target_index>Record-control-number:w</target_index>
   </index_subfields>
   <!--record.abs line 262: melm 830$9      Koha-Auth-Number-->
-  <index_subfields tag="830" subfields="9">
+  <index_subfields tag="830" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 263: melm 830        Title,Title-series:w,Title-series:p-->
@@ -1172,16 +1172,16 @@
     <target_index>Title-series:w</target_index>
     <target_index>Title-series:p</target_index>
   </index_data_field>
-  <index_subfields tag="896" subfields="9">
+  <index_subfields tag="896" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
-  <index_subfields tag="897" subfields="9">
+  <index_subfields tag="897" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
-  <index_subfields tag="898" subfields="9">
+  <index_subfields tag="898" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
-  <index_subfields tag="899" subfields="9">
+  <index_subfields tag="899" subfields="0">
     <target_index>Koha-Auth-Number:w</target_index>
   </index_subfields>
   <!--record.abs line 268: melm 999$c      Local-Number:n,Local-Number:w,Local-Number:s-->
