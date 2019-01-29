@@ -135,10 +135,11 @@ sub get_record {
         });
     }
 
-    my $componentPartBiblios = C4::Biblio::getComponentRecords( $record->field('001')->data(), $record->field('003')->data());
+    my ($componentPartBiblios, $totalCount, $query) = C4::Biblio::getComponentRecords( $record->field('001')->data(), $record->field('003')->data());
     my @componentPartRecords;
-    if ($componentPartBiblios) {
+    if (@$componentPartBiblios) {
         for my $cb ( @{$componentPartBiblios} ) {
+            $cb =~ s/^<\?xml.*?\?>//;
             my $component->{biblionumber} = C4::Biblio::getComponentBiblionumber($cb)+0;
             $component->{marcxml} = decode('utf8', $cb);
             push @componentPartRecords, $component;
