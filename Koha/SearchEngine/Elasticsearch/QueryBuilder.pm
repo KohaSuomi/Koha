@@ -558,6 +558,7 @@ our %index_field_convert = (
     'se' => 'title-series',
     'ut' => 'title-uniform',
     'an' => 'koha-auth-number',
+    'authority-number' => 'koha-auth-number',
     'at' => 'authtype',
     'he' => 'heading',
     'rank' => 'relevance',
