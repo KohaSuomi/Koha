@@ -370,7 +370,7 @@ Cataloguing.RecordPusher.parseReports = function (reports, biblionumber, interfa
                 };
                 html += '<td style="padding:0 5px;">'+v.timestamp+'</td>';
                 if (v.status == 'success') {html += '<td style="padding:0 5px; color:green;">onnistui</td>'};
-                if (v.status == 'failed') {html += '<td style="padding:0 5px; color:red;">epäonnistui</td>'};
+                if (v.status == 'failed') {html += '<td style="padding:0 5px; color:red;">epäonnistui ('+v.errorstatus+')</td>'};
                 if (v.status == 'pending' || v.status == 'waiting') {html += '<td style="padding:0 5px; color:orange;">odottaa</td>'};
                 html += '</tr>';
             }
