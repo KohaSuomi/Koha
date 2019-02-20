@@ -362,7 +362,7 @@ Cataloguing.RecordPusher.parseReports = function (reports, biblionumber, interfa
                 if (v.target_id == biblionumber) {
                     html += '<td style="padding:0 5px;">tuonti (päivitys)</td>'
                 } else {
-                    if (v.target_id != "") {
+                    if (v.target_id != "" && v.target_id != null) {
                         html += '<td style="padding:0 5px;">vienti (päivitys)</td>';
                     } else {
                         html += '<td style="padding:0 5px;">vienti (uusi)</td>';
