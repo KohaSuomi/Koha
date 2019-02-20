@@ -106,7 +106,7 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
     this.submitcomponentParts = function (remoteAPIOrId, componentparts, username) {
         var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
         $.each(componentparts, function (index, record) {
-            RemoteAPIs.Driver.records_add(remoteAPIPushDestination, {source_id: record.biblionumber, interface: remoteAPIOrId.interface, marc: record.marcxml, target_id: null, username: username}, undefined, function (remoteAPI, error, result, recordXml) {
+            RemoteAPIs.Driver.records_add(remoteAPIPushDestination, {source_id: record.biblionumber, interface: remoteAPIOrId.interface, marc: record.marcxml, target_id: null, username: username, parent_id: self.activeBiblio.biblionumber}, undefined, function (remoteAPI, error, result, recordXml) {
                 if (error) {
                     alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_add() failed with "+error);
                     return;
