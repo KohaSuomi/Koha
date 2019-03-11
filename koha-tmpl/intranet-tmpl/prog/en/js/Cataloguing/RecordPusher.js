@@ -33,7 +33,7 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
     this.remoteAPIs = Cataloguing.RecordPusher.getValidRemoteAPIs(remoteAPIs);
     this.activeBiblio = activeBiblio; //This RecordPusher is bound to this Biblio.
     this.menuActivationClickLocation; //From where was the remote operation triggered, so we can display the operations menu there.
-
+    this.selfAPI = remoteAPIs["self"];
     //Render this object
     var decHtml;
     if (this.displayType == "dropdown-menu-list") {
@@ -109,6 +109,16 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
             RemoteAPIs.Driver.records_add(remoteAPIPushDestination, {source_id: record.biblionumber, interface: remoteAPIOrId.interface, marc: record.marcxml, target_id: null, username: username, parent_id: self.activeBiblio.biblionumber, force: 1}, undefined, function (remoteAPI, error, result, recordXml) {
                 if (error) {
                     alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_add() failed with "+error);
+                    return;
+                }
+            });
+        });
+    }
+    this.deletecomponentParts = function (componentparts) {
+        $.each(componentparts, function (index, record) {
+            RemoteAPIs.Driver.KohaSuomi.records_delete("local", record.biblionumber, function (remoteAPI, error, result) {
+                if (error) {
+                    alert("Cataloguing.RecordPusher.pushToRemote():> Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.KohaSuomi.records_delete() failed with "+error);
                     return;
                 }
             });
@@ -230,7 +240,6 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
     };
     this.displayContent = function (remoteAPI, result) {
         $( "#spinner-wrapper" ).addClass("hidden");
-        var selfAPI = remoteAPIs["self"];
         var sourceboxes = false;
         var source = Cataloguing.RecordPusher.parseRecord(result.sourcerecord, sourceboxes);
         var html;
@@ -242,7 +251,7 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
             var target = Cataloguing.RecordPusher.parseRecord(result.targetrecord, targetboxes);
             html = $('<div id="exportRecord"><div class="col-sm-6"><h3>Paikallinen</h4><hr/>'+source+'</div><div class="col-sm-6"><h3>'+result.interface+'</h4><hr/>'+target+'</div></div>');
             if (remoteAPI.type == "export" && !result.source_id) {$('#export').removeClass("hidden");}
-            if (selfAPI) {$('#import').removeClass("hidden");}
+            if (self.selfAPI) {$('#import').removeClass("hidden");}
             $('.modal-dialog').addClass("modal-lg");
         }
         this.operationsMenuContainer.find("#export-wrapper").append(html);
@@ -270,17 +279,22 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
         $( "#import" ).unbind().click(function( event ) {
             event.preventDefault();
             var sourceid;
+            var parts;
             if (result.source_id) {
                 sourceid = result.source_id;
             } else {
                 sourceid = result.target_id;
             }
-            self.submitToRemote(selfAPI, {marc: result.targetrecord, interface: selfAPI.interface, source_id: sourceid, target_id: self.activeBiblio.biblionumber, username: username}, 1);
+            if (result.componentparts) {
+                parts = 1
+                self.deletecomponentParts(result.componentparts);
+            }
+            self.submitToRemote(self.selfAPI, {marc: result.targetrecord, interface: self.selfAPI.interface, source_id: sourceid, target_id: self.activeBiblio.biblionumber, username: username, componentparts: parts}, 1);
         });
 
     }
     this.showReports = function (remoteAPI, result) {
-        var html = Cataloguing.RecordPusher.parseReports(result, self.activeBiblio.biblionumber, remoteAPI.interface);
+        var html = Cataloguing.RecordPusher.parseReports(result, self.activeBiblio.biblionumber, remoteAPI.interface, self.selfAPI.interface);
         $("#report-wrapper").append(html);
     };
 };
@@ -345,7 +359,7 @@ Cataloguing.RecordPusher.parseRecord = function (record, checkbox) {
     html += '</div>';
     return html;
 }
-Cataloguing.RecordPusher.parseReports = function (reports, biblionumber, interface) {
+Cataloguing.RecordPusher.parseReports = function (reports, biblionumber, interface, selfAPI) {
     var html = '<div class="table-responsive">';
     if (reports.length != 0) {
         html += '<table class="table table-striped table-sm">';
@@ -357,7 +371,7 @@ Cataloguing.RecordPusher.parseReports = function (reports, biblionumber, interfa
                 </tr>\
             </thead><tbody>';
         reports.forEach(function(v,i,a){
-            if (interface == v.interface_name) {
+            if (interface == v.interface_name || v.interface_name == selfAPI) {
                 html += '<tr>';
                 if (v.target_id == biblionumber) {
                     html += '<td style="padding:0 5px;">tuonti (päivitys)</td>'
