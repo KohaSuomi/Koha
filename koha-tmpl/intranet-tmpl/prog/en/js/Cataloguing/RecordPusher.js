@@ -289,7 +289,7 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
                 parts = 1
                 self.deletecomponentParts(result.componentparts);
             }
-            self.submitToRemote(self.selfAPI, {marc: result.targetrecord, interface: self.selfAPI.interface, source_id: sourceid, target_id: self.activeBiblio.biblionumber, username: username, componentparts: parts}, 1);
+            self.submitToRemote(self.selfAPI, {marc: result.targetrecord, interface: self.selfAPI.interface, source_id: sourceid, target_id: self.activeBiblio.biblionumber, username: username, componentparts: parts, fetch_interface: remoteAPI.interface}, 1);
         });
 
     }
