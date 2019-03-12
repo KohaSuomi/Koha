@@ -85,7 +85,7 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
             });
         });
     }
-    this.submitToRemote = function (remoteAPIOrId, params, reload) {
+    this.submitToRemote = function (remoteAPIOrId, params) {
         var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
         RemoteAPIs.Driver.records_add(remoteAPIPushDestination, params, function (remoteAPI, error, result, recordXml) {
             if (error) {
@@ -93,14 +93,7 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
                 return;
             }
         });
-        if (reload) {
-            $('#import').replaceWith('<button id="reload" type="button" class="btn btn-secondary">Lataa sivu</button>');
-            $( "#reload" ).click(function( event ) {
-                window.location.href = window.location.href;
-            });
-        } else {
-            $( "#pushRecordOpModal" ).find("#report").click();
-        }
+        $( "#pushRecordOpModal" ).find("#report").click();
 
     }
     this.submitcomponentParts = function (remoteAPIOrId, componentparts, username) {
@@ -271,7 +264,7 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
                     count++;
                 }
             });
-            self.submitToRemote(remoteAPI, {marc: result.sourcerecord, interface: remoteAPI.interface, source_id: self.activeBiblio.biblionumber, target_id: result.target_id, username: username}, 0);
+            self.submitToRemote(remoteAPI, {marc: result.sourcerecord, interface: remoteAPI.interface, source_id: self.activeBiblio.biblionumber, target_id: result.target_id, username: username});
             if (!result.targetrecord) {
                 self.submitcomponentParts(remoteAPI, result.componentparts, username);
             }
@@ -287,7 +280,7 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
             if (result.componentparts) {
                 self.deletecomponentParts(result.componentparts);
             }
-            self.submitToRemote(self.selfAPI, {marc: result.targetrecord, interface: self.selfAPI.interface, source_id: sourceid, target_id: self.activeBiblio.biblionumber, username: username, componentparts: 1, fetch_interface: remoteAPI.interface}, 1);
+            self.submitToRemote(self.selfAPI, {marc: result.targetrecord, interface: self.selfAPI.interface, source_id: sourceid, target_id: self.activeBiblio.biblionumber, username: username, componentparts: 1, fetch_interface: remoteAPI.interface});
         });
 
     }
