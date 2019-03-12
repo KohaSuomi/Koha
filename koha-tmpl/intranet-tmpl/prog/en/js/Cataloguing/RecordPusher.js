@@ -279,17 +279,15 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
         $( "#import" ).unbind().click(function( event ) {
             event.preventDefault();
             var sourceid;
-            var parts;
             if (result.source_id) {
                 sourceid = result.source_id;
             } else {
                 sourceid = result.target_id;
             }
             if (result.componentparts) {
-                parts = 1
                 self.deletecomponentParts(result.componentparts);
             }
-            self.submitToRemote(self.selfAPI, {marc: result.targetrecord, interface: self.selfAPI.interface, source_id: sourceid, target_id: self.activeBiblio.biblionumber, username: username, componentparts: parts, fetch_interface: remoteAPI.interface}, 1);
+            self.submitToRemote(self.selfAPI, {marc: result.targetrecord, interface: self.selfAPI.interface, source_id: sourceid, target_id: self.activeBiblio.biblionumber, username: username, componentparts: 1, fetch_interface: remoteAPI.interface}, 1);
         });
 
     }
