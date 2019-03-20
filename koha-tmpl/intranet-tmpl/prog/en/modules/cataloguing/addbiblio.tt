@@ -6,6 +6,7 @@
 [% INCLUDE 'doc-head-close.inc' %]
 <script type="text/javascript" src="[% interface %]/lib/jquery/plugins/jquery.fixFloat_[% KOHA_VERSION %].js"></script>
 <script type="text/javascript" src="[% interface %]/[% theme %]/js/cataloging_[% KOHA_VERSION %].js"></script>
+<script type="text/javascript" src="[% interface %]/[% theme %]/js/marceditlib_[% KOHA_VERSION %].js"></script>
 [% INCLUDE 'browser-strings.inc' %]
 <!--[if lt IE 9]>
 <script type="text/javascript" src="[% interface %]/lib/shims/json2.min_[% KOHA_VERSION %].js"></script>

@@ -8,6 +8,7 @@
 [% INCLUDE 'doc-head-close.inc' %]
 [% INCLUDE 'datatables.inc' %]
 <script type="text/javascript" src="[% interface %]/[% theme %]/js/cataloging_[% KOHA_VERSION %].js"></script>
+<script type="text/javascript" src="[% interface %]/[% theme %]/js/marceditlib_[% KOHA_VERSION %].js"></script>
 [% INCLUDE 'columns_settings.inc' %]
 [% INCLUDE 'browser-strings.inc' %]
 <!--[if lt IE 9]>
