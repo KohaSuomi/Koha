@@ -655,7 +655,7 @@ sub get_matches {
 
             #NOTE: The QueryParser can't handle the CCL syntax of 'qualifier','qualifier', so fallback to non-QueryParser.
             #NOTE: You can see this in C4::Search::SimpleSearch() as well in a different way.
-            if ($QParser && $matchpoint->{'index'} !~ m/\w,\w/) {
+            if (($QParser && $matchpoint->{'index'} !~ m/\w,\w/) || C4::Context->preference('SearchEngine') eq 'Elasticsearch') {
                 $query = join( " || ",
                     map { "$matchpoint->{'index'}:$_" } @source_keys );
             }
