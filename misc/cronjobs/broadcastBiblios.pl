@@ -34,16 +34,28 @@ my $dt = strftime "%Y-%m-%d %H:%M:%S", ( localtime(time - 1*60*60) );
 my $chunks = 200;
 my $active = 0;
 my $all = 0;
+my $biblionumber;
+my $verbose = 0;
 
 GetOptions(
     'h|help'                     => \$help,
-    'chunks:i'                   => \$chunks,
+    'v|verbose'                  => \$verbose,
+    'c|chunks:i'                 => \$chunks,
     'a|active'                   => \$active,
-    'all'                        => \$all
+    'all'                        => \$all,
+    'b|biblionumber:i'           => \$biblionumber
 );
 
 my $usage = <<USAGE;
-    Hello there!
+    Broadcast biblios to REST endpoint
+
+    -h, --help              This message
+    -v, --verbose           Verbose
+    -c, --chunks            Process biblios in chunks, default is 200
+    -a, --active            Send active biblios
+    --all                   Send all biblios, default sends biblios from today
+    -b, --biblionumber      Start sending from defined biblionumber
+
 USAGE
 
 if ($help) {
@@ -74,7 +86,12 @@ while ($pageCount >= $params->{page}) {
     foreach my $biblio (@{$biblios}) {
         my $tx = $ua->post($endpoint => $headers => json => endpointParams($biblio));
         my $response = decode_json($tx->res->body);
-        print "$biblio->{biblionumber} biblio failed with: $response->{error}!\n" if $response->{error};
+        if ($response->{error}) {
+            print "$biblio->{biblionumber} biblio failed with: $response->{error}!\n";
+        }
+        if ($verbose && !$response->{error}) {
+            print "$biblio->{biblionumber} added succesfully\n";
+        }
         $count++;
     }
     print "$count biblios processed!\n";
@@ -92,6 +109,7 @@ sub biblios {
     print "Starting broadcasting offset $params->{page}!\n";
     my $terms;
     $terms = {timestamp => { '>=' => $params->{datetime} }} if !$all;
+    $terms = {biblionumber => {'>=' => $biblionumber}} if $biblionumber;
     my $biblios = Koha::Biblio::Metadatas->search($terms,
     {
         page => $params->{page},
