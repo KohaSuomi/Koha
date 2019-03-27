@@ -89,8 +89,8 @@ while ($pageCount >= $params->{page}) {
         if ($response->{error}) {
             print "$biblio->{biblionumber} biblio failed with: $response->{error}!\n";
         }
-        if ($verbose && !$response->{error}) {
-            print "$biblio->{biblionumber} added succesfully\n";
+        if ($verbose && $response->{message} eq "Success") {
+            print "$biblio->{biblionumber} biblio added succesfully\n";
         }
         $count++;
     }
