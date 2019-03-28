@@ -83,6 +83,7 @@ my $endpoint  = $active ? $config->{activeEndpoint} : $config->{broadcastEndpoin
 while ($pageCount >= $params->{page}) {
     my $biblios = biblios($params);
     my $count = 0;
+    my $lastnumber;
     foreach my $biblio (@{$biblios}) {
         my $tx = $ua->post($endpoint => $headers => json => endpointParams($biblio));
         my $response = decode_json($tx->res->body);
@@ -93,7 +94,9 @@ while ($pageCount >= $params->{page}) {
             print "$biblio->{biblionumber} biblio added succesfully\n";
         }
         $count++;
+        $lastnumber = $biblio->{biblionumber};
     }
+    print "last processed biblio $lastnumber\n";
     print "$count biblios processed!\n";
     if ($count eq $params->{chunks}) {
         $pageCount++;
