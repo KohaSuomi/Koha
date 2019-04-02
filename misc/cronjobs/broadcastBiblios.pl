@@ -128,7 +128,8 @@ sub endpointParams {
     my ($biblio) = @_;
 
     if ($active) {
-        return {marcxml => $biblio->{metadata}, target_id => $biblio->{biblionumber}, interface_name => $config->{interfaceName}};
+        return {marcxml => $biblio->{metadata}, target_id => $biblio->{biblionumber}, interface_name => $config->{interfaceName}} if !$all;
+        return {marcxml => $biblio->{metadata}, target_id => $biblio->{biblionumber}, interface_name => $config->{interfaceName}, updated => $biblio->{timestamp}};
     } else {
         return {marcxml => $biblio->{metadata}, source_id => $biblio->{biblionumber}, updated => $biblio->{timestamp}};
     }
