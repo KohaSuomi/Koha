@@ -2233,7 +2233,7 @@ sub GetMarcSubjects {
             my $linkvalue = $value;
             $linkvalue =~ s/(\(|\))//g;
             # if no authority link, build a search query
-            unless ($subfield9) {
+            unless ($subfield0) {
                 push @link_loop, {
                     limit    => $subject_limit,
                     'link'   => $linkvalue,
