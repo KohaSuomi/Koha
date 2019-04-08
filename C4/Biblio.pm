@@ -2332,7 +2332,7 @@ sub GetMarcAuthors {
                 $linkvalue = "($value)";
             }
             # if no authority link, build a search query
-            unless ($subfield9) {
+            unless ($subfield0) {
                 push @link_loop, {
                     limit    => 'au',
                     'link'   => $linkvalue,
@@ -2353,7 +2353,7 @@ sub GetMarcAuthors {
         }
         push @marcauthors, {
             MARCAUTHOR_SUBFIELDS_LOOP => \@subfields_loop,
-            authoritylink => $subfield9,
+            authoritylink => $subfield0,
             unimarc3 => $unimarc3
         };
     }
