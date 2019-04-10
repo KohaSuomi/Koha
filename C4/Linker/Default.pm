@@ -22,6 +22,7 @@ use warnings;
 use Carp;
 use MARC::Field;
 use C4::Heading;
+use Koha::Authorities;
 
 use base qw(C4::Linker);
 
@@ -32,7 +33,7 @@ sub get_link {
     my $search_form = $heading->search_form();
     my $authid;
     my $fuzzy = 0;
-
+    my $authsubfield = Koha::Authorities->authority_linking_subfield;
     if ( $self->{'cache'}->{$search_form}->{'cached'} ) {
         $authid = $self->{'cache'}->{$search_form}->{'authid'};
         $fuzzy  = $self->{'cache'}->{$search_form}->{'fuzzy'};
@@ -56,7 +57,7 @@ sub get_link {
 
         if ( !defined $authid && $self->{'broader_headings'} ) {
             my $field     = $heading->field();
-            my @subfields = grep { $_->[0] ne '9' } $field->subfields();
+            my @subfields = grep { $_->[0] ne $authsubfield } $field->subfields();
             if ( scalar @subfields > 1 ) {
                 pop @subfields;
                 $field =

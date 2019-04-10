@@ -58,6 +58,7 @@ my $authid       = $query->param('authid');
 my $index        = $query->param('index');
 my $tagid        = $query->param('tagid');
 my $relationship = $query->param('relationship');
+my $authsubfield = Koha::Authorities->authority_linking_subfield;
 
 # open template
 my ( $template, $loggedinuser, $cookie ) = get_template_and_user(
@@ -84,7 +85,7 @@ if ($authid) {
     # Get all values for each distinct subfield
     my %subfields;
     for ( $field->subfields ) {
-        next if $_->[0] eq '0'; # $0 will be set with authid value
+        next if $_->[0] eq $authsubfield; # will be set with authid value
         my $letter = $_->[0];
         next if defined $subfields{$letter};
         my @values = $field->subfield($letter);
@@ -154,6 +155,7 @@ $indicator2 =~ s/\s//g;
 
 $template->param(
     authid          => $authid ? $authid : "",
+    authsubfield    => $authsubfield,
     index           => $index,
     tagid           => $tagid,
     indicator1      => $indicator1,

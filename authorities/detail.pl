@@ -206,8 +206,9 @@ my $count = CountUsage($authid);
 my $sth = $dbh->prepare("select distinct tagfield from marc_subfield_structure where authtypecode=?");
 $sth->execute($authtypecode);
 my $biblio_fields;
+my $authsubfield = Koha::Authorities->authority_linking_subfield;
 while (my ($tagfield) = $sth->fetchrow) {
-	$biblio_fields.= $tagfield."0,";
+	$biblio_fields.= $tagfield.$authsubfield.",";
 }
 chop $biblio_fields;
 

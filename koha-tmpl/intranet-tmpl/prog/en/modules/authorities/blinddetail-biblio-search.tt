@@ -20,6 +20,7 @@
     <script type="text/javascript">
         $(document).ready(function(){
             var index_start = "[% index %]";
+            var authsubfield = "[% authsubfield %]";
             var whichfield;
             try {
                 whichfield = opener.opener.document.getElementById(index_start);
@@ -113,7 +114,7 @@
                 [% IF ( clear ) %]
                     if (subfield){subfield.value="" ;}
                 [% ELSE %]
-                    if(code.value=='0'){
+                    if(code.value==authsubfield){
                         subfield.value = "[% authid |replace("'", "\'") |replace('"', '\"') |replace('\n', '\\n') |replace('\r', '\\r') %]";
                         break;
                     }

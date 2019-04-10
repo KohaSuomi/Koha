@@ -770,142 +770,142 @@ biblios:
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '1009'
+        marc_field: '1000'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '1109'
+        marc_field: '1100'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '1119'
+        marc_field: '1110'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '1309'
+        marc_field: '1300'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '2459'
+        marc_field: '2450'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '4409'
+        marc_field: '4400'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '4909'
+        marc_field: '4900'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6009'
+        marc_field: '6000'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6109'
+        marc_field: '6100'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6119'
+        marc_field: '6110'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6309'
+        marc_field: '6300'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6509'
+        marc_field: '6500'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6519'
+        marc_field: '6510'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6529'
+        marc_field: '6520'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6539'
+        marc_field: '6530'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6549'
+        marc_field: '6540'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6559'
+        marc_field: '6550'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6569'
+        marc_field: '6560'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6579'
+        marc_field: '6570'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '6909'
+        marc_field: '6900'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '7009'
+        marc_field: '7000'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '7109'
+        marc_field: '7100'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '7119'
+        marc_field: '7110'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '7309'
+        marc_field: '7300'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '8009'
+        marc_field: '8000'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '8109'
+        marc_field: '8100'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '8119'
+        marc_field: '8110'
         marc_type: normarc
         sort: ~
         suggestible: ''
       - facet: ''
-        marc_field: '8309'
+        marc_field: '8300'
         marc_type: normarc
         sort: ~
         suggestible: ''

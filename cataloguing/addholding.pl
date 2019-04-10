@@ -221,6 +221,7 @@ sub create_input {
     # expand all subfields of 773 if there is a host item provided in the input
     $subfield_data{visibility} ="" if ($tag eq 773 and $cgi->param('hostitemnumber'));
 
+    my $authsubfield = Koha::Authorities->authority_linking_subfield;
 
     # it's an authorised field
     if ( $tagslib->{$tag}->{$subfield}->{authorised_value} ) {
@@ -228,9 +229,9 @@ sub create_input {
           build_authorized_values_list( $tag, $subfield, $value, $dbh,
             $authorised_values_sth,$index_tag,$index_subfield );
 
-    # it's a subfield $9 linking to an authority record - see bug 2206
+    # it's a subfield linking to an authority record - see bug 2206
     }
-    elsif ($subfield eq "0" and
+    elsif ($subfield eq $authsubfield and
            exists($tagslib->{$tag}->{'a'}->{authtypecode}) and
            defined($tagslib->{$tag}->{'a'}->{authtypecode}) and
            $tagslib->{$tag}->{'a'}->{authtypecode} ne '') {
@@ -383,6 +384,8 @@ sub build_tabs {
     my %seen;
     my @tab_data; # all tags to display
 
+    my $authsubfield = Koha::Authorities->authority_linking_subfield;
+
     foreach my $used ( @$usedTagsLib ){
         push @tab_data,$used->{tagfield} if not $seen{$used->{tagfield}};
         $seen{$used->{tagfield}}++;
@@ -469,7 +472,7 @@ sub build_tabs {
                         next
                           if ( ( $tagslib->{$tag}->{$subfield}->{hidden} <= -4 )
                             or ( $tagslib->{$tag}->{$subfield}->{hidden} >= 5 ) )
-                            and not ( $subfield eq "0" and
+                            and not ( $subfield eq $authsubfield and
                                       exists($tagslib->{$tag}->{'a'}->{authtypecode}) and
                                       defined($tagslib->{$tag}->{'a'}->{authtypecode}) and
                                       $tagslib->{$tag}->{'a'}->{authtypecode} ne ""
@@ -518,7 +521,7 @@ sub build_tabs {
                     next
                       if ( ( $tagslib->{$tag}->{$subfield}->{hidden} <= -4 )
                         or ( $tagslib->{$tag}->{$subfield}->{hidden} >= 5 ) )
-                      and not ( $subfield eq "0" and
+                      and not ( $subfield eq $authsubfield and
                                 exists($tagslib->{$tag}->{'a'}->{authtypecode}) and
                                 defined($tagslib->{$tag}->{'a'}->{authtypecode}) and
                                 $tagslib->{$tag}->{'a'}->{authtypecode} ne ""

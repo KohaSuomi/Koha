@@ -916,6 +916,7 @@ sub BuildSummary {
     my @seefrom;
     my @seealso;
     my @otherscript;
+    my $authsubfield = Koha::Authorities->authority_linking_subfield;
     if (C4::Context->preference('marcflavour') eq 'UNIMARC') {
 # construct UNIMARC summary, that is quite different from MARC21 one
 # accepted form
@@ -950,7 +951,7 @@ sub BuildSummary {
                 heading => $heading,
                 hemain  => ( $_->subfield('a') // undef ),
                 search  => $heading,
-                authid  => ( $_->subfield('9') // undef ),
+                authid  => ( $_->subfield($authsubfield) // undef ),
             }
         } $record->field('5..');
 
@@ -1049,7 +1050,7 @@ sub BuildSummary {
                     type    => $field->subfield('i'),
                     field   => $field->tag(),
                     search  => $field->as_string($marc21subfields) || '',
-                    authid  => $field->subfield('9') || ''
+                    authid  => $field->subfield($authsubfield) || ''
                 };
             } else {
                 push @seealso, {
@@ -1058,7 +1059,7 @@ sub BuildSummary {
                     type    => $type,
                     field   => $field->tag(),
                     search  => $field->as_string($marc21subfields) || '',
-                    authid  => $field->subfield('9') || ''
+                    authid  => $field->subfield($authsubfield) || ''
                 };
             }
         }
@@ -1333,7 +1334,8 @@ sub GenerateHierarchy {
 
 sub _get_authid_subfield{
     my ($field)=@_;
-    return $field->subfield('9')||$field->subfield('3');
+    my $authsubfield = Koha::Authorities->authority_linking_subfield;
+    return $field->subfield($authsubfield)||$field->subfield('3');
 }
 
 =head2 GetHeaderAuthority
@@ -1436,6 +1438,7 @@ sub merge {
     # Search authtypes and reporting tags
     my $authfrom = Koha::Authorities->find($mergefrom);
     my $authto = Koha::Authorities->find($mergeto);
+    my $authsubfield = Koha::Authorities->authority_linking_subfield;
     my $authtypefrom = $authfrom ? Koha::Authority::Types->find($authfrom->authtypecode) : undef;
     my $authtypeto   = $authto ? Koha::Authority::Types->find($authto->authtypecode) : undef;
     my $auth_tag_to_report_from = $authtypefrom ? $authtypefrom->auth_tag_to_report : '';
@@ -1481,7 +1484,7 @@ sub merge {
         foreach my $tagfield (@$tags_using_authtype) {
             my $countfrom = 0;    # used in strict mode to remove duplicates
             foreach my $field ( $marcrecord->field($tagfield) ) {
-                my $auth_number = $field->subfield("9");    # link to authority
+                my $auth_number = $field->subfield($authsubfield);    # link to authority
                 my $tag         = $field->tag();
                 next if !defined($auth_number) || $auth_number ne $mergefrom;
                 $countfrom++;
@@ -1500,9 +1503,9 @@ sub merge {
                     $newtag,
                     $field->indicator(1),
                     $field->indicator(2),
-                    "9" => $mergeto,
+                    $authsubfield => $mergeto,
                 );
-                foreach my $subfield ( grep { $_->[0] ne '9' } @record_to ) {
+                foreach my $subfield ( grep { $_->[0] ne $authsubfield } @record_to ) {
                     $field_to->add_subfields( $subfield->[0] => $subfield->[1] );
                 }
                 if ( !$overwrite ) {

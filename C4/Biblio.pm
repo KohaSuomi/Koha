@@ -40,6 +40,7 @@ use C4::OAI::Sets;
 use C4::Debug;
 
 use Koha::Caches;
+use Koha::Authorities;
 use Koha::Authority::Types;
 use Koha::Acquisition::Currencies;
 use Koha::Biblio::Metadata;
@@ -556,6 +557,7 @@ sub LinkBibHeadingsToAuthorities {
     require C4::Heading;
     require C4::AuthoritiesMarc;
 
+    my $authsubfield = Koha::Authorities->authority_linking_subfield;
     $allowrelink = 1 unless defined $allowrelink;
     my $num_headings_changed = 0;
     foreach my $field ( $bib->fields() ) {
@@ -563,7 +565,7 @@ sub LinkBibHeadingsToAuthorities {
         next unless defined $heading;
 
         # check existing $9
-        my $current_link = $field->subfield('0');
+        my $current_link = $field->subfield($authsubfield);
 
         if ( defined $current_link && (!$allowrelink || !C4::Context->preference('LinkerRelink')) )
         {
@@ -577,8 +579,8 @@ sub LinkBibHeadingsToAuthorities {
               ->{ $heading->display_form() }++;
             next if defined $current_link and $current_link == $authid;
 
-            $field->delete_subfield( code => '0' ) if defined $current_link;
-            $field->add_subfields( '0', $authid );
+            $field->delete_subfield( code => $authsubfield ) if defined $current_link;
+            $field->add_subfields( $authsubfield, $authid );
             $num_headings_changed++;
         }
         else {
@@ -598,7 +600,7 @@ sub LinkBibHeadingsToAuthorities {
                         $marcrecordauth->leader('     nz  a22     o  4500');
                         SetMarcUnicodeFlag( $marcrecordauth, 'MARC21' );
                     }
-                    $field->delete_subfield( code => '0' )
+                    $field->delete_subfield( code => $authsubfield )
                       if defined $current_link;
                     my $authfield =
                       MARC::Field->new( $authority_type->auth_tag_to_report,
@@ -643,7 +645,7 @@ sub LinkBibHeadingsToAuthorities {
                     $authid =
                       C4::AuthoritiesMarc::AddAuthority( $marcrecordauth, '',
                         $heading->auth_type() );
-                    $field->add_subfields( '0', $authid );
+                    $field->add_subfields( $authsubfield, $authid );
                     $num_headings_changed++;
                     $linker->update_cache($heading, $authid);
                     $results{'added'}->{ $heading->display_form() }++;
@@ -654,7 +656,7 @@ sub LinkBibHeadingsToAuthorities {
                     $results{'linked'}->{ $heading->display_form() }++;
                 }
                 else {
-                    $field->delete_subfield( code => '0' );
+                    $field->delete_subfield( code => $authsubfield );
                     $num_headings_changed++;
                     $results{'unlinked'}->{ $heading->display_form() }++;
                 }
@@ -2202,6 +2204,7 @@ sub GetMarcSubjects {
 
     my $subject_limit = C4::Context->preference("TraceCompleteSubfields") ? 'su,complete-subfield' : 'su';
     my $AuthoritySeparator = C4::Context->preference('AuthoritySeparator');
+    my $authsubfield = Koha::Authorities->authority_linking_subfield;
 
     foreach my $field ( $record->field($fields_filter) ) {
         next unless ($field->tag() >= $mintag && $field->tag() <= $maxtag);
@@ -2209,11 +2212,11 @@ sub GetMarcSubjects {
         my @subfields = $field->subfields();
         my @link_loop;
 
-        # if there is an authority link, build the links with an= subfield0
-        my $subfield0 = $field->subfield('0');
+        # if there is an authority link, build the links with an=$authsubfield
+        my $auth_subfield = $field->subfield($authsubfield);
         my $authoritylink;
-        if ($subfield0) {
-            my $linkvalue = $subfield0;
+        if ($auth_subfield) {
+            my $linkvalue = $auth_subfield;
             $linkvalue =~ s/(\(|\))//g;
             @link_loop = ( { limit => 'an', 'link' => $linkvalue } );
             $authoritylink = $linkvalue
@@ -2221,7 +2224,7 @@ sub GetMarcSubjects {
 
         # other subfields
         for my $subject_subfield (@subfields) {
-            next if ( $subject_subfield->[0] eq '0' );
+            next if ( $subject_subfield->[0] eq $authsubfield );
 
             # don't load unimarc subfields 3,4,5
             next if ( ( $marcflavour eq "UNIMARC" ) and ( $subject_subfield->[0] =~ /2|3|4|5/ ) );
@@ -2233,7 +2236,7 @@ sub GetMarcSubjects {
             my $linkvalue = $value;
             $linkvalue =~ s/(\(|\))//g;
             # if no authority link, build a search query
-            unless ($subfield0) {
+            unless ($auth_subfield) {
                 push @link_loop, {
                     limit    => $subject_limit,
                     'link'   => $linkvalue,
@@ -2294,6 +2297,7 @@ sub GetMarcAuthors {
 
     my @marcauthors;
     my $AuthoritySeparator = C4::Context->preference('AuthoritySeparator');
+    my $authsubfield = Koha::Authorities->authority_linking_subfield;
 
     foreach my $field ( $record->field($fields_filter) ) {
         next unless $field->tag() >= $mintag && $field->tag() <= $maxtag;
@@ -2302,10 +2306,10 @@ sub GetMarcAuthors {
         my @subfields  = $field->subfields();
         my $count_auth = 0;
 
-        # if there is an authority link, build the link with Koha-Auth-Number: subfield0
-        my $subfield0 = $field->subfield('0');
-        if ($subfield0) {
-            my $linkvalue = $subfield0;
+        # if there is an authority link, build the link with Koha-Auth-Number: $authsubfield
+        my $auth_subfield = $field->subfield($authsubfield);
+        if ($auth_subfield) {
+            my $linkvalue = $auth_subfield;
             $linkvalue =~ s/(\(|\))//g;
             @link_loop = ( { 'limit' => 'an', 'link' => $linkvalue } );
         }
@@ -2313,7 +2317,7 @@ sub GetMarcAuthors {
         # other subfields
         my $unimarc3;
         for my $authors_subfield (@subfields) {
-            next if ( $authors_subfield->[0] eq '0' );
+            next if ( $authors_subfield->[0] eq $authsubfield );
 
             # unimarc3 contains the $3 of the author for UNIMARC.
             # For french academic libraries, it's the "ppn", and it's required for idref webservice
@@ -2332,7 +2336,7 @@ sub GetMarcAuthors {
                 $linkvalue = "($value)";
             }
             # if no authority link, build a search query
-            unless ($subfield0) {
+            unless ($auth_subfield) {
                 push @link_loop, {
                     limit    => 'au',
                     'link'   => $linkvalue,
@@ -2353,7 +2357,7 @@ sub GetMarcAuthors {
         }
         push @marcauthors, {
             MARCAUTHOR_SUBFIELDS_LOOP => \@subfields_loop,
-            authoritylink => $subfield0,
+            authoritylink => $auth_subfield,
             unimarc3 => $unimarc3
         };
     }

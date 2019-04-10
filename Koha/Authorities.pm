@@ -22,6 +22,7 @@ use Modern::Perl;
 use Carp;
 
 use Koha::Database;
+use C4::Context;
 
 use Koha::Authority;
 
@@ -92,6 +93,29 @@ sub linked_biblionumbers {
         push @biblionumbers, $bibno if $bibno;
     }
     return @biblionumbers;
+}
+
+=head3 authority_linking_subfield
+
+    $authsubfield = Koha::Authorities->authority_linking_subfield;
+
+    Returns the authority subfield for selected MARC format
+
+=cut
+
+sub authority_linking_subfield {
+    my ( $class ) = @_;
+
+    my $marcflavour = C4::Context->preference('marcflavour');
+
+    my $subfield;    
+    if ($marcflavour eq 'UNIMARC') {
+        $subfield = '9';
+    } else {
+        $subfield = '0';
+    }
+
+    return $subfield;
 }
 
 =head3 type
