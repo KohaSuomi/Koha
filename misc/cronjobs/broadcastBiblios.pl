@@ -36,6 +36,7 @@ my $active = 0;
 my $all = 0;
 my $biblionumber;
 my $verbose = 0;
+my $limit = 0;
 
 GetOptions(
     'h|help'                     => \$help,
@@ -43,7 +44,8 @@ GetOptions(
     'c|chunks:i'                 => \$chunks,
     'a|active'                   => \$active,
     'all'                        => \$all,
-    'b|biblionumber:i'           => \$biblionumber
+    'b|biblionumber:i'           => \$biblionumber,
+    'l|limit:i'                  => \$limit
 );
 
 my $usage = <<USAGE;
@@ -55,6 +57,7 @@ my $usage = <<USAGE;
     -a, --active            Send active biblios
     --all                   Send all biblios, default sends biblios from today
     -b, --biblionumber      Start sending from defined biblionumber
+    -l, --limit             Limiting the results of biblios
 
 USAGE
 
@@ -113,12 +116,13 @@ sub biblios {
     my $terms;
     $terms = {timestamp => { '>=' => $params->{datetime} }} if !$all;
     $terms = {biblionumber => {'>=' => $biblionumber}} if $biblionumber;
-    my $biblios = Koha::Biblio::Metadatas->search($terms,
-    {
+    my $fetch = {
         page => $params->{page},
         rows => $params->{chunks}
-    }
-    )->unblessed;
+    };
+    $fetch = {rows => $limit} if defined $limit && $limit;
+
+    my $biblios = Koha::Biblio::Metadatas->search($terms, $fetch)->unblessed;
 
     return $biblios;
 
