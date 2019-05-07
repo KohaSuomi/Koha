@@ -30,7 +30,7 @@ use Mojo::UserAgent;
 use Mojo::JSON qw(decode_json encode_json);
 
 my $help = 0;
-my $dt = strftime "%Y-%m-%d %H:%M:%S", ( localtime(time - 1*60*60) );
+my $dt = strftime "%Y-%m-%d %H:%M:%S", ( localtime(time - 5*60) );
 my $chunks = 200;
 my $active = 0;
 my $all = 0;
