@@ -290,6 +290,70 @@
       }
     }
   },
+  "/biblios/{biblionumber}/merge": {
+    "put": {
+      "x-mojo-to": "Biblio#merge",
+      "operationId": "mergeBiblio",
+      "tags": ["biblios"],
+      "parameters": [
+        { "$ref": "../parameters.json#/biblionumberPathParam" },
+        {
+          "name": "matcher_id",
+          "in": "query",
+          "description": "Matching rule's ID",
+          "required": false,
+          "type": "integer"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "Merge biblio record with old one"
+        },
+        "400": {
+          "description": "Biblio update failed",
+          "schema": { "$ref": "../definitions.json#/error" }
+        },
+        "401": {
+          "description": "Authentication required",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "403": {
+          "description": "Access forbidden",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "404": {
+          "description": "Biblio not found",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "500": {
+          "description": "Internal error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      },
+      "x-koha-authorization": {
+        "permissions": {
+          "editcatalogue": "1"
+        }
+      }
+    }
+  },
   "/biblios": {
     "post": {
       "x-mojo-to": "Biblio#add",

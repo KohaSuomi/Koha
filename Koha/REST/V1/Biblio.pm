@@ -19,8 +19,9 @@ use Modern::Perl;
 
 use Mojo::Base 'Mojolicious::Controller';
 
-use C4::Biblio qw( GetBiblioData AddBiblio ModBiblio DelBiblio BiblioAutoLink GetFrameworkCode );
+use C4::Biblio qw( GetBiblioData AddBiblio ModBiblio DelBiblio BiblioAutoLink GetFrameworkCode GetMarcBiblio );
 use C4::Items qw ( AddItemBatchFromMarc );
+use C4::Matcher;
 use Koha::Biblios;
 use MARC::Record;
 use MARC::Batch;
@@ -174,6 +175,41 @@ sub update {
             BiblioAutoLink($record, $frameworkcode);
         }
         $success = &ModBiblio($record, $biblionumber, $frameworkcode);
+    }
+    if ($success) {
+        my $biblio = Koha::Biblios->find($c->validation->param('biblionumber'));
+        return $c->render(status => 200, openapi => {biblio => $biblio});
+    } else {
+        return $c->render(status => 400, openapi => {error => "unable to update record"});
+    }
+}
+
+sub merge {
+    my $c = shift->openapi->valid_input or return;
+
+    my $biblionumber = $c->validation->param('biblionumber');
+    my $matcher_id = $c->validation->param('matcher_id') ? $c->validation->param('matcher_id'): 1;
+
+    my $biblio = Koha::Biblios->find($biblionumber);
+    unless ($biblio) {
+        return $c->render(status => 404, openapi => {error => "Biblio not found"});
+    }
+
+    my $success;
+    my $body = $c->req->body;
+    my $record = eval {MARC::Record::new_from_xml( $body, "utf8", '')};
+    if ($@) {
+        return $c->render(status => 400, openapi => {error => $@});
+    } else {
+        my $frameworkcode = GetFrameworkCode( $biblionumber );
+        if (C4::Context->preference("BiblioAddsAuthorities")){
+            BiblioAutoLink($record, $frameworkcode);
+        }
+        my $old_record = C4::Biblio::GetMarcBiblio($biblionumber);
+        my $matcher = C4::Matcher->fetch($matcher_id);
+
+        my $mergedrecord = $matcher->overlayRecord($old_record, $record);
+        $success = &ModBiblio($mergedrecord, $biblionumber, $frameworkcode);
     }
     if ($success) {
         my $biblio = Koha::Biblios->find($c->validation->param('biblionumber'));
