@@ -235,6 +235,7 @@ if ( $op eq 'insert' || $op eq 'modify' || $op eq 'save' || $op eq 'duplicate' )
 if ( ( $op eq 'insert' ) and !$nodouble ) {
     my $conditions;
     $conditions->{surname} = $newdata{surname} if $newdata{surname};
+    
     if ( $category_type ne 'I' ) {
         $conditions->{firstname} = $newdata{firstname} if $newdata{firstname};
         $conditions->{dateofbirth} = $newdata{dateofbirth} if $newdata{dateofbirth};
@@ -284,12 +285,12 @@ $newdata{'lang'}    = $input->param('lang')    if defined($input->param('lang'))
 
 # builds default userid
 # userid input text may be empty or missing because of syspref BorrowerUnwantedField
-if ( ( defined $newdata{'userid'} && $newdata{'userid'} eq '' ) || $check_BorrowerUnwantedField =~ /userid/ && !defined $data{'userid'} ) {
-    if ( ( defined $newdata{'firstname'} ) && ( defined $newdata{'surname'} ) ) {
+if ( ( defined $newdata{'userid'} && $newdata{'userid'} eq '' ) || $check_BorrowerUnwantedField =~ /userid/ && !defined $data{'userid'}  ) { 
+    if ( ( defined $newdata{'firstname'} || $category_type eq 'I' ) && ( defined $newdata{'surname'} ) ) {
         # Full page edit, firstname and surname input zones are present
         $newdata{'userid'} = Generate_Userid( $borrowernumber, $newdata{'firstname'}, $newdata{'surname'} );
     }
-    elsif ( ( defined $data{'firstname'} ) && ( defined $data{'surname'} ) ) {
+    elsif ( ( defined $data{'firstname'} || $category_type eq 'I' ) && ( defined $data{'surname'} ) ) {
         # Partial page edit (access through "Details"/"Library details" tab), firstname and surname input zones are not used
         # Still, if the userid field is erased, we can create a new userid with available firstname and surname
         $newdata{'userid'} = Generate_Userid( $borrowernumber, $data{'firstname'}, $data{'surname'} );
