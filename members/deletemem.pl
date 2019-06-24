@@ -113,7 +113,8 @@ if (C4::Context->preference("IndependentBranches")) {
 my $op = $input->param('op') || 'delete_confirm';
 my $dbh = C4::Context->dbh;
 my $is_guarantor = $dbh->selectrow_array("SELECT COUNT(*) FROM borrowers WHERE guarantorid=?", undef, $member);
-if ( $op eq 'delete_confirm' or $countissues > 0 or $flags->{'CHARGES'}  or $is_guarantor or $deletelocal == 0) {
+my $countholds = $dbh->selectrow_array("SELECT COUNT(*) FROM reserves WHERE borrowernumber=?", undef, $member);
+if ( $op eq 'delete_confirm' or $countissues > 0 or $flags->{'CHARGES'}  or $is_guarantor or $deletelocal == 0 or $countholds > 0) {
     my $patron_image = Koha::Patron::Images->find($bor->{borrowernumber});
     $template->param( picture => 1 ) if $patron_image;
 
@@ -149,8 +150,11 @@ if ( $op eq 'delete_confirm' or $countissues > 0 or $flags->{'CHARGES'}  or $is_
     if ($deletelocal == 0) {
         $template->param(keeplocal => 1);
     }
+    if ($countholds > 0) {
+        $template->param(ItemsOnHold => $countholds);
+    }
     # This is silly written but reflect the same conditions as above
-    if ( not $countissues > 0 and not $flags->{CHARGES} ne '' and not $is_guarantor and not $deletelocal == 0 ) {
+    if ( not $countissues > 0 and not $flags->{CHARGES} ne '' and not $is_guarantor and not $deletelocal == 0 and not $countholds > 0) {
         $template->param(
             op         => 'delete_confirm',
             csrf_token => Koha::Token->new->generate_csrf({ session_id => scalar $input->cookie('CGISESSID') }),
