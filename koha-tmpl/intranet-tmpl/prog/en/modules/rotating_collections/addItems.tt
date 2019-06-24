@@ -253,31 +253,29 @@
                   </div>
                   [% END %]
                 [% END %]
-
-                <div>
-                  <form action="addItems.pl" method="post">
-                      <fieldset class="brief">
-                          <legend>Add or remove items</legend>
-                          <ol>
-                              <li>
-                                  <label for="barcode">Barcode: </label>
-                                  <input type="text" id="barcode" name="barcode" />
-                                  [% IF ( removeChecked ) %]
-                                      <label class="inline"><input type="checkbox" name="removeItem" checked="checked" /> Remove item from collection</label>
-                                  [% ELSE %]
-                                      <label class="inline"><input type="checkbox" name="removeItem" /> Remove item from collection</label>
-                                  [% END %]
-                              </li>
-                          </ol>
-                          <p>
-                              <input type="hidden" id="colId" name="colId" value="[% colId %]" />
-                              <input type="hidden" name="action" value="addItem" />
-                              <input type="submit" value="Submit" />
-                          </p>
-                      </fieldset>
-
-                  </form>
-                </div>
+              </div>
+              <div>
+                <form action="addItems.pl" method="post">
+                    <fieldset class="brief">
+                        <legend>Add or remove items</legend>
+                        <ol>
+                            <li>
+                                <label for="barcode">Barcode: </label>
+                                <input type="text" id="barcode" name="barcode" />
+                                [% IF ( removeChecked ) %]
+                                    <label class="inline"><input type="checkbox" name="removeItem" checked="checked" /> Remove item from collection</label>
+                                [% ELSE %]
+                                    <label class="inline"><input type="checkbox" name="removeItem" /> Remove item from collection</label>
+                                [% END %]
+                            </li>
+                        </ol>
+                        <p>
+                            <input type="hidden" id="colId" name="colId" value="[% colId %]" />
+                            <input type="hidden" name="action" value="addItem" />
+                            <input type="submit" value="Submit" />
+                        </p>
+                    </fieldset>
+                </form>
               </div>
               <h2>Items in <i>[% colTitle %]</i></h2>
               <div>
