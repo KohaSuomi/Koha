@@ -138,6 +138,10 @@ $.datepicker.setDefaults({
         selectOtherMonths: true
     });
 
+$(".futuredate").datepicker({
+    minDate: 1, // require that hold suspended until date is after today
+});
+
     $( ".datepicker" ).datepicker({
         onClose: function(dateText, inst) {
             validate_date(dateText, inst);
