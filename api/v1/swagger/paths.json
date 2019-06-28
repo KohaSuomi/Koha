@@ -113,6 +113,9 @@
   "/issuingrules/effective": {
     "$ref": "paths/issuingrules.json#/~1issuingrules~1effective"
   },
+  "/items": {
+    "$ref": "paths/items.json#/~1items"
+  },
   "/items/{itemnumber}": {
     "$ref": "paths/items.json#/~1items~1{itemnumber}"
   },

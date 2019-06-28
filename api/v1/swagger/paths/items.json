@@ -43,5 +43,49 @@
         }
       }
     }
+  },
+  "/items": {
+    "get": {
+      "x-mojo-to": "Item#list",
+      "operationId": "listItems",
+      "tags": ["items"],
+      "parameters": [
+        {
+          "$ref": "../parameters.json#/barcodesQueryParam"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "A list of items",
+          "schema": {
+            "type": "array",
+            "items": {
+              "$ref": "../definitions.json#/item"
+            }
+          }
+        },
+        "400": {
+          "description": "Bad parameter",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "500": {
+          "description": "Internal error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      }
+    }
   }
 }

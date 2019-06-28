@@ -42,6 +42,10 @@
     "type": ["integer", "null"],
     "description": "internally assigned item identifier"
   },
+  "barcode": {
+    "type": ["string", "null"],
+    "description": "item barcode"
+  },
   "marcxml": {
     "type": "string",
     "description": "MARCXML serialized into a form variable. Swagger2-spec forbids sending pure XML objects in the body so we work around the limitation"

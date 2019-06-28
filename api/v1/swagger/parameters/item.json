@@ -15,5 +15,15 @@
       "type": "integer"
     },
     "collectionFormat": "multi"
+  },
+  "barcodesQueryParam": {
+    "name": "barcode",
+    "in": "query",
+    "description": "Item barcodes",
+    "type": "array",
+    "items": {
+      "type": "string"
+    },
+    "collectionFormat": "multi"
   }
 }
