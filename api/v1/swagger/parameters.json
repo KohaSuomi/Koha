@@ -5,6 +5,9 @@
   "articleRequestIdPathParam": {
     "$ref": "parameters/articlerequest.json#/articleRequestIdPathParam"
   },
+  "barcodesQueryParam": {
+    "$ref": "parameters/item.json#/barcodesQueryParam"
+  },
   "batchOverlayReportContainerIdPathParam": {
     "$ref": "parameters/batchoverlay.json#/batchOverlayReportContainerIdPathParam"
   },

@@ -25,6 +25,30 @@ use C4::Items qw( GetHiddenItemnumbers );
 
 use Koha::Items;
 
+sub list {
+    my $c = shift->openapi->valid_input or return;
+
+    my $params  = $c->req->params->to_hash;
+    my $items = Koha::Items->search({ barcode => { -in => $params->{barcode} } });
+    my @public_items;
+
+    # Return only public items if user has no staff access
+    my $user = $c->stash('koha.user');
+    if (!$user || !haspermission($user->userid, {catalogue => 1})) {
+	while ( my $item = $items->next ) {
+	    my @hiddenitems = C4::Items::GetHiddenItemnumbers( ({ itemnumber => $item->itemnumber}) );
+	    my %hiddenitems = map { $_ => 1 } @hiddenitems;
+	    next if $hiddenitems{$item->itemnumber};
+
+	    $item->set({ itemnotes_nonpublic => undef });
+	    push @public_items, $item;
+	}
+	return $c->render( status => 200, openapi => \@public_items);
+    } else {
+	return $c->render( status => 200, openapi => $items);
+    }
+}
+
 sub get {
     my $c = shift->openapi->valid_input or return;
 
