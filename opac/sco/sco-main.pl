@@ -33,10 +33,12 @@ use Modern::Perl;
 use CGI qw ( -utf8 );
 
 use C4::Auth qw( in_iprange get_template_and_user checkpw );
-use C4::Circulation qw( barcodedecode AddReturn CanBookBeIssued AddIssue CanBookBeRenewed AddRenewal );
-use C4::Reserves;
+use C4::Circulation qw( barcodedecode AddReturn CanBookBeIssued AddIssue CanBookBeRenewed AddRenewal updateWrongTransfer );
+use C4::Reserves qw( ModReserveAffect );
 use C4::Output qw( output_html_with_http_headers );
 use C4::Members;
+use C4::Biblio qw( GetBiblioData );
+use C4::Items qw( ModItemTransfer );
 use Koha::DateUtils qw( dt_from_string );
 use Koha::Acquisition::Currencies;
 use Koha::Items;
@@ -45,6 +47,7 @@ use Koha::Patron::Images;
 use Koha::Patron::Messages;
 use Koha::Plugins;
 use Koha::Token;
+use Koha::Calendar;
 
 my $query = CGI->new;
 
@@ -73,9 +76,11 @@ $query->param(-name=>'sco_user_login',-values=>[1]);
 my ( $template, $loggedinuser, $cookie ) = get_template_and_user(
     {
         template_name   => "sco/sco-main.tt",
+        authnotrequired => 0,
         flagsrequired   => { self_check => "self_checkout_module" },
         query           => $query,
         type            => "opac",
+        debug => 1,
     }
 );
 
@@ -93,13 +98,15 @@ if (defined C4::Context->preference('SCOAllowCheckin')) {
 }
 
 my $issuerid = $loggedinuser;
-my ($op, $patronlogin, $patronpw, $barcode, $confirmed, $newissues) = (
+my ($op, $patronlogin, $patronpw, $barcode, $confirmed, $newissues, $uibarcode, $checkinmessage) = (
     $query->param("op")         || '',
     $query->param("patronlogin")|| '',
     $query->param("patronpw")   || '',
     $query->param("barcode")    || '',
     $query->param("confirmed")  || '',
     $query->param("newissues")  || '',
+    $query->param("uibarcode")  || '',
+    $query->param("checkinmessage") || undef,
 );
 
 my $jwt = $query->cookie('JWT');
@@ -114,6 +121,18 @@ $barcode = barcodedecode( $barcode ) if $barcode;
 my @newissueslist = split /,/, $newissues;
 my $issuenoconfirm = 1; #don't need to confirm on issue.
 my $issuer   = Koha::Patrons->find( $issuerid )->unblessed;
+
+my $checkinitem;
+my $checkinbranchcode;
+my $userenv = C4::Context->userenv;
+my $userenv_branch = $userenv->{'branch'} // '';
+my $daysmode = Koha::CirculationRules->get_effective_daysmode(
+    {
+        branchcode   => $userenv_branch,
+    }
+);
+my $calendar    = Koha::Calendar->new( branchcode => $userenv_branch, days_mode => $daysmode );
+my $today       = DateTime->now( time_zone => C4::Context->tz());
 
 my $patronid = $jwt ? Koha::Token->new->decode_jwt({ token => $jwt }) : undef;
 unless ( $patronid ) {
@@ -138,7 +157,7 @@ my $branch = $issuer->{branchcode};
 my $confirm_required = 0;
 my $return_only = 0;
 
-if ( $patron && $op eq "returnbook" && $allowselfcheckreturns ) {
+if ( ( $op eq "checkin" && $uibarcode ) || $patron && $op eq "returnbook" && $allowselfcheckreturns ) {
     my $success = 1;
 
 
@@ -151,16 +170,66 @@ if ( $patron && $op eq "returnbook" && $allowselfcheckreturns ) {
         }
     }
 
-    if ($success) {
+    if ($success && ( $op ne "checkin" && !$uibarcode )) {
         # Patron cannot checkin an item they don't own
         $success = 0
           unless $patron->checkouts->find( { itemnumber => $item->itemnumber } );
     }
 
-    if ( $success ) {
-        ($success) = AddReturn( $barcode, $branch )
+    $uibarcode =~ s/^\s+|\s+$//g;
+    $checkinitem = Koha::Items->find({ barcode => $uibarcode });
+    if( !$checkinitem ){
+        $checkinmessage = "Item not found.";
+    }
+    my $tobranch = $checkinitem->homebranch;
+
+    my ($return_success,$messages,$issueinformation,$borrower) = AddReturn($uibarcode,$branch,undef,$today) unless !$success;
+
+    my $needstransfer = $messages->{'NeedsTransfer'};
+    if($messages->{'ResFound'}) {
+        my $reserve = $messages->{'ResFound'};
+        my $reserve_id = $reserve->{'reserve_id'};
+        my $resborrower = $reserve->{'borrowernumber'};
+        my $diffBranchReturned = $reserve->{'branchcode'};
+        my $itemnumber = $checkinitem->itemnumber;
+        my $diffBranchSend = ($branch ne $diffBranchReturned) ? $diffBranchReturned : undef;
+        if($diffBranchSend) {
+            ModReserveAffect( $itemnumber, $resborrower, $diffBranchSend, $reserve_id);
+            ModItemTransfer($itemnumber,$branch,$diffBranchReturned, 'ResFound');
+        }
+        else {
+            my $settransit = C4::Context->preference('RequireSCCheckInBeforeNotifyingPickups') ? 1 : 0;
+            ModReserveAffect( $itemnumber, $resborrower, $settransit, $reserve_id);
+        }
+        $borrower = Koha::Patrons->find({ cardnumber => $patronid });
+    }
+    else {
+         if($needstransfer) {
+             ModItemTransfer($checkinitem->itemnumber, $branch, $tobranch, 'NeedsTransfer');
+         }
     }
 
+    if($messages->{'WrongTransfer'}) {
+       updateWrongTransfer($checkinitem->itemnumber,$tobranch,$branch);
+    }
+
+    my $biblio = Koha::Biblios->find({ biblionumber => $checkinitem->biblionumber });
+    if ( $biblio && ( $success || $return_success )) {
+        $checkinmessage = "Returned ".$biblio->title;
+    }
+
+    if ( $issuer ) {
+        $checkinbranchcode = $issuer->{branchcode};
+        #home branch of item
+        if ($checkinbranchcode) {
+            my $checkinlibrary = Koha::Libraries->find( $checkinbranchcode );
+            $checkinmessage.=", ".$checkinlibrary->branchname;
+        }
+    }
+
+    $template->param(checkinmessage => $checkinmessage || undef);
+    $template->param(SelfCheckTimeout => 10000); #don't show returns long
+    $template->param(uibarcode => $uibarcode);
     $template->param( returned => $success );
 }
 elsif ( $patron && ( $op eq 'checkout' ) ) {

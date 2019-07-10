@@ -18,7 +18,7 @@
 [% Asset.js("lib/modernizr.min.js") | $raw %]
 </head>
 <body id="sco_help" class="sco">
-    [% INCLUDE 'masthead-sco.inc' %]
+[% INCLUDE 'masthead-sco-self.inc' %]
 
     <div class="main">
         <div class="container-fluid">

@@ -36,9 +36,9 @@
 [% Asset.js("lib/modernizr.min.js") | $raw %]
 </head>
 <body id="sco_main" class="sco" onload="dofocus();" onunload="mungeHistory();">
-    [% INCLUDE 'masthead-sco.inc' %]
+[% INCLUDE 'masthead-sco.inc' %]
 
-    <div class="main">
+   <div class="main">
         <div class="container-fluid">
             <div class="row">
                 [% IF ( display_patron_image ) %]
@@ -402,32 +402,48 @@
                         </div>
                     </div>
                         [% ELSE # IF validuser %]
-                            <div class="sco_entry" >
+                        <div class="row">
+                            <div class="sco_entry col-5" >
+                            <h4>Check out</h4>
                                 <form id="mainform" action="/cgi-bin/koha/sco/sco-main.pl" name="mainform" method="post">
                                     <fieldset>
                                         [% IF ( Koha.Preference('SelfCheckoutByLogin') ) %]
-                                            <legend>Log in to your account</legend>
-                                            <label for="patronlogin">Login:</label>
-                                            <input type="text" id="patronlogin" class="focus noEnterSubmit" size="20" name="patronlogin" autocomplete="off"/>
-                                            <label for="patronpw">Password:</label>
-                                            <input type="password" id="patronpw" size="20" name="patronpw" autocomplete="off"/>
-                                            <fieldset class="action">
-                                                <button type="submit" class="btn btn-primary">Log in</button>
-                                            </fieldset>
-                                        [% ELSE %]
-                                            <div class="form-row">
-                                                <div class="col-auto">
-                                                    <label for="patronid">Please enter your card number:</label>
-                                                </div>
+                                            <div class="row mb-2">
                                                 <div class="col-3">
-                                                    <input type="text" id="patronid" class="form-control focus" size="20" name="patronid" autocomplete="off" />
+                                                    <label for="patronlogin">Username:</label>
                                                 </div>
-                                                <div class="col-auto">
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                <div class="col-5">
+                                                    <input type="text" id="patronlogin" class="form-control focus noEnterSubmit" size="20" name="patronlogin" autocomplete="off"/>
                                                 </div>
-                                            </div> <!-- /.form-row -->
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-3">
+                                                    <label for="patronpw">Password:</label>
+                                                </div>
+                                                <div class="col-5">
+                                                    <input type="password" id="patronpw" class="form-control" size="20" name="patronpw" autocomplete="off"/>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-end">
+                                                <div class="col-6">
+                                                    <fieldset class="action">
+                                                    <button type="submit" class="btn btn-primary">Log in</button>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                        [% ELSE %]
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <label for="patronid">Please enter your card number:</label>
+                                            </div>
+                                            <div class="col-4">
+                                                <input type="text" id="patronid" class="form-control focus" size="20" name="patronid" autocomplete="off" />
+                                            </div>
+                                            <div class="col">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </div>
                                         [% END %]
-
                                         [% FOREACH INPUT IN INPUTS %]
                                             <input type="hidden" name="[% INPUT.name | html %]" value="[% INPUT.value | html %]">
                                         [% END %]
@@ -435,13 +451,45 @@
                                     </fieldset>
                                 </form>
                             </div> <!-- / .sco_entry -->
+                            <div class="sco_entry col" >
+                                <form id="barcodeform" action="/cgi-bin/koha/sco/sco-main.pl" name="barcodeform" method="post">
+                                    <fieldset>
+                                    <div class="row">
+                                        <div class="col">
+                                            <h4>Check in</h4>
+                                        </div>
+                                    </div>
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <label for="uibarcode">Please enter barcode:</label>
+                                            </div>
+                                            <div class="col-3">
+                                                [% IF ( checkinmessage ) %]
+                                                    <input type="text" id="uibarcode"  class="form-control focus" name="uibarcode" autocomplete="off" />
+                                                [% ELSE %]
+                                                    <input type="text" id="uibarcode" class="form-control" name="uibarcode" autocomplete="off" />
+                                                [% END %]
+                                            </div>
+                                            <div class="col">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </div>
+                                        [% FOREACH INPUT IN INPUTS %]
+                                        <input type="hidden" name="[% INPUT.name |html %]" value="[% INPUT.value |html %]">
+                                        [% END %]
+                                        <input type="hidden" name="op" value="checkin" />
+                                    </fieldset>
+                                </form>
+                            </div> <!-- / .sco_entry -->
+                        </div> <!-- / .row -->
                         [% END # / IF validuser %]
                     [% END # / UNLESS ( hide_main %]
+                    <b>[% checkinmessage %]</b>
                     [% IF ( Koha.Preference('SCOMainUserBlock' ) ) %]<div id="scomainuserblock">[% Koha.Preference('SCOMainUserBlock' ) | $raw %]</div>[% END %]
                 </div> <!-- / .span12 -->
             </div> <!-- / .row -->
         </div> <!-- / .container-fluid -->
-    </div> <!-- / .main -->
+      </div> <!-- / .main -->
     <span id="audio-alert"></span>
 
 [% INCLUDE 'opac-bottom.inc' %]
@@ -503,7 +551,7 @@
 
         $(document).ready(function() {
             dofocus();
-            [% IF ( patronid ) %]sco_init();[% END %]
+            [% IF ( patronid || uibarcode ) %]sco_init();[% END %]
             $("#loanTable").dataTable($.extend(true, {}, dataTablesDefaults, {
                 "dom": "t",
                 "order": [ 0 ],
@@ -513,6 +561,7 @@
                     { "type": "anti-the", "targets" : [ "anti-the" ] }
                 ]
             }));
+
 
             $("#logout_form").on("click", function(e){
                 e.preventDefault(e);
@@ -530,7 +579,22 @@
                 [% ELSE %]
                     location.href = '/cgi-bin/koha/sco/sco-main.pl?op=logout';
                 [% END %]
+                return true;
+            });
 
+            $("#logout_form_vara").on("click", function() {
+                clearTimeout(mainTimeout);
+                [% IF Koha.Preference('SelfCheckReceiptPrompt') %]
+                var confirmStart = Date.now();
+                if(confirm(_("Would you like to print a receipt?"))){
+                    if ( (Date.now() - confirmStart) < [% SelfCheckTimeout %] ) {
+                        window.open("/cgi-bin/koha/sco/printslip.pl?borrowernumber=[% borrowernumber %]&amp;print=qslip");
+                    }
+                    else {
+                        alert(_("Timeout while waiting for print confirmation"));
+                    }
+                }
+                [% END %]
                 return true;
             });
     });
