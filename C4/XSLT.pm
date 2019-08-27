@@ -29,6 +29,7 @@ use C4::Koha;
 use C4::Biblio;
 use C4::Circulation;
 use C4::Reserves;
+use C4::Holdings;
 use Koha::AuthorisedValues;
 use Koha::ItemTypes;
 use Koha::XSLT_Handler;
