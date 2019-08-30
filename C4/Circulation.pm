@@ -1022,7 +1022,7 @@ sub CanBookBeIssued {
 
         unless ( $can_be_returned ) {
             $issuingimpossible{RETURN_IMPOSSIBLE} = 1;
-            $issuingimpossible{branch_to_return} = $message;
+            $issuingimpossible{branch_to_return} = $message->{toBranch};
         } else {
             $needsconfirmation{ISSUED_TO_ANOTHER} = 1;
             $needsconfirmation{issued_firstname} = $currborinfo->{'firstname'};
@@ -1152,7 +1152,10 @@ Returns:
 
 =item C<$returnallowed> is 0 or 1, corresponding to whether the return is allowed (1) or not (0)
 
-=item C<$message> is the branchcode where the item SHOULD be returned, if the return is not allowed
+=item C<$message> is a HASHref of following possible keys:
+
+C<toBranch> branchcode where the item SHOULD be returned, if the return is not allowed
+C<transferLimit> transfer limit exists, HASHref of following keys: C<from>, C<to>
 
 =back
 
@@ -1164,18 +1167,29 @@ sub CanBookBeReturned {
 
     # assume return is allowed to start
     my $allowed = 1;
+    my $to_branch = $branch;
     my $message;
 
     # identify all cases where return is forbidden
     if ($allowreturntobranch eq 'homebranch' && $branch ne $item->homebranch) {
         $allowed = 0;
-        $message = $item->homebranch;
+        $message->{toBranch} = $to_branch = $item->homebranch;
     } elsif ($allowreturntobranch eq 'holdingbranch' && $branch ne $item->holdingbranch) {
         $allowed = 0;
-        $message = $item->holdingbranch;
+        $message->{toBranch} = $to_branch = $item->holdingbranch;
     } elsif ($allowreturntobranch eq 'homeorholdingbranch' && $branch ne $item->homebranch && $branch ne $item->holdingbranch) {
         $allowed = 0;
-        $message = $item->homebranch; # FIXME: choice of homebranch is arbitrary
+        $message->{toBranch} = $to_branch = $item->homebranch; # FIXME: choice of homebranch is arbitrary
+    }
+
+    # Make sure there are no branch transfer limits between item's current
+    # branch (holdinbranch) and the return branch
+    if (!$item->can_be_transferred({ to => $to_branch })) {
+        $allowed = 0;
+        $message->{transferLimit} = {
+            from => $item->holdingbranch,
+            to   => $to_branch
+        };
     }
 
     return ($allowed, $message);
@@ -1839,6 +1853,10 @@ This book has was returned to the wrong branch.  The value is a hashref
 so that C<$messages->{Wrongbranch}->{Wrongbranch}> and C<$messages->{Wrongbranch}->{Rightbranch}>
 contain the branchcode of the incorrect and correct return library, respectively.
 
+=item C<Transferlimit>
+
+A transfer limit exists between item's holding branch and the return branch.
+
 =item C<ResFound>
 
 The item was reserved. The value is a reference-to-hash whose keys are
@@ -1967,8 +1985,13 @@ sub AddReturn {
     unless ($returnallowed){
         $messages->{'Wrongbranch'} = {
             Wrongbranch => $branch,
-            Rightbranch => $message
-        };
+            Rightbranch => $message->{toBranch}
+        } if $message->{toBranch};
+
+        if ($message->{'transferLimit'}) {
+            $messages->{'Transferlimit'} = $message->{'transferLimit'};
+        }
+
         $doreturn = 0;
         return ( $doreturn, $messages, $issue, $borrower );
     }
@@ -2007,7 +2030,7 @@ sub AddReturn {
             } else {
                 $messages->{'Wrongbranch'} = {
                     Wrongbranch => $branch,
-                    Rightbranch => $message
+                    Rightbranch => $message->{'toBranch'}
                 };
                 carp $@;
                 return ( 0, { WasReturned => 0 }, $issue, $borrower );

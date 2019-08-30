@@ -550,6 +550,9 @@ foreach my $code ( keys %$messages ) {
     }
     elsif ( $code eq 'Wrongbranch' ) {
     }
+    elsif ( $code eq 'Transferlimit' ) {
+        $err{transferlimit} = $messages->{'Transferlimit'};
+    }
     elsif ( $code eq 'Debarred' ) {
         $err{debarred}            = $messages->{'Debarred'};
         $err{debarcardnumber}     = $borrower->{cardnumber};

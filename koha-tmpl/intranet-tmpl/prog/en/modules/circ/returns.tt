@@ -659,6 +659,9 @@ $(document).ready(function () {
                    <p class="problem">Item is withdrawn.</p>
                 [% END %]
             [% END %]
+            [% IF ( errmsgloo.transferlimit ) %]
+                <p class="problem">Transfer is forbidden between [% Branches.GetName( holdingbranch ) %] (item's current library) and [% LoginBranchname %].</p>
+            [% END %]
             [% IF ( errmsgloo.debarred ) %]
                 <p class="problem"><a href="/cgi-bin/koha/circ/circulation.pl?borrowernumber=[% errmsgloo.debarborrowernumber %]">[% errmsgloo.debarname %]([% errmsgloo.debarcardnumber %])</a> is now debarred until [% errmsgloo.debarred | $KohaDates %].</p>
             [% END %]
