@@ -726,6 +726,7 @@ sub CanBookBeIssued {
     }
 	return ( \%issuingimpossible, \%needsconfirmation ) if %issuingimpossible;
 
+    my $koha_item = Koha::Items->find($item->{itemnumber});
     #
     # DUE DATE is OK ? -- should already have checked.
     #
@@ -1017,7 +1018,7 @@ sub CanBookBeIssued {
         my $currborinfo =    C4::Members::GetMember( borrowernumber => $issue->{borrowernumber} );
 
 
-        my ( $can_be_returned, $message ) = CanBookBeReturned( $item, C4::Context->userenv->{branch} );
+        my ( $can_be_returned, $message ) = CanBookBeReturned( $koha_item, C4::Context->userenv->{branch} );
 
         unless ( $can_be_returned ) {
             $issuingimpossible{RETURN_IMPOSSIBLE} = 1;
@@ -1139,7 +1140,7 @@ Check whether the item can be returned to the provided branch
 
 =over 4
 
-=item C<$item> is a Koha::Item object or (DEPRECATION WARNING) a hash of item information as returned from GetItem
+=item C<$item> is a Koha::Item object
 
 =item C<$branch> is the branchcode where the return is taking place
 
@@ -1160,9 +1161,6 @@ Returns:
 sub CanBookBeReturned {
     my ($item, $branch) = @_;
     my $allowreturntobranch = C4::Context->preference("AllowReturnToBranch") || 'anywhere';
-
-    # TODO: Remove this once all occurences of this sub have been adjusted to use Koha::Item as parameter
-    $item = Koha::Items->find($item->{itemnumber}) unless ref($item) eq 'Koha::Item';
 
     # assume return is allowed to start
     my $allowed = 1;
@@ -1347,6 +1345,7 @@ sub AddIssue {
         # find which item we issue
         my $item = GetItem( '', $barcode )
           or return;    # if we don't get an Item, abort.
+        my $koha_item = Koha::Items->find($item->{itemnumber});
 
         my $branch = _GetCircControlBranch( $item, $borrower );
 
@@ -1373,7 +1372,7 @@ sub AddIssue {
                     and not $switch_onsite_checkout ) {
                 # This book is currently on loan, but not to the person
                 # who wants to borrow it now. mark it returned before issuing to the new borrower
-                my ( $allowed, $message ) = CanBookBeReturned( $item, C4::Context->userenv->{branch} );
+                my ( $allowed, $message ) = CanBookBeReturned( $koha_item, C4::Context->userenv->{branch} );
                 return unless $allowed;
                 AddReturn( $item->{'barcode'}, C4::Context->userenv->{'branch'} );
             }
@@ -1885,6 +1884,8 @@ sub AddReturn {
         return ( 0, { BadBarcode => $barcode } );    # no barcode means no item or borrower.  bail out.
     }
 
+    my $koha_item = Koha::Items->find($item->{itemnumber});
+
     my $itemnumber = $item->{ itemnumber };
 
     my $item_level_itypes = C4::Context->preference("item-level_itypes");
@@ -1962,7 +1963,7 @@ sub AddReturn {
     }
 
     # check if the return is allowed at this branch
-    my ($returnallowed, $message) = CanBookBeReturned($item, $branch);
+    my ($returnallowed, $message) = CanBookBeReturned($koha_item, $branch);
     unless ($returnallowed){
         $messages->{'Wrongbranch'} = {
             Wrongbranch => $branch,
