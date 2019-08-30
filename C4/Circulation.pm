@@ -2136,6 +2136,10 @@ sub AddReturn {
     if ($resfound) {
           $resrec->{'ResFound'} = $resfound;
         $messages->{'ResFound'} = $resrec;
+
+        if (!$koha_item->can_be_transferred({ from => $branch, to => $resrec->{branchcode} })) {
+            $messages->{'ResCannotBeTransferred'} = $resrec->{branchcode};
+        }
     }
 
     # Record the fact that this book was returned.

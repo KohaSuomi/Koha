@@ -490,7 +490,7 @@ $(document).ready(function () {
 
 
     <!-- case of simple return no issue or transfer but with a reservation  -->
-    [% IF ( reserved ) %]
+    [% IF ( reserved && !ResCannotBeTransferred ) %]
 	<!--  reserved  -->
         <div id="hold-found2" class="modal fade audio-alert-action">
             <div class="modal-dialog">
@@ -661,6 +661,9 @@ $(document).ready(function () {
             [% END %]
             [% IF ( errmsgloo.transferlimit ) %]
                 <p class="problem">Transfer is forbidden between [% Branches.GetName( holdingbranch ) %] (item's current library) and [% LoginBranchname %].</p>
+            [% END %]
+            [% IF ( errmsgloo.rescannotbetransferred ) %]
+                <p class="problem"><a href="/cgi-bin/koha/reserve/request.pl?biblionumber=[% itembiblionumber %]">A hold</a> was found but this item cannot be transferred to pickup location ([% Branches.GetName( destbranch ) %]) due to a branch transfer limit.</p>
             [% END %]
             [% IF ( errmsgloo.debarred ) %]
                 <p class="problem"><a href="/cgi-bin/koha/circ/circulation.pl?borrowernumber=[% errmsgloo.debarborrowernumber %]">[% errmsgloo.debarname %]([% errmsgloo.debarcardnumber %])</a> is now debarred until [% errmsgloo.debarred | $KohaDates %].</p>
