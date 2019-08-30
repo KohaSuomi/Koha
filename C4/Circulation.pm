@@ -1158,29 +1158,29 @@ Returns:
 =cut
 
 sub CanBookBeReturned {
-  my ($item, $branch) = @_;
-  my $allowreturntobranch = C4::Context->preference("AllowReturnToBranch") || 'anywhere';
+    my ($item, $branch) = @_;
+    my $allowreturntobranch = C4::Context->preference("AllowReturnToBranch") || 'anywhere';
 
-  # TODO: Remove this once all occurences of this sub have been adjusted to use Koha::Item as parameter
-  $item = Koha::Items->find($item->{itemnumber}) unless ref($item) eq 'Koha::Item';
+    # TODO: Remove this once all occurences of this sub have been adjusted to use Koha::Item as parameter
+    $item = Koha::Items->find($item->{itemnumber}) unless ref($item) eq 'Koha::Item';
 
-  # assume return is allowed to start
-  my $allowed = 1;
-  my $message;
+    # assume return is allowed to start
+    my $allowed = 1;
+    my $message;
 
-  # identify all cases where return is forbidden
-  if ($allowreturntobranch eq 'homebranch' && $branch ne $item->homebranch) {
-     $allowed = 0;
-     $message = $item->homebranch;
-  } elsif ($allowreturntobranch eq 'holdingbranch' && $branch ne $item->holdingbranch) {
-     $allowed = 0;
-     $message = $item->holdingbranch;
-  } elsif ($allowreturntobranch eq 'homeorholdingbranch' && $branch ne $item->homebranch && $branch ne $item->holdingbranch) {
-     $allowed = 0;
-     $message = $item->homebranch; # FIXME: choice of homebranch is arbitrary
-  }
+    # identify all cases where return is forbidden
+    if ($allowreturntobranch eq 'homebranch' && $branch ne $item->homebranch) {
+        $allowed = 0;
+        $message = $item->homebranch;
+    } elsif ($allowreturntobranch eq 'holdingbranch' && $branch ne $item->holdingbranch) {
+        $allowed = 0;
+        $message = $item->holdingbranch;
+    } elsif ($allowreturntobranch eq 'homeorholdingbranch' && $branch ne $item->homebranch && $branch ne $item->holdingbranch) {
+        $allowed = 0;
+        $message = $item->homebranch; # FIXME: choice of homebranch is arbitrary
+    }
 
-  return ($allowed, $message);
+    return ($allowed, $message);
 }
 
 =head2 CheckHighHolds
