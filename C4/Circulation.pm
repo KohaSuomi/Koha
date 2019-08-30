@@ -1139,7 +1139,7 @@ Check whether the item can be returned to the provided branch
 
 =over 4
 
-=item C<$item> is a hash of item information as returned from GetItem
+=item C<$item> is a Koha::Item object or (DEPRECATION WARNING) a hash of item information as returned from GetItem
 
 =item C<$branch> is the branchcode where the return is taking place
 
@@ -1161,20 +1161,23 @@ sub CanBookBeReturned {
   my ($item, $branch) = @_;
   my $allowreturntobranch = C4::Context->preference("AllowReturnToBranch") || 'anywhere';
 
+  # TODO: Remove this once all occurences of this sub have been adjusted to use Koha::Item as parameter
+  $item = Koha::Items->find($item->{itemnumber}) unless ref($item) eq 'Koha::Item';
+
   # assume return is allowed to start
   my $allowed = 1;
   my $message;
 
   # identify all cases where return is forbidden
-  if ($allowreturntobranch eq 'homebranch' && $branch ne $item->{'homebranch'}) {
+  if ($allowreturntobranch eq 'homebranch' && $branch ne $item->homebranch) {
      $allowed = 0;
-     $message = $item->{'homebranch'};
-  } elsif ($allowreturntobranch eq 'holdingbranch' && $branch ne $item->{'holdingbranch'}) {
+     $message = $item->homebranch;
+  } elsif ($allowreturntobranch eq 'holdingbranch' && $branch ne $item->holdingbranch) {
      $allowed = 0;
-     $message = $item->{'holdingbranch'};
-  } elsif ($allowreturntobranch eq 'homeorholdingbranch' && $branch ne $item->{'homebranch'} && $branch ne $item->{'holdingbranch'}) {
+     $message = $item->holdingbranch;
+  } elsif ($allowreturntobranch eq 'homeorholdingbranch' && $branch ne $item->homebranch && $branch ne $item->holdingbranch) {
      $allowed = 0;
-     $message = $item->{'homebranch'}; # FIXME: choice of homebranch is arbitrary
+     $message = $item->homebranch; # FIXME: choice of homebranch is arbitrary
   }
 
   return ($allowed, $message);
