@@ -63,7 +63,8 @@ sub start_search {
     my $query = $args->{RPN}->{'query'}->to_koha($self->{'attribute_mappings'}->{$database});
     $self->log_debug("    parsed search: $query");
     my @operands = $query;
-    (undef, $built_query) = $builder->build_query_compat( undef, \@operands, undef, undef, undef, 0);
+    my @sortBy = 'id_asc';
+    (undef, $built_query) = $builder->build_query_compat( undef, \@operands, undef, undef, \@sortBy, 0);
 
     my ($error, $marcresults, $hits ) = $searcher->simple_search_compat($built_query, 0, $num_to_prefetch);
     if (defined $error) {
