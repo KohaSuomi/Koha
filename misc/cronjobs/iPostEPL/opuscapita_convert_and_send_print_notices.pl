@@ -213,7 +213,7 @@ sub sendletters {
       C4::Context->config('printmailProviders')->{'opuscapita'}->{'sftp'}
       ->{'password'};
 
-    if ( defined $host && defined $user && defined $password ) {
+    if ( $host && $user && $password ) {
         print localtime
           . ": Transferring letters to OpusCapita host $host with SFTP.\n";
         my $status = system(
