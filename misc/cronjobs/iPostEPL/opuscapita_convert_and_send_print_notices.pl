@@ -52,7 +52,7 @@ sub hdiacritic {
 
     my $char;
     my $oldchar;
-    my $retstring;
+    my $retstring = '';
 
     foreach ( split( //, $_[0] ) ) {
         $char    = $_;
