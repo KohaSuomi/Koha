@@ -22,6 +22,8 @@ use Mojo::Base 'Mojolicious::Controller';
 use C4::Biblio qw( GetBiblioData AddBiblio ModBiblio DelBiblio BiblioAutoLink GetFrameworkCode );
 use C4::Items qw ( AddItemBatchFromMarc );
 use Koha::Biblios;
+use Koha::Serials;
+use Koha::Subscriptions;
 use MARC::Record;
 use MARC::Batch;
 use MARC::File::USMARC;
@@ -100,6 +102,54 @@ sub getholdings {
         return $c->render(status => 404, openapi => {error => "Biblio not found"});
     }
     return $c->render(status => 200, openapi => { biblio => $biblio, holdings => $biblio->holdings_full });
+}
+
+sub getserialsubscriptions {
+    my $c = shift->openapi->valid_input or return;
+
+    # Can't use a join here since subscriptions and serials are missing proper relationship in the database.
+    my @all_serials;
+    my $subscriptions = Koha::Subscriptions->search( 
+        { 
+            biblionumber => $c->validation->param('biblionumber')
+        },
+        {
+            select => [ qw( subscriptionid biblionumber branchcode location callnumber ) ]
+        }
+    );
+    while (my $subscription = $subscriptions->next()) {
+        my $serials = Koha::Serials->search(
+            { 
+                subscriptionid => $subscription->subscriptionid 
+            },
+            {
+                select => [ qw( serialid serialseq serialseq_x serialseq_y serialseq_z publisheddate publisheddatetext notes ) ],
+                '+columns' => {
+                    received => \do { "IF(status=2, 1, 0)" }
+                }
+            }
+        );
+        if ($serials->count > 0) {
+            my $record = {
+                subscriptionid => $subscription->subscriptionid, 
+                biblionumber   => $subscription->biblionumber, 
+                branchcode     => $subscription->branchcode,
+                location       => $subscription->location,
+                callnumber     => $subscription->callnumber,
+                issues         => $serials->unblessed
+            };
+            if ($subscription->location) {
+                my $loc = Koha::AuthorisedValues->search({
+                    category => 'LOC',
+                    authorised_value => $subscription->location
+                })->next;
+                $record->{location_description} = $loc->lib if defined $loc;
+            }
+            push @all_serials, $record;
+        }
+    }
+
+    return $c->render(status => 200, openapi => { subscriptions => \@all_serials });
 }
 
 sub getcomponentparts {
