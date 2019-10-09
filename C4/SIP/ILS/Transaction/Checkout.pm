@@ -23,9 +23,6 @@ use Koha::DateUtils;
 
 use parent qw(C4::SIP::ILS::Transaction);
 
-use Koha::Logger;
-our $logger = Koha::Logger->get();
-
 our $debug;
 
 
@@ -50,7 +47,7 @@ sub new {
 
 sub do_checkout {
 	my $self = shift;
-	$logger->debug("ILS::Transaction::Checkout performing checkout...");
+	C4::SIP::Sip::get_logger()->debug("ILS::Transaction::Checkout performing checkout...");
 	my $pending        = $self->{item}->pending_queue;
 	my $shelf          = $self->{item}->hold_shelf;
 	my $barcode        = $self->{item}->id;
@@ -107,8 +104,7 @@ sub do_checkout {
                 # We've been returned a case other than those above
                 $self->screen_msg("Item cannot be issued: $confirmation");
                 $noerror = 0;
-                $logger->debug("Blocking checkout Reason:$confirmation");
-                last;
+                C4::SIP::Sip::get_logger()->debug("Blocking checkout Reason:$confirmation");
             }
         }
     }

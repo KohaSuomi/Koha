@@ -13,9 +13,6 @@ use C4::Members qw( GetMember );
 
 use parent qw(C4::SIP::ILS::Transaction::Renew);
 
-use Koha::Logger;
-our $logger = Koha::Logger->get();
-
 my %fields = (
     renewed   => [],
     unrenewed => [],
@@ -44,7 +41,7 @@ sub do_renew_all {
         my $item_id = $itemx->{barcode};
         my $item    = C4::SIP::ILS::Item->new($item_id);
         if ( !defined($item) ) {
-            $logger->debug("renew_all: Invalid item id '$item_id' associated with patron '$patron->id'");
+            C4::SIP::Sip::get_logger()->debug("renew_all: Invalid item id '$item_id' associated with patron '$patron->id'");
 
             # $all_ok = 0; Do net set as still ok
             push @{ $self->unrenewed }, $item_id;

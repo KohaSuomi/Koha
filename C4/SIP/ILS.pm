@@ -8,8 +8,7 @@ use warnings;
 use strict;
 use Data::Dumper;
 
-use C4::Context; #This must be present so Koha::Logger can init properly.
-use C4::SIP::Sip;
+use C4::SIP::Sip qw(get_logger);
 use C4::SIP::ILS::Item;
 use C4::SIP::ILS::Patron;
 use C4::SIP::ILS::Transaction;
@@ -19,9 +18,6 @@ use C4::SIP::ILS::Transaction::FeePayment;
 use C4::SIP::ILS::Transaction::Hold;
 use C4::SIP::ILS::Transaction::Renew;
 use C4::SIP::ILS::Transaction::RenewAll;
-
-use Koha::Logger;
-our $logger = Koha::Logger->get();
 
 my $debug = 0;
 
@@ -51,7 +47,7 @@ sub new {
     my $type = ref($class) || $class;
     my $self = {};
 	$debug and warn "new ILS: INSTITUTION: " . Dumper($institution);
-    $logger->debug("new ILS $institution->{id}");
+    C4::SIP::Sip::get_logger()->debug("new ILS $institution->{id}");
     $self->{institution} = $institution;
     return bless $self, $type;
 }
@@ -86,7 +82,7 @@ sub supports {
 sub check_inst_id {
     my ($self, $id, $whence) = @_;
     if ($id ne $self->{institution}->{id}) {
-        $logger->warn("$whence: received institution '$id', expected '$self->{institution}->{id}'");
+        C4::SIP::Sip::get_logger()->warn("$whence: received institution '$id', expected '$self->{institution}->{id}'");
         # Just an FYI check, we don't expect the user to change location from that in SIPconfig.xml
     }
 }
@@ -171,12 +167,12 @@ sub checkout {
             push( @{ $patron->{items} }, $item_id );
             $circ->desensitize( !$item->magnetic_media );
 
-            $logger->debug("ILS::Checkout: patron '$patron_id' has checked out '".
+            C4::SIP::Sip::get_logger()->debug("ILS::Checkout: patron '$patron_id' has checked out '".
                                                      join( ', ', @{ $patron->{items} } ).
                                                     "' items");
         }
         else {
-            $logger->error("ILS::Checkout Issue failed");
+            C4::SIP::Sip::get_logger()->error("ILS::Checkout Issue failed");
         }
     }
 
@@ -220,11 +216,11 @@ sub checkin {
     # It's ok to check it in if it exists, and if it was checked out
     # or it was not checked out but the checked_in_ok flag was set
     $circ->ok( ( $checked_in_ok && $item ) || ( $item && $item->{patron} ) );
-    $logger->debug("C4::SIP::ILS::checkin - using checked_in_ok") if $checked_in_ok;
+    C4::SIP::Sip::get_logger()->debug("C4::SIP::ILS::checkin - using checked_in_ok") if $checked_in_ok;
 
     if ( !defined( $item->{patron} ) ) {
         $circ->screen_msg("Item not checked out") unless $checked_in_ok;
-        $logger->debug("C4::SIP::ILS::checkin - item not checked out");
+        C4::SIP::Sip::get_logger()->debug("C4::SIP::ILS::checkin - item not checked out");
     }
     else {
         if ( $circ->ok ) {
@@ -447,10 +443,10 @@ sub renew {
 		my $count = scalar @{$patron->{items}};
 		foreach my $i (@{$patron->{items}}) {
             unless (defined $i->{barcode}) {    # FIXME: using data instead of objects may violate the abstraction layer
-                $logger->error("No barcode for item " . $j+1 . " of $count: $item_id");
+                C4::SIP::Sip::get_logger()->error("No barcode for item " . $j+1 . " of $count: $item_id");
                 next;
             }
-            $logger->debug("checking item ". $j + 1 . " of $count: $item_id vs. $i->{barcode} " );
+            C4::SIP::Sip::get_logger()->debug("checking item ". $j + 1 . " of $count: $item_id vs. $i->{barcode} " );
             if ($i->{barcode} eq $item_id) {
 				# We have it checked out
 				$item = C4::SIP::ILS::Item->new( $item_id );
@@ -484,9 +480,9 @@ sub renew_all {
 
     $trans->patron($patron = C4::SIP::ILS::Patron->new( $patron_id ));
     if (defined $patron) {
-        $logger->debug("ILS::renew_all: patron '$patron->name': renew_ok: $patron->renew_ok");
+        C4::SIP::Sip::get_logger()->debug("ILS::renew_all: patron '$patron->name': renew_ok: $patron->renew_ok");
     } else {
-        $logger->debug("ILS::renew_all: Invalid patron id: '$patron_id'");
+        C4::SIP::Sip::get_logger()->debug("ILS::renew_all: Invalid patron id: '$patron_id'");
     }
 
     if (!defined($patron)) {
@@ -507,3 +503,4 @@ sub renew_all {
 
 1;
 __END__
+

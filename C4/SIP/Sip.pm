@@ -29,9 +29,6 @@ our %EXPORT_TAGS = (
         $error_detection $protocol_version
         $field_delimiter $last_response)]);
 
-use Koha::Logger;
-our $logger = Koha::Logger->get();
-
 our $error_detection = 0;
 our $protocol_version = 1;
 our $field_delimiter = '|'; # Protocol Default
@@ -64,7 +61,7 @@ sub add_field {
     my ($i, $ent);
 
     if (!defined($value)) {
-        $logger->debug("add_field: Undefined value being added to '$field_id'");
+        C4::SIP::Sip::get_logger()->debug("add_field: Undefined value being added to '$field_id'");
     }
     $value=~s/\r/ /g; # CR terminates a sip message
                       # Protect against them in sip text fields
@@ -117,7 +114,7 @@ sub add_count {
 
     $count = sprintf("%04d", $count);
     if (length($count) != 4) {
-		$logger->debug("handle_patron_info: $label wrong size: '$count'");
+		C4::SIP::Sip::get_logger()->debug("handle_patron_info: $label wrong size: '$count'");
 		$count = ' ' x 4;
     }
     return $count;
@@ -187,7 +184,7 @@ sub write_msg {
     } else {
         STDOUT->autoflush(1);
         print $msg, $terminator;
-        $logger->info("OUTPUT MSG: '$msg'");
+        C4::SIP::Sip::get_logger()->info("OUTPUT MSG: '$msg'");
     }
 
     $last_response = $msg;
