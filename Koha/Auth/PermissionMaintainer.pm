@@ -39,7 +39,7 @@ use Koha::Exception::BadParameter;
 use Koha::Exception::UnknownObject;
 
 use Koha::Logger;
-my $l = Koha::Logger->get();
+my $l = Koha::Logger->new({category => __PACKAGE__});
 
 =head NAME Koha::Auth::PermissionMaintainer
 

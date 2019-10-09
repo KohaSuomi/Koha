@@ -86,7 +86,7 @@ BEGIN {
 	);
 }
 
-our $logger = Koha::Logger->get();
+our $logger = Koha::Logger->get( { category => 'C4.ImportBatch' } );
 
 =head1 NAME
 

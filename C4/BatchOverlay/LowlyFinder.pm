@@ -46,7 +46,7 @@ use constant ENC_LEVELS => {
         'z' => {full => 0, rank => 11},
 };
 
-our $logger = Koha::Logger->get();
+my $logger = Koha::Logger->new({category => __PACKAGE__});
 
 =head1 SYNOPSIS
 

@@ -43,7 +43,7 @@ use Koha::Exception::SelfService::PermissionRevoked;
 use Koha::Exception::SelfService::OpeningHours;
 
 use Koha::Logger;
-our $logger = Koha::Logger->get();
+my $logger = bless({lazyLoad => {category => __PACKAGE__}}, 'Koha::Logger');
 
 =head2 CheckSelfServicePermission
 

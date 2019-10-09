@@ -24,7 +24,7 @@ use C4::Matcher;
 
 use Koha::Exception::BadSystemPreference;
 
-our $logger = Koha::Logger->get();
+my $logger = Koha::Logger->get({category => __PACKAGE__});
 
 sub new {
     my ($class, $self) = _validateNew(@_);

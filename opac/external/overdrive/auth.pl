@@ -26,7 +26,7 @@ use C4::Auth qw(checkauth);
 use Koha::Logger;
 use Koha::ExternalContent::OverDrive;
 
-our $logger = Koha::Logger->get({ interface => 'opac' });
+my $logger = Koha::Logger->get({ interface => 'opac' });
 my $cgi = new CGI;
 
 my ( $user, $cookie, $sessionID, $flags ) = checkauth( $cgi, 1, {}, 'opac' );

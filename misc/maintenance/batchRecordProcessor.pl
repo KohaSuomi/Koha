@@ -22,6 +22,7 @@
 use Modern::Perl;
 use Getopt::Long;
 
+use C4::Context;
 use Koha::RecordProcessor;
 use C4::Biblio::Chunker;
 use C4::Biblio;
@@ -62,7 +63,9 @@ if ($help || !$confirm || !$filter) {
 }
 
 use Koha::Logger;
-Koha::Logger->setVerbosity($verbose);
+C4::Context->setCommandlineEnvironment();
+Koha::Logger->setConsoleVerbosity($verbose);
+my $logger = Koha::Logger->new();
 
 my $chunker = C4::Biblio::Chunker->new(undef, undef, undef, $verbose);
 my $processor = Koha::RecordProcessor->new( { filters => ( $filter ) });

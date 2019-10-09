@@ -65,7 +65,7 @@ use Koha::Exception::BadEncoding;
 use Koha::Exception::UnknownProgramState;
 
 
-our $logger = Koha::Logger->get();
+my $logger = Koha::Logger->new({category => __PACKAGE__});
 
 =head new
 

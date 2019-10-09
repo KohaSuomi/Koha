@@ -25,6 +25,7 @@ use C4::BatchOverlay::LowlyFinder;
 use C4::BatchOverlay::CandidateFinder;
 
 use Koha::Logger;
+#Koha::Logger->setConsoleVerbosity('TRACE');
 
 use t::CataloguingCenter::localMARCRecords;
 use t::lib::TestContext;

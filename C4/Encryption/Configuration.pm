@@ -11,7 +11,7 @@ use YAML::XS;
 use C4::Context;
 
 use Koha::Logger;
-our $logger = Koha::Logger->get();
+my $logger = bless({lazyLoad => {category => __PACKAGE__}}, 'Koha::Logger');
 
 =head1 NAME
 
