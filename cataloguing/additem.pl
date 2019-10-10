@@ -630,7 +630,14 @@ if ($op eq "additem") {
 
             my $exist_itemnumber;
 
-            for (my $i = 0; $i < $number_of_copies; $i++) {
+            my $total_iterations = 0;
+            my $close_to_infinity = 10_000;
+
+            for (my $i = 0; $i < $number_of_copies; $total_iterations++) {
+
+                if( ($total_iterations - $i) > $close_to_infinity ) {
+                    die "Too much iterations ($total_iterations) without adding new items (only $i added): probably system stuck with the same barcode. Aborting to prevent the infinite loop / process hang up.";
+                }
 
                 # If there is a barcode
                 if ($barcodevalue) {
@@ -679,6 +686,7 @@ if ($op eq "additem") {
                     # We count the item only if it was really added
                     # That way, all items are added, even if there was some already existing barcodes
                     # FIXME : Please note that there is a risk of infinite loop here if we never find a suitable barcode
+                    # NOT FIX but possibility to detect issue: ($total_iterations - $i) > $close_to_infinity counter on the beginning of loop.
                     $i++;
                 }
 
