@@ -1827,24 +1827,46 @@ descriptions rather than normal ones when they exist.
 sub GetAuthorisedValueDesc {
     my ( $tag, $subfield, $value, $framework, $tagslib, $category, $opac ) = @_;
 
+# DBIC_TRACE=1=/home/koha/nugged/log/trace.log
+
+# my $storage = Koha::Libraries->result_class->result_source->storage;
+# $storage->debug(1);    # start debugging
+# $storage->debugfh(IO::File->new('/home/koha/nugged/log/trace.log', 'w'));
+
     if ( !$category ) {
+
+$NugDebug::ON and NugDebug::timer_delta(201);
 
         return $value unless defined $tagslib->{$tag}->{$subfield}->{'authorised_value'};
 
         #---- branch
         if ( $tagslib->{$tag}->{$subfield}->{'authorised_value'} eq "branches" ) {
-            return Koha::Libraries->find($value)->branchname;
+            my $r = Koha::Libraries->find($value)->branchname;
+
+$NugDebug::ON and NugDebug::timer_delta(202);
+
+            return $r;
         }
 
         #---- itemtypes
         if ( $tagslib->{$tag}->{$subfield}->{'authorised_value'} eq "itemtypes" ) {
             my $itemtype = Koha::ItemTypes->find( $value );
-            return $itemtype ? $itemtype->translated_description : q||;
+
+$NugDebug::ON and NugDebug::timer_delta(203);
+
+            my $r = $itemtype ? $itemtype->translated_description : q||;
+
+$NugDebug::ON and NugDebug::timer_delta(204);
+
+            return $r;
         }
 
         #---- holdings
         if ( $tagslib->{$tag}->{$subfield}->{'authorised_value'} eq "holdings" ) {
             my $holding = Koha::Holdings->find( $value );
+
+$NugDebug::ON and NugDebug::timer_delta(205);
+
             if ( $holding ) {
                 my @parts;
 
@@ -1854,8 +1876,13 @@ sub GetAuthorisedValueDesc {
                 push @parts, $holding->ccode() if $holding->ccode();
                 push @parts, $holding->callnumber() if $holding->callnumber();
 
+$NugDebug::ON and NugDebug::timer_delta(206);
+
                 return join(' ', @parts);
             }
+
+$NugDebug::ON and NugDebug::timer_delta(207);
+
             return q||;
         }
 
@@ -1864,12 +1891,21 @@ sub GetAuthorisedValueDesc {
     }
 
     my $dbh = C4::Context->dbh;
+
+$NugDebug::ON and NugDebug::timer_delta(208);
+
     if ( $category ne "" ) {
         my $sth = $dbh->prepare( "SELECT lib, lib_opac FROM authorised_values WHERE category = ? AND authorised_value = ?" );
         $sth->execute( $category, $value );
         my $data = $sth->fetchrow_hashref;
+
+$NugDebug::ON and NugDebug::timer_delta(209);
+
         return ( $opac && $data->{'lib_opac'} ) ? $data->{'lib_opac'} : $data->{'lib'};
     } else {
+
+$NugDebug::ON and NugDebug::timer_delta(210);
+
         return $value;    # if nothing is found return the original value
     }
 }
