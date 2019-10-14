@@ -1,4 +1,5 @@
-__LOG_DIR__/plack*.log
+__LOG_DIR__/plack.log
+__LOG_DIR__/plack-error.log
 __LOG_DIR__/rest.log
 __LOG_DIR__/cpu_pos.log
 {
@@ -19,7 +20,7 @@ __LOG_DIR__/cpu_pos.log
 }
 
 __LOG_DIR__/sip2.log
-__LOG_DIR__/sip2/*
+__LOG_DIR__/sip2/*.log
 {
 	daily
 	missingok
@@ -35,7 +36,9 @@ __LOG_DIR__/sip2/*
 	endscript
 }
 
-__LOG_DIR__/koha-zebradaemon* {
+__LOG_DIR__/koha-zebradaemon-output.log
+__LOG_DIR__/koha-zebradaemon.err
+{
 	daily
 	missingok
 	rotate 14
@@ -61,7 +64,7 @@ __LOG_DIR__/editx/* {
 	su
 }
 
-__LOG_DIR__/cronjobs/* {
+__LOG_DIR__/cronjobs/*.log {
 	daily
 	missingok
 	rotate 14
@@ -85,7 +88,9 @@ __LOG_DIR__/opac-error.log
 	su
 }
 
-__LOG_DIR__/koha-*error_log {
+__LOG_DIR__/koha-error_log
+__LOG_DIR__/koha-opac-error_log
+{
 	daily
 	missingok
 	rotate 14
