@@ -32,6 +32,7 @@ __LOG_DIR__/sip2/*.log
 	su
 	sharedscripts
 	postrotate
+		/__INTRANET_CGI_DIR__/misc/maintenance/anonymize_sip2_log.sh $1
 		/etc/init.d/koha-sip-daemon restart
 	endscript
 }
