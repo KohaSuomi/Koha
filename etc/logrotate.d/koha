@@ -1,6 +1,6 @@
-__LOG_DIR__/plack*.log 
-__LOG_DIR__/rest.log 
-__LOG_DIR__/cpu_pos.log 
+__LOG_DIR__/plack*.log
+__LOG_DIR__/rest.log
+__LOG_DIR__/cpu_pos.log
 {
 	daily
 	missingok
