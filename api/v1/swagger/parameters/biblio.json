@@ -15,5 +15,12 @@
       "type": "integer"
     },
     "collectionFormat": "multi"
+  },
+  "matcherIdQueryParam": {
+    "name": "matcher_id",
+    "in": "query",
+    "description": "Internal matcher identifier",
+    "required": false,
+    "type": "integer"
   }
 }

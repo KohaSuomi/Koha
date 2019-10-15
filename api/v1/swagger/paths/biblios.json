@@ -41,7 +41,8 @@
       "operationId": "updateBiblio",
       "tags": ["biblios"],
       "parameters": [
-        { "$ref": "../parameters.json#/biblionumberPathParam" }
+        { "$ref": "../parameters.json#/biblionumberPathParam" },
+        { "$ref": "../parameters.json#/matcherIdQueryParam" }
       ],
       "produces": [
         "application/json"
