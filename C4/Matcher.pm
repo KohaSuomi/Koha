@@ -973,6 +973,7 @@ sub overlayRecord {
         }
 
     }
+    @{$record->{_fields}} = sort { $a->tag() cmp $b->tag() } @{$record->{_fields}};
     return $record;
 }
 #Copies the given field and subfield from $oldRecord to the $newRecord as a new field and subfield

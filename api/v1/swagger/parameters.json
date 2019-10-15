@@ -14,6 +14,9 @@
   "biblionumbersQueryParam": {
     "$ref": "parameters/biblio.json#/biblionumbersQueryParam"
   },
+  "matcherIdQueryParam": {
+    "$ref": "parameters/biblio.json#/matcherIdQueryParam"
+  },
   "borrowernumberPathParam": {
     "$ref": "parameters/patron.json#/borrowernumberPathParam"
   },

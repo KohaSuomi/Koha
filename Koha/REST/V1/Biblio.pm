@@ -19,7 +19,8 @@ use Modern::Perl;
 
 use Mojo::Base 'Mojolicious::Controller';
 
-use C4::Biblio qw( GetBiblioData AddBiblio ModBiblio DelBiblio BiblioAutoLink GetFrameworkCode );
+use C4::Biblio qw( GetBiblioData AddBiblio ModBiblio DelBiblio BiblioAutoLink GetFrameworkCode GetMarcBiblio );
+use C4::Matcher;
 use C4::Items qw ( AddItemBatchFromMarc );
 use Koha::Biblios;
 use Koha::Serials;
@@ -207,6 +208,7 @@ sub update {
     my $c = shift->openapi->valid_input or return;
 
     my $biblionumber = $c->validation->param('biblionumber');
+    my $matcher_id = $c->validation->param('matcher_id');
 
     my $biblio = Koha::Biblios->find($biblionumber);
     unless ($biblio) {
@@ -223,7 +225,15 @@ sub update {
         if (C4::Context->preference("BiblioAddsAuthorities")){
             BiblioAutoLink($record, $frameworkcode);
         }
-        $success = &ModBiblio($record, $biblionumber, $frameworkcode);
+        if($matcher_id) {
+            my $old_record = C4::Biblio::GetMarcBiblio($biblionumber);
+            my $matcher = C4::Matcher->fetch($matcher_id);
+
+            my $mergedrecord = $matcher->overlayRecord($old_record, $record);
+            $success = &ModBiblio($mergedrecord, $biblionumber, $frameworkcode);
+        } else {
+            $success = &ModBiblio($record, $biblionumber, $frameworkcode);
+        }
     }
     if ($success) {
         my $biblio = Koha::Biblios->find($c->validation->param('biblionumber'));
