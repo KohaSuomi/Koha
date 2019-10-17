@@ -103,7 +103,8 @@ my @relations = split /\|/, C4::Context->preference('borrowerRelationship'), -1;
 my $empty_relationship_allowed = grep {$_ eq ""} @relations;
 $template->param( empty_relationship_allowed => $empty_relationship_allowed );
 
-my $guarantor_id = $input->param('guarantor_id');
+my $guarantorinfo = $input->param('guarantorinfo');
+my $guarantor_id = $input->param('new_guarantor_id');
 my $guarantor = undef;
 $guarantor = Koha::Patrons->find( $guarantor_id ) if $guarantor_id;
 $template->param( guarantor => $guarantor );
@@ -276,6 +277,22 @@ if ( ( $op eq 'insert' ) and !$nodouble ) {
             push( @new_guarantors, $g );
         }
         $template->param( new_guarantors => \@new_guarantors );
+    }
+}
+
+if ( $guarantor_id ) {
+    if (my $guarantor = Koha::Patrons->find( $guarantor_id )) {
+        my $guarantor_category = $guarantor->category->category_type;
+        push @errors, 'ERROR_guarantor_is_guarantee' if ( ($guarantor_category eq 'C') &&
+                                                          ($op eq 'save' || $op eq 'insert') );
+    }
+}
+
+my $valid_guarantor = $guarantor_id ? $guarantor_id : $newdata{'contactname'};
+
+if($category_type eq 'C' && ($op eq 'save' ||  $op eq 'insert') && C4::Context->preference('ChildNeedsGuarantor')){
+    if(!$valid_guarantor){
+        push @errors, 'ERROR_child_no_guarantor';
     }
 }
 

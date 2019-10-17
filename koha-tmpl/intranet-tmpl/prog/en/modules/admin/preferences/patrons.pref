@@ -326,6 +326,20 @@ Patrons:
                1: Allow
                0: "Don't allow"
          - staff to set the ability for a patron's fines to be viewed by linked patrons in the OPAC.
+     -
+         - "The guarantor"
+         - pref: "GuarantorHasToBePatron"
+           choices:
+               1: "has to be"
+               0: "doesn't have to be"
+         - a patron.
+     -
+         - "A child patron"
+         - pref: "ChildNeedsGuarantor"
+           choices:
+               yes: "must have"
+               no: "doesn't need"
+         - a guarantor when adding the patron.
     Privacy:
      -
          - Use the following URL

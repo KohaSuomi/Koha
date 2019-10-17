@@ -139,6 +139,12 @@ legend:hover {
                             <div class="dialog alert">
                                 <p>The following fields are wrong. Please fix them.</p>
                                 <ul>
+                                    [% IF ( ERROR_child_no_guarantor ) %]
+                                        <li id="ERROR_child_no_guarantor">A child patron needs a guarantor.</li>
+                                    [% END %]
+                                    [% IF ( ERROR_guarantor_is_guarantee ) %]
+                                        <li id="ERROR_guarantor_is_guarantee">A guarantor cannot be a guarantee.</li>
+                                    [% END %]
                                     [% IF ( ERROR_login_exist ) %]
                                         <li id="ERROR_login_exist">Username/password already exists.</li>
                                     [% END %]
@@ -655,7 +661,7 @@ legend:hover {
                                     [% PROCESS 'main-address-style' %]
                                 [% END # /UNLESS nostreet && nocity etc group%]
 
-                                [% UNLESS nophone && nophonepro && nomobile && noemail && noemailpro && nofax %]
+                                [% UNLESS nophone && nophonepro && nomobile && noemail && noemailpro && nofax || Koha.Preference('GuarantorHasToBePatron') %]
                                     <fieldset class="rows" id="memberentry_contact">
                                         <legend id="contact_lgd">Contact information</legend>
                                         <ol>
