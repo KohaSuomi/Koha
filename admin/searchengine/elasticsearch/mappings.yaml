@@ -1189,8 +1189,8 @@ biblios:
         sort: ~
         suggestible: ''
     type: ''
-  record-control-number:
-    label: record-control-number
+  record-control-number-773w:
+    label: record-control-number-773w
     mappings:
       - facet: ''
         marc_field: '773w'
@@ -1653,6 +1653,24 @@ biblios:
       - facet: ''
         marc_field: '001'
         marc_type: normarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  system-control-number:
+    label: system-control-number
+    mappings:
+      - facet: ''
+        marc_field: '035a'
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  system-control-number-cancelled:
+    label: system-control-number-cancelled
+    mappings:
+      - facet: ''
+        marc_field: '035z'
+        marc_type: marc21
         sort: ~
         suggestible: ''
     type: ''
