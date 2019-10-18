@@ -644,8 +644,13 @@ if ($op eq "additem") {
                     $barcodevalue = $barcodeobj->next_value($oldbarcode) if ($barcodePreference ne 'hbyyyyincr' && ($i > 0 || $exist_itemnumber));
 
                     # Putting it into the record
-                    if ($barcodevalue) {
-                    $record->field($tagfield)->update($tagsubfield => $barcodevalue);
+                    if($barcodevalue) {
+                        $record->field($tagfield)->update( $tagsubfield => $barcodevalue );
+                    }
+                    else {
+                        push @errors, "no_next_barcode";
+                        $itemrecord = $record;
+                        last;
                     }
 
                     # Checking if the barcode already exists
@@ -677,16 +682,12 @@ if ($op eq "additem") {
 
                     }
 
-                    # We count the item only if it was really added
-                    # That way, all items are added, even if there was some already existing barcodes
-                    # FIXME : Please note that there is a risk of infinite loop here if we never find a suitable barcode
-                    $i++;
                 }
 
                 # Preparing the next iteration
                 $oldbarcode = $barcodevalue;
             }
-            undef($itemrecord);
+            undef($itemrecord) if ! @errors;
         }
     }	
     if ($frameworkcode eq 'FA' && $fa_circborrowernumber){
