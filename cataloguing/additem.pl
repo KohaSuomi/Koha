@@ -467,6 +467,7 @@ sub get_common_fields_template {
     $marc_field{'marc84a'} = $marcRecord->subfield('084', "a");
     $marc_field{'marc100a'} = $marcRecord->subfield('100', "a");
     $marc_field{'marc110a'} = $marcRecord->subfield('110', "a");
+    $marc_field{'marc111a'} = $marcRecord->subfield('111', "a");
     $marc_field{'marc130a'} = $marcRecord->subfield('130', "a");
     $marc_field{'marc245a'} = $marcRecord->subfield('245', "a");
     return \%marc_field;
