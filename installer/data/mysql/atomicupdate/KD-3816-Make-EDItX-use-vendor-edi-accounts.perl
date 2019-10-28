@@ -32,5 +32,3 @@ if( CheckVersion( $DBversion ) ) {
     SetVersion( $DBversion );
     print "Upgrade to $DBversion done (KD-3816-Make-EDItX-use-vendor-edi-accounts)\n";
 }
-
-exit 0;
