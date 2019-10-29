@@ -5,6 +5,7 @@ use Modern::Perl;
 use CGI;
 use C4::Context;
 use C4::Auth;
+use C4::Auth qw(check_cookie_auth);
 use C4::Output;
 use C4::Form::MessagingPreferences;
 use C4::Members;
@@ -17,8 +18,31 @@ my $query = new CGI;
 my $requestJson = $query->param('request_json');
 my $message;
 
+
+sub session_is_expired {
+    my $query = shift;
+    my $cookie = $query->cookie("CGISESSID");
+    if(!$cookie) {
+        return 1;
+    }
+    my ($status, $sessionId) = check_cookie_auth($cookie, undef);
+    if($status eq "ok") {
+       return 0;
+    }
+
+    return 1;
+}
+
 if($requestJson){
     my $reportRequest = decode_json(encode_utf8($requestJson));
+
+    if($reportRequest && defined $reportRequest->{selectedReportType} && $reportRequest->{selectedReportType} eq 'html') {
+        if(session_is_expired($query)) {
+           output_html_with_http_headers $query, undef, "reload" , undef, { force_no_caching => 1 };
+           return;
+        }
+    }
+
     if($reportRequest && defined $reportRequest->{name}){
         my $rows;
         my $headerRows;
@@ -41,7 +65,7 @@ if($requestJson){
                            template_name   => "admin/reporting/report_html.tt",
                            query           => $query,
                            type            => "intranet",
-                           authnotrequired => 1,
+                           authnotrequired => 0,
                            debug           => 1,
                        });
                        $template->param('header_rows' => $headerRows);
@@ -75,7 +99,7 @@ if($requestJson){
                    template_name   => "admin/reporting/report_no_data.tt",
                    query           => $query,
                    type            => "intranet",
-                   authnotrequired => 1,
+                   authnotrequired => 0,
                    debug           => 1,
                });
                output_html_with_http_headers $query, $cookie, $template->output, undef, { force_no_caching => 1 };

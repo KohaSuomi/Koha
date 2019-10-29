@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package Koha::Reporting::Import::UpdateItems;
+package Koha::Reporting::Import::UpdateDeletedItems;
 
 use Modern::Perl;
 use Moose;
@@ -7,30 +7,16 @@ use Data::Dumper;
 use POSIX qw(strftime floor);
 use Time::Piece;
 use utf8;
-use Koha::Reporting::Table::Abstract;
 
 extends 'Koha::Reporting::Import::Abstract';
 
 sub BUILD {
     my $self = shift;
-    $self->initFactTable('dummy');
+    $self->initFactTable('reporting_deleteditems');
+    $self->setInsertOnDuplicateFact(1);
     $self->setName('items_update');
-
-#    $self->{column_filters}->{item}->{is_yle} = 1;
-#    $self->{column_filters}->{item}->{published_year} = 1;
-#    $self->{column_filters}->{item}->{collection_code} = 1;
-#    $self->{column_filters}->{item}->{language} = 1;
-#    $self->{column_filters}->{item}->{acquired_year} = 1;
-#    $self->{column_filters}->{item}->{itemtype_okm} = 1;
-#    $self->{column_filters}->{item}->{itemtype} = 1;
-
-#    $self->{column_filters}->{item}->{cn_class} = 1;
-#    $self->{column_filters}->{item}->{cn_class_primary} = 1;
-#    $self->{column_filters}->{item}->{cn_class_1_dec} = 1;
-#    $self->{column_filters}->{item}->{cn_class_2_dec} = 1;
-#    $self->{column_filters}->{item}->{cn_class_3_dec} = 1;
-    $self->{column_filters}->{item}->{datelastborrowed} = 1;
     $self->{column_transform_method}->{fact}->{amount} = \&factAmount;
+    $self->{column_filters}->{item}->{datelastborrowed} = 1;
 }
 
 sub loadDatas{
@@ -42,30 +28,30 @@ sub loadDatas{
     print Dumper "SELECTING";
 
     my $itemtypes = Koha::Reporting::Import::Abstract->getConditionValues('itemTypeToStatisticalCategory');
-    my $notforloan = Koha::Reporting::Import::Abstract->getConditionValues('notForLoanStatuses');
 
-    my $query = "select update_items.itemnumber, items.location, items.homebranch as branch, items.dateaccessioned as acquired_year, items.itype as itemtype, items.ccode as collection_code, ";
-    $query .=  "COALESCE(items.dateaccessioned, '0000-00-00') as datetime, items.biblioitemnumber, items.cn_sort, '0' as is_deleted, items.barcode, ";
-    $query .= 'biblio_metadata.metadata as marcxml, biblioitems.publicationyear as published_year ';
-    $query .= 'from items ';
-    $query .= 'inner join reporting_update_items as update_items on items.itemnumber=update_items.itemnumber ';
-    $query .= 'left join biblioitems on items.biblioitemnumber=biblioitems.biblioitemnumber ';
-    $query .= 'left join biblio_metadata on items.biblionumber=biblio_metadata.biblionumber ';
+    my $query = "select update_items.itemnumber, deleteditems.location, deleteditems.barcode, deleteditems.homebranch as branch, deleteditems.dateaccessioned as acquired_year, deleteditems.itype as itemtype, COALESCE(deleteditems.timestamp) as datetime, deleteditems.biblioitemnumber, deleteditems.cn_sort, ";
+    $query .= 'COALESCE(bibliometa.metadata, deletedbibliometa.metadata) as marcxml, COALESCE(biblioitems.publicationyear, deletedbiblioitems.publicationyear) as published_year ';
+    $query .= 'from deleteditems ';
+    $query .= 'inner join reporting_update_items as update_items on deleteditems.itemnumber=update_items.itemnumber ';
+    $query .= 'left join biblioitems on deleteditems.biblioitemnumber = biblioitems.biblioitemnumber ';
+    $query .= 'left join biblio_metadata as bibliometa on biblioitems.biblionumber = bibliometa.biblionumber ';
+    $query .= 'left join deletedbiblioitems on deleteditems.biblioitemnumber = deletedbiblioitems.biblioitemnumber ';
+    $query .= 'left join deletedbiblio_metadata as deletedbibliometa on deletedbiblioitems.biblionumber = deletedbibliometa.biblionumber ';
 
-    my $whereItems = "where items.itype in ".$itemtypes." and items.notforloan not in ".$notforloan." ";
+    my $whereDeleted = "where deleteditems.itype in ".$itemtypes;
     if($self->getLastSelectedId()){
-        $whereItems .= $self->getWhereLogic($whereItems);
-        $whereItems .= " update_items.itemnumber  > ? ";
+        $whereDeleted .= $self->getWhereLogic($whereDeleted);
+        $whereDeleted .= " update_items.itemnumber > ? ";
         push @parameters, $self->getLastSelectedId();
     }
     if($self->getLastAllowedId()){
-        $whereItems .= $self->getWhereLogic($whereItems);
-        $whereItems .= " update_items.itemnumber <= ? ";
+        $whereDeleted .= $self->getWhereLogic($whereDeleted);
+        $whereDeleted .= " update_items.itemnumber <= ? ";
         push @parameters, $self->getLastAllowedId();
     }
 
-    $query .= $whereItems;
-    $query .= 'order by update_items.itemnumber ';
+    $query .= $whereDeleted;
+    $query .= 'order by itemnumber ';
 
     if($self->getLimit()){
         $query .= 'limit ?';
@@ -91,8 +77,7 @@ sub loadDatas{
         }
     }
 
-    #die(Dumper $statistics);
-
+    $self->updateIsDeleted($statistics);
     print Dumper 'returning';
     return $statistics;
 }
@@ -115,6 +100,27 @@ sub factAmount{
     return 1;
 }
 
+sub updateIsDeleted {
+    my $self = shift;
+    my $statistics = shift;
+
+    my @itemnumbers = ();
+    foreach my $data (@$statistics) {
+        if(defined $data->{itemnumber}){
+	   push @itemnumbers, $data->{itemnumber};
+        }
+    }
+
+    my $dbh = C4::Context->dbh;
+    my $query = "update reporting_items_fact set is_deleted=1 where item_id in ( ";
+    $query .= "select item_id from reporting_item_dim as items ";
+    $query .= "where items.itemnumber in (?) ";
+    $query .= ")";
+
+    my $stmnt = $dbh->prepare($query);
+    $stmnt->execute(@itemnumbers);
+}
+
 sub truncateUpdateTable{
     my $self = shift;
     my $dbh = C4::Context->dbh;
@@ -132,8 +138,8 @@ sub prepareUpdateTable {
     my $dbh = C4::Context->dbh;
     my @parameters = ($date);
 
-    my $query = "insert into reporting_update_items (itemnumber) select distinct items.itemnumber from items ";
-       $query .= "where items.timestamp > ? ";
+    my $query = "insert into reporting_update_items (itemnumber) select distinct deleteditems.itemnumber from deleteditems ";
+       $query .= "where deleteditems.timestamp > ? ";
 
     my $stmnt = $dbh->prepare($query);
     $stmnt->execute(@parameters) or die($DBI::errstr);
