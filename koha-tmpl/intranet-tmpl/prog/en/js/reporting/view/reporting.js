@@ -72,7 +72,9 @@ function Report(){
                             option.linkedFilter.selectAllOption = false;
                             option.linkedFilter.options = [];
                             option.linkedFilter.allOptions = [];
+                            option.linkedFilter.translator = false;
                             option.linkedFilterOptions = [];
+                            //option.linkedFilter.selectedOptions = [];
                         }
                         option.linkedFilterOptions = [];
                         option.filter = false;
@@ -82,6 +84,7 @@ function Report(){
                         var name = filter.selectedValue1.name;
                         filter.selectedValue1 = name;
                     }
+                    filter.translator = false;
                     filter.selectAllOption = false;
                     filter.options = [];
                     filter.allOptions = [];
@@ -112,7 +115,9 @@ function Report(){
         var dateFilter = self.dateFilter();
         if(dateFilter){
             dateFilter.from(self.formatDate(self.startDate));
+            $( "#from" ).trigger("change");
             dateFilter.to(self.formatDate(self.endDate));
+            $( "#to" ).trigger("change");
         }
     };
 
@@ -126,8 +131,52 @@ function Report(){
         'showPrecision': ko.observable(0),
         'from': ko.observable(self.formatDate(self.startDate)),
         'to': ko.observable(self.formatDate(self.endDate)),
-        'precision': ko.observable('month')
+        'precision': ko.observable('month'),
+        'isValidRange': ko.observable(true)
     });
+
+    self.validateDateRange = function(fromDate, toDate) {
+        if(self.dateFilter().useTo() != 1 || self.dateFilter().useFrom() != 1) {
+            return;
+        }
+        if(fromDate === undefined || fromDate === "" || toDate === undefined || toDate === "") {
+            return;
+        }
+
+        var parseDate = function(date) {
+            var parts = date.split(".");
+            if(parts.length != 3) {
+               return false;
+            }
+            return parts[2] + "-" + parts[1] + "-" + parts[0];
+        }
+
+        var fromParsed = parseDate(fromDate);
+        var toParsed = parseDate(toDate);
+        if(!fromParsed || !toParsed) {
+            this.dateFilter().isValidRange(false);
+            return;
+        }
+
+        var fromUnix = new Date(fromParsed).getTime();
+        var toUnix = new Date(toParsed).getTime();
+
+        if(isNaN(fromUnix) || isNaN(toUnix) || fromUnix > toUnix) {
+            this.dateFilter().isValidRange(false);
+        }
+        else {
+            this.dateFilter().isValidRange(true);
+        }
+    };
+
+    self.dateFilter().to.subscribe(function(newDate) {
+        self.validateDateRange(self.dateFilter().from(), newDate);
+    });
+
+    self.dateFilter().from.subscribe(function(newDate) {
+        self.validateDateRange(newDate, self.dateFilter().to());
+    });
+
 };
 
 function Filter(){
@@ -428,7 +477,12 @@ function ReportingView() {
     };
 
     self.reportEmptySelections = function(){
-            var reportGroups = self.reportGroups();
+           $( "#to" ).datepicker( "option", "minDate", null );
+           $( "#from" ).datepicker( "option", "minDate", null );
+           $( "#to" ).datepicker( "option", "maxDate", null );
+           $( "#from" ).datepicker( "option", "maxDate", null );
+
+           var reportGroups = self.reportGroups();
             var reportGroupsLength = reportGroups.length;
             for (var i = 0; i < reportGroupsLength; i++) {
                 var group = reportGroups[i];
@@ -439,6 +493,8 @@ function ReportingView() {
                     report.resetSelections();
                 }
             }
+            $( "#to" ).trigger("change");
+            $( "#from" ).trigger("change");
     };
 
     self.renderReport = function(){
@@ -452,8 +508,13 @@ function ReportingView() {
            type: "POST",
 
            success: function( ajaxResponse ) {
-               self.htmlSpinnerVisible(0);
-               self.selectedReport().renderedReport(ajaxResponse);
+               if(ajaxResponse == "reload") {
+                   location.reload();
+               }
+               else {
+                   self.htmlSpinnerVisible(0);
+                   self.selectedReport().renderedReport(ajaxResponse);
+               }
            },
            error: function( xhr, status, errorThrown ) {
                console.log(status);
@@ -527,20 +588,26 @@ function ReportingView() {
         from = $( "#from" ).datepicker({
             dateFormat: dateFormat,
             changeMonth: true,
+	    changeYear: true,
             numberOfMonths: 1,
             firstDay: 1
         }).on( "change", function() {
-          to.datepicker( "option", "minDate", getDate( this ) );
+          //to.datepicker( "option", "minDate", getDate( this ) );
         }),
         to = $( "#to" ).datepicker({
             dateFormat: dateFormat,
             changeMonth: true,
+            changeYear: true,
             numberOfMonths: 1,
             firstDay: 1
         })
         .on( "change", function() {
-            from.datepicker( "option", "maxDate", getDate( this ) );
+            //from.datepicker( "option", "maxDate", getDate( this ) );
         });
+
+
+        $( "#to" ).trigger("change");
+        $( "#from" ).trigger("change");
 
         function getDate( element ) {
             var date;
@@ -954,15 +1021,17 @@ function ReportFactory(){
                  var valueElements = valueAccessor();
                  if(allBindingsAccessor && allBindingsAccessor().hasOwnProperty('optionsValue')){
                      var filter = allBindingsAccessor().optionsValue;
-                     var valueElements = valueElements();
-                     var elementsLength = valueElements.length;
-                     for (var i = 0; i < elementsLength; i++) {
-                         valueElement = valueElements[i];
-                         if(filter.name() != 'is_first_acquisition'){
-                             valueElement.callback('destroyLinked');
+                     if(!filter.hasOwnProperty('hideSelector') || filter.hideSelector() != 1){
+                         var valueElements = valueElements();
+                         var elementsLength = valueElements.length;
+                         for (var i = 0; i < elementsLength; i++) {
+                             valueElement = valueElements[i];
+                             if(filter.name() != 'is_first_acquisition'){
+                                 valueElement.callback('destroyLinked');
+                             }
+                             valueElement.callback('itemSelected');
+                             valueElement.callback('hideLinked');
                          }
-                         valueElement.callback('itemSelected');
-                         valueElement.callback('hideLinked');
                      }
                  }
              }

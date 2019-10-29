@@ -14,6 +14,7 @@ use Koha::Reporting::Import::Acquisitions;
 use Koha::Reporting::Import::Items;
 use Koha::Reporting::Import::DeletedItems;
 use Koha::Reporting::Import::UpdateItems;
+use Koha::Reporting::Import::UpdateDeletedItems;
 use Koha::Reporting::Import::Returns;
 use Koha::Reporting::Import::Reserves;
 use Koha::Reporting::Import::OldReserves;
@@ -43,12 +44,12 @@ unless ($config->{blockStatisticsGeneration}) {
 	my $importItems = new Koha::Reporting::Import::Items;
 	my $importDeletedItems = new Koha::Reporting::Import::DeletedItems;
 	my $importUpdateItems = new Koha::Reporting::Import::UpdateItems;
+	my $importUpdateDeletedItems = new Koha::Reporting::Import::UpdateDeletedItems;
 	my $importReturns = new Koha::Reporting::Import::Returns;
 	my $importReserves = new Koha::Reporting::Import::Reserves;
 	my $importOldReserves = new Koha::Reporting::Import::OldReserves;
 	my $importMessages = new Koha::Reporting::Import::Messages;
 	my $updateAcquisitionsIsFirst = new Koha::Reporting::Import::UpdateAcquisitionsIsFirst;
-	#$importUpdateItems->truncateUpdateTable();
 
 	print "Fines Overdue\n";
 	$importFinesOverdue->massImport();
@@ -80,7 +81,12 @@ unless ($config->{blockStatisticsGeneration}) {
 	$importOldReserves->massImport();
 
 	print "Update Items\n";
+	$importUpdateItems->prepareUpdateTable();
 	$importUpdateItems->massImport();
+
+        print "Udate Deleted Items\n";
+	$importUpdateDeletedItems->prepareUpdateTable();
+	$importUpdateDeletedItems->massImport();
 
 	print "Imports Done.\n"
 } else {

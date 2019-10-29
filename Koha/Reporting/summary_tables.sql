@@ -173,7 +173,8 @@ CREATE TABLE reporting_items_fact (
     item_id BIGINT UNSIGNED NOT NULL,
     location_id BIGINT UNSIGNED NOT NULL,
     is_deleted int(11) UNSIGNED NOT NULL,
-    amount int(11) UNSIGNED NOT NULL
+    amount int(11) UNSIGNED NOT NULL,
+    UNIQUE(item_id)
 );
 
 CREATE INDEX date_id_idx ON reporting_items_fact (date_id);
@@ -188,7 +189,8 @@ CREATE TABLE reporting_deleteditems_fact (
     date_id BIGINT UNSIGNED NOT NULL,
     item_id BIGINT UNSIGNED NOT NULL,
     location_id BIGINT UNSIGNED NOT NULL,
-    amount int(11) UNSIGNED NOT NULL
+    amount int(11) UNSIGNED NOT NULL,
+    UNIQUE(item_id)
 );
 
 CREATE INDEX date_id_idx ON reporting_deleteditems_fact (date_id);

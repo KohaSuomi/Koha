@@ -131,6 +131,7 @@
                        </div>
                    </fieldset>
                    <fieldset class="reporting-chooser reporting-time-selector">
+		       <div style="display: none" data-bind="visible: !selectedReport().dateFilter().isValidRange()" class="error">Invalid Date Range</div>
                        <div class="reporting-time-selector-selector" data-bind="visible: selectedReport().dateFilter().useFrom()"  >
                            <label for="from">from </label>
                            <input type="text" id="from" name="from" data-bind="value: selectedReport().dateFilter().from">

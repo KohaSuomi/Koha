@@ -5,12 +5,13 @@ use Modern::Perl;
 use Moose;
 use Data::Dumper;
 
+use Koha::Reporting::Report::Filter::ItemIsDeleted;
+
 extends "Koha::Reporting::Report::Abstract";
 
 sub BUILD {
     my $self = shift;
     $self->initFactTable('reporting_items');
-
     $self->getFactTable()->setUseRollup(0);
     $self->getFactTable()->setUseCount(1);
     $self->getFactTable()->setCountColumn('item_id');
@@ -49,6 +50,15 @@ sub BUILD {
 
 
 }
+
+sub addHardcodedFilters{
+    my $self = shift;
+    my $deletedFilter = new Koha::Reporting::Report::Filter::ItemIsDeleted;
+    $self->filter('fact', $deletedFilter , '1');
+}
+
+
+
 
 
 1;
