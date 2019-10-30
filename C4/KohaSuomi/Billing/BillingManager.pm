@@ -58,6 +58,9 @@ sub GetOverduedIssues {
     my $dbh = C4::Context->dbh;
     my $sth;
 
+    my $setupBranch = C4::Context->config("billingSetup")->{"branch"} || "issues.branchcode";
+    my $intervalYear = C4::Context->config("billingSetup")->{"intervalYear"} || 1;
+
     my $query="SELECT
         issues.issue_id,
         issues.borrowernumber,
@@ -71,11 +74,11 @@ sub GetOverduedIssues {
         $query .= "LEFT JOIN overduebills ON overduebills.issue_id=issues.issue_id ";
     }
     $query .= "WHERE (NOW() > DATE_ADD(issues.date_due,INTERVAL ".$delay->{delaytime}." DAY))
-        AND issues.date_due > (NOW() - INTERVAL 1 YEAR) ";
+        AND issues.date_due > (NOW() - INTERVAL ".$intervalYear." YEAR) ";
     if ($group) {
         $query .= "AND (".$branches.") ";
     } else {
-        $query .= "AND ".C4::Context->config("billingSetup")->{"branch"}." = ? ";
+        $query .= "AND ".$setupBranch." = ? ";
     }
     if ($showbilled) {$query.= "AND overduebills.billingdate IS NOT NULL ";}
     if ($shownotbilled) {$query.= "AND overduebills.billingdate IS NULL ";}
@@ -261,6 +264,9 @@ sub GetTotalPages {
     my $dbh = C4::Context->dbh;
     my $sth;
 
+    my $setupBranch = C4::Context->config("billingSetup")->{"branch"} || "issues.branchcode";
+    my $intervalYear = C4::Context->config("billingSetup")->{"intervalYear"} || 1;
+
     my $query="SELECT COUNT(DISTINCT issues.issue_id) AS sqlrows
         FROM issues
         LEFT JOIN borrowers ON issues.borrowernumber=borrowers.borrowernumber
@@ -270,10 +276,10 @@ sub GetTotalPages {
         if ($group) {
             $query .= "(".$branches.") ";
         } else {
-            $query .= C4::Context->config("billingSetup")->{"branch"}." = ? ";
+            $query .= $setupBranch." = ? ";
         }
         $query .= "AND (NOW() > DATE_ADD(issues.date_due, INTERVAL ".$delay->{delaytime}." DAY))
-        AND issues.date_due > (NOW() - INTERVAL 1 YEAR) ";
+        AND issues.date_due > (NOW() - INTERVAL ".$intervalYear." YEAR) ";
         if ($showbilled) {$query.= "AND overduebills.billingdate IS NOT NULL ";}
         if ($shownotbilled) {$query.= "AND overduebills.billingdate IS NULL ";}
 

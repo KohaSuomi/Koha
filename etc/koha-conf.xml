@@ -251,9 +251,11 @@ __PAZPAR2_TOGGLE_XML_POST__
  <sap_ftp_pw></sap_ftp_pw> <!-- Ftp password for username -->
  <sap_use_sftp></sap_use_sftp> <!-- 1 use sftp, 0 use ftp -->
  <billingSetup>
+  <basePath></basePath>
   <branch>items.homebranch</branch>
   <replacementPrice>yes</replacementPrice>
   <debarment>no</debarment>
+  <intervalYear></intervalYear>
  </billingSetup>
 
 
