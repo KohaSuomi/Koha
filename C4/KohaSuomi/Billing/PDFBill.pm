@@ -93,7 +93,8 @@ sub create_pdf {
                     $printed = print_pdf($message, $pdfFile, $letterTemplate, $output_directory);
 
                     if ($printed) {
-                        my $pdfPath = "<a href = '/static_content/claiming/".$borrowernumber."/".$pdfFile."' target='_blank'>Print</a>";
+			my $basepath = C4::Context->config("billingSetup")->{"basePath"} || "/";
+                        my $pdfPath = "<a href ='".$basepath."static_content/claiming/".$borrowernumber."/".$pdfFile."' target='_blank'>Print</a>";
                         if (!CheckMessageDate($borrowernumber, 'Asiakkaalla on laskutettua aineistoa', $today)) {
                             Koha::Patron::Message->new(
                                 {

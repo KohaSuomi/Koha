@@ -287,6 +287,8 @@ if(@overduedata <= 0){
 
 my $now = strftime "%Y-%m-%d", localtime;
 
+my $basepath = C4::Context->config("billingSetup")->{"basePath"} || "/";
+
 #Passing variables to template as parameters
 $template->param(
 overdueloop => \@overduedata,
@@ -304,7 +306,8 @@ branch => $branch,
 msg => $msg,
 date => $now,
 account => $account,
-branchcategory => $branchcategory
+branchcategory => $branchcategory,
+basepath => $basepath
 );
 
 output_html_with_http_headers($input, $cookie, $template->output);
