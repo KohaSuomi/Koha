@@ -263,7 +263,7 @@ sub get_self_service_status {
     try {
         my $patron = Koha::Patrons->cast($c->validation->param('cardnumber'));
         my $branchcode = $c->validation->param('branchcode');
-        C4::SelfService::CheckSelfServicePermission($patron, $branchcode, 'accessMainDoor');
+        C4::SelfService::CheckSelfServicePermission($patron->unblessed, $branchcode, 'accessMainDoor');
         #If we didn't get any exceptions, we succeeded
         $payload = {permission => Mojo::JSON->true};
         return $c->render(status => 200, openapi => $payload);
