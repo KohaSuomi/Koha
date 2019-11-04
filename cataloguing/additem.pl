@@ -659,7 +659,7 @@ if ($op eq "additem") {
 
                 # Adding the item
                 if (!$exist_itemnumber) {
-                    my ($oldbiblionumber,$oldbibnum,$oldbibitemnum) = AddItemFromMarc($record,$biblionumber);
+                    my ($oldbiblionumber,$oldbibnum,$oldbibitemnum) = AddItemFromMarc( $record, $biblionumber, $dbh, 1 );
                     set_item_default_location($oldbibitemnum);
 
                     if ($addToPrintLabelsList) {
@@ -687,6 +687,9 @@ if ($op eq "additem") {
                 # Preparing the next iteration
                 $oldbarcode = $barcodevalue;
             }
+
+            ModZebra( $biblionumber, "specialUpdate", "biblioserver" );
+
             undef($itemrecord) if ! @errors;
         }
     }	

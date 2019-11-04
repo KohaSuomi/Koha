@@ -225,7 +225,7 @@ sub ShelfToCart {
 =head2 AddItemFromMarc
 
   my ($biblionumber, $biblioitemnumber, $itemnumber) 
-      = AddItemFromMarc($source_item_marc, $biblionumber);
+      = AddItemFromMarc($source_item_marc, $biblionumber[, $dbh, $postpone_indexes_update]);
 
 Given a MARC::Record object containing an embedded item
 record and a biblionumber, create a new item record.
@@ -233,8 +233,10 @@ record and a biblionumber, create a new item record.
 =cut
 
 sub AddItemFromMarc {
-    my ( $source_item_marc, $biblionumber ) = @_;
-    my $dbh = C4::Context->dbh;
+    my $source_item_marc        = shift;
+    my $biblionumber            = shift;
+    my $dbh                     = @_ ? shift : C4::Context->dbh;
+    my $postpone_indexes_update = @_ ? shift : undef;
 
     # parse item hash from MARC
     my $frameworkcode = GetFrameworkCode( $biblionumber );
@@ -244,13 +246,13 @@ sub AddItemFromMarc {
 	$localitemmarc->append_fields($source_item_marc->field($itemtag));
     my $item = &TransformMarcToKoha( $localitemmarc, $frameworkcode ,'items');
     my $unlinked_item_subfields = _get_unlinked_item_subfields($localitemmarc, $frameworkcode);
-    return AddItem($item, $biblionumber, $dbh, $frameworkcode, $unlinked_item_subfields);
+    return AddItem($item, $biblionumber, $dbh, $frameworkcode, $unlinked_item_subfields, $postpone_indexes_update);
 }
 
 =head2 AddItem
 
   my ($biblionumber, $biblioitemnumber, $itemnumber) 
-      = AddItem($item, $biblionumber[, $dbh, $frameworkcode, $unlinked_item_subfields]);
+      = AddItem($item, $biblionumber[, $dbh, $frameworkcode, $unlinked_item_subfields, $postpone_indexes_update]);
 
 Given a hash containing item column names as keys,
 create a new Koha item record.
@@ -259,12 +261,16 @@ The first two optional parameters (C<$dbh> and C<$frameworkcode>)
 do not need to be supplied for general use; they exist
 simply to allow them to be picked up from AddItemFromMarc.
 
-The final optional parameter, C<$unlinked_item_subfields>, contains
+Optional parameter, C<$unlinked_item_subfields>, contains
 an arrayref containing subfields present in the original MARC
 representation of the item (e.g., from the item editor) that are
 not mapped to C<items> columns directly but should instead
 be stored in C<items.more_subfields_xml> and included in 
 the biblio items tag for display and indexing.
+
+The final optional parameter, C<$postpone_indexes_update>, prevents
+calling of ModZebra sub so this used when adding items in a batch and
+then ModZebra called in C<additem.pl> after the whole loop.
 
 =cut
 
@@ -278,6 +284,7 @@ sub AddItem {
     if (@_) {
         $unlinked_item_subfields = shift;
     }
+    my $postpone_indexes_update = @_ ? shift : undef;
 
     # needs old biblionumber and biblioitemnumber
     $item->{'biblionumber'} = $biblionumber;
@@ -301,7 +308,8 @@ sub AddItem {
 
     $item->{'itemnumber'} = $itemnumber;
 
-    ModZebra( $item->{biblionumber}, "specialUpdate", "biblioserver" );
+    ModZebra( $item->{biblionumber}, "specialUpdate", "biblioserver" )
+        unless $postpone_indexes_update;
 
     logaction( "CATALOGUING", "ADD", $itemnumber, "item" )
       if C4::Context->preference("CataloguingLog");
