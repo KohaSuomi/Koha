@@ -1,13 +1,13 @@
 DROP TABLE IF EXISTS `reporting_import_settings`;
 CREATE TABLE reporting_import_settings (
     primary_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    primary_column VARCHAR(255),
-    last_inserted VARCHAR(255),
-    last_selected VARCHAR(255),
-    last_allowed_select VARCHAR(255),
-    last_inserted_fact VARCHAR(255),
-    batch_limit VARCHAR(255),
+    name VARCHAR(50) NOT NULL,
+    primary_column VARCHAR(50),
+    last_inserted VARCHAR(50),
+    last_selected VARCHAR(50),
+    last_allowed_select VARCHAR(50),
+    last_inserted_fact VARCHAR(50),
+    batch_limit VARCHAR(50),
     UNIQUE(name)
 );
 
