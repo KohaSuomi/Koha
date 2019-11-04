@@ -168,6 +168,13 @@ function confirm_deletion() {
 [% IF ( not_same_branch ) %]<div class="dialog alert"><strong>Cannot delete</strong>: The items do not belong to your library.</div>[% END %]
 [% IF ( linked_analytics ) %]<div class="dialog alert"><strong>Cannot delete</strong>: item has linked <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% biblionumber %]&amp;analyze=1">analytics.</a>.</div>[% END %]
 
+[% IF ( num_items_added ) %]
+<div class="dialog message">
+    <h3><strong>[% num_items_added %]</strong> item(s) added.</h3>
+    <a href="/cgi-bin/koha/cataloguing/additem.pl?biblionumber=[% biblionumber %]">Return to the added list</a>
+</div>
+[% END %]
+
 <div id="cataloguing_additem_itemlist">
     [% IF ( item_loop ) %]
         <div>
@@ -248,6 +255,7 @@ function confirm_deletion() {
 </div>
 <div class="yui-u">
 <div id="cataloguing_additem_newitem">
+[% IF NOT ( num_items_added ) %]
     <form id="f" method="post" action="/cgi-bin/koha/cataloguing/additem.pl" name="f">
     <input type="hidden" name="op" value="[% op %]" />
     [% IF (popup) %]
@@ -366,6 +374,7 @@ function confirm_deletion() {
 
 
     </form>
+[% END %]
 </div>
 </div><!-- /yui-u -->
 </div><!-- /yui-gf -->

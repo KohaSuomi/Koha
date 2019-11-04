@@ -73,15 +73,25 @@ sub get_item_from_barcode {
 
 sub set_item_default_location {
     my $itemnumber = shift;
-    my $item = GetItem( $itemnumber );
-    if ( C4::Context->preference('NewItemsDefaultLocation') ) {
+    my $item = shift || GetItem($itemnumber);
+
+    my $prev_location      = $item->{'location'};
+    my $prev_perm_location = $item->{'permanent_location'};
+
+    if( my $new_def_location = C4::Context->preference('NewItemsDefaultLocation') ) {
         $item->{'permanent_location'} = $item->{'location'};
-        $item->{'location'} = C4::Context->preference('NewItemsDefaultLocation');
-        ModItem( $item, undef, $itemnumber);
+        $item->{'location'} = $new_def_location;
     }
     else {
-      $item->{'permanent_location'} = $item->{'location'} if !defined($item->{'permanent_location'});
-      ModItem( $item, undef, $itemnumber);
+        $item->{'permanent_location'} = $item->{'location'}
+            if ! defined $item->{'permanent_location'};
+    }
+
+    # we call ModItem only if any of the locations changed, to speed up adding of thousands of items:
+    if(    $prev_location ne $item->{'location'}
+        or $prev_perm_location ne $item->{'permanent_location'} )
+    {
+        ModItem( $item, undef, $itemnumber );
     }
 }
 
@@ -455,6 +465,8 @@ if ($prefillitem) {
     }
 }
 
+my $num_items_added = 0 ;
+
 #
 # Returns a hash-ref to 4 commonly used fields - undefined hash-values
 # are also needed for use (as a check) in the template for this view.
@@ -517,8 +529,8 @@ if ($op eq "additem") {
 
         # if barcode exists, don't create, but report The problem.
         unless ($exist_itemnumber) {
-            my ( $oldbiblionumber, $oldbibnum, $oldbibitemnum ) = AddItemFromMarc( $record, $biblionumber );
-            set_item_default_location($oldbibitemnum);
+            my ( $oldbiblionumber, $oldbibnum, $oldbibitemnum, $item ) = AddItemFromMarc( $record, $biblionumber );
+            set_item_default_location($oldbibitemnum, $item);
             my $err = C4::Biblio::UpdateDatereceived($biblionumber);
             push @errors, $err if $err;
             if ($addToPrintLabelsList) {
@@ -553,7 +565,7 @@ if ($op eq "additem") {
 
                 $cookie = [ $cookie, $itemcookie ];
             }
-
+            $num_items_added++;
         }
         $nextop = "additem";
         if ($exist_itemnumber) {
@@ -659,8 +671,8 @@ if ($op eq "additem") {
 
                 # Adding the item
                 if (!$exist_itemnumber) {
-                    my ($oldbiblionumber,$oldbibnum,$oldbibitemnum) = AddItemFromMarc($record,$biblionumber);
-                    set_item_default_location($oldbibitemnum);
+                    my ($oldbiblionumber,$oldbibnum,$oldbibitemnum, $item) = AddItemFromMarc($record,$biblionumber);
+                    set_item_default_location($oldbibitemnum, $item);
 
                     if ($addToPrintLabelsList) {
                         my $shelf = Koha::Virtualshelves->find( { owner => $loggedinuser, shelfname => 'labels printing'} );
@@ -686,6 +698,8 @@ if ($op eq "additem") {
 
                 # Preparing the next iteration
                 $oldbarcode = $barcodevalue;
+
+                $num_items_added++;
             }
             undef($itemrecord) if ! @errors;
         }
@@ -951,30 +965,35 @@ my ($holdingbrtagf,$holdingbrtagsubf) = &GetMarcFromKohaField("items.holdingbran
 # First, the existing items for display
 my @item_value_loop;
 my @header_value_loop;
-for my $row ( @big_array ) {
-    my %row_data;
-    my @item_fields = map +{ field => $_ || '' }, @$row{ sort keys(%witness) };
-    $row_data{item_value} = [ @item_fields ];
-    $row_data{itemnumber} = $row->{itemnumber};
-    #reporting this_row values
-    $row_data{'nomod'} = $row->{'nomod'};
-    $row_data{'hostitemflag'} = $row->{'hostitemflag'};
-    $row_data{'hostbiblionumber'} = $row->{'hostbiblionumber'};
-#	$row_data{'countanalytics'} = $row->{'countanalytics'};
-    push(@item_value_loop,\%row_data);
-}
-foreach my $subfield_code (sort keys(%witness)) {
-    my %header_value;
-    $header_value{header_value} = $witness{$subfield_code};
 
-    my $subfieldlib = $tagslib->{$itemtagfield}->{$subfield_code};
-    my $kohafield = $subfieldlib->{kohafield};
-    if ( $kohafield && $kohafield =~ /items.(.+)/ ) {
-        $header_value{column_name} = $1;
+# do this only if we didn't just saved POST-form with items:
+if( ! $num_items_added ) {
+    for my $row (@big_array) {
+        my %row_data;
+        my @item_fields = map +{ field => $_ || '' }, @$row{ sort keys(%witness) };
+        $row_data{item_value} = [@item_fields];
+        $row_data{itemnumber} = $row->{itemnumber};
+        #reporting this_row values
+        $row_data{'nomod'}            = $row->{'nomod'};
+        $row_data{'hostitemflag'}     = $row->{'hostitemflag'};
+        $row_data{'hostbiblionumber'} = $row->{'hostbiblionumber'};
+        #   $row_data{'countanalytics'} = $row->{'countanalytics'};
+        push( @item_value_loop, \%row_data );
     }
+    foreach my $subfield_code ( sort keys(%witness) ) {
+        my %header_value;
+        $header_value{header_value} = $witness{$subfield_code};
 
-    push(@header_value_loop, \%header_value);
+        my $subfieldlib = $tagslib->{$itemtagfield}->{$subfield_code};
+        my $kohafield   = $subfieldlib->{kohafield};
+        if( $kohafield && $kohafield =~ /items.(.+)/ ) {
+            $header_value{column_name} = $1;
+        }
+
+        push( @header_value_loop, \%header_value );
+    }
 }
+
 
 # now, build the item form for entering a new item
 my @loop_data =();
@@ -1046,6 +1065,7 @@ $template->param(
     biblionumber => $biblionumber,
     title        => $oldrecord->{title},
     author       => $oldrecord->{author},
+    num_items_added  => $num_items_added,
     item_loop        => \@item_value_loop,
     item_header_loop => \@header_value_loop,
     item             => \@loop_data,

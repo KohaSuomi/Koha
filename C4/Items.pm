@@ -224,7 +224,7 @@ sub ShelfToCart {
 
 =head2 AddItemFromMarc
 
-  my ($biblionumber, $biblioitemnumber, $itemnumber) 
+  my ($biblionumber, $biblioitemnumber, $itemnumber[, $item])
       = AddItemFromMarc($source_item_marc, $biblionumber);
 
 Given a MARC::Record object containing an embedded item
@@ -249,7 +249,7 @@ sub AddItemFromMarc {
 
 =head2 AddItem
 
-  my ($biblionumber, $biblioitemnumber, $itemnumber) 
+  my ($biblionumber, $biblioitemnumber, $itemnumber[, $item])
       = AddItem($item, $biblionumber[, $dbh, $frameworkcode, $unlinked_item_subfields]);
 
 Given a hash containing item column names as keys,
@@ -306,7 +306,7 @@ sub AddItem {
     logaction( "CATALOGUING", "ADD", $itemnumber, "item" )
       if C4::Context->preference("CataloguingLog");
 
-    return ( $item->{biblionumber}, $item->{biblioitemnumber}, $itemnumber );
+    return ( $item->{biblionumber}, $item->{biblioitemnumber}, $itemnumber, $item );
 }
 
 =head2 AddItemBatchFromMarc
