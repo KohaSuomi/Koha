@@ -467,6 +467,8 @@ __PAZPAR2_TOGGLE_XML_POST__
         <!-- Login details for SMS Gateway service -->
         <user></user>
         <passwd></passwd>
+        <sendUrl></sendUrl>
+        <clientid></clientid>
         <!-- Send messages with separated billing. Uses 3 first chars of branchcode for defining clientid -->
         <branchcode>
             <clientid></clientid>
