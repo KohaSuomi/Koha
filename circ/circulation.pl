@@ -55,22 +55,25 @@ use Koha::Patron::Images;
 use Koha::SearchEngine;
 use Koha::SearchEngine::Search;
 use Koha::Patron::Modifications;
-
+use REST::Client;
+use JSON;
 use Date::Calc qw(
   Today
   Add_Delta_Days
   Date_to_Days
 );
 use List::MoreUtils qw/uniq/;
+use Try::Tiny;
 
 #
 # PARAMETERS READING
 #
+my $error;
 my $query = new CGI;
-
+my $ill_checkouts_ref;
+my $ill_checkout_count;
 my $override_high_holds     = $query->param('override_high_holds');
 my $override_high_holds_tmp = $query->param('override_high_holds_tmp');
-
 my $sessionID = $query->cookie("CGISESSID") ;
 my $session = get_session($sessionID);
 if (!C4::Context->userenv){
@@ -81,6 +84,7 @@ if (!C4::Context->userenv){
     }
 }
 
+my $cardnumber;
 my $barcodes = [];
 my $barcode =  $query->param('barcode');
 # Barcode given by user could be '0'
@@ -235,6 +239,7 @@ if ($findborrower) {
     my $borrower = C4::Members::GetMember( cardnumber => $findborrower );
     if ( $borrower ) {
         $borrowernumber = $borrower->{borrowernumber};
+        $cardnumber = $borrower->{cardnumber};
     } else {
         my $dt_params = { iDisplayLength => 100 };
         my $results = C4::Utils::DataTables::Members::search(
@@ -596,6 +601,30 @@ my $relatives_issues_count =
   Koha::Database->new()->schema()->resultset('Issue')
   ->count( { borrowernumber => \@relatives } );
 
+if ( $borrowernumber ) {
+     $borrower = GetMember( borrowernumber => $borrowernumber );
+     $cardnumber = $borrower->{cardnumber};     
+    try {
+        # get ill_checkouts from webkake 
+        my $restclient = REST::Client->new();
+        my $consortium = C4::Context->config("webkakecon");
+        my $resturl = "https://webkake.kirjastot.fi/wrest/rest/wrest/ill_loans?mhknum=".$cardnumber."&mulfinna=".$consortium;
+        $restclient->GET($resturl);
+        my $json_string = $restclient->responseContent();
+        my @ill_checkouts = @{decode_json($json_string)};
+        $ill_checkout_count = scalar @ill_checkouts;
+        $ill_checkouts_ref = \@ill_checkouts;
+    }
+    catch {
+        $error = $_;
+    };
+    
+    if($error) {
+        $ill_checkout_count = undef;
+    }
+
+}
+
 my $av = Koha::AuthorisedValues->search({ category => 'ROADTYPE', authorised_value => $borrower->{streettype} });
 my $roadtype = $av->count ? $av->next->lib : '';
 
@@ -642,6 +671,8 @@ $template->param(
     RoutingSerials => C4::Context->preference('RoutingSerials'),
     relatives_issues_count => $relatives_issues_count,
     relatives_borrowernumbers => \@relatives,
+    ill_checkout_count => $ill_checkout_count,
+    ILLCHECKOUTS => $ill_checkouts_ref,
 );
 
 my $patron_image = Koha::Patron::Images->find($borrower->{borrowernumber});
