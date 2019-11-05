@@ -51,6 +51,7 @@ var AllowRenewalLimitOverride = [% (CAN_user_circulate_override_renewals && Koha
 var AllowCirculate = [% (CAN_user_circulate_circulate_remaining_permissions)? 1 : 0 %];
 var script = "circulation";
 var relatives_borrowernumbers = new Array();
+
 [% FOREACH b IN relatives_borrowernumbers %]
     relatives_borrowernumbers.push("[% b %]");
 [% END %]
@@ -652,9 +653,9 @@ No patron matched <span class="ex">[% message | html %]</span>
     [% IF (forceallow) %]<input type="hidden" name="forceallow" value="1">[% END %]
 
     [% IF Koha.Preference('ReducePatronInfoOnCirculation') %]
-    	<label class="circ_barcode" for="barcode">Checking out to [% INCLUDE 'patron-title-minimal.inc' %]</label>
+        <label class="circ_barcode" for="barcode">Checking out to [% INCLUDE 'patron-title-minimal.inc' %]</label>
     [% ELSE %]
-    	<label class="circ_barcode" for="barcode">Checking out to [% INCLUDE 'patron-title.inc' %]</label>
+        <label class="circ_barcode" for="barcode">Checking out to [% INCLUDE 'patron-title.inc' %]</label>
     [% END %]
 
         [% IF Koha.Preference('itemBarcodeFallbackSearch') %]
@@ -828,8 +829,8 @@ No patron matched <span class="ex">[% message | html %]</span>
 
             [% IF ( lost ) %]
 			<li class="blocker"><span class="circ-hlt">Lost: </span>Patron's card is lost</li>
-			[% END %]
-
+            [% END %]
+            
             <div id="ssbb-rootBlockSummary" class="circmessage attention" style="color: rgb(153, 0, 0);"></div>
 
             [% IF ( userdebarred ) %]
@@ -977,6 +978,9 @@ No patron matched <span class="ex">[% message | html %]</span>
         </li>
     [% END %]
 
+    [% IF ( ill_checkout_count ) %]
+        <li><a href="#illcheckouts" >[% ill_checkout_count %] ILL </a></li>
+    [% END %]
     <li><a id="debarments-tab-link" href="#reldebarments">[% debarments.count %] Restrictions</a></li>
 
     [% SET enrollments = patron.get_club_enrollments(1) %]
@@ -1023,6 +1027,32 @@ No patron matched <span class="ex">[% message | html %]</span>
         Loading...
     </div>
 [% END %]
+
+
+[% IF ( ill_checkout_count ) %]
+    <div id="illcheckouts">
+       <table id="ill-table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Number</th>
+                    <th scope="col">Order date</th>
+                    <th scope="col">Arrival date</th>
+                    <th scope="col">Due date</th>
+                    <th scope="col">Pick up place</th>
+                </tr>
+            </thead>
+            [% FOREACH ill_loan IN ILLCHECKOUTS %]
+              <tr><td>[% ill_loan.Julkaisu %]</td><td>[% ill_loan.Tekija %]</td>
+              <td>[% ill_loan.Tilausnumero %]</td><td>[% ill_loan.Tilauspvm %]</td>
+              <td>[% ill_loan.Saapunut %]</td><td>[% ill_loan.Erapvm %]</td>
+              <td>[% ill_loan.Noutopaikka %]</td></tr>
+            [% END %]
+        </table>
+    </div>
+[% END %]
+
 
 [% INCLUDE borrower_debarments.inc %]
 
@@ -1123,4 +1153,5 @@ No patron matched <span class="ex">[% message | html %]</span>
     </div>
     </div>
 </div>
+
 [% INCLUDE 'intranet-bottom.inc' %]
