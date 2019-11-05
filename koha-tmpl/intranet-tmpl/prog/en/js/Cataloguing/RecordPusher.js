@@ -96,10 +96,10 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
         $( "#pushRecordOpModal" ).find("#report").click();
 
     }
-    this.submitcomponentParts = function (remoteAPIOrId, componentparts, username) {
+    this.submitcomponentParts = function (remoteAPIOrId, componentparts, username, check) {
         var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
         $.each(componentparts, function (index, record) {
-            RemoteAPIs.Driver.records_add(remoteAPIPushDestination, {source_id: record.biblionumber, interface: remoteAPIOrId.interface, marc: record.marcxml, target_id: null, username: username, parent_id: self.activeBiblio.biblionumber, force: 1}, undefined, function (remoteAPI, error, result, recordXml) {
+            RemoteAPIs.Driver.records_add(remoteAPIPushDestination, {source_id: record.biblionumber, interface: remoteAPIOrId.interface, marc: record.marcxml, target_id: null, username: username, parent_id: self.activeBiblio.biblionumber, force: 1, check: check}, undefined, function (remoteAPI, error, result, recordXml) {
                 if (error) {
                     alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_add() failed with "+error);
                     return;
@@ -270,7 +270,9 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
             });
             self.submitToRemote(remoteAPI, {marc: result.sourcerecord, interface: remoteAPI.interface, source_id: self.activeBiblio.biblionumber, target_id: result.target_id, username: username});
             if (!result.targetrecord) {
-                self.submitcomponentParts(remoteAPI, result.componentparts, username);
+                self.submitcomponentParts(remoteAPI, result.componentparts, username, false);
+            } else {
+                self.submitcomponentParts(remoteAPI, result.componentparts, username, true);
             }
         });
         $( "#import" ).unbind().click(function( event ) {
