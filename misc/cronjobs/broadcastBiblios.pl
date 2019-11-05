@@ -58,7 +58,7 @@ GetOptions(
     'l|limit:i'                  => \$limit,
     'i|interface:s'              => \$interface,
     's|staged'                   => \$staged,
-    'b|batchdate:s'              => \$batchdate,
+    'batchdate:s'                => \$batchdate,
     't|type:s'                   => \$stage_type,
     'f|field:s'                  => \$target_field,
     'subfield:s'                 => \$target_subfield,
@@ -78,7 +78,7 @@ my $usage = <<USAGE;
     -l, --limit             Limiting the results of biblios
     -i, --interface         Interface name: with active add your system interface and with staged add remote.
     -s, --staged            Export staged records to interface
-    -b, --batchdate         Import batch date, used with 'staged' parameter. Default is today.
+    --batchdate             Import batch date, used with 'staged' parameter. Default is today.
     -t, --type              Stage type, used with 'staged' parameter. Add or update, default is add.
     -f, --field             Find target id from marcxml, used with 'staged' parameter and update type.
     --check                 Check that field contains some spesific identifier
@@ -90,8 +90,13 @@ if ($help) {
     exit 0;
 }
 
-if (!$interface) {
+if (!$interface && ($active || $staged)) {
     print "Remote interface name is missing!\n";
+    exit 0;
+}
+
+if ($biblionumber && !$active) {
+    print "Use biblionumber only with active parameter\n";
     exit 0;
 }
 
@@ -129,7 +134,7 @@ if ($staged) {
                 if ($target_id =~ /$field_check/) {
                     print "Target id ($target_id) found from $biblio->{biblionumber}!\n";
                     $target_id =~ s/\D//g;
-                    $parameters = {marc => $biblio->{marcxml}, source_id => $biblio->{biblionumber}, target_id => $target_id, interface => $interface};
+                    $parameters = {marc => $biblio->{marcxml}, source_id => $biblio->{biblionumber}, target_id => $target_id, interface => $interface}, check => Mojo::JSON->true};
                 }
             }
         } else {
