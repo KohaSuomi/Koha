@@ -34,7 +34,7 @@
 			</ul>
 			[% IF ( account == 'PDFBILL' ) %]
 				<h3>Billing interface: PDF</h3>
-				<p>First you have to define a ODUECLAIM notice for the PDF. <a href="/static_content/claiming/example/pdfbill.docx">Here is an example for it.</a> <b>Modify only related text, leave the html and CamelCase words be!</b></p>
+				<p>First you have to define a ODUECLAIM notice for the PDF. <a href="[% basepath %]static_content/claiming/example/pdfbill.docx">Here is an example for it.</a> <b>Modify only related text, leave the html and CamelCase words be!</b></p>
 				<p>The bill can be printed from the page, old bills are one patron's notice page. The link will come to each row but the content is the same for the same patron.</p>
 				<p>The replacement price and other predefined overdue fines will be added to patron's fines.</p>
 				<p>The PDF can be created as many times as needed in one day, the overdue fines will be added to patrons once in a day. The next day there will be created a new file and patron will have new overdue fines.</p>
