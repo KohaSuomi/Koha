@@ -608,12 +608,15 @@ if ( $borrowernumber ) {
         # get ill_checkouts from webkake 
         my $restclient = REST::Client->new();
         my $consortium = C4::Context->config("webkakecon");
-        my $resturl = "https://webkake.kirjastot.fi/wrest/rest/wrest/ill_loans?mhknum=".$cardnumber."&mulfinna=".$consortium;
-        $restclient->GET($resturl);
-        my $json_string = $restclient->responseContent();
-        my @ill_checkouts = @{decode_json($json_string)};
-        $ill_checkout_count = scalar @ill_checkouts;
-        $ill_checkouts_ref = \@ill_checkouts;
+        
+        if($consortium) {
+            my $resturl = "https://webkake.kirjastot.fi/wrest/rest/wrest/ill_loans?mhknum=".$cardnumber."&mulfinna=".$consortium;
+            $restclient->GET($resturl);
+            my $json_string = $restclient->responseContent();
+            my @ill_checkouts = @{decode_json($json_string)};
+            $ill_checkout_count = scalar @ill_checkouts;
+            $ill_checkouts_ref = \@ill_checkouts;
+        }
     }
     catch {
         $error = $_;
