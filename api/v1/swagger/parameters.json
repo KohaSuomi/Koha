@@ -63,6 +63,9 @@
     "required": true,
     "type": "string"
   },
+  "message_id_pp": {
+    "$ref": "parameters/message.json#/message_id_pp"
+  },
   "message_idPathParam": {
     "$ref": "parameters/notice.json#/message_idPathParam"
   },

@@ -146,6 +146,12 @@
   "/logs": {
     "$ref": "paths/logs.json#/~1logs"
   },
+  "/messages": {
+    "$ref": "paths/messages.json#/~1messages"
+  },
+  "/messages/{message_id}": {
+    "$ref": "paths/messages.json#/~1messages~1{message_id}"
+  },
   "/messaging_preferences": {
     "$ref": "paths/messagingpreferences.json#/~1messaging_preferences"
   },

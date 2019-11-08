@@ -30,6 +30,11 @@
     "type": ["string", "null"],
     "description": "primary email address for patron's primary address"
   },
+  "message_id": {
+    "type": "integer",
+    "description": "internally assigned message identifier",
+    "readOnly": true
+  },
   "firstname": {
     "type": ["string", "null"],
     "description": "patron's first name"
