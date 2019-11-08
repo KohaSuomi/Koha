@@ -61,7 +61,7 @@
   },
   "holding": {
     "$ref": "definitions/holding.json"
-  },    
+  },
   "item": {
     "$ref": "definitions/item.json"
   },
@@ -73,6 +73,9 @@
   },
   "library": {
     "$ref": "definitions/library.json"
+  },
+  "message": {
+    "$ref": "definitions/message.json"
   },
   "messagingpreference": {
     "$ref": "definitions/messagingpreference.json"

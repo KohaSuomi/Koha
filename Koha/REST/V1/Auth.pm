@@ -33,6 +33,7 @@ use Koha::Holds;
 use Koha::Notice::Messages;
 use Koha::Old::Checkouts;
 use Koha::Patrons;
+use Koha::Patron::Messages;
 
 use Koha::Exceptions;
 use Koha::Exceptions::Authentication;
@@ -610,7 +611,13 @@ belongs to C<$user>.
 sub _object_ownership_by_message_id {
     my ($c, $user, $message_id) = @_;
 
-    my $message = Koha::Notice::Messages->find($message_id);
+    # FIXME: This is horrible. Move object ownership checks to controllers.
+    my $message;
+    if (grep { m/^Messages#/ } $c->openapi->spec->{'x-mojo-to'}) {
+        $message = Koha::Patron::Messages->find($message_id);
+    } else {
+        $message = Koha::Notice::Messages->find($message_id);
+    }
     return $message && $user->borrowernumber == $message->borrowernumber;
 }
 

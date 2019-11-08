@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "message_id": {
+      "$ref": "../x-primitives.json#/message_id"
+    },
+    "borrowernumber": {
+      "$ref": "../x-primitives.json#/borrowernumber"
+    },
+    "branchcode": {
+      "type": ["string", "null"],
+      "description": "Internally assigned library identifier",
+      "maxLength": 10,
+      "minLength": 1
+    },
+    "message_type": {
+      "description": "One of following values: L = For Librarians, B = For Patrons",
+      "type": "string",
+      "maxLength": 1
+    },
+    "message": {
+      "description": "Message content",
+      "type": "string"
+    },
+    "message_date": {
+      "description": "Message content",
+      "format": "date-time",
+      "type": "string"
+    },
+    "manager_id": {
+      "type": ["integer", "null"],
+      "description": "Internal patron identifier for message manager"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["borrowernumber", "message_type", "message"]
+}
