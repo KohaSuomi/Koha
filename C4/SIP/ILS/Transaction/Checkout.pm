@@ -97,9 +97,13 @@ sub do_checkout {
             } elsif ($confirmation eq 'RENTALCHARGE') {
                 if ($self->{fee_ack} ne 'Y') {
                     $noerror = 0;
-                    last;
-                }
+					last;
+				}
+            } elsif ($confirmation eq 'TRANSFER') {
+              $self->screen_msg("Item on transfer.");
+              $noerror = 0;
                 last;
+
             } else {
                 # We've been returned a case other than those above
                 $self->screen_msg("Item cannot be issued: $confirmation");
