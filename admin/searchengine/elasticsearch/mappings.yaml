@@ -2702,17 +2702,17 @@ biblios:
       - facet: ''
         marc_field: 999c
         marc_type: marc21
-        sort: 0
+        sort: ~
         suggestible: ''
       - facet: ''
         marc_field: 999c
         marc_type: normarc
-        sort: 0
+        sort: ~
         suggestible: ''
       - facet: ''
         marc_field: '001'
         marc_type: unimarc
-        sort: 0
+        sort: ~
         suggestible: ''
     type: string
   location:
