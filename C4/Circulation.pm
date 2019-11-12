@@ -655,6 +655,10 @@ borrower debarred
 
 barcode unknown
 
+=head3 TRANSFER
+
+item on transit
+
 =head3 NOT_FOR_LOAN
 
 item is not for loan
@@ -724,7 +728,13 @@ sub CanBookBeIssued {
     unless ( $item->{barcode} ) {
         $issuingimpossible{UNKNOWN_BARCODE} = 1;
     }
-	return ( \%issuingimpossible, \%needsconfirmation ) if %issuingimpossible;
+
+    if ( GetTransfers($item->{itemnumber}) ) {
+                 $needsconfirmation{TRANSFER} = 1;
+    }
+
+    return ( \%issuingimpossible, \%needsconfirmation ) if %issuingimpossible;
+ 
 
     #
     # DUE DATE is OK ? -- should already have checked.
