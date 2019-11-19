@@ -222,6 +222,7 @@ sub t_itemlevelholdforbidden {
         permanent_location => '*',
         holds_per_record => 10,
         reservesallowed => 10,
+        onshelfholds => 1,
         opacitemholds => 'N',
     })->store;
 
