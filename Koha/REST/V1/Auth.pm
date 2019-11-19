@@ -355,10 +355,7 @@ sub _header_auth {
     my ($c, $authorization) = @_;
 
     try {
-        return Koha::Auth::authenticate(
-            $c, $authorization->{'permissions'},
-            { authnotrequired => defined $authorization ? 0 : 1 }
-        );
+        return Koha::Auth::authenticate($c);
     }
     catch {
         my $e = $_;
