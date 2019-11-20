@@ -71,7 +71,7 @@ my $total_tax_excluded = 0;
 my $total_tax_included = 0;
 
 
-my $countpendings;
+my $countpendings = 0;
 
 my @loop_orders = ();
 unless( defined $invoice->{closedate} ) {
