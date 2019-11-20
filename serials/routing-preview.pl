@@ -62,13 +62,13 @@ my $subs = GetSubscription($subscriptionid);
 my ($tmp ,@serials) = GetSerials($subscriptionid);
 my ($template, $loggedinuser, $cookie);
 
+my $library;
 if($ok){
     # get biblio information....
-    my $biblionumber = $subs->{'biblionumber'};
-    my ($count2,@bibitems) = GetBiblioItemByBiblioNumber($biblionumber);
-	my @itemresults = GetItemsInfo( $subs->{biblionumber} );
-	my $branch = $itemresults[0]->{'holdingbranch'};
-    my $branchname = Koha::Libraries->find($branch)->branchname;
+    my $biblionumber = $subs->{'bibnum'};
+    my @itemresults = GetItemsInfo( $biblionumber );
+    my $branch = @itemresults ? $itemresults[0]->{'holdingbranch'} : $subs->{branchcode};
+    $library = Koha::Libraries->find($branch);
 
 	if (C4::Context->preference('RoutingListAddReserves')){
 		# get existing reserves .....
@@ -94,11 +94,10 @@ if($ok){
                     branchcode     => $branch
                 });
             } else {
-                AddReserve($branch,$routing->{borrowernumber},$biblionumber,\@bibitems,$routing->{ranking}, undef, undef, $notes,$title);
+                AddReserve($branch,$routing->{borrowernumber},$biblionumber,undef,$routing->{ranking}, undef, undef, $notes,$title);
         }
     }
-	}
-
+}
     ($template, $loggedinuser, $cookie)
 = get_template_and_user({template_name => "serials/routing-preview-slip.tt",
 				query => $query,
@@ -107,7 +106,6 @@ if($ok){
 				flagsrequired => {serials => '*'},
 				debug => 1,
 				});
-    $template->param("libraryname"=>$branchname);
 } else {
     ($template, $loggedinuser, $cookie)
 = get_template_and_user({template_name => "serials/routing-preview.tt",
@@ -118,6 +116,8 @@ if($ok){
 				debug => 1,
 				});
 }
+
+$template->param( libraryname => $library->branchname ) if $library;
 
 my $memberloop = [];
 for my $routing (@routinglist) {
