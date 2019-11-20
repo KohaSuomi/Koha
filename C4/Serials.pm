@@ -419,7 +419,8 @@ sub GetSubscription {
                 subscriptionhistory.*,
                 aqbooksellers.name AS aqbooksellername,
                 biblio.title AS bibliotitle,
-                subscription.biblionumber as bibnum
+                subscription.biblionumber as bibnum,
+                subscription.branchcode
        FROM subscription
        LEFT JOIN subscriptionhistory ON subscription.subscriptionid=subscriptionhistory.subscriptionid
        LEFT JOIN aqbooksellers ON subscription.aqbooksellerid=aqbooksellers.id
