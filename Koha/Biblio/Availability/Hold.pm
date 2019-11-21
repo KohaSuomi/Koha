@@ -197,7 +197,10 @@ sub _item_looper {
             last;
         }
         my $item_availability = $self->_item_check($item, $patron, \@holds, \@nonfound_holds, $intranet, $override);
-        if ($item_availability->available) {
+        my $unavails = $item_availability->unavailabilities;
+        if ($item_availability->available
+            || ($item_availability->unavailable == 1
+                && exists $unavails->{'Koha::Exceptions::Hold::ItemLevelHoldNotAllowed'})) {
             if ($self->{'query_pickup_locations'}) {
                 my $notes = $item_availability->notes;
                 if (defined $notes && ($notes = $notes->{'Koha::Exceptions::Item::PickupLocations'})) {
@@ -209,15 +212,7 @@ sub _item_looper {
             push @{$self->{'item_availabilities'}}, $item_availability;
             $count++;
         } else {
-            my $unavails = $item_availability->unavailabilities;
-            # If Item level hold is not allowed and it is the only unavailability
-            # reason, push the item to item_availabilities.
-            if ($item_availability->unavailable == 1 && exists
-                $unavails->{'Koha::Exceptions::Hold::ItemLevelHoldNotAllowed'}){
-                push @{$self->{'item_availabilities'}}, $item_availability;
-            } else {
-                push @{$self->{'item_unavailabilities'}}, $item_availability;
-            }
+            push @{$self->{'item_unavailabilities'}}, $item_availability;
         }
     }
 
