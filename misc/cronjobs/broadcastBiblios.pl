@@ -134,7 +134,7 @@ if ($staged) {
                 if ($target_id =~ /$field_check/) {
                     print "Target id ($target_id) found from $biblio->{biblionumber}!\n";
                     $target_id =~ s/\D//g;
-                    $parameters = {marc => $biblio->{marcxml}, source_id => $biblio->{biblionumber}, target_id => $target_id, interface => $interface}, check => Mojo::JSON->true};
+                    $parameters = {marc => $biblio->{marcxml}, source_id => $biblio->{biblionumber}, target_id => $target_id, interface => $interface, check => Mojo::JSON->true};
                 }
             }
         } else {
