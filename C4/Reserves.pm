@@ -1404,8 +1404,9 @@ and canreservefromotherbranches.
 =cut
 
 sub IsAvailableForItemLevelRequest {
-    my $item = shift;
+    my $item     = shift;
     my $borrower = shift;
+    my $caches   = shift;
 
     my $dbh = C4::Context->dbh;
     # must check the notforloan setting of the itemtype
@@ -1438,15 +1439,45 @@ sub IsAvailableForItemLevelRequest {
         my $any_available = 0;
 
         foreach my $i (@items) {
+
+            my $onholdandfound;
+            my $itemtype_notforloan;
+
+            # caching algorithm implemented and keys/values pairs stored in provided from upper-level sub
+            # reference to hash, but if no ref provided, it works in old-style (for compatibility):
+            if($caches) {
+
+                # %$caches has two subkeys:
+                #   {onholdandfound}   values cached by             $i->id
+                #   {notforloan}       values cached by             $i->effective_itemtype()
+
+                my $i_id = $i->id;
+                $onholdandfound =
+                    exists $caches->{onholdandfound}{$i_id}
+                    ? $caches->{onholdandfound}{$i_id}
+                    : ( $caches->{onholdandfound}{$i_id} = IsItemOnHoldAndFound($i_id) );
+
+                my $effective_itemtype = $i->effective_itemtype();
+                $itemtype_notforloan =
+                      $caches && exists $caches->{notforloan}{$effective_itemtype}
+                    ? $caches->{notforloan}{$effective_itemtype}
+                    : ( $caches->{notforloan}{$effective_itemtype} =
+                        Koha::ItemTypes->find($effective_itemtype)->notforloan );
+            }
+            else {
+                $onholdandfound = IsItemOnHoldAndFound( $i->id );
+                $itemtype_notforloan = Koha::ItemTypes->find( $i->effective_itemtype() )->notforloan;
+            }
+
             $any_available = 1
-              unless $i->itemlost
-              || $i->notforloan > 0
-              || $i->withdrawn
-              || $i->onloan
-              || IsItemOnHoldAndFound( $i->id )
-              || ( $i->damaged
-                && !C4::Context->preference('AllowHoldsOnDamagedItems') )
-              || Koha::ItemTypes->find( $i->effective_itemtype() )->notforloan;
+                unless $i->itemlost
+                || $i->notforloan > 0
+                || $i->withdrawn
+                || $i->onloan
+                || $onholdandfound
+                || ( $i->damaged
+                && ! C4::Context->preference('AllowHoldsOnDamagedItems') )
+                || $itemtype_notforloan;
         }
 
         return $any_available ? 0 : 1;

@@ -360,6 +360,10 @@ foreach my $biblionumber (@biblionumbers) {
                 $itemtypes->{ $biblioitem->{itemtype} }{imageurl} );
         }
 
+        # this is hash cache for "if any unavailable" on-shelf holds check
+        # in IsAvailableForItemLevelRequest sub should persist outside from the loop
+        my %caches_avail_item_level;
+
         foreach my $itemnumber ( @{ $itemnumbers_of_biblioitem{$biblioitemnumber} } )    {
             my $item = $iteminfos_of->{$itemnumber};
 
@@ -469,8 +473,8 @@ foreach my $biblionumber (@biblionumbers) {
                 if (
                        !$item->{cantreserve}
                     && !$exceeded_maxreserves
-                    && IsAvailableForItemLevelRequest($item, $borrowerinfo)
                     && $can_item_be_reserved eq 'OK'
+                    && IsAvailableForItemLevelRequest($item, $borrowerinfo, \%caches_avail_item_level)
                   )
                 {
                     $item->{available} = 1;
