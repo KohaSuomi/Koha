@@ -309,7 +309,7 @@
                                                 <button type="submit" class="btn">Log in</button>
                                             </fieldset>
                                         [% ELSE %]
-                                            <div class="input-append" style="background-color:#BFFC8A;border-radius: 20px;padding: 20px;">
+                                            <div class="input-append-green">
                                                 <label for="patronid"><h4>CHECK OUT<br><br>Please enter your card number:</h4></label>
                                                 
                                                 [% IF ( checkinmessage ) %] 
@@ -342,7 +342,7 @@
                                             <button type="submit" class="btn">Log in</button>
                                             </fieldset>
                                         [% ELSE %]
-                                            <div class="input-append" style="background-color:#BFD4F4;border-radius: 20px;padding: 20px;">
+                                            <div class="input-append-blue">
                                             <label for="uibarcode"><h4>CHECK IN<br><br>Please enter barcode:</h4></label>
                                             [% IF ( checkinmessage ) %] 
                                                 <input type="text" id="uibarcode"  class="focus" size="20" name="uibarcode" autocomplete="off" />

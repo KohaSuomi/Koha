@@ -1,8 +1,8 @@
 [% USE Koha %]
 [% SET OpacLangSelectorMode = Koha.Preference('OpacLangSelectorMode') %]
 <!-- <div id="wrap"> -->
-    <div class="navbar navbar-inverse navbar-static-top" style="background-color:#0F0505; width:100%">
-        <div class="navbar-inner" style="background-color:#0F0505; padding:0px;">
+    <div class="navbar navbar-inverse navbar-static-top navbar-black">
+        <div class="navbar-inner navbar-black">
             <div class="container-fluid" style="background-color:#0F0505">
                 <a class="brand" href="/cgi-bin/koha/sco/sco-main.pl"><img src="[% interface %]/[% theme %]/images/koha-logo-navbar.png" alt=""></a>
                 <div id="checkouthelp">
