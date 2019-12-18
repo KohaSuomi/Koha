@@ -194,3 +194,19 @@ i.help {
     padding-right: 19px;
     background: #EEEEEE none;
 }
+.input-append-green {
+    background-color:#BFFC8A;
+    border-radius: 20px;
+    padding: 20px;
+
+}
+.input-append-blue {
+    background-color:#BFD4F4;
+    border-radius: 20px;
+    padding: 20px;
+}
+.navbar-black {
+    background-color:#0F0505; 
+    width:100%;
+    padding:0px;
+}

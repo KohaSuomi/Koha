@@ -20,7 +20,7 @@
 <script type="text/javascript" src="[% interface %]/[% theme %]/lib/modernizr.min_[% KOHA_VERSION %].js"></script>
 </head>
 <body id="sco_help" class="sco">
-[% INCLUDE 'masthead-sco.inc' %]
+[% INCLUDE 'masthead-sco-self.inc' %]
 
     <div class="main">
         <div class="container-fluid">
@@ -50,6 +50,10 @@ The Submit button only needs to be clicked if you enter the barcode manually.</p
 <h3>Step three: Click the 'Finish' button</h3>
 <p>If you do not click the 'Finish' button, your session will automatically expire in
 [% SelfCheckTimeout %] seconds.</p>
+
+<h1>Self checkin help</h1>
+
+<p>Enter item's barcode and click the submit button.</p>
 
     <div class="button">
         <a href="javascript:history.go(-1)">Return to the self-checkout</a>
