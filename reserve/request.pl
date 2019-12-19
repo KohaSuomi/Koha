@@ -361,6 +361,15 @@ foreach my $biblionumber (@biblionumbers) {
                 $itemtypes->{ $biblioitem->{itemtype} }{imageurl} );
         }
 
+        # iterating through all items first to check if any of them available
+        # to pass this value further inside down to IsAvailableForItemLevelRequest to
+        # it's complicated logic to analyse.
+        # (before this loop was inside that sub loop so it was O(n^2) )
+        my $items_any_available;
+
+        $items_any_available = items_any_available($biblioitemnumber)
+            if $borrowerinfo;
+
         foreach my $itemnumber ( @{ $itemnumbers_of_biblioitem{$biblioitemnumber} } )    {
             my $item = $iteminfos_of->{$itemnumber};
 
@@ -471,7 +480,9 @@ foreach my $biblionumber (@biblionumbers) {
                        !$item->{cantreserve}
                     && !$exceeded_maxreserves
                     && $can_item_be_reserved eq 'OK'
-                    && IsAvailableForItemLevelRequest($item, $borrowerinfo)
+                    # items_any_available defined outside of the current loop,
+                    # so we avoiding loop inside IsAvailableForItemLevelRequest:
+                    && IsAvailableForItemLevelRequest($item, $borrowerinfo, $items_any_available)
                   )
                 {
                     $item->{available} = 1;
@@ -702,4 +713,25 @@ sub pagination {
 
 
     return $pages;
+}
+
+sub items_any_available {
+    my $biblioitemnumber = shift;
+    my $items_any_available = 0;
+
+    my @items = Koha::Items->search( { biblionumber => $biblioitemnumber } );
+
+    foreach my $i (@items) {
+        $items_any_available = 1
+          unless $i->itemlost
+          || $i->notforloan > 0
+          || $i->withdrawn
+          || $i->onloan
+          || IsItemOnHoldAndFound( $i->id )
+          || ( $i->damaged
+            && !C4::Context->preference('AllowHoldsOnDamagedItems') )
+          || Koha::ItemTypes->find( $i->effective_itemtype() )->notforloan;
+    }
+
+    return $items_any_available;
 }
