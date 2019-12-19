@@ -41,6 +41,9 @@
   "patronstatus": {
     "$ref": "definitions/patronstatus.json"
   },
+  "patronattribute": {
+    "$ref": "definitions/patronattribute.json"
+  },
   "session": {
     "$ref": "definitions/session.json"
   },

@@ -191,6 +191,9 @@
   "/patrons/alldata": {
     "$ref": "paths/patrons.json#/~1patrons~1alldata"
   },
+  "/patrons/attributes": {
+      "$ref": "paths/patrons.json#/~1patrons~1attributes"
+  },
   "/payments/transaction/{invoicenumber}": {
     "$ref": "paths/payments/transactions.json#/~1payments~1transactions~1{invoicenumber}"
   },
