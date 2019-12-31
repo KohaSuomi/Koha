@@ -946,6 +946,23 @@
        </span>
     </xsl:if>
 
+<!-- NLM classification -->
+    <xsl:if test="marc:datafield[@tag=060]">
+        <span class="results_summary nlm">
+            <span class="label">NLM classification: </span>
+            <xsl:for-each select="marc:datafield[@tag=060]">
+                <xsl:call-template name="subfieldSelect">
+                    <xsl:with-param name="codes">a</xsl:with-param>
+                    <xsl:with-param name="delimeter"><xsl:text> | </xsl:text></xsl:with-param>
+                </xsl:call-template>
+                <xsl:choose>
+                    <xsl:when test="position()=last()"><xsl:text>  </xsl:text></xsl:when>
+                    <xsl:otherwise> | </xsl:otherwise>
+                </xsl:choose>
+            </xsl:for-each>
+        </span>
+    </xsl:if>
+
 
 <!-- Image processing code added here, takes precedence over text links including y3z text   -->
         <xsl:if test="marc:datafield[@tag=856]">
