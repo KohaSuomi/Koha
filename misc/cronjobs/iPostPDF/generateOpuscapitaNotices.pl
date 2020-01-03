@@ -133,7 +133,7 @@ foreach my $message (@all_messages) {
     $xmlTemplate->param(NAME => XML::Simple->new()->escape_value($borrower->{firstname}));
     $xmlTemplate->param(SURNAME => XML::Simple->new()->escape_value($borrower->{surname}));
     $xmlTemplate->param(ADDRESS1 => XML::Simple->new()->escape_value($borrower->{address}));
-    $xmlTemplate->param(ADDRESS2 => XML::Simple->new()->escape_value($borrower->{address2});
+    $xmlTemplate->param(ADDRESS2 => XML::Simple->new()->escape_value($borrower->{address2}));
     $xmlTemplate->param(ZIPCODE => XML::Simple->new()->escape_value($borrower->{zipcode}));
     $xmlTemplate->param(CITY => XML::Simple->new()->escape_value($borrower->{city}));
     $xmlTemplate->param(EXFILENAME => $pdfFile);
