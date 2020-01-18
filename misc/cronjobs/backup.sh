@@ -192,18 +192,26 @@ function archive_logs {
   test -n "$VERBOSE" && echo "Archiving Logs of '$DATABASE'"
 
   tarRootWorkaround "$KOHA_LOG_DIR"
-  tar -czf "$BACKUP_DIR/$LOGS_BACKUP_ARCHIVE" $TAR_WORKAROUND_DIR
+  tar --warning=no-file-changed -czf "$BACKUP_DIR/$LOGS_BACKUP_ARCHIVE" $TAR_WORKAROUND_DIR
   #Care about exceptions
-  rc=$?; if [[ $rc != 0 ]]; then echo "tar gzip of Koha logs failed" 1>&2; exit $rc; fi
+  rc=$?; if [[ $rc > 1 ]]; then echo "tar gzip of Koha logs failed" 1>&2; exit $rc; fi
+  # Allow live log files to change on disk during archival
+  # tar returns 0 on success,
+  # 1 if ‘Some files differ’. If tar was invoked with ‘--compare’ (‘--diff’, ‘-d’) command line option, this means that some files in the archive differ fro$
+  # 2 Fatal error
 }
 
 function archive_syslogs {
   test -n "$VERBOSE" && echo "Archiving Syslogs of '$DATABASE'"
 
   tarRootWorkaround "$SYSTEM_LOG_DIR"
-  tar -czf "$BACKUP_DIR/$SYSLOGS_BACKUP_ARCHIVE" $TAR_WORKAROUND_DIR
+  tar --warning=no-file-changed -czf "$BACKUP_DIR/$SYSLOGS_BACKUP_ARCHIVE" $TAR_WORKAROUND_DIR
   #Care about exceptions
-  rc=$?; if [[ $rc != 0 ]]; then echo "tar gzip of system logs failed" 1>&2; exit $rc; fi
+  rc=$?; if [[ $rc > 1 ]]; then echo "tar gzip of system logs failed" 1>&2; exit $rc; fi
+  # Allow live log files to change on disk during archival
+  # tar returns 0 on success,
+  # 1 if ‘Some files differ’. If tar was invoked with ‘--compare’ (‘--diff’, ‘-d’) command line option, this means that some files in the archive differ fro$
+  # 2 Fatal error
 }
 
 function archive_files {
