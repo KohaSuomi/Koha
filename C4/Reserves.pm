@@ -1854,7 +1854,6 @@ sub _Findgroupreserve {
             if ($checked) {
                 push( @results, $data )
                     unless any{ $data->{borrowernumber} eq $_ } @$ignore_borrowers ;
-                last;
             }
         } else {
             push( @results, $data )
@@ -1899,7 +1898,6 @@ sub _Findgroupreserve {
             if ($checked) {
                 push( @results, $data )
                     unless any{ $data->{borrowernumber} eq $_ } @$ignore_borrowers ;
-                last;
             }
         } else {
             push( @results, $data )
