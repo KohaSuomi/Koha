@@ -360,6 +360,15 @@ foreach my $biblionumber (@biblionumbers) {
                 $itemtypes->{ $biblioitem->{itemtype} }{imageurl} );
         }
 
+        # iterating through all items first to check if any of them available
+        # to pass this value further inside down to IsAvailableForItemLevelRequest to
+        # it's complicated logic to analyse.
+        # (before this loop was inside that sub loop so it was O(n^2) )
+        my $items_any_available;
+
+        $items_any_available = ItemsAnyAvailableForHold( { biblionumber => $biblioitemnumber })
+            if $borrowerinfo;
+
         foreach my $itemnumber ( @{ $itemnumbers_of_biblioitem{$biblioitemnumber} } )    {
             my $item = $iteminfos_of->{$itemnumber};
 
@@ -470,7 +479,9 @@ foreach my $biblionumber (@biblionumbers) {
                        !$item->{cantreserve}
                     && !$exceeded_maxreserves
                     && $can_item_be_reserved eq 'OK'
-                    && IsAvailableForItemLevelRequest($item, $borrowerinfo)
+                    # items_any_available defined outside of the current loop,
+                    # so we avoiding loop inside IsAvailableForItemLevelRequest:
+                    && IsAvailableForItemLevelRequest($item, $borrowerinfo, $items_any_available)                    
                   )
                 {
                     $item->{available} = 1;
