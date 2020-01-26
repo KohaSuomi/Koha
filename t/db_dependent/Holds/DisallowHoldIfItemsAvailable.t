@@ -7,7 +7,7 @@ use C4::Items;
 use C4::Circulation;
 use Koha::IssuingRule;
 
-use Test::More tests => 4;
+use Test::More tests => 7;
 
 use t::lib::TestBuilder;
 
@@ -101,15 +101,26 @@ my $rule = Koha::IssuingRule->new(
 );
 $rule->store();
 
-my $is = IsAvailableForItemLevelRequest( $item1, $borrower1);
+my $is;
+
+$is = ItemsAnyAvailableForHold( { biblionumber => $biblionumber });
+is( $is, 1, "Items availability: both of 2 items are available" );
+
+$is = IsAvailableForItemLevelRequest( $item1, $borrower1);
 is( $is, 0, "Item cannot be held, 2 items available" );
 
 AddIssue( $borrower2, $item1->{barcode} );
+
+$is = ItemsAnyAvailableForHold( { biblionumber => $biblionumber });
+is( $is, 1, "Items availability: one item is available" );
 
 $is = IsAvailableForItemLevelRequest( $item1, $borrower1);
 is( $is, 0, "Item cannot be held, 1 item available" );
 
 AddIssue( $borrower2, $item2->{barcode} );
+
+$is = ItemsAnyAvailableForHold( { biblionumber => $biblionumber });
+is( $is, 0, "Items availability: none of items are available" );
 
 $is = IsAvailableForItemLevelRequest( $item1, $borrower1);
 is( $is, 1, "Item can be held, no items available" );
