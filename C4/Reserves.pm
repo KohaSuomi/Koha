@@ -1405,8 +1405,11 @@ and canreservefromotherbranches.
 =cut
 
 sub IsAvailableForItemLevelRequest {
-    my $item = shift;
-    my $borrower = shift;
+    my $item                = shift;
+    my $borrower            = shift;
+    # items_any_available is precalculated status passed from request.pl when set of items
+    # looped outside of IsAvailableForItemLevelRequest to avoid nested loops:
+    my $items_any_available = shift;
 
     my $dbh = C4::Context->dbh;
     # must check the notforloan setting of the itemtype
@@ -1433,6 +1436,12 @@ sub IsAvailableForItemLevelRequest {
     if ( $on_shelf_holds == 1 ) {
         return 1;
     } elsif ( $on_shelf_holds == 2 ) {
+
+        # if we have this param predefined from outer caller sub, we just need
+        # to return it, so we saving from having loop inside other loop:
+        return  $items_any_available ? 0 : 1
+            if defined $items_any_available;
+
         my $any_available = ItemsAnyAvailableForHold( { biblionumber => $item->{biblionumber} });
         return $any_available ? 0 : 1;
     }
