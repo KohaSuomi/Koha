@@ -469,8 +469,8 @@ foreach my $biblionumber (@biblionumbers) {
                 if (
                        !$item->{cantreserve}
                     && !$exceeded_maxreserves
-                    && IsAvailableForItemLevelRequest($item, $borrowerinfo)
                     && $can_item_be_reserved eq 'OK'
+                    && IsAvailableForItemLevelRequest($item, $borrowerinfo)
                   )
                 {
                     $item->{available} = 1;
