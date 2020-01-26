@@ -133,6 +133,7 @@ BEGIN {
         &AutoUnsuspendReserves
 
         &IsAvailableForItemLevelRequest
+        ItemsAnyAvailableForHold
 
         &OPACItemHoldsAllowed
 
@@ -1432,28 +1433,45 @@ sub IsAvailableForItemLevelRequest {
     if ( $on_shelf_holds == 1 ) {
         return 1;
     } elsif ( $on_shelf_holds == 2 ) {
-        my @items =
-          Koha::Items->search( { biblionumber => $item->{biblionumber} } );
-
-        my $any_available = 0;
-
-        foreach my $i (@items) {
-            $any_available = 1
-              unless $i->itemlost
-              || $i->notforloan > 0
-              || $i->withdrawn
-              || $i->onloan
-              || IsItemOnHoldAndFound( $i->id )
-              || ( $i->damaged
-                && !C4::Context->preference('AllowHoldsOnDamagedItems') )
-              || Koha::ItemTypes->find( $i->effective_itemtype() )->notforloan;
-        }
-
+        my $any_available = ItemsAnyAvailableForHold( { biblionumber => $item->{biblionumber} });
         return $any_available ? 0 : 1;
     }
 
     return $item->{onloan} || GetReserveStatus($item->{itemnumber}) eq "Waiting";
 }
+
+=head2 ItemsAnyAvailableForHold
+
+  ItemsAnyAvailableForHold( { biblionumber => $biblionumber });
+
+This function checks all items for specified biblionumber (num) 
+and returns true (1) or false (0) depending if any of rules allows at least of 
+one item to be available for hold including lots of parameters/logic
+
+=cut
+
+sub ItemsAnyAvailableForHold {
+    my $param = shift;
+
+    my @items = Koha::Items->search( { biblionumber => $param->{biblionumber} } );
+
+    my $any_available = 0;
+
+    foreach my $i (@items) {
+        $any_available = 1
+          unless $i->itemlost
+          || $i->notforloan > 0
+          || $i->withdrawn
+          || $i->onloan
+          || IsItemOnHoldAndFound( $i->id )
+          || ( $i->damaged
+            && !C4::Context->preference('AllowHoldsOnDamagedItems') )
+          || Koha::ItemTypes->find( $i->effective_itemtype() )->notforloan;
+    }
+
+    return $any_available;
+}
+
 
 =head2 OnShelfHoldsAllowed
 
