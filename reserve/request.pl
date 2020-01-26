@@ -217,63 +217,64 @@ foreach my $biblionumber (@biblionumbers) {
 
     my $dat = GetBiblioData($biblionumber);
 
-    my $canReserve = CanBookBeReserved( $borrowerinfo->{borrowernumber}, $biblionumber );
-    $canReserve //= '';
-    if ( $canReserve eq 'OK' ) {
-
-        #All is OK and we can continue
-    }
-    elsif ( $canReserve eq 'tooManyReserves' ) {
-        $exceeded_maxreserves = 1;
-    }
-    elsif ( $canReserve eq 'tooManyHoldsForThisRecord' ) {
-        $exceeded_holds_per_record = 1;
-        $biblioloopiter{$canReserve} = 1;
-    }
-    elsif ( $canReserve eq 'ageRestricted' ) {
-        $template->param( $canReserve => 1 );
-        $biblioloopiter{$canReserve} = 1;
-    }
-    else {
-        $biblioloopiter{$canReserve} = 1;
-    }
-
     my $force_hold_level;
-    if ( $borrowerinfo->{borrowernumber} ) {
-        # For multiple holds per record, if a patron has previously placed a hold,
-        # the patron can only place more holds of the same type. That is, if the
-        # patron placed a record level hold, all the holds the patron places must
-        # be record level. If the patron placed an item level hold, all holds
-        # the patron places must be item level
-        my $holds = Koha::Holds->search(
-            {
-                borrowernumber => $borrowerinfo->{borrowernumber},
-                biblionumber   => $biblionumber,
-                found          => undef,
-            }
-        );
-        $force_hold_level = $holds->forced_hold_level();
-        $biblioloopiter{force_hold_level} = $force_hold_level;
-        $template->param( force_hold_level => $force_hold_level );
+    if ( $borrowerinfo ) {
+        my $canReserve = CanBookBeReserved( $borrowerinfo->{borrowernumber}, $biblionumber );
+        $canReserve //= '';
+        if ( $canReserve eq 'OK' ) {
 
-        # For a librarian to be able to place multiple record holds for a patron for a record,
-        # we must find out what the maximum number of holds they can place for the patron is
-        my $max_holds_for_record = GetMaxPatronHoldsForRecord( $borrowerinfo->{borrowernumber}, $biblionumber );
-        my $remaining_holds_for_record = $max_holds_for_record - $holds->count();
-        $biblioloopiter{remaining_holds_for_record} = $max_holds_for_record;
-        $template->param( max_holds_for_record => $max_holds_for_record );
-        $template->param( remaining_holds_for_record => $remaining_holds_for_record );
+            #All is OK and we can continue
+        }
+        elsif ( $canReserve eq 'tooManyReserves' ) {
+            $exceeded_maxreserves = 1;
+        }
+        elsif ( $canReserve eq 'tooManyHoldsForThisRecord' ) {
+            $exceeded_holds_per_record = 1;
+            $biblioloopiter{$canReserve} = 1;
+        }
+        elsif ( $canReserve eq 'ageRestricted' ) {
+            $template->param( $canReserve => 1 );
+            $biblioloopiter{$canReserve} = 1;
+        }
+        else {
+            $biblioloopiter{$canReserve} = 1;
+        }
+
+        if ( $borrowerinfo->{borrowernumber} ) {
+            # For multiple holds per record, if a patron has previously placed a hold,
+            # the patron can only place more holds of the same type. That is, if the
+            # patron placed a record level hold, all the holds the patron places must
+            # be record level. If the patron placed an item level hold, all holds
+            # the patron places must be item level
+            my $holds = Koha::Holds->search(
+                {
+                    borrowernumber => $borrowerinfo->{borrowernumber},
+                    biblionumber   => $biblionumber,
+                    found          => undef,
+                }
+            );
+            $force_hold_level = $holds->forced_hold_level();
+            $biblioloopiter{force_hold_level} = $force_hold_level;
+            $template->param( force_hold_level => $force_hold_level );
+
+            # For a librarian to be able to place multiple record holds for a patron for a record,
+            # we must find out what the maximum number of holds they can place for the patron is
+            my $max_holds_for_record = GetMaxPatronHoldsForRecord( $borrowerinfo->{borrowernumber}, $biblionumber );
+            my $remaining_holds_for_record = $max_holds_for_record - $holds->count();
+            $biblioloopiter{remaining_holds_for_record} = $max_holds_for_record;
+            $template->param( max_holds_for_record => $max_holds_for_record );
+            $template->param( remaining_holds_for_record => $remaining_holds_for_record );
+        }
+
+        # Check to see if patron is allowed to place holds on records where the
+        # patron already has an item from that record checked out
+        my $alreadypossession;
+        if ( !C4::Context->preference('AllowHoldsOnPatronsPossessions')
+            && CheckIfIssuedToPatron( $borrowerinfo->{borrowernumber}, $biblionumber ) )
+        {
+            $template->param( alreadypossession => $alreadypossession, );
+        }
     }
-
-    # Check to see if patron is allowed to place holds on records where the
-    # patron already has an item from that record checked out
-    my $alreadypossession;
-    if ( !C4::Context->preference('AllowHoldsOnPatronsPossessions')
-        && CheckIfIssuedToPatron( $borrowerinfo->{borrowernumber}, $biblionumber ) )
-    {
-        $template->param( alreadypossession => $alreadypossession, );
-    }
-
 
     my $count = Koha::Holds->search( { biblionumber => $biblionumber } )->count();
     my $totalcount = $count;
@@ -453,40 +454,42 @@ foreach my $biblionumber (@biblionumbers) {
                 }
             }
 
-            my $branch = C4::Circulation::_GetCircControlBranch($item, $borrowerinfo);
+            if ( $borrowerinfo ) {
+                my $branch = C4::Circulation::_GetCircControlBranch($item, $borrowerinfo);
 
-            my $branchitemrule = GetBranchItemRule( $branch, $item->{'itype'} );
+                my $branchitemrule = GetBranchItemRule( $branch, $item->{'itype'} );
 
-            $item->{'holdallowed'} = $branchitemrule->{'holdallowed'};
+                $item->{'holdallowed'} = $branchitemrule->{'holdallowed'};
 
-            my $can_item_be_reserved = CanItemBeReserved( $borrowerinfo->{borrowernumber}, $itemnumber );
-            $item->{not_holdable} = $can_item_be_reserved unless ( $can_item_be_reserved eq 'OK' );
+                my $can_item_be_reserved = CanItemBeReserved( $borrowerinfo->{borrowernumber}, $itemnumber );
+                $item->{not_holdable} = $can_item_be_reserved unless ( $can_item_be_reserved eq 'OK' );
 
-            $item->{item_level_holds} = OPACItemHoldsAllowed( $item, $borrowerinfo );
+                $item->{item_level_holds} = OPACItemHoldsAllowed( $item, $borrowerinfo );
 
-            if (
-                   !$item->{cantreserve}
-                && !$exceeded_maxreserves
-                && IsAvailableForItemLevelRequest($item, $borrowerinfo)
-                && $can_item_be_reserved eq 'OK'
-              )
-            {
-                $item->{available} = 1;
-                $num_available++;
+                if (
+                       !$item->{cantreserve}
+                    && !$exceeded_maxreserves
+                    && IsAvailableForItemLevelRequest($item, $borrowerinfo)
+                    && $can_item_be_reserved eq 'OK'
+                  )
+                {
+                    $item->{available} = 1;
+                    $num_available++;
 
-                push( @available_itemtypes, $item->{itype} );
-            }
-            elsif ( C4::Context->preference('AllowHoldPolicyOverride') ) {
-                # If AllowHoldPolicyOverride is set, it should override EVERY restriction, not just branch item rules
-                $item->{override} = 1;
-                $num_override++;
-            }
+                    push( @available_itemtypes, $item->{itype} );
+                }
+                elsif ( C4::Context->preference('AllowHoldPolicyOverride') ) {
+                    # If AllowHoldPolicyOverride is set, it should override EVERY restriction, not just branch item rules
+                    $item->{override} = 1;
+                    $num_override++;
+                }
 
-            # If none of the conditions hold true, then neither override nor available is set and the item cannot be checked
+                # If none of the conditions hold true, then neither override nor available is set and the item cannot be checked
 
-            # Show serial enumeration when needed
-            if ($item->{enumchron}) {
-                $itemdata_enumchron = 1;
+                # Show serial enumeration when needed
+                if ($item->{enumchron}) {
+                    $itemdata_enumchron = 1;
+                }
             }
 
             push @{ $biblioitem->{itemloop} }, $item;
