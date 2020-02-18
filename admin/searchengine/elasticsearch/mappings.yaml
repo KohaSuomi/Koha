@@ -4401,6 +4401,51 @@ biblios:
         sort: ~
         suggestible: ''
     type: ''
+  ln-caption:
+    label: ln-caption
+    mappings:
+      - facet: ''
+        marc_field: 041p
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  canceled-issn:
+    label: canceled-issn
+    mappings:
+      - facet: ''
+        marc_field: 022z
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: 'stdno'
+  incorrect-issn:
+    label: incorrect-issn
+    mappings:
+      - facet: ''
+        marc_field: 022y
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: 'stdno'
+  canceled-invalid-isbn:
+    label: canceled-invalid-isbn
+    mappings:
+      - facet: ''
+        marc_field: 020z
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: 'isbn'
+  other-classification:
+    label: other-classification
+    mappings:
+      - facet: ''
+        marc_field: '084a'
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
   uri:
     label: uri
     mappings:
