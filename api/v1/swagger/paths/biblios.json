@@ -97,7 +97,14 @@
       "operationId": "deleteBiblio",
       "tags": ["biblios"],
       "parameters": [
-        { "$ref": "../parameters.json#/biblionumberPathParam" }
+        { "$ref": "../parameters.json#/biblionumberPathParam" },
+        {
+          "name": "safe",
+          "in": "query",
+          "description": "When this is true holdings and items are not deleted",
+          "required": false,
+          "type": "boolean"
+        }
       ],
       "produces": ["application/json"],
       "responses": {
