@@ -266,20 +266,22 @@ sub delete {
         return $c->render(status => 404, openapi => {error => "Biblio not found"});
     }
 
-    my @items = $biblio->items;
-    # Delete items first
     my @item_errors = ();
-    foreach my $item (@items) {
-        my $res = $item->delete;
-        unless ($res eq 1) {
-            push @item_errors, $item->unblessed->{itemnumber};
+    if (!$c->req->query_params->param('safe')) {
+        my @items = $biblio->items;
+        # Delete items
+        foreach my $item (@items) {
+            my $res = $item->delete;
+            unless ($res eq 1) {
+                push @item_errors, $item->unblessed->{itemnumber};
+            }
         }
-    }
 
-    my @holdings = $biblio->holdings;
-    # Delete holdings first
-    foreach my $holding (@holdings) {
-        $holding->delete;
+        my @holdings = $biblio->holdings;
+        # Delete holdings
+        foreach my $holding (@holdings) {
+            $holding->delete;
+        }
     }
 
     my $res = C4::Biblio::DelBiblio($biblio->biblionumber, 1);
