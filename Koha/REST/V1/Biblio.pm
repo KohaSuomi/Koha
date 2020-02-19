@@ -276,6 +276,12 @@ sub delete {
         }
     }
 
+    my @holdings = $biblio->holdings;
+    # Delete holdings first
+    foreach my $holding (@holdings) {
+        $holding->delete;
+    }
+
     my $res = C4::Biblio::DelBiblio($biblio->biblionumber, 1);
 
     unless ($res) {
