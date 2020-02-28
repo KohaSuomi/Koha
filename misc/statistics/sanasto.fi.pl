@@ -137,6 +137,17 @@ MARC-standardin ylimmän tason aineistolajijaottelu MARC-tietueen positiosta 6. 
 =cut
     my $typeOfRecord = substr($r->leader(), 6, 1);
 
+    if ($typeOfRecord =~ /[ai]/) {
+        my @flist = $r->field('007');
+        foreach my $f (@flist) {
+            my $data = $f->data();
+            if ($data =~ /^cr/) {
+                print "Skipping electronic material: $biblionumber\n";
+                return;
+            }
+        }
+    }
+
 =head2 Kohde
 MARC-standardin mukainen tietueen bibliografinen taso tietueen nimiön positiosta 7. Listaus arvoista taulukon jälkeen.
 Periaatteessa osakohteella pitäisi olla ’a’ tai ’b’. Jos tässä on ristiriitaa, niin tietueen tyyppi ensimmäisessä sarakkeessa on määräävämpi.
