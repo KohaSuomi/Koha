@@ -47,6 +47,9 @@
   "holdIdPathParam": {
     "$ref": "parameters/hold.json#/holdIdPathParam"
   },
+  "holdingIdPathParam": {
+    "$ref": "parameters/holding.json#/holdingIdPathParam"
+  },
   "checkoutIdPathParam": {
     "$ref": "parameters/checkout.json#/checkoutIdPathParam"
   },
