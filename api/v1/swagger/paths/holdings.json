@@ -1,0 +1,439 @@
+{
+  "/holdings": {
+    "get": {
+      "x-mojo-to": "Holding#list",
+      "operationId": "listHoldings",
+      "tags": ["patrons", "holdings"],
+      "parameters": [
+        {
+          "name": "holding_id",
+          "in": "query",
+          "description": "Internal holding identifier",
+          "type": "integer"
+        },
+        {
+          "name": "biblionumber",
+          "in": "query",
+          "description": "Internal biblio identifier",
+          "type": "integer"
+        },
+        {
+          "name": "biblioitemnumber",
+          "in": "query",
+          "description": "Internal biblio item identifier",
+          "type": "integer"
+        },
+        {
+          "name": "frameworkcode",
+          "in": "query",
+          "description": "Framework used in cataloging this record",
+          "type": "string"
+        },
+        {
+          "name": "holdingbranch",
+          "in": "query",
+          "description": "Internal biblio identifier for library that is currently in possession of this holding",
+          "type": "string"
+        },
+        {
+          "name": "location",
+          "in": "query",
+          "description": "Authorized value for the shelving location for this holding",
+          "type": "string"
+        },
+        {
+          "name": "ccode",
+          "in": "query",
+          "description": "Authorized value for the collection code for this holding",
+          "type": "string"
+        },
+        {
+          "name": "callnumber",
+          "in": "query",
+          "description": "Call number for this holding",
+          "type": "string"
+        },
+        {
+          "name": "suppress",
+          "in": "query",
+          "description": "Boolean indicating whether the record is suppressed in OPAC",
+          "type": "integer"
+        },
+        {
+          "name": "timestamp",
+          "in": "query",
+          "description": "Starts-with search for date and time this record was last altered",
+          "type": "string"
+        },
+        {
+          "name": "datecreated",
+          "in": "query",
+          "description": "Starts-with search for date this record was added to Koha",
+          "type": "string"
+        },
+        {
+          "name": "marcflavour",
+          "in": "query",
+          "description": "Marcflavour (Default: Value from system preference 'marcflavour')",
+          "type": "string"
+        },
+        {
+          "name": "format",
+          "in": "query",
+          "description": "Format",
+          "type": "string"
+        },
+        {
+          "name": "deleted_on",
+          "in": "query",
+          "description": "Starts-with search for date this record was deleted from Koha",
+          "type": "string"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "A list of holdings",
+          "schema": {
+            "$ref": "../definitions.json#/holdings"
+          }
+        },
+        "400": {
+          "description": "Missing or wrong parameters",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "404": {
+          "description": "No holdings found",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      }
+    },
+    "post": {
+      "x-mojo-to": "Holding#add",
+      "operationId": "addHolding",
+      "tags": ["patrons", "holdings"],
+      "parameters": [
+        {
+          "name": "body",
+          "in": "body",
+          "description": "A MARC record of new holding.",
+          "schema": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "Content-Type",
+          "in": "header",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "X-Koha-Frameworkcode",
+          "description": "Koha frameworkcode. Default value: HLD",
+          "in": "header",
+          "type": "string"
+        }
+      ],
+      "consumes": [
+        "application/marcxml+xml",
+        "application/marc-in-json",
+        "application/marc"
+      ],
+      "produces": [
+        "application/json",
+        "application/marcxml+xml",
+        "application/marc-in-json",
+        "application/marc"
+      ],
+      "responses": {
+        "201": {
+          "description": "Created holding",
+          "schema": {
+            "$ref": "../definitions.json#/holding"
+          }
+        },
+        "400": {
+          "description": "Missing or wrong parameters",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "401": {
+          "description": "Authentication required",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "403": {
+          "description": "Holding not allowed",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "404": {
+          "description": "Holding not found",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "406": {
+          "description": "Not acceptable",
+          "schema": {
+            "type": "array",
+            "description": "Accepted content-types",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      },
+      "x-koha-authorization": {
+        "permissions": {
+          "editcatalogue": "add_holding"
+        }
+      }
+    }
+  },
+  "/holdings/{holding_id}": {
+    "get": {
+      "x-mojo-to": "Holding#get",
+      "operationId": "getHolding",
+      "tags": ["holdings"],
+      "parameters": [{
+        "$ref": "../parameters.json#/holdingIdPathParam"
+      }],
+      "consumes": ["application/json"],
+      "produces": [
+        "application/json",
+        "application/marcxml+xml",
+        "application/marc-in-json",
+        "application/marc"
+      ],
+      "responses": {
+        "200": {
+          "description": "A holding",
+          "schema": {
+            "$ref": "../definitions.json#/holding"
+          }
+        },
+        "400": {
+          "description": "Missing or wrong parameters",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "404": {
+          "description": "Holding not found",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "406": {
+          "description": "Not acceptable",
+          "schema": {
+            "type": "array",
+            "description": "Accepted content-types",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      }
+    },
+    "put": {
+      "x-mojo-to": "Holding#update",
+      "operationId": "updateHolding",
+      "tags": ["holdings"],
+      "parameters": [
+        {
+          "$ref": "../parameters.json#/holdingIdPathParam"
+        },
+        {
+          "name": "body",
+          "in": "body",
+          "description": "A MARC record of a modified holding.",
+          "schema": {
+            "type": "object"
+          }
+        },
+        {
+          "name": "Content-Type",
+          "in": "header",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "X-Koha-Frameworkcode",
+          "description": "Koha frameworkcode. Default value: HLD",
+          "in": "header",
+          "type": "string"
+        }
+      ],
+      "consumes": [
+        "application/marcxml+xml",
+        "application/marc-in-json",
+        "application/marc"
+      ],
+      "produces": [
+        "application/json",
+        "application/marcxml+xml",
+        "application/marc-in-json",
+        "application/marc"
+      ],
+      "responses": {
+        "200": {
+          "description": "Updated holding",
+          "schema": {
+            "$ref": "../definitions.json#/holding"
+          }
+        },
+        "400": {
+          "description": "Missing or wrong parameters",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "401": {
+          "description": "Authentication required",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "403": {
+          "description": "Holding not allowed",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "404": {
+          "description": "Holding not found",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "406": {
+          "description": "Not acceptable",
+          "schema": {
+            "type": "array",
+            "description": "Accepted content-types",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      },
+      "x-koha-authorization": {
+        "permissions": {
+          "editcatalogue": "edit_holding"
+        }
+      }
+    },
+    "delete": {
+      "x-mojo-to": "Holding#delete",
+      "operationId": "deleteHolding",
+      "tags": ["holdings"],
+      "parameters": [{
+        "$ref": "../parameters.json#/holdingIdPathParam"
+      }
+      ],
+      "produces": ["application/json"],
+      "responses": {
+        "204": {
+          "description": "Successful deletion",
+          "schema": {
+            "type": "object"
+          }
+        },
+        "401": {
+          "description": "Authentication required",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "403": {
+          "description": "No sufficient permissions",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "404": {
+          "description": "Holding not found",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "500": {
+          "description": "Internal server error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      },
+      "x-koha-authorization": {
+        "permissions": {
+          "editcatalogue": "delete_holding"
+        }
+      }
+    }
+  }
+}

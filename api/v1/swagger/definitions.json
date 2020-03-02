@@ -65,6 +65,9 @@
   "holding": {
     "$ref": "definitions/holding.json"
   },
+  "holdings": {
+    "$ref": "definitions/holdings.json"
+  },
   "item": {
     "$ref": "definitions/item.json"
   },

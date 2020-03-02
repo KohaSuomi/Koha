@@ -48,13 +48,13 @@
       "format": "date"
     },
     "metadata": {
-      "type": ["string", "null"],
-      "description": "Metadata"
+      "$ref": "holding/metadata.json"
     },
     "deleted_on": {
       "type": ["string", "null"],
       "description": "the date this record was deleted from Koha",
       "format": "date"
     }
-  }
+  },
+  "required": ["biblionumber", "biblioitemnumber", "frameworkcode"]
 }

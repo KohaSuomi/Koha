@@ -80,6 +80,12 @@
   "/cities/{cityid}": {
     "$ref": "paths/cities.json#/~1cities~1{cityid}"
   },
+  "/holdings": {
+    "$ref": "paths/holdings.json#/~1holdings"
+  },
+  "/holdings/{holding_id}": {
+    "$ref": "paths/holdings.json#/~1holdings~1{holding_id}"
+  },
   "/holds": {
     "$ref": "paths/holds.json#/~1holds"
   },
