@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "format": {
+      "type": ["string", "null"],
+      "description": "format"
+    },
+    "marcflavour": {
+      "type": ["string", "null"],
+      "description": "marcflavour"
+    },
+    "metadata": {
+      "type": ["string", "null"],
+      "description": "metadata"
+    }
+  }
+}

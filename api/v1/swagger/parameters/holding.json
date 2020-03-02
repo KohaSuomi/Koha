@@ -1,0 +1,9 @@
+{
+  "holdingIdPathParam": {
+    "name": "holding_id",
+    "in": "path",
+    "description": "Internal holding identifier",
+    "required": true,
+    "type": "integer"
+  }
+}
