@@ -22,11 +22,11 @@
                 "dt_summary":
                     "<a href=\"/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% loop_order.biblionumber %]\">[% loop_order.title |html %]</a>
                 [%- IF ( loop_order.author ) %] by [% loop_order.author | html %][% END -%]
-                [%- IF ( loop_order.isbn ) %] &ndash; [% loop_order.isbn %][% END -%]
+                [%- IF ( loop_order.isbn ) %] &ndash; [% loop_order.isbn |html %][% END -%]
                 [%- IF ( loop_order.publishercode ) -%]
-<br />Publisher: [% loop_order.publishercode -%]
-                    [%- IF    ( loop_order.publicationyear && loop_order.publicationyear > 0) -%], [% loop_order.publicationyear -%]
-                    [%- ELSIF ( loop_order.copyrightdate && loop_order.copyrightdate   > 0) -%] [% loop_order.copyrightdate -%]
+<br />Publisher: [% loop_order.publishercode | html -%]
+                    [%- IF    ( loop_order.publicationyear && loop_order.publicationyear > 0) -%], [% loop_order.publicationyear |html -%]
+                    [%- ELSIF ( loop_order.copyrightdate && loop_order.copyrightdate   > 0) -%] [% loop_order.copyrightdate |html -%]
                     [%- END -%]
                 [%- END -%]
                 [%- IF ( loop_order.suggestionid ) -%]
