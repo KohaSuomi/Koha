@@ -47,11 +47,7 @@ sub cleanup {
     $logger->info("Cleaning blocks older than '$maxAgeDays' days") if $logger->is_info();
 
     my $dbh = C4::Context->dbh();
-
-    if (_isSthStale($sqlCache{cleanBlockSth}, $dbh)) {
-        $logger->debug(sprintf("Preparing a new statement using '%s' to clean blocks", $dbh->{Driver})) if $logger->is_debug();
-        $sqlCache{cleanBlockSth} = $dbh->prepare("DELETE FROM borrower_ss_blocks WHERE DATEDIFF(NOW(), expirationdate) >= ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
-    }
+    $sqlCache{cleanBlockSth} = $dbh->prepare("DELETE FROM borrower_ss_blocks WHERE DATEDIFF(NOW(), expirationdate) >= ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
 
     my $count = $sqlCache{cleanBlockSth}->execute($maxAgeDays) || Koha::Exception::DB->throw(error => $dbh->errstr());
     $logger->info("Cleaned '$count' blocks");
@@ -90,11 +86,7 @@ sub deleteBlock {
     $logger->debug("Deleting block id '$borrower_ss_block_id'") if $logger->is_debug();
 
     my $dbh = C4::Context->dbh();
-
-    if (_isSthStale($sqlCache{deleteBlockSth}, $dbh)) {
-        $logger->debug(sprintf("Preparing a new statement using '%s' to delete block '%s'", $dbh->{Driver}, $borrower_ss_block_id)) if $logger->is_debug();
-        $sqlCache{deleteBlockSth} = $dbh->prepare("DELETE FROM borrower_ss_blocks WHERE borrower_ss_block_id = ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
-    }
+    $sqlCache{deleteBlockSth} = $dbh->prepare("DELETE FROM borrower_ss_blocks WHERE borrower_ss_block_id = ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
 
     my $deletedCount = $sqlCache{deleteBlockSth}->execute($borrower_ss_block_id) || Koha::Exception::DB->throw(error => $dbh->errstr());
     C4::Log::logaction($actionLogModuleName, 'BRANCHBLOCK-DEL', $borrower_ss_block_id, undef);
@@ -112,11 +104,7 @@ sub deleteBlock {
 sub deleteBorrowersBlocks {
     my $borrowernumber = $_[0] ? eval{$_[0]->borrowernumber} || eval{$_[0]->{borrowernumber}} || $_[0] : $_[0];
     my $dbh = C4::Context->dbh();
-
-    if (_isSthStale($sqlCache{deleteBorrowersBlocksSth}, $dbh)) {
-        $logger->debug(sprintf("Preparing a new statement using '%s' to delete borrowers '%s' blocks", $dbh->{Driver}, $borrowernumber)) if $logger->is_debug();
-        $sqlCache{deleteBorrowersBlocksSth} = $dbh->prepare("DELETE FROM borrower_ss_blocks WHERE borrowernumber = ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
-    }
+    $sqlCache{deleteBorrowersBlocksSth} = $dbh->prepare("DELETE FROM borrower_ss_blocks WHERE borrowernumber = ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
 
     my $rowsDeleted = $sqlCache{deleteBorrowersBlocksSth}->execute($borrowernumber) || Koha::Exception::DB->throw(error => $dbh->errstr());
     C4::Log::logaction($actionLogModuleName, 'BRANCHBLOCK-DELALL', $borrowernumber, undef);
@@ -134,11 +122,7 @@ sub deleteBorrowersBlocks {
 sub getBlock {
     my ($borrower_ss_block_id) = @_;
     my $dbh = C4::Context->dbh();
-
-    if (_isSthStale($sqlCache{getBlockSth}, $dbh)) {
-        $logger->debug(sprintf("Preparing a new statement using '%s' to delete block '%s'", $dbh->{Driver}, $borrower_ss_block_id)) if $logger->is_debug();
-        $sqlCache{getBlockSth} = $dbh->prepare("SELECT * FROM borrower_ss_blocks WHERE borrower_ss_block_id = ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
-    }
+    $sqlCache{getBlockSth} = $dbh->prepare("SELECT * FROM borrower_ss_blocks WHERE borrower_ss_block_id = ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
 
     my ($block) = $dbh->selectall_array($sqlCache{getBlockSth}, { Slice => {} }, $borrower_ss_block_id);
     Koha::Exception::DB->throw(error => $dbh->errstr()) if $dbh->errstr();
@@ -170,10 +154,7 @@ sub hasBlock {
 
     my $dbh = C4::Context->dbh();
 
-    if (_isSthStale($sqlCache{hasBlockSth}, $dbh)) {
-        $logger->debug(sprintf("Preparing a new statement using '%s' to check blocks for bn:'%s' branch:'%s' date:'%s'", $dbh->{Driver}, $borrowernumber, $branchcode, $expirationStatusDate)) if $logger->is_debug();
-        $sqlCache{hasBlockSth} = $dbh->prepare("SELECT * FROM borrower_ss_blocks WHERE borrowernumber = ? AND branchcode = ? AND expirationdate >= ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
-    }
+    $sqlCache{hasBlockSth} = $dbh->prepare("SELECT * FROM borrower_ss_blocks WHERE borrowernumber = ? AND branchcode = ? AND expirationdate >= ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
 
     my ($block) = $dbh->selectall_array($sqlCache{hasBlockSth}, { Slice => {} }, $borrowernumber, $branchcode, $expirationStatusDate);
     Koha::Exception::DB->throw(error => $dbh->errstr()) if $dbh->errstr();
@@ -199,11 +180,7 @@ sub listBlocks {
     }
 
     my $dbh = C4::Context->dbh();
-
-    if (_isSthStale($sqlCache{listBlockSth}, $dbh)) {
-        $logger->debug(sprintf("Preparing a new statement using '%s' to get blocks for borrowernumber '%s'", $dbh->{Driver}, $borrowernumber)) if $logger->is_debug();
-        $sqlCache{listBlockSth} = $dbh->prepare("SELECT * FROM borrower_ss_blocks WHERE borrowernumber = ? AND expirationdate >= ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
-    }
+    $sqlCache{listBlockSth} = $dbh->prepare("SELECT * FROM borrower_ss_blocks WHERE borrowernumber = ? AND expirationdate >= ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
 
     my @blocks = $dbh->selectall_array($sqlCache{listBlockSth}, { Slice => {} }, $borrowernumber, $expirationStatusDate);
     Koha::Exception::DB->throw(error => $dbh->errstr()) if $dbh->errstr();
@@ -231,10 +208,7 @@ sub storeBlock {
 
     #UPDATE
     if ($block->id) {
-        if (_isSthStale($sqlCache{updateBlockSth}, $dbh)) {
-            $logger->debug(sprintf("Preparing a new statement using '%s' to update %s", $dbh->{Driver}, $block->toString())) if $logger->is_debug();
-            $sqlCache{updateBlockSth} = $dbh->prepare("UPDATE borrower_ss_blocks SET borrowernumber = ?, branchcode = ?, expirationdate = ?, notes = ? WHERE borrower_ss_block_id = ?");
-        }
+        $sqlCache{updateBlockSth} = $dbh->prepare("UPDATE borrower_ss_blocks SET borrowernumber = ?, branchcode = ?, expirationdate = ?, notes = ? WHERE borrower_ss_block_id = ?");
 
         #TODO Updating an existing block has some limitations? Disallow changing branch etc. Easier to implement traceability
         $sqlCache{updateBlockSth}->execute(
@@ -249,10 +223,7 @@ sub storeBlock {
     }
     #INSERT
     else {
-        if (_isSthStale($sqlCache{createBlockSth}, $dbh)) {
-            $logger->debug(sprintf("Preparing a new statement using '%s' to create %s", $dbh->{Driver}, $block->toString())) if $logger->is_debug();
-            $sqlCache{createBlockSth} = $dbh->prepare("INSERT INTO borrower_ss_blocks VALUES (?,?,?,?,?,?,?)");
-        }
+        $sqlCache{createBlockSth} = $dbh->prepare("INSERT INTO borrower_ss_blocks VALUES (?,?,?,?,?,?,?)");
 
         $sqlCache{createBlockSth}->execute(
             undef,
@@ -269,17 +240,6 @@ sub storeBlock {
     }
 
     return $block;
-}
-
-#invalidate cache if dbh reference changes. This means that the connection has been lost.
-sub _isSthStale {
-    my ($sth, $dbh) = @_;
-    return 1 unless $sth;
-    return not(_sameDBConn($sth, $dbh));
-}
-sub _sameDBConn {
-    my ($sth, $dbh) = @_;
-    return $sth->{Database}->{Driver} eq $dbh->{Driver};
 }
 
 =head1 Referential integrity
@@ -308,10 +268,7 @@ sub _checkBorrowerOrCreatorExists {
     my ($block) = @_;
     my $dbh = C4::Context->dbh();
 
-    if (_isSthStale($sqlCache{checkBorrowerSth}, $dbh)) {
-        $logger->debug(sprintf("Preparing a new statement using '%s'", $dbh->{Driver})) if $logger->is_debug();
-        $sqlCache{checkBorrowerSth} = $dbh->prepare("SELECT borrowernumber FROM borrowers WHERE borrowernumber = ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
-    }
+    $sqlCache{checkBorrowerSth} = $dbh->prepare("SELECT borrowernumber FROM borrowers WHERE borrowernumber = ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
 
     # This could be handled in one SQL request instead of two, but that would lead to a much more complex query. There is no practical difference here regarding performance.
     # So optimizing towards easier maintenance.
@@ -330,10 +287,7 @@ sub _checkBranchExists {
     my ($block) = @_;
     my $dbh = C4::Context->dbh();
 
-    if (_isSthStale($sqlCache{checkBranchSth}, $dbh)) { #invalidate cache if dbh reference changes. This means that the connection has been lost.
-        $logger->debug(sprintf("Preparing a new statement using '%s'", $dbh->{Driver})) if $logger->is_debug();
-        $sqlCache{checkBranchSth} = $dbh->prepare("SELECT branchcode FROM branches WHERE branchcode = ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
-    }
+    $sqlCache{checkBranchSth} = $dbh->prepare("SELECT branchcode FROM branches WHERE branchcode = ?") || Koha::Exception::DB->throw(error => $dbh->errstr());
 
     my ($bc) = $dbh->selectrow_array($sqlCache{checkBranchSth}, undef, $block->branchcode());
     Koha::Exception::DB->throw(error => $dbh->errstr()) if $dbh->errstr();
