@@ -30,6 +30,7 @@ use Koha::Holdings::Metadatas;
 use Koha::Exceptions::Holding;
 use Koha::Exceptions::Metadata;
 
+use Scalar::Util qw( blessed );
 use Try::Tiny;
 
 =head1 API
@@ -96,6 +97,43 @@ sub get {
 
 sub add {
     my $c = shift->openapi->valid_input or return;
+
+    return try {
+        my ( $record, $frameworkcode, $biblionumber ) = $c->convert_content_to_marc_record();
+
+        my $biblio;
+        unless ( $biblio = Koha::Biblios->find( $biblionumber )) {
+            return $c->render( status  => 404,
+                openapi => { error => "Biblio with given biblionumber not found" } );
+        }
+
+        my $holding_id = C4::Holdings::AddHolding(
+            $record,
+            $frameworkcode,
+            $biblionumber
+        );
+
+        my $holding = Koha::Holdings->find( $holding_id );
+
+        $c->res->headers->location( $c->req->url->to_string . $holding_id );
+        return $c->respond_with_content_type( $holding, 201 );
+    }
+    catch {
+        unless (blessed $_ && $_->can('rethrow')) {
+            Koha::Exceptions::rethrow_exception($_);
+        }
+        if ($_->isa('Koha::Exceptions::Metadata::Invalid')) {
+            return $c->render(status  => 400,
+                openapi => { error => Koha::Exceptions::_stringify_exception($_->decoding_error) }
+            );
+        }
+        elsif ($_->isa('Koha::Exceptions::Holding::MissingProperty')) {
+            return $c->render(status  => 400,
+                openapi => { error => $_->error }
+            );
+        }
+        Koha::Exceptions::rethrow_exception($_);
+    };
 }
 
 =head3 update
