@@ -357,12 +357,17 @@ Returns the related Koha::Holdings object including metadata for this biblio as 
 =cut
 
 sub holdings_full {
-    my ($self) = @_;
+    my ($self, $filter) = @_;
+
+    # additional search parameters
+    $filter //= {};
+    $filter->{biblionumber} //= $self->biblionumber() if ref $self eq 'Koha::Biblio';
+    $filter->{'me.deleted_on'} //= undef;
 
     if ( !$self->{_holdings_full} ) {
         my $schema = Koha::Database->new()->schema();
         my @holdings = $schema->resultset('Holding')->search(
-            { 'biblionumber' => $self->biblionumber(), 'me.deleted_on' => undef },
+            $filter,
             {
                 join         => 'holdings_metadatas',
                 '+columns'   => [ qw/ holdings_metadatas.format holdings_metadatas.marcflavour holdings_metadatas.metadata / ],
@@ -372,7 +377,7 @@ sub holdings_full {
 
         # Nicer name for the metadata array and additional information
         for my $holding (@holdings) {
-            $holding->{metadata} = delete $holding->{holdings_metadatas}; 
+            $holding->{metadata} = delete $holding->{holdings_metadatas};
 
             if ($holding->{ccode}) {
                 my $ccode = Koha::AuthorisedValues->search({
