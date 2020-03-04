@@ -364,6 +364,11 @@ sub holdings_full {
     $filter->{biblionumber} //= $self->biblionumber() if ref $self eq 'Koha::Biblio';
     $filter->{'me.deleted_on'} //= undef;
 
+    # holding 1:1 holdings_metadata like biblio - biblio_metadata
+    # see comments of https://bugs.koha-community.org/bugzilla3/show_bug.cgi?id=22700
+    $filter->{'holdings_metadatas.format'} = 'marcxml'; # force marcxml
+    $filter->{'holdings_metadatas.marcflavour'} = C4::Context->preference('marcflavour');
+
     if ( !$self->{_holdings_full} ) {
         my $schema = Koha::Database->new()->schema();
         my @holdings = $schema->resultset('Holding')->search(
