@@ -110,7 +110,8 @@ sub _sendTheLetterViaFtp {
     else {
         #If the remoteDirectory-configuration is defined, try changing to that directory, if it is not present try creating it.
         if ($providerConfig->{remoteDirectory} && length $providerConfig->{remoteDirectory} > 0) {
-            unless($ftpcon->cwd( $providerConfig->{remoteDirectory} )) {
+            my $cwdret = $providerConfig->{sftp} ? $ftpcon->setcwd( $providerConfig->{remoteDirectory} ) : $ftpcon->cwd( $providerConfig->{remoteDirectory} );
+            unless ( $cwdret ) {
                 my $firstError = "FTP: Cannot change working directory :".$ftpcon->$error_fn;
                 unless($ftpcon->mkdir( $providerConfig->{remoteDirectory} )) {
                     my $secondError = "FTP: Cannot create directory :".$ftpcon->$error_fn;
