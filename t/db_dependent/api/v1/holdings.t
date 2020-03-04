@@ -537,9 +537,32 @@ subtest 'update() tests' => sub {
 };
 
 subtest 'delete() tests' => sub {
-    plan skip_all => 'not implemented';
+    plan tests => 9;
 
     $schema->storage->txn_begin;
+
+    my ( $patron, $patron_session ) = create_user_and_session( { authorized => 0 } );
+    my ( $librarian, $librarian_session ) = create_user_and_session( { authorized => 1 } );
+
+    my $holding = create_holding();
+    my $holding_id = $holding->holding_id;
+
+    $tx = $t->ua->build_tx( DELETE => "/api/v1/holdings/$holding_id" );
+    $t->request_ok($tx)->status_is(401);
+
+    $tx = $t->ua->build_tx( DELETE => "/api/v1/holdings/$holding_id" );
+    $tx->req->cookies( { name => 'CGISESSID', value => $patron_session } );
+    $t->request_ok($tx)->status_is(403);
+
+    $tx = $t->ua->build_tx( DELETE => "/api/v1/holdings/$holding_id");
+    $tx->req->cookies( { name => 'CGISESSID', value => $librarian_session } );
+    $t->request_ok($tx)->status_is(204)
+      ->content_is('');
+
+    $tx = $t->ua->build_tx( DELETE => "/api/v1/holdings/$holding_id");
+    $tx->req->cookies( { name => 'CGISESSID', value => $librarian_session } );
+    $t->request_ok($tx)->status_is(404);
+
     $schema->storage->txn_rollback;
 };
 

@@ -201,6 +201,20 @@ sub update {
 
 sub delete {
     my $c = shift->openapi->valid_input or return;
+
+    my $holding = Koha::Holdings->find( $c->validation->param('holding_id') );
+    if ( not defined $holding ) {
+        return $c->render( status  => 404,
+            openapi => { error => "Holding not found" } );
+    }
+
+    return try {
+        $holding->delete;
+        return $c->render( status => 204, openapi => {} );
+    }
+    catch {
+        Koha::Exceptions::rethrow_exception($_);
+    };
 }
 
 
