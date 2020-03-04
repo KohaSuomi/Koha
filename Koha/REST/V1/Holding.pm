@@ -42,6 +42,36 @@ use Try::Tiny;
 
 sub list {
     my $c = shift->openapi->valid_input or return;
+
+    return try {
+        my $filter;
+        my $args = $c->req->params->to_hash;
+
+        unless ($args) {
+            return $c->render( status  => 400,
+                openapi => { error => "At least one query parameter is required" } );
+        }
+
+        my @starts_with_search = ( 'timestamp', 'datecreated', 'deleted_on' );
+
+        for my $filter_param ( keys %$args ) {
+            if ( grep ( /^$filter_param$/, @starts_with_search ) ) {
+                $filter->{$filter_param} = { LIKE => $args->{$filter_param} . "%" };
+                next;
+            }
+            $filter->{$filter_param} = $args->{$filter_param};
+        }
+
+        # FIXME
+        # A bit hacky use of Koha::Biblio->holdings_full
+        # Use a better approach when Bug 20447 reaches upstream
+        my $holdings = Koha::Biblio::holdings_full({}, $filter);
+
+        return $c->render( status => 200, openapi => $holdings );
+    }
+    catch {
+        Koha::Exceptions::rethrow_exception($_);
+    };
 }
 
 =head3 get
