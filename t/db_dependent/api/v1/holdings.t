@@ -24,6 +24,8 @@ use t::lib::TestBuilder;
 
 use DateTime;
 
+use MARC::Record::MiJ;
+
 use C4::Context;
 use C4::Biblio;
 use C4::Holdings;
@@ -119,9 +121,77 @@ subtest "list() tests" => sub {
 };
 
 subtest 'get() tests' => sub {
-    plan skip_all => 'not implemented';
+    plan tests => 6;
 
     $schema->storage->txn_begin;
+
+    my ($patron, $session_patron) = create_user_and_session( { authorized => 0 } );
+
+    Koha::Holdings->search->delete;
+
+    $tx = $t->ua->build_tx( GET => '/api/v1/holdings/0' );
+    $tx->req->cookies( { name => 'CGISESSID', value => $session_patron } );
+    $t->request_ok( $tx )->status_is( 404 );
+
+    my $biblionumber = create_biblio( 'test' );
+
+    my $holding = create_holding( $biblionumber );
+    my $holdings_full = Koha::Biblios->find( $biblionumber )->holdings_full();
+    $tx = $t->ua->build_tx( GET => '/api/v1/holdings/'.$holding->holding_id );
+    $tx->req->cookies( { name => 'CGISESSID', value => $session_patron } );
+    $t->request_ok( $tx )->status_is( 200 )
+        ->json_is( $holdings_full->[0] );
+
+    my $record;
+    subtest 'test different content-types' => sub {
+        plan tests => 4;
+
+        subtest 'application/json' => sub {
+            plan tests => 4;
+            $tx = $t->ua->build_tx( GET => '/api/v1/holdings/'.$holding->holding_id
+                                        => { Accept => 'application/json' }
+            );
+            $tx->req->cookies( { name => 'CGISESSID', value => $session_patron } );
+            $t->request_ok( $tx )->status_is( 200 )
+              ->json_is( '/holding_id' => $holding->holding_id )
+              ->json_is( '/metadata/metadata' => $holding->metadata->metadata );
+        };
+
+        subtest 'application/marc' => sub {
+            plan tests => 3;
+            $record = $holding->metadata->record;
+            $tx = $t->ua->build_tx( GET => '/api/v1/holdings/'.$holding->holding_id
+                                        => { Accept => 'application/marc' }
+            );
+            $tx->req->cookies( { name => 'CGISESSID', value => $session_patron } );
+            $t->request_ok( $tx )->status_is( 200 )
+              ->content_is( $record->as_usmarc );
+        };
+
+        subtest 'application/marc-in-json' => sub {
+            plan tests => 3;
+            $record = $holding->metadata->record;
+            $tx = $t->ua->build_tx( GET => '/api/v1/holdings/'.$holding->holding_id
+                                        => { Accept => 'application/marc-in-json' }
+            );
+            $tx->req->cookies( { name => 'CGISESSID', value => $session_patron } );
+            $t->request_ok( $tx )->status_is( 200 )
+              ->json_is( Mojo::JSON::decode_json($record->to_mij) );
+        };
+
+        subtest 'application/marcxml+xml' => sub {
+            plan tests => 3;
+            $record = $holding->metadata->record;
+            $tx = $t->ua->build_tx( GET => '/api/v1/holdings/'.$holding->holding_id
+                                        => { Accept => 'application/marcxml+xml' }
+            );
+            $tx->req->cookies( { name => 'CGISESSID', value => $session_patron } );
+            $t->request_ok( $tx )->status_is( 200 )
+              ->content_is( $record->as_xml_record );
+        };
+
+    };
+
     $schema->storage->txn_rollback;
 };
 

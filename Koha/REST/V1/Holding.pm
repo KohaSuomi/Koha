@@ -80,6 +80,14 @@ sub list {
 
 sub get {
     my $c = shift->openapi->valid_input or return;
+
+    my $holding = Koha::Holdings->find( $c->validation->param('holding_id') );
+    unless ($holding) {
+        return $c->render( status  => 404,
+            openapi => { error => "Holding not found" } );
+    }
+
+    return $c->respond_with_content_type( $holding );
 }
 
 =head3 add
