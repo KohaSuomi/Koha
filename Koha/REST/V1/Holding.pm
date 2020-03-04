@@ -142,6 +142,57 @@ sub add {
 
 sub update {
     my $c = shift->openapi->valid_input or return;
+
+    my $holding_id = $c->validation->param('holding_id');
+    my $holding = Koha::Holdings->find( $holding_id );
+
+    unless ( $holding ) {
+        return $c->render( status  => 404,
+            openapi => { error => "Holding not found" } );
+    }
+
+    return try {
+        my ( $record, $frameworkcode, $biblionumber ) = $c->convert_content_to_marc_record();
+
+        my $biblio;
+        unless ( $biblio = Koha::Biblios->find( $biblionumber )) {
+            return $c->render( status  => 404,
+                openapi => { error => "Biblio with given biblionumber not found" } );
+        }
+
+        my $success = C4::Holdings::ModHolding(
+            $record,
+            $holding_id,
+            $frameworkcode
+        );
+
+        unless ($success) {
+            Koha::Exceptions::Holding->throw(
+                'Could not update holding record. See logs for more details.'
+            );
+        }
+
+        my $holding = Koha::Holdings->find( $holding_id );
+
+        $c->res->headers->location( $c->req->url->to_string . $holding_id );
+        return $c->respond_with_content_type( $holding );
+    }
+    catch {
+        unless (blessed $_ && $_->can('rethrow')) {
+            Koha::Exceptions::rethrow_exception($_);
+        }
+        if ($_->isa('Koha::Exceptions::Metadata::Invalid')) {
+            return $c->render(status  => 400,
+                openapi => { error => Koha::Exceptions::_stringify_exception($_->decoding_error) }
+            );
+        }
+        elsif ($_->isa('Koha::Exceptions::Holding::MissingProperty')) {
+            return $c->render(status  => 400,
+                openapi => { error => $_->error }
+            );
+        }
+        Koha::Exceptions::rethrow_exception($_);
+    };
 }
 
 =head3 delete

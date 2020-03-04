@@ -366,9 +366,173 @@ subtest 'add() tests' => sub {
 };
 
 subtest 'update() tests' => sub {
-    plan skip_all => 'not implemented';
+    plan tests => 6;
 
     $schema->storage->txn_begin;
+
+    my ($patron, $session_patron) = create_user_and_session( { authorized => 0 } );
+    my ($librarian, $session_librarian) = create_user_and_session( { authorized => 1 } );
+
+    create_framework();
+
+    Koha::Holdings->search->delete;
+
+    my $biblionumber = create_biblio( 'test' );
+    my $biblio = Koha::Biblios->find( $biblionumber );
+    my $holding = create_holding( $biblionumber );
+    my $biblioitemnumber = $holding->biblioitemnumber;
+    my $holding_id = $holding->holding_id;
+    my $holding_marc = $holding->metadata->record;
+    my $record = $holding_marc;
+
+    $tx = $t->ua->build_tx( PUT
+        => '/api/v1/holdings/' . $holding_id
+        => { 'Content-Type' => 'application/marc' }
+        => $record->as_usmarc
+    );
+    $t->request_ok( $tx )->status_is( 401 );
+
+    $tx = $t->ua->build_tx( PUT
+        => '/api/v1/holdings/' . $holding_id
+        => { 'Content-Type' => 'application/marc' }
+        => $record->as_usmarc
+    );
+    $tx->req->cookies( { name => 'CGISESSID', value => $session_patron } );
+    $t->request_ok( $tx )->status_is( 403 );
+
+    subtest 'test required parameters' => sub {
+        plan tests => 2;
+
+        subtest 'missing biblionumber' => sub {
+            plan tests => 3;
+
+            C4::Biblio::UpsertMarcSubfield($record, '999', 'c', '');
+            $tx = $t->ua->build_tx(PUT
+                => '/api/v1/holdings/' . $holding_id
+                => {
+                    'Accept'       => 'application/json',
+                    'Content-Type' => 'application/marc'
+                   }
+                => $record->as_usmarc
+            );
+            $tx->req->cookies({ name => 'CGISESSID', value => $session_librarian });
+            $t->request_ok($tx)->status_is(400)
+                ->json_like('/error' => qr/biblionumber/);
+        };
+
+        subtest 'biblionumber given but no such biblio exists' => sub {
+            plan tests => 3;
+
+            C4::Biblio::UpsertMarcSubfield($record, '999', 'c', -1);
+            $tx = $t->ua->build_tx(PUT
+                => '/api/v1/holdings/' . $holding_id
+                => {
+                    'Accept'       => 'application/json',
+                    'Content-Type' => 'application/marc'
+                   }
+                => $record->as_usmarc
+            );
+            $tx->req->cookies({ name => 'CGISESSID', value => $session_librarian });
+            $t->request_ok($tx)->status_is(404)
+                ->json_like('/error' => qr/biblionumber/);
+        };
+    };
+
+    C4::Biblio::UpsertMarcSubfield( $holding_marc, '999', 'c', $biblionumber );
+    C4::Biblio::UpsertMarcSubfield( $holding_marc, '999', 'd', $biblioitemnumber );
+    $record = $holding_marc;
+
+    subtest 'test different content-types' => sub {
+        plan tests => 4;
+
+        subtest 'application/json (Accept-header only)' => sub {
+            plan tests => 3;
+
+            # modify record
+            my $branchcode = $builder->build({ source => 'Branch' })->{ branchcode };
+            C4::Biblio::UpsertMarcSubfield( $record, '852', 'b', $branchcode );
+
+            $tx = $t->ua->build_tx( PUT
+                => '/api/v1/holdings/' . $holding_id
+                => {
+                    'Accept'       => 'application/json',
+                    'Content-Type' => 'application/marcxml+xml'
+                   }
+                => $record->as_xml_record
+            );
+            $tx->req->cookies( { name => 'CGISESSID', value => $session_librarian } );
+            $t->request_ok( $tx )->status_is( 200 );
+
+            my $holdings_full = Koha::Biblios->find( $biblionumber )->holdings_full();
+
+            $t->json_is( $holdings_full->[0] );
+        };
+
+        subtest 'application/marc' => sub {
+            plan tests => 3;
+
+            $record = $holding_marc;
+            # modify record
+            my $branchcode = $builder->build({ source => 'Branch' })->{ branchcode };
+            C4::Biblio::UpsertMarcSubfield( $record, '852', 'b', $branchcode );
+
+            $tx = $t->ua->build_tx( PUT
+                => '/api/v1/holdings/' . $holding_id
+                => {
+                    'Accept'       => 'application/marc',
+                    'Content-Type' => 'application/marc'
+                   }
+                => $record->as_usmarc
+            );
+            $tx->req->cookies( { name => 'CGISESSID', value => $session_librarian } );
+            $t->request_ok( $tx )->status_is( 200 )
+              ->content_is( $record->as_usmarc );
+        };
+
+        subtest 'application/marc-in-json' => sub {
+            plan tests => 3;
+
+            $record = $holding_marc;
+            # modify record
+            my $branchcode = $builder->build({ source => 'Branch' })->{ branchcode };
+            C4::Biblio::UpsertMarcSubfield( $record, '852', 'b', $branchcode );
+
+            $tx = $t->ua->build_tx( PUT
+                => '/api/v1/holdings/' . $holding_id
+                => {
+                    'Accept'       => 'application/marc-in-json',
+                    'Content-Type' => 'application/marc-in-json'
+                   }
+                => json => Mojo::JSON::decode_json( $record->to_mij )
+            );
+            $tx->req->cookies( { name => 'CGISESSID', value => $session_librarian } );
+            $t->request_ok( $tx )->status_is( 200 )
+              ->json_is( Mojo::JSON::decode_json($record->to_mij) );
+        };
+
+        subtest 'application/marcxml+xml' => sub {
+            plan tests => 3;
+
+            $record = $holding_marc;
+            # modify record
+            my $branchcode = $builder->build({ source => 'Branch' })->{ branchcode };
+            C4::Biblio::UpsertMarcSubfield( $record, '852', 'b', $branchcode );
+
+            $tx = $t->ua->build_tx( PUT
+                => '/api/v1/holdings/' . $holding_id
+                => {
+                    'Accept'       => 'application/marcxml+xml',
+                    'Content-Type' => 'application/marcxml+xml'
+                   }
+                => $record->as_xml_record
+            );
+            $tx->req->cookies( { name => 'CGISESSID', value => $session_librarian } );
+            $t->request_ok( $tx )->status_is( 200 )
+              ->content_is( $record->as_xml_record );
+        };
+
+    };
+
     $schema->storage->txn_rollback;
 };
 
