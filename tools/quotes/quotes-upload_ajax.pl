@@ -51,6 +51,12 @@ my $sth = $dbh->prepare('INSERT INTO quotes (source, text) VALUES (?, ?);');
 my $insert_count = 0;
 
 foreach my $quote (@$quotes) {
+    # KD-4347 Do not allow script tags in quotes
+    if ( grep( /<\/{0,1}script.*>/, lc( $quote->[1] ) ) || grep( /<\/{0,1}script.*>/, lc( $quote->[2] ) ) ) {
+        warn 'Script tags not allowed in quotes.';
+        $success = 'false';
+        next;
+    }
     $insert_count++ if $sth->execute($quote->[1], $quote->[2]);
     if ($sth->err) {
         warn sprintf('Database returned the following error: %s', $sth->errstr);
