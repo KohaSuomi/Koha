@@ -45,7 +45,12 @@ my $params = $cgi->Vars; # NOTE: Multivalue parameters NOT allowed!!
 print $cgi->header('application/json; charset=utf-8');
 
 my $action = $params->{'action'} || 'get';
-if ($action eq 'add') {
+# KD-4347 Do not allow script tags in quotes
+if ( grep( /<\/{0,1}script.*>/, lc( $params->{'source'} ) ) || grep( /<\/{0,1}script.*>/, lc( $params->{'text'} ) ) ) {
+    warn 'Script tags not allowed in quotes.';
+    exit 0;
+}
+elsif ($action eq 'add') {
     my $sth = $dbh->prepare('INSERT INTO quotes (source, text) VALUES (?, ?);');
     $sth->execute($params->{'source'}, $params->{'text'});
     if ($sth->err) {
