@@ -22,6 +22,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use Mojo::JSON;
 
 use C4::Members;
+use Koha::Patrons;
 
 use Koha::Auth::Challenge::Password;
 
@@ -198,9 +199,10 @@ sub status {
 
     my $username = $c->validation->param('uname');
     my $password = $c->validation->param('passwd');
-    my ($borrower, $error);
-    return try {
+    my ($borrower, $error, $patron, $payload);
 
+    try {
+        $patron = Koha::Patrons->find({ userid => $username });
         $borrower = Koha::Auth::Challenge::Password::challenge(
                 $username,
                 $password
@@ -212,8 +214,11 @@ sub status {
         $fines_amount = ($fines_amount and $fines_amount > 0) ? $fines_amount : 0;
         my $fee_limit = C4::Context->preference('noissuescharge') || 5;
         my $fine_blocked = $fines_amount > $fee_limit;
-        my $card_lost = $kp->{lost} || $kp->{gonenoaddress} || $flags->{LOST};
+        my $card_lost = $kp->{lost} || $flags->{LOST};
         my $basic_privileges_ok = !$borrower->is_debarred && !$borrower->is_expired && !$fine_blocked;
+
+        # KD-4344 Card might be in the wrong hands, throw an exception to block access.
+        Koha::Exception::LoginFailed->throw() if ( ( $patron and $patron->account_locked ) or $card_lost );
 
         for (qw(EXPIRED CHARGES CREDITS GNA LOST DBARRED NOTES)) {
                 ($flags->{$_}) or next;
@@ -222,7 +227,7 @@ sub status {
                 }
         }
 
-        my $payload = {
+        $payload = {
             borrowernumber => 0+$borrower->borrowernumber,
             cardnumber     => $borrower->cardnumber || '',
             surname        => $borrower->surname || '',
@@ -245,11 +250,24 @@ sub status {
             recall_overdue              => _bool(0),
             too_many_items_billed       => _bool(0),
         };
+
+        # KD-4344 Reset failed login attempts on succesfull login
+        if ( $patron ) {
+            $patron->update({ login_attempts => 0 });
+            $patron->store;
+        }
+
         return $c->render( status => 200, openapi => $payload );
     } catch {
         if (blessed($_)){
             if ($_->isa('Koha::Exception::LoginFailed')) {
-                return $c->render( status => 400, openapi => { error => $_->error } );
+                # KD-4344 Update the amount of failed login attempts
+                if ( $patron ) {
+                    $patron->update({ login_attempts => $patron->login_attempts + 1 });
+                    $patron->store;
+                }
+                # KD-4344 Generic error message instead of $_->error so as not to reveal anything about our user ids.
+                return $c->render( status => 400, openapi => { error => 'Password authentication failed for the given username and password.' } );
             }
         }
         Koha::Exceptions::rethrow_exception($_);
