@@ -88,7 +88,11 @@ $template->param( lang_list   => \@lang_list,
 
 my $op = $cgi->param('op') // '';
 
-if ( $op eq 'add_form' ) {
+# KD-4348 Do not allow script tags in news
+if ( grep (/<\/{0,1}script.*>/, lc($content)) || grep (/<\/{0,1}script.*>/, lc($title)) )  {
+    print $cgi->redirect("/cgi-bin/koha/tools/koha-news.pl?error_message=Script_tags");
+}
+elsif ( $op eq 'add_form' ) {
     $template->param( add_form => 1 );
     if ($id) {
         if($new_detail->{lang} eq "slip"){ $template->param( slip => 1); }
