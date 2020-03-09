@@ -15,6 +15,7 @@ use C4::Context;
 use Try::Tiny;
 use YAML;
 use Koha::Config;
+use Digest::MD5 qw(md5_base64);
 
 ##################################
 #gets timeout based on borrower's category
@@ -71,6 +72,30 @@ sub trim {
     my ($retval) = @_;
     $retval =~ s/^\s+|\s+$//g;
     return($retval);
+}
+
+=expl2
+checksum_userjs checks the md5 hashes of intranetUserJS
+and OPACUserJS if the hashes are stored in koha-conf.
+
+A small tweak in Auth.pm will prevent using the Koha SC
+when the calculate hashes don't match the stored ones.
+=cut
+
+sub checksum_userjs {
+    if (C4::Context->config('intranetuserjschecksum')) {
+        unless ( md5_base64(C4::Context->preference('IntranetUserJS')) eq C4::Context->config('intranetuserjschecksum') ) {
+          warn "IntranetUserJS checksum mismatch, check the system preference and your Koha configuration";
+          return 0;
+        }
+    }
+    if (C4::Context->config('opacuserjschecksum')) {
+        unless ( md5_base64(C4::Context->preference('OPACUserJS')) eq C4::Context->config('opacuserjschecksum') ) {
+          warn "OPACUserJS checksum mismatch, check the system preference and your Koha configuration";
+          return 0;
+        }
+    }
+    return 1;
 }
 
 1;

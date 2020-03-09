@@ -46,7 +46,7 @@ Staff Client:
               type: textarea
               class: code
         -
-            - "Include the following JavaScript on all pages in the staff client:"
+            - "Include the following JavaScript on all pages in the staff client. You may need to ask your system administrator to run rehash_userjs_sysprefs.pl after changing this."
             - pref: IntranetUserJS
               type: textarea
               class: code

@@ -72,6 +72,8 @@ __PAZPAR2_TOGGLE_XML_POST__
 <!-- the DBD drivers supported by Koha are mysql and Pg -->
 <!-- port info: mysql:3306 Pg:5432 (5433 on Debian) -->
 <config>
+ <intranetuserjschecksum></intranetuserjschecksum>
+ <opacuserjschecksum></opacuserjschecksum>
  <finnaprefix>__FINNA_PREFIX__</finnaprefix>
  <webkakecon>__WEBKAKECON__</webkakecon>
  <db_scheme>__DB_TYPE__</db_scheme>
