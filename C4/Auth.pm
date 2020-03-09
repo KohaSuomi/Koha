@@ -26,6 +26,7 @@ use CGI::Session;
 use URI;
 use URI::QueryParam;
 
+use C4::AuthExtra;    # Koha-Suomi specific authentication tweaks
 use C4::Context;
 use C4::Templates;    # to get the template
 use C4::Languages;
@@ -157,6 +158,8 @@ sub get_template_and_user {
     # Get shibboleth login attribute
     my $shib = C4::Context->config('useshibboleth') && shib_ok();
     my $shib_login = $shib ? get_login_shib() : undef;
+    C4::Context->interface( $in->{type} );
+    $in->{'template_name'} = "stop.tt" unless C4::AuthExtra::checksum_userjs();
 
     C4::Context->interface( $in->{type} );
 
