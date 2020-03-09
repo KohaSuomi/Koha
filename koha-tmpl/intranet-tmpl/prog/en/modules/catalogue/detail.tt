@@ -1263,7 +1263,6 @@ function verify_images() {
 <script src="[% themelang %]/js/Cataloguing/RecordPusher_[% KOHA_VERSION %].js"></script>
 [% IF SerialsDisplayTree && subscriptionsnumber && serialsadditems %]
 <script type="text/javascript" src="[% interface %]/lib/jquery/plugins/jstree.min_[% KOHA_VERSION %].js"></script>
-<script type="text/javascript" src="[% interface %]/lib/log4javascript_[% KOHA_VERSION %].js"></script>
 <script type="text/javascript" src="[% themelang %]/js/Serials/CollectionMap_[% KOHA_VERSION %].js"></script>
 <script type="text/javascript" src="[% themelang %]/js/Items/ItemsTable_[% KOHA_VERSION %].js"></script>
 <script type="text/javascript" src="[% themelang %]/js/Items_[% KOHA_VERSION %].js"></script>
@@ -1322,8 +1321,6 @@ function verify_images() {
     var MSG_TRANSFER_STARTED = _("Transfer started");
     var MSG_URL = _("url");
     var MSG_WITHDRAWN = _("Withdrawn");
-
-    var log = log4javascript.getDefaultLogger();
 
     var collectionMap; var itemsTable; var holdPicker;
     $(document).ready(function() {
