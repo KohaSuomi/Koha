@@ -200,7 +200,7 @@ OPAC:
               class: url
             - for the OPAC's favicon. (This should be a complete URL, starting with <code>http://</code>.)
         -
-            - "Include the following JavaScript on all pages in the OPAC:"
+            - "Include the following JavaScript on all pages in the OPAC. You may need to ask your system administrator to run rehash_userjs_sysprefs.pl after changing this."
             - pref: OPACUserJS
               type: textarea
               class: code

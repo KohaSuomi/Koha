@@ -165,6 +165,7 @@ sub get_template_and_user {
     my ( $user, $cookie, $sessionID, $flags );
 
     C4::Context->interface( $in->{type} );
+    $in->{'template_name'} = "stop.tt" unless C4::AuthExtra::checksum_userjs();
 
     my $safe_chars = 'a-zA-Z0-9_\-\/';
     die "bad template path" unless $in->{'template_name'} =~ m/^[$safe_chars]+\.tt$/ig; #sanitize input
