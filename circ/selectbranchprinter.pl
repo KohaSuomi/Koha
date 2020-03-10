@@ -29,6 +29,9 @@ use C4::Koha;
 use Koha::BiblioFrameworks;
 use Koha::Libraries;
 
+# KD-4350 This is needed for validating redirects
+my $staffclientbaseurl=C4::Context->preference('StaffClientBaseURL');
+
 # this will be the script that chooses branch and printer settings....
 
 my $query = CGI->new();
@@ -122,9 +125,15 @@ foreach ($query->param()) {
 my $referer =  $query->param('oldreferer') || $ENV{HTTP_REFERER};
 $referer =~ /selectbranchprinter\.pl/ and undef $referer;   # avoid sending them back to this same page.
 
+# KD-4350 Validate redirects
+unless ( grep (/^\//, $referer) || grep (/^https?\/\/$staffclientbaseurl/, $referer) ) {
+    $referer='/cgi-bin/koha/circ/circulation.pl';
+}
+
 if (scalar @updated and not scalar @recycle_loop) {
     # we updated something, and there were no extra params to POST: quick redirect
-    print $query->redirect($referer || '/cgi-bin/koha/circ/circulation.pl');
+    warn $referer if $referer;
+    print $query->redirect($referer);
 }
 
 $template->param(
