@@ -35,7 +35,10 @@ use C4::Acquisition qw( GetOrder GetBasket ModOrder );
 
 use Koha::Acquisition::Booksellers;
 
-my $input = CGI->new;
+# KD-4349 This is needed for validating the redirects
+my $staffclientbaseurl=C4::Context->preference('StaffClientBaseURL');
+
+my $input = new CGI;
 my ($template, $loggedinuser, $cookie, $flags) = get_template_and_user( {
     template_name   => 'acqui/modordernotes.tt',
     query           => $input,
@@ -60,6 +63,10 @@ if($op and $op eq 'save') {
         $order->{'order_internalnote'} = $ordernotes;
     }
     ModOrder($order);
+    # KD-4349 Validate redirects
+    unless ( grep (/^\//, $referrer) || grep (/^https?:\/\/$staffclientbaseurl/, $referrer) ) {
+        $referrer="orders.pl";
+    }
     print $input->redirect($referrer);
     exit;
 } else {
