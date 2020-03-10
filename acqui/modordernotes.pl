@@ -35,6 +35,9 @@ use C4::Acquisition;
 
 use Koha::Acquisition::Booksellers;
 
+# KD-4349 This is needed for validating the redirects
+my $staffclientbaseurl=C4::Context->preference('StaffClientBaseURL');
+
 my $input = new CGI;
 my ($template, $loggedinuser, $cookie, $flags) = get_template_and_user( {
     template_name   => 'acqui/modordernotes.tt',
@@ -62,6 +65,10 @@ if($op and $op eq 'save') {
         $order->{'order_internalnote'} = $ordernotes;
     }
     ModOrder($order);
+    # KD-4349 Validate redirects
+    unless ( grep (/^\//, $referrer) || grep (/^https?:\/\/$staffclientbaseurl/, $referrer) ) {
+        $referrer="orders.pl";
+    }
     print $input->redirect($referrer);
     exit;
 } else {
