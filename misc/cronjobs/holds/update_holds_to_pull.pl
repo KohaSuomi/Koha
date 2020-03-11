@@ -100,7 +100,7 @@ my $strsth =
             biblioitems.editionstatement,
             biblioitems.number,
             COUNT(DISTINCT items.itemnumber) AS icount,
-            COUNT(DISTINCT reserves.borrowernumber) AS rcount,
+            COUNT(DISTINCT reserves.reserve_id) AS rcount,
             $borrowerinfo
             GROUP_CONCAT(DISTINCT items.itemnumber
                     ORDER BY items.itemnumber SEPARATOR '|') l_itemnumbers
