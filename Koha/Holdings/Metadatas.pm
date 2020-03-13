@@ -21,7 +21,7 @@ use Carp;
 
 use Koha::Database;
 
-use Koha::Biblio::Metadata;
+use Koha::Holdings::Metadata;
 
 use base qw(Koha::Objects);
 
