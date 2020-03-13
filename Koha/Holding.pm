@@ -23,6 +23,7 @@ use Modern::Perl;
 use Carp;
 
 use Koha::Database;
+use Koha::Holdings::Metadatas;
 
 use base qw(Koha::Object);
 
@@ -52,6 +53,20 @@ sub items {
     $self->{_items} ||= Koha::Items->search( { holding_id => $self->holding_id() } );
 
     return wantarray ? $self->{_items}->as_list : $self->{_items};
+}
+
+=head3 metadata
+
+my $metadata = $holding->metadata();
+Returns a Koha::Holdings::Metadata object
+
+=cut
+
+sub metadata {
+    my ( $self ) = @_;
+
+    my $metadata = $self->_result->metadata;
+    return Koha::Holdings::Metadata->_new_from_dbic($metadata);
 }
 
 =head3 type
