@@ -562,6 +562,11 @@ our $PERL_DEPS = {
         'required' => '1',
         'min_ver'  => '2.0.6'
     },
+    'MARC::Record::MiJ' => {
+        'usage'    => 'REST API',
+        'required' => '1',
+        'min_ver'  => '0.04'
+    },
     'Locale::Currency::Format' => {
         'usage'    => 'Core',
         'required' => '1',
