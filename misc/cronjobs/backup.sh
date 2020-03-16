@@ -217,7 +217,7 @@ function archive_syslogs {
 function archive_files {
   test -n "$VERBOSE" && echo "Archiving Files of '$DATABASE'"
 
-  tarRootWorkaround="$PLUGINS_DIR"
+  tarRootWorkaround "$PLUGINS_DIR"
   tar -czf "$BACKUP_DIR/$FILES_BACKUP_ARCHIVE" $TAR_WORKAROUND_DIR
   #Care about exceptions
   rc=$?; if [[ $rc != 0 ]]; then echo "tar gzip of Koha users' files failed" 1>&2; exit $rc; fi
