@@ -19,9 +19,16 @@ use Modern::Perl;
 
 use Mojo::Base 'Mojolicious::Controller';
 
+use MARC::Record;
+use MARC::Record::MiJ;
+
+use C4::Holdings;
 use Koha::Biblios;
 use Koha::Holdings;
 use Koha::Holdings::Metadatas;
+
+use Koha::Exceptions::Holding;
+use Koha::Exceptions::Metadata;
 
 use Try::Tiny;
 
@@ -67,6 +74,102 @@ sub update {
 
 sub delete {
     my $c = shift->openapi->valid_input or return;
+}
+
+
+sub convert_content_to_marc_record {
+    my $c = shift;
+    my $req = $c->tx->req;
+
+    my $content = $req->content->asset->{'content'};
+    my $content_type = $req->headers->content_type;
+    my $frameworkcode = $req->headers->header('X-Koha-Frameworkcode') || 'HLD';
+
+    my $record = _content_to_marc_record( $content, $content_type );
+
+    my $biblionumber = C4::Holdings::TransformMarcHoldingToKohaOneField(
+        'biblio.biblionumber', $record );
+
+    unless ( $biblionumber ) {
+        Koha::Exceptions::Holding::MissingProperty->throw(
+            error => 'MARC record is missing Koha field biblio.biblionumber.'
+        );
+    }
+
+    return ( $record, $frameworkcode, $biblionumber );
+}
+
+sub respond_with_content_type {
+    my $c = shift;
+    my ( $holding, $status ) = @_;
+
+    $status //= 200;
+    if ( ( !$c->req->headers->accept || $c->req->headers->accept =~ m/application\/json/ )
+        && grep( /application\/json/, @{$c->openapi->spec->{'produces'}} ) ) {
+        # FIXME
+        # A bit hacky use of Koha::Biblio->holdings_full
+        # Use a better approach when Bug 20447 reaches upstream
+        $holding = Koha::Biblio::holdings_full({}, {
+            'me.holding_id' => $holding->holding_id
+        });
+
+        return $c->render(
+            status => $status,
+            json   => $holding->[0]
+        );
+    }
+    else {
+        my $record = $holding->metadata->record;
+
+        $c->respond_to(
+            marcxml => {
+                status => $status,
+                format => 'marcxml',
+                text   => $record->as_xml_record
+            },
+            mij => {
+                status => $status,
+                format => 'mij',
+                text   => $record->to_mij
+            },
+            marc => {
+                status => $status,
+                format => 'marc',
+                text   => $record->as_usmarc
+            },
+            any => {
+                status  => 406,
+                openapi => $c->openapi->spec->{'produces'}
+            }
+        );
+    }
+}
+
+sub _content_to_marc_record {
+    my ( $content, $content_type ) = @_;
+
+    my $record;
+    my $marcflavour = C4::Context->preference('marcflavour') || 'MARC21';
+
+    # Note! The order of if-elsif statements here is important since we want to
+    # match e.g. "marc-in-json" before "marc"
+    if ( $content_type =~ m/application\/marc-in-json/ ) {
+        $record = eval { MARC::Record::MiJ->new( $content ); };
+    }
+    elsif ( $content_type =~ m/application\/marcxml\+xml/ ) {
+        $record = eval { MARC::Record::new_from_xml( $content, 'utf8', $marcflavour ); };
+    }
+    elsif ( $content_type =~ m/application\/marc/ ) {
+        $record = eval { MARC::Record::new_from_usmarc( $content ); };
+    }
+
+    if ($@) {
+        Koha::Exceptions::Metadata::Invalid->throw(
+            decoding_error => $@,
+        );
+    }
+
+    return $record;
 }
 
 1;
