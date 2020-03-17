@@ -135,6 +135,10 @@ sub AddHolding {
         return;
     }
 
+    unless ( defined $biblionumber ) {
+        $biblionumber = TransformMarcHoldingToKohaOneField( 'biblio.biblionumber', $record );
+    }
+
     my $dbh = C4::Context->dbh;
 
     my $biblio = Koha::Biblios->find( $biblionumber );
