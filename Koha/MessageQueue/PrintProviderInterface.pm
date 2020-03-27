@@ -25,6 +25,7 @@ use Koha::Database;
 use Koha::DateUtils;
 use Koha::Overdues::OverdueRulesMap;
 use Koha::Patron::Debarments;
+use Koha::Items;
 use C4::Accounts;
 use C4::Letters;
 
@@ -117,16 +118,17 @@ sub addFine {
     my $letterTemplate = $schema->resultset('Letter')->find({   code => $letterTemplateCode,
                                                                 message_transport_type => $letterTemplateMessageTransportType,
                                                                 branchcode => $letterTemplateBranchcode,
-                                                           });
+                                                                lang => 'default'
+                                                           });                                                
     $letterTemplate = $schema->resultset('Letter')->find({   code => $letterTemplateCode,
                                                                 message_transport_type => $letterTemplateMessageTransportType,
                                                                 branchcode => '',
-                                                           }) unless $letterTemplate;
+                                                                lang => 'default'
+                                                           }) unless $letterTemplate;  
     my $fineTitle = ($letterTemplate) ? $letterTemplate->title() : '';
 
     my @manualInvoiceNote = map {
-        my $item = $schema->resultset('Item')->search({itemnumber => $_->itemnumber})->single();
-        _buildManualInvoiceNote($item)
+        _buildManualInvoiceNote($_->itemnumber);
     } @messageQueueItems;
 
     #Add a processing fine for sending a snail mail.
@@ -136,12 +138,18 @@ sub addFine {
 }
 
 sub _buildManualInvoiceNote {
-    my $item = shift;
+    my $messageQueueItem = shift;
+    my $item = Koha::Items->find({itemnumber => $messageQueueItem});
 
-    return
-    '<a href="/cgi-bin/koha/catalogue/moredetail.pl?biblionumber='.$item->biblionumber.'&itemnumber='.$item->itemnumber.'#item'.$item->itemnumber.'">'.
-      $item->barcode.
-    '</a>';
+    #If for some reason item from messageQueueItems wasn't found and we're unable to produce link 
+    #we add nothing. 
+    my $note =  $item ? '<a href="/cgi-bin/koha/catalogue/moredetail.pl?biblionumber='.$item->biblionumber.'&itemnumber='.$item->itemnumber.'#item'.$item->itemnumber.'">'.
+                    $item->barcode.
+                '</a>' : ""; 
+
+    print "\n-- Couldn't find item ".$messageQueueItem."\n" unless $item; #so we can try to trackdown item with issues 
+
+    return $note; 
 }
 
 sub addDebarments {
