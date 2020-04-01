@@ -37,6 +37,17 @@ Koha::Checkouts - Koha Checkout object set class
 
 =cut
 
+=head3 $type
+
+Name to code mappings
+
+=cut
+
+our $type = {
+    'checkout'        => 'CHECKOUT',
+    'onsite_checkout' => 'ONSITE',
+};
+
 =head3 type
 
 =cut
