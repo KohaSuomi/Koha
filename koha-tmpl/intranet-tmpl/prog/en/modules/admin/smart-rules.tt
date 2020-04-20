@@ -1,9 +1,15 @@
 [% USE Koha %]
 [% USE Branches %]
+[% USE Checkouts %]
 [% INCLUDE 'doc-head-open.inc' %]
 <title>Koha &rsaquo; Administration &rsaquo; Circulation and fine rules</title>
 [% INCLUDE 'doc-head-close.inc' %]
 [% INCLUDE 'calendar.inc' %]
+[% SET checkout_types = [] %]
+[% checkout_types.push(undef) %]
+[% FOREACH ct IN Checkouts.checkout_type %]
+    [% checkout_types.push( ct.value ) %]
+[% END %]
 <script type="text/javascript">
 //<![CDATA[
 
@@ -122,6 +128,37 @@ function color_row (tr_el) {
     });
 }
 
+function disable_checkout_type_hold_rules() {
+    var checkout_type = $("#edit_row").find("select[name='checkout_type']");
+
+    var CANNOT_SET_HOLD_RULES_FOR_CHECKOUT_TYPE =
+        _("Cannot set this rule when checkout type is selected");
+
+    var hold_related_rule_els = [
+        $("input#reservesallowed"),
+        $("input#holds_per_record"),
+        $("input#hold_max_pickup_delay"),
+        $("input#hold_expiration_charge"),
+        $("select#onshelfholds"),
+        $("select#opacitemholds"),
+        $("select#article_requests")
+    ];
+
+    // when checkout_type is selected (any other value than *),
+    // disable hold related input fields, because it makes no sense
+    // to set hold rules for a specific type of checkout
+    $.each(hold_related_rule_els, function (i, field) {
+        if (checkout_type.val() !== "*") {
+            $(field).attr("disabled", "disabled");
+            $(field).val("");
+            $(field).after('<span class="hold_rule_disabled error">' + CANNOT_SET_HOLD_RULES_FOR_CHECKOUT_TYPE + "</span>")
+        } else {
+            $(field).removeAttr("disabled");
+            $("span.hold_rule_disabled").remove();
+        }
+    });
+}
+
 var MSG_CONFIRM_DELETE = _("Are you sure you want to delete this rule? This cannot be undone.");
 
 $(document).ready(function() {
@@ -187,11 +224,18 @@ $(document).ready(function() {
             });
             $("#default-circulation-rules tr:last td:eq(0) select").prop('disabled', true);
             $("#default-circulation-rules tr:last td:eq(1) select").prop('disabled', true);
+
+            disable_checkout_type_hold_rules();
+
             return false;
         });
         $(".clear_edit").on("click",function(e){
             e.preventDefault();
             clear_edit();
+        });
+
+        $("select[id='matrixcheckout_type']").change(function () {
+            disable_checkout_type_hold_rules();
         });
 
         $("#issuing-rules-tester-container").css("display", "none");
@@ -271,7 +315,7 @@ $(document).ready(function() {
             <table id="default-circulation-rules">
             <thead>
             <tr>
-                <th>Circulation level</th>
+                <th>Checkout type</th>
                 <th>Hold level</th>
                 <th>Patron category</th>
                 <th>Item type</th>
@@ -280,7 +324,6 @@ $(document).ready(function() {
                 <th>Sub location</th>
                 <th>Genre</th>
                 <th>Current checkouts allowed</th>
-                <th>Current on-site checkouts allowed</th>
                 <th>Loan period</th>
                 <th>Unit</th>
                 <th>Hard due date</th>
@@ -315,7 +358,11 @@ $(document).ready(function() {
 							<td>[% IF ( rule.default_checkout_type ) %]
 									<em>All</em>
 								[% ELSE %]
-									[% rule.humancheckout_type %]
+									[% IF rule.humancheckout_type == 'CHECKOUT' %]
+										<em>Normal checkout</em>
+									[% ELSIF rule.humancheckout_type == 'ONSITE' %]
+										<em>On-site checkout</em>
+									[% END %]
 								[% END %]
 							</td>
 							<td>[% IF ( rule.default_reserve_level ) %]
@@ -366,12 +413,6 @@ $(document).ready(function() {
 									[% rule.maxissueqty %]
 								[% END %]
 							</td>
-                            <td>[% IF rule.unlimited_maxonsiteissueqty %]
-                                    Unlimited
-                                [% ELSE %]
-                                    [% rule.maxonsiteissueqty %]
-                                [% END %]
-                            </td>
 							<td>[% rule.issuelength %]</td>
 							<td>
 							    [% rule.lengthunit %]
@@ -451,10 +492,15 @@ $(document).ready(function() {
             	[% END %]
                 <tr id="edit_row">
                     <td>
-                        <select name="checkout_type" id="matrixcheckout_type">
-                            <option value="*">All</option>
-                        [% FOREACH circlevelloo IN circlevelloop %]
-                            <option value="[% circlevelloo.authorised_value %]">[% circlevelloo.lib %]</option>
+                        <select name="checkout_type" id="matrixcheckout_type" style="width:13em;">
+                        [% FOREACH ct IN checkout_types %]
+                            [% IF ct == undef %]
+                                <option value="*">All</option>
+                            [% ELSE %]
+                                [% IF ct == 'ONSITE' %]
+                                    <option value="[% ct %]">On-site checkout</option>
+                                [% END %]
+                            [% END %]
                         [% END %]
                         </select>
                     </td>
@@ -515,7 +561,6 @@ $(document).ready(function() {
                         </select>
                     </td>
                     <td><input type="text" name="maxissueqty" id="maxissueqty" size="3" /></td>
-                    <td><input type="text" name="maxonsiteissueqty" id="maxonsiteissueqty" size="3" /></td>
                     <td><input type="text" name="issuelength" id="issuelength" size="3" /> </td>
                     <td>
                       <select name="lengthunit" id="lengthunit">
@@ -594,7 +639,7 @@ $(document).ready(function() {
                 </tr>
                 <tfoot>
                     <tr>
-                      <th>Circulation level</th>
+                      <th>Checkout type</th>
                       <th>Hold level</th>
                       <th>Patron category</th>
                       <th>Item type</th>
@@ -603,7 +648,6 @@ $(document).ready(function() {
                       <th>Sub location</th>
                       <th>Genre</th>
                       <th>Current checkouts allowed</th>
-                      <th>Current on-site checkouts allowed</th>
                       <th>Loan period</th>
                       <th>Unit</th>
                       <th>Hard due date</th>

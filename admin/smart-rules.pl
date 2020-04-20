@@ -188,6 +188,15 @@ elsif ($op eq 'add') {
     my $cap_fine_to_replacement_price = $input->param('cap_fine_to_replacement_price') eq 'on';
     $debug and warn "Adding $br, $bor, $itemtype, $ccode, $permanent_location, $sub_location, $genre, $checkout_type, $reserve_level, $fine, $maxissueqty, $maxonsiteissueqty, $cap_fine_to_replacement_price";
 
+    # disable hold rules for checkout types
+    if ($checkout_type && $checkout_type ne '*') {
+        $reservesallowed        = 0;
+        $holds_per_record       = 0;
+        $hold_max_pickup_delay  = 0;
+        $hold_expiration_charge = 0;
+        $onshelfholds           = 0;
+    }
+
     my $params = {
         branchcode                    => $br,
         categorycode                  => $bor,
@@ -533,10 +542,6 @@ my $genres = Koha::AuthorisedValues->search({
     category => 'GENRE',
     branchcode => $branch eq '*' ? undef : $branch
 });
-my $circlevels = Koha::AuthorisedValues->search({
-    category => 'CHECKOUT_TYPE',
-    branchcode => $branch eq '*' ? undef : $branch
-});
 my $reservelevels = Koha::AuthorisedValues->search({
     category => 'RESERVE_LEVEL',
     branchcode => $branch eq '*' ? undef : $branch
@@ -551,8 +556,7 @@ my $sth2 = $dbh->prepare("
             a2.lib AS humanpermanent_location,
             a3.lib AS humansub_location,
             a4.lib AS humangenre,
-            a5.lib AS humancheckout_type,
-            a6.lib AS humanreserve_level
+            a5.lib AS humanreserve_level
     FROM issuingrules
     LEFT JOIN itemtypes
         ON (itemtypes.itemtype = issuingrules.itemtype)
@@ -565,8 +569,7 @@ my $sth2 = $dbh->prepare("
     LEFT JOIN authorised_values a2 ON issuingrules.permanent_location = a2.authorised_value AND a2.category = 'LOC'
     LEFT JOIN authorised_values a3 ON issuingrules.sub_location = a3.authorised_value AND a3.category = 'SUBLOC'
     LEFT JOIN authorised_values a4 ON issuingrules.genre = a4.authorised_value AND a4.category = 'GENRE'
-    LEFT JOIN authorised_values a5 ON issuingrules.checkout_type = a5.authorised_value AND a5.category = 'CHECKOUT_TYPE'
-    LEFT JOIN authorised_values a6 ON issuingrules.reserve_level = a6.authorised_value AND a6.category = 'RESERVE_LEVEL'
+    LEFT JOIN authorised_values a5 ON issuingrules.reserve_level = a5.authorised_value AND a5.category = 'RESERVE_LEVEL'
     WHERE issuingrules.branchcode = ?
 ");
 $sth2->execute($language, $branch);
@@ -721,7 +724,6 @@ $template->param(
                         locloop => $locations,
                         sublocloop => $sub_locations,
                         genreloop => $genres,
-                        circlevelloop => $circlevels,
                         reservelevelloop => $reservelevels,
                         rules => \@sorted_row_loop,
                         humanbranch => ($branch ne '*' ? $branch : ''),
