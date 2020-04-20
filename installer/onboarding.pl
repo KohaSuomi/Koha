@@ -288,6 +288,7 @@ if ( $step == 5 ) {
                 reservesallowed                  => $reservesallowed,
                 suspension_chargeperiod          => undef,
                 decreaseloanholds                => undef,
+                holds_pickup_period              => undef,
               }
         };
 

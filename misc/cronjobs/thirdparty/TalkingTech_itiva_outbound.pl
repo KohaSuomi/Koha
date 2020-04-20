@@ -346,6 +346,17 @@ sub GetWaitingHolds {
         my $calendar = Koha::Calendar->new( branchcode => $issue->{'site'}, days_mode => $daysmode );
 
         my $waiting_date = dt_from_string( $issue->{waitingdate}, 'sql' );
+        my $rule = Koha::CirculationRules->get_effective_rule({
+            categorycode => $issue->{categorycode},
+            itemtype => $item->effective_itemtype,
+            branchcode => $issue->{branchcode},
+            rule_name => 'holds_pickup_period',
+        });
+        if ( defined($rule) and $rule->rule_value ne '' ){
+            # circulation rule overrides ReservesMaxPickUpDelay
+            $pickupdelay = $rule->rule_value;
+        }
+
         my $pickup_date = $waiting_date->clone->add( days => $pickupdelay );
         if ( $calendar->is_holiday($pickup_date) ) {
             $pickup_date = $calendar->next_open_days( $pickup_date, 1 );

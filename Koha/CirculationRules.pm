@@ -174,6 +174,9 @@ our $RULE_KINDS = {
     decreaseloanholds => {
         scope => [ 'branchcode', 'categorycode', 'itemtype' ],
     },
+    holds_pickup_period => {
+        scope => [ 'branchcode', 'categorycode', 'itemtype' ],
+    },
     # Not included (deprecated?):
     #   * accountsent
     #   * reservecharge
