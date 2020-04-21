@@ -579,7 +579,7 @@ my $redirect      = $input->param('redirect');
 my $searchid      = $input->param('searchid');
 my $dbh           = C4::Context->dbh;
 
-my $userflags = 'edit_items';
+my $userflags = 'edit_holding';
 
 my $changed_framework = $input->param('changed_framework');
 $frameworkcode = &C4::Holdings::GetHoldingFrameworkCode($holding_id)
