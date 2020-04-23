@@ -260,6 +260,7 @@ sub update {
 
 sub delete {
     my $c = shift->openapi->valid_input or return;
+    my $res;
 
     my $biblio = Koha::Biblios->find($c->validation->param('biblionumber'));
     unless ($biblio) {
@@ -282,9 +283,15 @@ sub delete {
         foreach my $holding (@holdings) {
             $holding->delete;
         }
+        $res = C4::Biblio::DelBiblio($biblio->biblionumber, 1);
+    } else {
+        if ($biblio->holdings->count) {
+            $res = "This Biblio has holdings records attached, please delete them first before deleting this biblio";
+        } else {
+            $res = C4::Biblio::DelBiblio($biblio->biblionumber, 1);
+        }
     }
 
-    my $res = C4::Biblio::DelBiblio($biblio->biblionumber, 1);
 
     unless ($res) {
         return $c->render(status => 200, openapi => {});
