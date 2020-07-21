@@ -281,7 +281,9 @@ sub article_request_type {
     my $permanent_location = $self->permanent_location;
     my $sub_location = $self->sub_location;
     my $genre = $self->genre;
-    my $checkout_type = $self->checkout_type;
+    my $checkout_type = $self->onsite_checkout
+                ? $Koha::Checkouts::type->{onsite_checkout}
+                : $Koha::Checkouts::type->{checkout};
     my $reserve_level = $self->reserve_level;
     my $issuing_rule = Koha::IssuingRules->get_effective_issuing_rule({
         categorycode => $borrowertype,

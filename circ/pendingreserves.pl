@@ -219,7 +219,6 @@ sub check_issuingrules {
                 permanent_location => $item->permanent_location,
                 sub_location => $item->sub_location,
                 genre        => $item->genre,
-                checkout_type => $item->checkout_type,
                 reserve_level => $item->reserve_level,
             }
         );

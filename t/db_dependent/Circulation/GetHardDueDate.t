@@ -404,7 +404,8 @@ is_deeply(
 is_deeply(
     C4::Circulation::GetLoanLength(
         $samplecat->{categorycode},
-        'BOOK', $samplebranch1->{branchcode}
+        'BOOK', $samplebranch1->{branchcode},
+        $Koha::Checkouts::type->{checkout}
     ),
     { issuelength => 5, lengthunit => 'days', renewalperiod => 5 },
     "GetLoanLength"
@@ -431,7 +432,7 @@ is_deeply(
     "With only two parameters, GetLoanLength returns hardcoded values"
 );    #NOTE : is that really what is expected?
 is_deeply(
-    C4::Circulation::GetLoanLength( $samplecat->{categorycode}, 'BOOK', $samplebranch1->{branchcode} ),
+    C4::Circulation::GetLoanLength( $samplecat->{categorycode}, 'BOOK', $samplebranch1->{branchcode}, $Koha::Checkouts::type->{checkout} ),
     {
         issuelength   => 5,
         renewalperiod => 5,
@@ -442,7 +443,7 @@ is_deeply(
 
 #Test GetHardDueDate
 my @hardduedate = C4::Circulation::GetHardDueDate( $samplecat->{categorycode},
-    'BOOK', $samplebranch1->{branchcode} );
+    'BOOK', $samplebranch1->{branchcode}, $Koha::Checkouts::type->{checkout} );
 is_deeply(
     \@hardduedate,
     [

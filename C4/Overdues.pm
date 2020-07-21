@@ -244,7 +244,7 @@ or "Final Notice".  But CalcFine never defined any value.
 =cut
 
 sub CalcFine {
-    my ( $item, $bortype, $branchcode, $due_dt, $end_date  ) = @_;
+    my ( $item, $bortype, $branchcode, $checkout_type, $due_dt, $end_date  ) = @_;
     my $start_date = $due_dt->clone();
     # get issuingrules (fines part will be used)
     my $itemtype = $item->{itemtype} || $item->{itype};
@@ -256,7 +256,7 @@ sub CalcFine {
         permanent_location => $item->{permanent_location},
         sub_location => $item->{sub_location},
         genre => $item->{genre},
-        checkout_type => $item->{checkout_type},
+        checkout_type => $checkout_type,
         reserve_level => $item->{reserve_level},
     });
 

@@ -381,7 +381,7 @@ sub CanItemBeReserved {
     if ( my $rights = GetHoldRule( $borrower->{'categorycode'}, $item->{'itype'},
             $branchcode, $item->{'ccode'}, $item->{'permanent_location'},
             $item->{'sub_location'}, $item->{'genre'},
-            $item->{'checkout_type'}, $item->{'reserve_level'} ) ) {
+            $item->{'reserve_level'} ) ) {
         $ruleitemtype     = $rights->{itemtype};
         $allowedreserves  = $rights->{reservesallowed};
         $holds_per_record = $rights->{holds_per_record};
@@ -1429,8 +1429,7 @@ sub IsAvailableForItemLevelRequest {
 
     my $on_shelf_holds = _OnShelfHoldsAllowed($itype,$borrower->{categorycode},
         $item->{holdingbranch}, $item->{ccode}, $item->{permanent_location},
-        $item->{sub_location}, $item->{genre}, $item->{checkout_type},
-        $item->{reserve_level});
+        $item->{sub_location}, $item->{genre}, $item->{reserve_level});
 
     if ( $on_shelf_holds == 1 ) {
         return 1;
@@ -1496,8 +1495,7 @@ sub OnShelfHoldsAllowed {
     my $itype = _get_itype($item);
     return _OnShelfHoldsAllowed($itype,$borrower->{categorycode},
         $item->{holdingbranch}, $item->{ccode}, $item->{permanent_location},
-        $item->{sub_location}, $item->{genre}, $item->{checkout_type},
-        $item->{reserve_level});
+        $item->{sub_location}, $item->{genre}, $item->{reserve_level});
 }
 
 sub _get_itype {
@@ -1529,7 +1527,7 @@ sub _get_itype {
 
 sub _OnShelfHoldsAllowed {
     my ($itype,$borrowercategory,$branchcode,$ccode,$permanent_location,
-        $sub_location,$genre,$checkout_type,$reserve_level) = @_;
+        $sub_location,$genre,$reserve_level) = @_;
 
     my $issuing_rule = Koha::IssuingRules->get_effective_issuing_rule({
         categorycode => $borrowercategory,
@@ -1539,7 +1537,6 @@ sub _OnShelfHoldsAllowed {
         permanent_location => $permanent_location,
         sub_location => $sub_location,
         genre => $genre,
-        checkout_type => $checkout_type,
         reserve_level => $reserve_level,
     });
     return $issuing_rule ? $issuing_rule->onshelfholds : undef;
@@ -2158,7 +2155,6 @@ sub OPACItemHoldsAllowed {
         permanent_location => $item->{permanent_location},
         sub_location => $item->{sub_location},
         genre => $item->{genre},
-        checkout_type => $item->{checkout_type},
         reserve_level => $item->{reserve_level},
     });
 
@@ -2524,7 +2520,7 @@ sub GetMaxPatronHoldsForRecord {
 
         my $rule = GetHoldRule( $categorycode, $itemtype, $branchcode,
             $item->ccode, $item->permanent_location, $item->sub_location,
-            $item->genre, $item->checkout_type, $item->reserve_level );
+            $item->genre, $item->reserve_level );
         my $holds_per_record = $rule ? $rule->{holds_per_record} : 0;
         $max = $holds_per_record if $holds_per_record > $max;
     }
@@ -2536,7 +2532,7 @@ sub GetMaxPatronHoldsForRecord {
 
 my $rule = GetHoldRule( $categorycode, $itemtype, $branchcode, $ccode,
                         $permanent_location, $sub_location, $genre,
-                        $checkout_type, $reserve_level);
+                        $reserve_level);
 
 Returns the matching hold related issuingrule fields for a given
 patron category, itemtype, and library.
@@ -2545,14 +2541,14 @@ patron category, itemtype, and library.
 
 sub GetHoldRule {
     my ( $categorycode, $itemtype, $branchcode, $ccode, $permanent_location,
-         $sub_location, $genre, $checkout_type, $reserve_level ) = @_;
+         $sub_location, $genre, $reserve_level ) = @_;
 
     my $dbh = C4::Context->dbh;
 
     my $sth = $dbh->prepare(
         q{
          SELECT categorycode, itemtype, branchcode, ccode, permanent_location,
-                sub_location, genre, checkout_type, reserve_level,
+                sub_location, genre, reserve_level,
                 reservesallowed, holds_per_record
            FROM issuingrules
           WHERE (categorycode in (?,'*') )
@@ -2562,7 +2558,7 @@ sub GetHoldRule {
             AND (permanent_location IN (?,'*'))
             AND (sub_location IN (?,'*'))
             AND (genre IN (?,'*'))
-            AND (checkout_type IN (?,'*'))
+            AND (checkout_type = '*')
             AND (reserve_level IN (?,'*'))
        ORDER BY categorycode DESC,
                 itemtype     DESC,
@@ -2571,14 +2567,13 @@ sub GetHoldRule {
                 permanent_location DESC,
                 sub_location DESC,
                 genre        DESC,
-                checkout_type DESC,
                 reserve_level DESC
         }
     );
 
     $sth->execute( $categorycode, $itemtype, $branchcode, $ccode,
                    $permanent_location, $sub_location, $genre,
-                   $checkout_type, $reserve_level );
+                   $reserve_level );
 
     return $sth->fetchrow_hashref();
 }
@@ -2609,7 +2604,6 @@ sub CheckIssuingRules {
             permanent_location => $item->permanent_location,
             sub_location => $item->sub_location,
             genre        => $item->genre,
-            checkout_type => $item->checkout_type,
             reserve_level => $item->reserve_level,
         }
     );

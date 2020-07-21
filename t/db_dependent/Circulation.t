@@ -468,7 +468,7 @@ C4::Context->dbh->do("DELETE FROM accountlines");
     my $passeddatedue1 = AddIssue($renewing_borrower, $barcode7, $five_weeks_ago);
     is (defined $passeddatedue1, 1, "Item with passed date due checked out, due date: " . $passeddatedue1->date_due);
 
-    my ( $fine ) = CalcFine( GetItem(undef, $barcode7), $renewing_borrower->{categorycode}, $branch, $five_weeks_ago, $now );
+    my ( $fine ) = CalcFine( GetItem(undef, $barcode7), $renewing_borrower->{categorycode}, $branch, undef, $five_weeks_ago, $now );
     C4::Overdues::UpdateFine(
         {
             issue_id       => $passeddatedue1->id(),
@@ -1560,6 +1560,7 @@ subtest 'AddReturn + CumulativeRestrictionPeriods' => sub {
             branchcode   => '*',
             ccode        => '*',
             permanent_location => '*',
+            checkout_type => '*',
             maxissueqty  => 99,
             issuelength  => 1,
             firstremind  => 1,        # 1 day of grace

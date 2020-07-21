@@ -92,7 +92,7 @@ sub build_issue_data {
 
         #find the charge for an item
         my ( $charge, $itemtype ) =
-          GetIssuingCharges( $issue->{itemnumber}, $borrowernumber );
+          GetIssuingCharges( $issue->{itemnumber}, $borrowernumber, $issue->{checkout_type} );
 
         $itemtype = Koha::ItemTypes->find( $itemtype );
         $row{'itemtype_description'} = $itemtype->description; #FIXME Should not it be translated_description

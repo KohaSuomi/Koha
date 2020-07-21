@@ -261,13 +261,13 @@ sub expanded {
         join => { 'item' => ['biblio', 'biblioitem'] },
         '+select' => [
             'item.itype', 'item.homebranch', 'item.holdingbranch', 'item.ccode', 'item.permanent_location', 'item.sub_location',
-            'item.genre', 'item.checkout_type', 'item.reserve_level', 'item.enumchron', 'item.biblionumber',
+            'item.genre', 'item.reserve_level', 'item.enumchron', 'item.biblionumber',
             'biblioitem.itemtype',
             'biblio.title'
         ],
         '+as' => [
             'item_itype', 'homebranch', 'holdingbranch', 'ccode', 'permanent_location', 'sub_location',
-            'genre', 'checkout_type', 'reserve_level', 'enumchron', 'biblionumber',
+            'genre', 'reserve_level', 'enumchron', 'biblionumber',
             'biblio_itype',
             'title'
         ]
@@ -322,6 +322,9 @@ sub expanded {
 
         my $itype = $item_level_itypes && $checkout->{item_itype} 
             ? $checkout->{item_itype} : $checkout->{biblio_itype};
+        my $checkout_type = $checkout->{onsite_checkout}
+            ? $Koha::Checkouts::type->{onsite_checkout}
+            : $Koha::Checkouts::type->{checkout};
         my $can_renew = 1;
         my $max_renewals = 0;
         my $blocks = '';
@@ -338,7 +341,7 @@ sub expanded {
                     permanent_location => $checkout->{permanent_location},
                     sub_location => $checkout->{sub_location},
                     genre        => $checkout->{genre},
-                    checkout_type => $checkout->{checkout_type},
+                    checkout_type => $checkout_type,
                     reserve_level => $checkout->{reserve_level},
                 }
             );

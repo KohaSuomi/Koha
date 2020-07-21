@@ -114,7 +114,7 @@ subtest 'Test basic functionality' => sub {
         day        => 30,
     );
 
-    my ($amount) = CalcFine( $item, $patron->{categorycode}, $branch->{branchcode}, $start_dt, $end_dt );
+    my ($amount) = CalcFine( $item, $patron->{categorycode}, $branch->{branchcode}, undef, $start_dt, $end_dt );
 
     is( $amount, 29, 'Amount is calculated correctly' );
 
@@ -159,7 +159,7 @@ subtest 'Test cap_fine_to_replacement_price' => sub {
         day        => 30,
     );
 
-    my ($amount) = CalcFine( $item, $patron->{categorycode}, $branch->{branchcode}, $start_dt, $end_dt );
+    my ($amount) = CalcFine( $item, $patron->{categorycode}, $branch->{branchcode}, undef, $start_dt, $end_dt );
 
     is( $amount, '5.00', 'Amount is calculated correctly' );
 

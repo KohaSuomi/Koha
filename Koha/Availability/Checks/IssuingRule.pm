@@ -108,9 +108,6 @@ sub new {
     unless ($genre) {
         $genre = $item ? $item->genre : undef;
     }
-    unless ($checkout_type) {
-        $checkout_type = $item ? $item->checkout_type : undef;
-    }
     unless ($reserve_level) {
         $reserve_level = $item ? $item->reserve_level : undef;
     }

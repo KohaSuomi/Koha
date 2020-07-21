@@ -55,7 +55,7 @@ sub get_effective {
         $permanent_location = _find_permanent_location($params, $item);
         $sub_location = _find_sub_location($params, $item);
         $genre        = _find_genre($params, $item);
-        $checkout_type = _find_checkout_type($params, $item);
+        $checkout_type = _find_checkout_type($params);
         $reserve_level = _find_reserve_level($params, $item);
 
         my $rule = Koha::IssuingRules->get_effective_issuing_rule({
@@ -164,17 +164,7 @@ sub _find_categorycode {
 }
 
 sub _find_checkout_type {
-    my ($params, $item) = @_;
-
-    if (defined $item && length $params->{checkout_type}) {
-        unless ($item->checkout_type eq $params->{checkout_type}) {
-            Koha::Exceptions::BadParameter->throw(
-                error => "Item's checkout type does not match given level"
-            );
-        }
-    }
-
-    return $item->checkout_type if $item;
+    my ($params) = @_;
 
     return $params->{checkout_type};
 }
