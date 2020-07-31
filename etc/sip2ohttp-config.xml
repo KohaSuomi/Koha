@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' standalone="yes" ?>
+
+<Config>
+
+	<Sipdevices>
+
+	<!-- Devices' login id's and their sip server hosts:ports to use -->
+	<!-- Set these for devices using sipohttp(s) -->
+
+	<!-- Examples: (these device login id's and sip server addresses get searched by SIPoHTTP.pm
+					when the /sipmessages REST endpoint receives a POST request with the XML in the request body.
+					The device login id's must match the login id's defined in SIPconfig.xml.
+					Multiple devices can use/share the same sip server.) -->
+
+	<!-- Uncomment and replace with your config
+
+		<SIPDEVICENAME>
+			<host>127.0.0.1</host>
+			<port>6009</port>
+		</SIPDEVICENAME>
+		<SIPDEVICENAMEB>
+			<host>127.0.0.1</host>
+			<port>6009</port>
+		</SIPDEVICENAMEB>
+		<sipdevice2>
+			<host>127.0.0.1</host>
+			<port>6010</port>
+		</sipdevice2>
+
+	-->
+
+	</Sipdevices>
+
+</Config>

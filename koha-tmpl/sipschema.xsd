@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- sipschema.xsd  $Revision: 1.0 $ support@koha-suomi.fi -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="https://koha-suomi.fi/sipschema.xsd" targetNamespace="https://koha-suomi.fi/sipschema.xsd" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+
+  <xs:element name="sip">
+
+    <xs:complexType>
+
+      <xs:choice>
+
+        <xs:element name="request" type="xs:string"/>
+
+        <xs:element name="response" type="xs:string"/>
+
+        <xs:element name="error" type="xs:string"/>
+
+      </xs:choice>
+
+      <xs:attribute name="login" type="xs:string"/>
+
+      <xs:attribute name="password" type="xs:string"/>
+
+    </xs:complexType>
+
+  </xs:element>
+
+</xs:schema>

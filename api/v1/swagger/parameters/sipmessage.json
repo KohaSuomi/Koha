@@ -1,0 +1,9 @@
+{
+  "sipMessage": {
+    "name": "request",
+    "in": "formData",
+    "allowReserved": true,
+    "description": "sipmessage",
+    "required": false
+  }
+}

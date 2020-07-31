@@ -217,5 +217,8 @@
   },
   "/suggestions/{suggestionid}": {
     "$ref": "paths/suggestions.json#/~1suggestions~1{suggestionid}"
+  },
+  "/sipmessages": {
+  "$ref": "paths/sipmessages.json#/~1sipmessages"
   }
 }

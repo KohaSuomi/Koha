@@ -106,5 +106,8 @@
   },
   "mongolog": {
     "$ref": "definitions/mongolog.json"
+  },
+  "sipmessage": {
+    "$ref": "definitions/sipmessage.json"
   }
 }
