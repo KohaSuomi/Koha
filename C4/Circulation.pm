@@ -2796,7 +2796,6 @@ sub CanBookBeRenewed {
     my $checkout_type = $itemissue->{onsite_checkout} 
                 ? $Koha::Checkouts::type->{onsite_checkout}
                 : $Koha::Checkouts::type->{checkout};
-    return ( 0, 'onsite_checkout' ) if $itemissue->{onsite_checkout};
 
     if (defined $item->{notforloan} && $item->{notforloan} != 0) {
         return (0, 'non_renewable');

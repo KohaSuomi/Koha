@@ -17,7 +17,7 @@
 
 use Modern::Perl;
 
-use Test::More tests => 96;
+use Test::More tests => 94;
 
 use DateTime;
 
@@ -1040,43 +1040,6 @@ C4::Context->dbh->do("DELETE FROM accountlines");
 
     ( $renewokay, $error ) = CanBookBeRenewed( $borrowernumber1, $itemnumber1 );
     is( $renewokay, 0, 'Bug 14337 - Verify the borrower can not renew with a hold on the record if AllowRenewalIfOtherItemsAvailable is enabled but the only available item is notforloan' );
-}
-
-{
-    # Don't allow renewing onsite checkout
-    my $barcode  = 'R00000XXX';
-    my $branch   = $library->{branchcode};
-
-    #Create another record
-    my $biblio = MARC::Record->new();
-    $biblio->append_fields(
-        MARC::Field->new('100', ' ', ' ', a => 'Anonymous'),
-        MARC::Field->new('245', ' ', ' ', a => 'A title'),
-    );
-    my ($biblionumber, $biblioitemnumber) = AddBiblio($biblio, '');
-
-    my (undef, undef, $itemnumber) = AddItem(
-        {
-            homebranch       => $branch,
-            holdingbranch    => $branch,
-            barcode          => $barcode,
-            itype            => $itemtype
-        },
-        $biblionumber
-    );
-
-    my $borrowernumber = AddMember(
-        firstname =>  'fn',
-        surname => 'dn',
-        categorycode => $patron_category->{categorycode},
-        branchcode => $branch,
-    );
-
-    my $borrower = GetMember( borrowernumber => $borrowernumber );
-    my $issue = AddIssue( $borrower, $barcode, undef, undef, undef, undef, { onsite_checkout => 1 } );
-    my ( $renewed, $error ) = CanBookBeRenewed( $borrowernumber, $itemnumber );
-    is( $renewed, 0, 'CanBookBeRenewed should not allow to renew on-site checkout' );
-    is( $error, 'onsite_checkout', 'A correct error code should be returned by CanBookBeRenewed for on-site checkout' );
 }
 
 {
