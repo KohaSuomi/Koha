@@ -17,7 +17,7 @@
 
 use Modern::Perl;
 
-use Test::More tests => 122;
+use Test::More tests => 123;
 use Test::MockModule;
 use Test::Mojo;
 use t::lib::Mocks;
@@ -372,6 +372,69 @@ $tx->req->cookies({name => 'CGISESSID', value => $patron_session->id});
 $t->request_ok($tx)
   ->status_is(200)
   ->json_is({ renewable => Mojo::JSON->false, error => 'too_many' });
+
+subtest 'Test on-site circulation rules in /checkouts route' => sub {
+    plan tests => 12;
+
+    my $biblionumber_os = create_biblio('test');
+    my $barcode_os = 'abcdefhg123465';
+    my $itemnumber_os = create_item($biblionumber_os, $barcode_os);
+
+    my $patron_os = $builder->build({ source => 'Borrower',
+        value => {
+            flags => 0,
+            gonenoaddress => undef,
+            lost => undef,
+            debarred => undef,
+            debarredcomment => undef,
+        }
+    });
+
+    Koha::IssuingRules->delete;
+    my $rule = Koha::IssuingRule->new({
+        categorycode => '*',
+        branchcode   => '*',
+        itemtype     => '*',
+        ccode        => '*',
+        checkout_type => $Koha::Checkouts::type->{onsite},
+        permanent_location => '*',
+        renewalperiod   => 7,
+        renewalsallowed => 0,
+    })->store;
+
+    my $issue_os = C4::Circulation::AddIssue($patron_os, $barcode_os,
+                       DateTime->now->add(weeks => 2), undef, undef, undef,
+                       { onsite_checkout => 1 }
+    );
+
+    $tx = $t->ua->build_tx(GET => "/api/v1/checkouts/" . $issue_os->issue_id . "/renewability");
+    $tx->req->cookies({name => 'CGISESSID', value => $session->id});
+    $t->request_ok($tx)
+      ->status_is(200)
+      ->json_is({ renewable => Mojo::JSON->false, error => 'too_many' }
+      );
+
+    $tx = $t->ua->build_tx(GET => "/api/v1/checkouts/expanded?borrowernumber=".$patron_os->{borrowernumber});
+    $tx->req->cookies({name => 'CGISESSID', value => $session->id});
+    $t->request_ok($tx)
+      ->status_is(200)
+      ->json_is('/0/max_renewals' => 0, 'max_renewals is 0 when renewalsallowed is 0');
+
+    $rule->set({ renewalsallowed => 5 })->store;
+
+    $tx = $t->ua->build_tx(GET => "/api/v1/checkouts/" . $issue_os->issue_id . "/renewability");
+    $tx->req->cookies({name => 'CGISESSID', value => $session->id});
+    $t->request_ok($tx)
+      ->status_is(200)
+      ->json_is({ renewable => Mojo::JSON->true, error => undef }
+      );
+
+    $tx = $t->ua->build_tx(GET => "/api/v1/checkouts/expanded?borrowernumber=".$patron_os->{borrowernumber});
+    $tx->req->cookies({name => 'CGISESSID', value => $session->id});
+    $t->request_ok($tx)
+      ->status_is(200)
+      ->json_is('/0/max_renewals' => 5, 'max_renewals is 5 when renewalsallowed is 5');
+};
 
 $schema->storage->txn_rollback;
 
