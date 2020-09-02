@@ -71,7 +71,7 @@ __PACKAGE__->table("issuingrules");
   is_nullable: 0
   size: 10
 
-=head2 circulation_level
+=head2 checkout_type
 
   data_type: 'varchar'
   default_value: '*'
@@ -291,7 +291,7 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", default_value => "*", is_nullable => 0, size => 10 },
   "genre",
   { data_type => "varchar", default_value => "*", is_nullable => 0, size => 10 },
-  "circulation_level",
+  "checkout_type",
   { data_type => "varchar", default_value => "*", is_nullable => 0, size => 10 },
   "reserve_level",
   { data_type => "varchar", default_value => "*", is_nullable => 0, size => 10 },
@@ -405,7 +405,7 @@ __PACKAGE__->set_primary_key("issuingrules_id");
 
 =item * L</genre>
 
-=item * L</circulation_level>
+=item * L</checkout_type>
 
 =item * L</reserve_level>
 
@@ -423,7 +423,7 @@ __PACKAGE__->add_unique_constraint(
     "permanent_location",
     "sub_location",
     "genre",
-    "circulation_level",
+    "checkout_type",
     "reserve_level",
   ],
 );

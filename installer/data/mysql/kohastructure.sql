@@ -915,7 +915,7 @@ CREATE TABLE `issuingrules` ( -- circulation and fine rules
   `permanent_location` varchar(80) NOT NULL default '*', -- item permanent location
   `sub_location` varchar(10) NOT NULL default '*', -- item sub location
   `genre` varchar(10) NOT NULL default '*', -- item genre
-  `circulation_level` varchar(10) NOT NULL default '*', -- item circulation level this rule is for (items.circulation_level)
+  `checkout_type` varchar(10) NOT NULL default '*', -- item checkout type this rule is for (items.checkout_type)
   `reserve_level` varchar(10) NOT NULL default '*', -- item reserve level this rule is for (items.reserve_level)
   `restrictedtype` tinyint(1) default NULL, -- not used? always NULL
   `rentaldiscount` decimal(28,6) default NULL, -- percent discount on the rental charge for this item
@@ -951,14 +951,14 @@ CREATE TABLE `issuingrules` ( -- circulation and fine rules
   opacitemholds char(1) NOT NULL default 'N', -- allow opac users to place specific items on hold
   article_requests enum('no','yes','bib_only','item_only') NOT NULL DEFAULT 'no', -- allow article requests to be placed,
   PRIMARY KEY (`issuingrules_id`),
-  UNIQUE KEY `issuingrules_selects` (`branchcode`,`categorycode`,`itemtype`,`ccode`,`permanent_location`,`sub_location`,`genre`,`circulation_level`,`reserve_level`),
+  UNIQUE KEY `issuingrules_selects` (`branchcode`,`categorycode`,`itemtype`,`ccode`,`permanent_location`,`sub_location`,`genre`,`checkout_type`,`reserve_level`),
   KEY `categorycode` (`categorycode`),
   KEY `itemtype` (`itemtype`),
   KEY `ccode` (`ccode`),
   KEY `permanent_location` (`permanent_location`),
   KEY `sub_location` (`sub_location`),
   KEY `genre` (`genre`),
-  KEY `circulation_level` (`circulation_level`),
+  KEY `checkout_type` (`checkout_type`),
   KEY `reserve_level` (`reserve_level`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
