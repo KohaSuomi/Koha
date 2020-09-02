@@ -745,7 +745,6 @@ CREATE TABLE `deleteditems` (
   `new_status` VARCHAR(32) DEFAULT NULL, -- 'new' value, you can put whatever free-text information. This field is intented to be managed by the automatic_item_modification_by_age cronjob.
   `genre` varchar(10) default NULL, -- GENRE (MARC21 952$G)
   `sub_location` varchar(10) default NULL, -- SUBLOC (MARC21 952$S)
-  `circulation_level` varchar(10) default NULL, -- authorized value defining circulation level for this item
   `reserve_level` varchar(10) default NULL, -- authorized value defining reserve level for this item
   `holding_id` int(11) default NULL, -- foreign key from holdings table used to link this item to the right holdings record
   PRIMARY KEY  (`itemnumber`),
@@ -1072,7 +1071,6 @@ CREATE TABLE `items` ( -- item information
   `new_status` VARCHAR(32) DEFAULT NULL, -- 'new' value, you can put whatever free-text information. This field is intented to be managed by the automatic_item_modification_by_age cronjob.
   `genre` varchar(10) default NULL, -- GENRE (MARC21 952$G)
   `sub_location` varchar(10) default NULL, -- SUBLOC (MARC21 952$S)
-  `circulation_level` varchar(10) default NULL, -- authorized value defining circulation level for this item
   `reserve_level` varchar(10) default NULL, -- authorized value defining reserve level for this item
   `holding_id` int(11) default NULL, -- foreign key from holdings table used to link this item to the right holdings record
   PRIMARY KEY  (`itemnumber`),

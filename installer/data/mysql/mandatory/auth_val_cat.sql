@@ -30,7 +30,6 @@ INSERT IGNORE INTO authorised_value_categories( category_name )
     ('CCODE'),
     ('LOC'),
     ('GENRE'),
-    ('CIRCULATION_LEVEL'),
     ('RESERVE_LEVEL'),
     ('MANUAL_INV'),
     ('BOR_NOTES'),

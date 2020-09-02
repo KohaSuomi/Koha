@@ -294,12 +294,6 @@ __PACKAGE__->table("deleteditems");
   is_nullable: 1
   size: 10
 
-=head2 circulation_level
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 10
-
 =head2 reserve_level
 
   data_type: 'varchar'
@@ -424,8 +418,6 @@ __PACKAGE__->add_columns(
   "genre",
   { data_type => "varchar", is_nullable => 1, size => 10 },
   "sub_location",
-  { data_type => "varchar", is_nullable => 1, size => 10 },
-  "circulation_level",
   { data_type => "varchar", is_nullable => 1, size => 10 },
   "reserve_level",
   { data_type => "varchar", is_nullable => 1, size => 10 },
