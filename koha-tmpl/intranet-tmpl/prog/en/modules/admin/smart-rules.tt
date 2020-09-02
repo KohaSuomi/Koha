@@ -242,7 +242,7 @@ $(document).ready(function() {
     <div class="help">
         <p>The rules are applied from most specific to less specific, using this order:
             <br />
-            library > circulation level > hold level > patron category > item type > collection code > shelving location > sub location > genre
+            library > checkout type > hold level > patron category > item type > collection code > shelving location > sub location > genre
         </p>
         <p>To modify a rule, create a new one with the same patron category and item type.</p>
     </div>
@@ -312,10 +312,10 @@ $(document).ready(function() {
             <tbody>
 				[% FOREACH rule IN rules %]
 					<tr id="row_[% rule.issuingrules_id %]">
-							<td>[% IF ( rule.default_circulation_level ) %]
+							<td>[% IF ( rule.default_checkout_type ) %]
 									<em>All</em>
 								[% ELSE %]
-									[% rule.humancirculation_level %]
+									[% rule.humancheckout_type %]
 								[% END %]
 							</td>
 							<td>[% IF ( rule.default_reserve_level ) %]
@@ -445,13 +445,13 @@ $(document).ready(function() {
 							<td>[% rule.rentaldiscount %]</td>
                                                         <td class="actions">
                                                           <a href="#" class="editrule btn btn-default btn-xs"><i class="fa fa-pencil"></i> Edit</a>
-                                                          <a class="btn btn-default btn-xs delete" href="/cgi-bin/koha/admin/smart-rules.pl?op=delete&amp;itemtype=[% rule.itemtype %]&amp;categorycode=[% rule.categorycode %]&amp;branch=[% rule.current_branch %]&amp;ccode=[% rule.ccode %]&amp;permanent_location=[% rule.permanent_location %]&amp;sub_location=[% rule.sub_location %]&amp;genre=[% rule.genre %]&amp;circulation_level=[% rule.circulation_level %]&amp;reserve_level=[% rule.reserve_level %]"><i class="fa fa-trash"></i> Delete</a>
+                                                          <a class="btn btn-default btn-xs delete" href="/cgi-bin/koha/admin/smart-rules.pl?op=delete&amp;itemtype=[% rule.itemtype %]&amp;categorycode=[% rule.categorycode %]&amp;branch=[% rule.current_branch %]&amp;ccode=[% rule.ccode %]&amp;permanent_location=[% rule.permanent_location %]&amp;sub_location=[% rule.sub_location %]&amp;genre=[% rule.genre %]&amp;checkout_type=[% rule.checkout_type %]&amp;reserve_level=[% rule.reserve_level %]"><i class="fa fa-trash"></i> Delete</a>
 							</td>
                 	</tr>
             	[% END %]
                 <tr id="edit_row">
                     <td>
-                        <select name="circulation_level" id="matrixcirculation_level">
+                        <select name="checkout_type" id="matrixcheckout_type">
                             <option value="*">All</option>
                         [% FOREACH circlevelloo IN circlevelloop %]
                             <option value="[% circlevelloo.authorised_value %]">[% circlevelloo.lib %]</option>
@@ -758,7 +758,7 @@ $(document).ready(function() {
             <tbody>
             <tr id="tester_res_results">
                 <td id="tester_res_branchcode"></td>
-                <td id="tester_res_circulation_level"></td>
+                <td id="tester_res_checkout_type"></td>
                 <td id="tester_res_reserve_level"></td>
                 <td id="tester_res_categorycode"></td>
                 <td id="tester_res_itemtype"></td>

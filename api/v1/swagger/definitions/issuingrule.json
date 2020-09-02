@@ -29,8 +29,8 @@
       "description": "item genre this rule is for (items.genre)",
       "type": "string"
     },
-    "circulation_level": {
-      "description": "item circulation_levle rule is for (items.circulation_level)",
+    "checkout_type": {
+      "description": "item circulation_levle rule is for (items.checkout_type)",
       "type": "string"
     },
     "reserve_level": {

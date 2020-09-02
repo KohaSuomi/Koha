@@ -76,7 +76,7 @@ sub new {
     my $permanent_location = $params->{'permanent_location'};
     my $sub_location  = $params->{'sub_location'};
     my $genre         = $params->{'genre'};
-    my $circulation_level = $params->{'circulation_level'};
+    my $checkout_type = $params->{'checkout_type'};
     my $reserve_level = $params->{'reserve_level'};
 
     my $patron     = $self->_validate_parameter($params,
@@ -108,8 +108,8 @@ sub new {
     unless ($genre) {
         $genre = $item ? $item->genre : undef;
     }
-    unless ($circulation_level) {
-        $circulation_level = $item ? $item->circulation_level : undef;
+    unless ($checkout_type) {
+        $checkout_type = $item ? $item->checkout_type : undef;
     }
     unless ($reserve_level) {
         $reserve_level = $item ? $item->reserve_level : undef;
@@ -134,7 +134,7 @@ sub new {
                                 .($permanent_location?$permanent_location:'*').'-'
                                 .($sub_location?$sub_location:'*').'-'
                                 .($genre?$genre:'*').'-'
-                                .($circulation_level?$circulation_level:'*').'-'
+                                .($checkout_type?$checkout_type:'*').'-'
                                 .($reserve_level?$reserve_level:'*'));
         if ($cached) {
             $rule = Koha::IssuingRule->new->set($cached);
@@ -150,7 +150,7 @@ sub new {
             permanent_location => $permanent_location,
             sub_location => $sub_location,
             genre        => $genre,
-            circulation_level => $circulation_level,
+            checkout_type => $checkout_type,
             reserve_level => $reserve_level,
         });
         if ($rule && $self->use_cache) {
@@ -162,7 +162,7 @@ sub new {
                     .($permanent_location?$permanent_location:'*').'-'
                     .($sub_location?$sub_location:'*').'-'
                     .($genre?$genre:'*').'-'
-                    .($circulation_level?$circulation_level:'*').'-'
+                    .($checkout_type?$checkout_type:'*').'-'
                     .($reserve_level?$reserve_level:'*'),
                     $rule->unblessed, { expiry => 10 });
         }

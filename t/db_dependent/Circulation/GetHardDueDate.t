@@ -152,7 +152,7 @@ my $sampleissuingrule1 = {
     permanent_location => '*',
     sub_location => '*',
     genre => '*',
-    circulation_level => '*',
+    checkout_type => '*',
     reserve_level => '*',
 };
 my $sampleissuingrule2 = {
@@ -193,7 +193,7 @@ my $sampleissuingrule2 = {
     permanent_location => '*',
     sub_location => '*',
     genre => '*',
-    circulation_level => '*',
+    checkout_type => '*',
     reserve_level => '*',
 };
 my $sampleissuingrule3 = {
@@ -234,7 +234,7 @@ my $sampleissuingrule3 = {
     permanent_location => '*',
     sub_location => '*',
     genre => '*',
-    circulation_level => '*',
+    checkout_type => '*',
     reserve_level => '*',
 };
 
@@ -273,7 +273,7 @@ $query = 'INSERT INTO issuingrules (
                 permanent_location,
                 sub_location,
                 genre,
-                circulation_level,
+                checkout_type,
                 reserve_level
                 ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 my $sth = $dbh->prepare($query);
@@ -312,7 +312,7 @@ $sth->execute(
     $sampleissuingrule1->{permanent_location},
     $sampleissuingrule1->{sub_location},
     $sampleissuingrule1->{genre},
-    $sampleissuingrule1->{circulation_level},
+    $sampleissuingrule1->{checkout_type},
     $sampleissuingrule1->{reserve_level},
 );
 $sth->execute(
@@ -350,7 +350,7 @@ $sth->execute(
     $sampleissuingrule2->{permanent_location},
     $sampleissuingrule2->{sub_location},
     $sampleissuingrule2->{genre},
-    $sampleissuingrule2->{circulation_level},
+    $sampleissuingrule2->{checkout_type},
     $sampleissuingrule2->{reserve_level},
 );
 $sth->execute(
@@ -388,7 +388,7 @@ $sth->execute(
     $sampleissuingrule3->{permanent_location},
     $sampleissuingrule3->{sub_location},
     $sampleissuingrule3->{genre},
-    $sampleissuingrule3->{circulation_level},
+    $sampleissuingrule3->{checkout_type},
     $sampleissuingrule3->{reserve_level},
 );
 

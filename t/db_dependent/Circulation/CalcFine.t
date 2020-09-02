@@ -74,7 +74,7 @@ subtest 'Test basic functionality' => sub {
         permanent_location            => '*',
         sub_location                  => '*',
         genre                         => '*',
-        circulation_level             => '*',
+        checkout_type             => '*',
         reserve_level                 => '*',
     });
     $rule->delete if $rule;
@@ -89,7 +89,7 @@ subtest 'Test basic functionality' => sub {
                 permanent_location            => '*',
                 sub_location                  => '*',
                 genre                         => '*',
-                circulation_level             => '*',
+                checkout_type             => '*',
                 reserve_level                 => '*',
                 fine                          => '1.00',
                 lengthunit                    => 'days',
@@ -134,7 +134,7 @@ subtest 'Test cap_fine_to_replacement_price' => sub {
                 permanent_location            => '*',
                 sub_location                  => '*',
                 genre                         => '*',
-                circulation_level             => '*',
+                checkout_type             => '*',
                 reserve_level                 => '*',
                 fine                          => '1.00',
                 lengthunit                    => 'days',

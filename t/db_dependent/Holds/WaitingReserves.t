@@ -144,7 +144,7 @@ $builder->build({
         permanent_location => '*',
         sub_location => '*',
         genre => '*',
-        circulation_level => '*',
+        checkout_type => '*',
         reserve_level => '*',
         hold_max_pickup_delay => 6,
     }

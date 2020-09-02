@@ -261,13 +261,13 @@ sub expanded {
         join => { 'item' => ['biblio', 'biblioitem'] },
         '+select' => [
             'item.itype', 'item.homebranch', 'item.holdingbranch', 'item.ccode', 'item.permanent_location', 'item.sub_location',
-            'item.genre', 'item.circulation_level', 'item.reserve_level', 'item.enumchron', 'item.biblionumber',
+            'item.genre', 'item.checkout_type', 'item.reserve_level', 'item.enumchron', 'item.biblionumber',
             'biblioitem.itemtype',
             'biblio.title'
         ],
         '+as' => [
             'item_itype', 'homebranch', 'holdingbranch', 'ccode', 'permanent_location', 'sub_location',
-            'genre', 'circulation_level', 'reserve_level', 'enumchron', 'biblionumber',
+            'genre', 'checkout_type', 'reserve_level', 'enumchron', 'biblionumber',
             'biblio_itype',
             'title'
         ]
@@ -338,7 +338,7 @@ sub expanded {
                     permanent_location => $checkout->{permanent_location},
                     sub_location => $checkout->{sub_location},
                     genre        => $checkout->{genre},
-                    circulation_level => $checkout->{circulation_level},
+                    checkout_type => $checkout->{checkout_type},
                     reserve_level => $checkout->{reserve_level},
                 }
             );

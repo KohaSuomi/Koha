@@ -33,7 +33,7 @@ $schema->storage->txn_begin;
 my $builder      = t::lib::TestBuilder->new;
 
 my ($categorycode, $itemtype, $branchcode, $ccode, $permanent_location,
-    $sub_location, $genre, $circulation_level, $reserve_level);
+    $sub_location, $genre, $checkout_type, $reserve_level);
 
 subtest 'get_effective_issuing_rule' => sub {
     plan tests => 3;
@@ -48,7 +48,7 @@ subtest 'get_effective_issuing_rule' => sub {
     $permanent_location = $item->{'permanent_location'};
     $sub_location = $item->{'sub_location'};
     $genre        = $item->{'genre'};
-    $circulation_level = $item->{'circulation_level'};
+    $checkout_type = $item->{'checkout_type'};
     $reserve_level = $item->{'reserve_level'};
 
     subtest 'Call with undefined values' => sub {
@@ -66,7 +66,7 @@ subtest 'get_effective_issuing_rule' => sub {
             permanent_location => undef,
             sub_location => undef,
             genre        => undef,
-            circulation_level => undef,
+            checkout_type => undef,
             reserve_level => undef,
         });
         is($rule, undef, 'When I attempt to get effective issuing rule by'
@@ -79,7 +79,7 @@ subtest 'get_effective_issuing_rule' => sub {
             permanent_location => '*',
             sub_location => '*',
             genre => '*',
-            circulation_level => '*',
+            checkout_type => '*',
             reserve_level => '*',
         };
         ok(Koha::IssuingRule->new($new_rule)->store, 'Given I added an issuing '
@@ -92,7 +92,7 @@ subtest 'get_effective_issuing_rule' => sub {
             permanent_location => undef,
             sub_location => undef,
             genre => undef,
-            circulation_level => undef,
+            checkout_type => undef,
             reserve_level => undef,
         });
         ok(_row_match($rule, $new_rule), 'When I attempt to get effective'
@@ -114,7 +114,7 @@ subtest 'get_effective_issuing_rule' => sub {
             permanent_location => $permanent_location,
             sub_location => $sub_location,
             genre        => $genre,
-            circulation_level => $circulation_level,
+            checkout_type => $checkout_type,
             reserve_level => $reserve_level,
         });
         is($rule, undef, 'When I attempt to get effective issuing rule, then undef'
@@ -128,7 +128,7 @@ subtest 'get_effective_issuing_rule' => sub {
             permanent_location => $permanent_location,
             sub_location => $sub_location,
             genre        => $genre,
-            circulation_level => $circulation_level,
+            checkout_type => $checkout_type,
             reserve_level => $reserve_level,
         });
     };
@@ -193,7 +193,7 @@ sub test_effective_issuing_rules {
     foreach my $combination (@combinations) {
         my @vals = split //, $combination;
         $tmp_params->{branchcode} = $vals[0] ? $params->{branchcode} : '*';
-        $tmp_params->{circulation_level} = $vals[1] ? $params->{circulation_level} : '*';
+        $tmp_params->{checkout_type} = $vals[1] ? $params->{checkout_type} : '*';
         $tmp_params->{reserve_level} = $vals[2] ? $params->{reserve_level} : '*';
         $tmp_params->{categorycode} = $vals[3] ? $params->{categorycode} : '*';
         $tmp_params->{itemtype} = $vals[4] ? $params->{itemtype} : '*';
@@ -217,7 +217,7 @@ sub _row_match {
             && $result_rule->permanent_location eq $rule->{permanent_location}
             && $result_rule->sub_location eq $rule->{sub_location}
             && $result_rule->genre eq $rule->{genre}
-            && $result_rule->circulation_level eq $rule->{circulation_level}
+            && $result_rule->checkout_type eq $rule->{checkout_type}
             && $result_rule->reserve_level eq $rule->{reserve_level};
 }
 
@@ -242,7 +242,7 @@ sub _test_rule {
             permanent_location => $permanent_location,
             sub_location => $sub_location,
             genre        => $genre,
-            circulation_level => $circulation_level,
+            checkout_type => $checkout_type,
             reserve_level => $reserve_level,
         });
     ok(_row_match($result_rule, $rule), 'When I attempt to get effective '

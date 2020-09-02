@@ -368,7 +368,7 @@ sub _get_effective_issuing_rule {
         permanent_location => $item ? $item->permanent_location : undef,
         sub_location => $item ? $item->sub_location : undef,
         genre => $item ? $item->genre : undef,
-        circulation_level => $item ? $item->circulation_level : undef,
+        checkout_type => $item ? $item->checkout_type : undef,
         reserve_level => $item ? $item->reserve_level : undef,
     });
 

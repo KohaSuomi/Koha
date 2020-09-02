@@ -98,7 +98,7 @@ $builder->build(
             permanent_location => '*',
             sub_location => '*',
             genre => '*',
-            circulation_level => '*',
+            checkout_type => '*',
             reserve_level => '*',
             issuelength => '14',
             lengthunit => 'days',
