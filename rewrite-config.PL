@@ -104,6 +104,7 @@ $prefix = $ENV{'INSTALL_BASE'} || "/usr";
   "__ZEBRA_SRU_BIBLIOS_PORT__" => "9998",
   "__ZEBRA_SRU_AUTHORITIES_PORT__" => "9999",
   "__FINNA_PREFIX__" => "",
+  "__WEBKAKECON__" => "",
   "__HETULA_URL__" => "",
   "__HETULA_ORGANIZATION__" => "",
   "__KOHA_USER__" => "koha",
