@@ -124,7 +124,7 @@ EXAMPLES:
   <ropocapital>
    <!-- <dontReallySendAnything>comment this to actually send the letters, now we are just fakin'</dontReallySendAnything> -->
    <letterStagingDirectory>/tmp/ropocapital/</letterStagingDirectory>
-   <clientId>JNS190</clientId>
+   <clientId>CLIENTID</clientId>
    <remoteDirectory>testedtester</remoteDirectory>
    <host>ROPO IP</host>
    <user>USERNAME</user>
