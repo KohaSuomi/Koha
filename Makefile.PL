@@ -464,6 +464,10 @@ System group that will own Koha's files.
 Your prefix that comes in Finna.fi URLs before biblionumbers. Must end
 in a dot.
 
+=item WEBKAKECON
+
+Webkake config directive. The same value must be on Webkake's side.
+
 =item HETULA_URL
 
 URL of your Hetula server.
@@ -515,6 +519,7 @@ my %config_defaults = (
   'KOHA_USER'         => 'koha',
   'KOHA_GROUP'        => 'koha',
   'FINNA_PREFIX'      => '',
+  'WEBKAKECON'        => '',
   'HETULA_URL'        => '',
   'HETULA_ORGANIZATION' => '',
   'MERGE_SERVER_HOST' => 'localhost',
@@ -1380,6 +1385,9 @@ database to be used by Koha);
 
   $msg = q(If you use Hetula, please specify the organization name used with it);
   $config{'HETULA_ORGANIZATION'} = _get_value('HETULA_ORGANIZATION', $msg, $defaults->{'HETULA_ORGANIZATION'}, $valid_values, $install_log_values);
+
+  $msg = q(If you use Webkake, please specify the value provided by Webkake here);
+  $config{'WEBKAKECON'} = _get_value('WEBKAKECON', $msg, $defaults->{'WEBKAKECON'}, $valid_values, $install_log_values);
 
     print "\n\n";
 
