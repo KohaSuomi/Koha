@@ -323,11 +323,11 @@ __PAZPAR2_TOGGLE_XML_POST__
       <customerPass></customerPass> <!-- Opus Capita customer password -->
     </opusFTP>
     <ropocapital>
-      <!-- <dontReallySendAnything>comment this to actually send the letters, now we are just fakin'</dontReallySendAnything> -->
+      <dontReallySendAnything>comment this to actually send the letters, now we are just fakin'</dontReallySendAnything>
       <letterStagingDirectory>/tmp/ropocapital/</letterStagingDirectory>
-      <clientId>JNS190</clientId>
+      <clientId></clientId>
       <!-- <remoteDirectory>Enfo doesnt want us to specify a root-directory</remoteDirectory>-->
-      <host>zmartgate.enfo.fi</host>
+      <host>HOSTNAME</host>
       <user>USERNAME</user>
       <passwd>PASSWORD</passwd>
       <sftp>1</sftp>
