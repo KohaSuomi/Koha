@@ -40,7 +40,7 @@ sub letterBody {
     my $lines = 0;
     my $pages = 1;
 
-    foreach my $line ( split /\r\n/, hdiacritic ( $hash{'content'} ) ) {
+    foreach my $line ( split /\r?\n/, hdiacritic ( $hash{'content'} ) ) {
          if ( $lines == 0 ) {
              $line = '30'. $line . "\r\n";
              $lines++
