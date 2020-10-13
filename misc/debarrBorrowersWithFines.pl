@@ -8,6 +8,7 @@ use C4::Context;
 use Koha::Patron::Debarments;
 
 my ($help, $confirm, $message, $expiration, $file, $year, @category);
+my $limit = 0;
 GetOptions(
     'h|help'         => \$help,
     'c|confirm:s'    => \$confirm,
@@ -16,6 +17,7 @@ GetOptions(
     'e|expiration:s' => \$expiration,
     'y|year:s'       => \$year,
     'category=s'     => \@category,
+    'l|limit:f'      => \$limit,
 );
 
 my $HELP = <<HELP;
@@ -38,6 +40,9 @@ Creates a debarment for all Borrowers who have fines.
     -y --year       OPTIONAL The year which date matches to accountlines date value.
     --category      OPTIONAL The categorycode if wanted to restrict, can be added more than one 
 
+    -l --limit      OPTIONAL Amount outstanding limit for debarring.
+                    This amount and below will not get borrower blocked.
+                    Defaults to 0.00
 
 EXAMPLE:
 
@@ -116,10 +121,10 @@ sub GetAllBorrowersWithUnpaidFines {
     $query .= "AND " if (@category && $year);
     $query .= "YEAR(a.date) = '$year' " if $year;
     $query .= "GROUP BY b.borrowernumber    
-        HAVING SUM(a.amountoutstanding) > 0
+        HAVING SUM(a.amountoutstanding) > ?
         ORDER BY b.borrowernumber ASC";
     print "$query\n";
     my $sth = C4::Context->dbh->prepare($query);
-    $sth->execute();
+    $sth->execute($limit);
     return $sth->fetchall_arrayref({});
 }
