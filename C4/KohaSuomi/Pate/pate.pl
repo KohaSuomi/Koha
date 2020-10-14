@@ -199,6 +199,8 @@ elsif ( $ARGV[0] eq '--letters' ) {
         print Dumper ( C4::Context->config('ksmessaging')->{'suomifi'}->{'branches'}->{"@$message{'branchcode'}"}  );
 
         if ( C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"$branchconfig"}->{'ipostepl'} ) {
+            my $encoding = C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"$branchconfig"}->{'ipostepl'}->{'encoding'} || 'latin1';
+            my $fileprefix = C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"$branchconfig"}->{'ipostepl'}->{'fileprefix'} || '';
             my $formattedmessage = toEPL ( %{$message}, 'branchconfig' => $branchconfig );
 
             # Debug
@@ -208,9 +210,10 @@ elsif ( $ARGV[0] eq '--letters' ) {
             }
 
             $filename = @$message{'branchcode'} . '-' . @$message{'message_id'} . '.epl';
+            $filename = $fileprefix . $filename;
 
             # Write file
-            WriteiPostEPL ( 'branchconfig' => $branchconfig, 'epl' => $formattedmessage, 'filename' => $filename );
+            WriteiPostEPL ( 'branchconfig' => $branchconfig, 'epl' => $formattedmessage, 'filename' => $filename, 'encoding' => $encoding );
         }
 
         elsif ( C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"$branchconfig"}->{'ipostpdf'} ) {

@@ -11,13 +11,18 @@ use Net::FTP;
 sub WriteiPostEPL {
     my %hash = @_;
     my $letters;
+    my $encoding = $hash{'encoding'} || 'latin1';
 
-    # Replace unconverted characters  with ? to prevent \x{...} mess in letter.
-    open ( LETTERS, ">encoding(latin1)", \$letters );
-    print LETTERS $hash{'epl'};
-    close LETTERS;
+    if ($encoding eq 'latin1') {
+        # Replace unconverted characters  with ? to prevent \x{...} mess in letter.
+        open ( LETTERS, ">encoding(latin1)", \$letters );
+        print LETTERS $hash{'epl'};
+        close LETTERS;
 
-    $letters =~ s/\\x\{....\}/?/g;
+        $letters =~ s/\\x\{....\}/?/g;
+    } else {
+        $letters = $hash{'epl'};
+    }
 
     # Make target directory if needed
     my $stagingdir =
@@ -28,7 +33,7 @@ sub WriteiPostEPL {
     }
 
     # Then write to disk
-    open ( LETTERS, ">encoding(latin1)", $stagingdir . '/' . $hash{'filename'} )
+    open ( LETTERS, ">encoding(".$encoding.")", $stagingdir . '/' . $hash{'filename'} )
       or die localtime . ": Can't write to " . $stagingdir . '/' . $hash{'filename'} . ".";
 
     print LETTERS $letters;
