@@ -343,7 +343,7 @@ __PAZPAR2_TOGGLE_XML_POST__
         <contact></contact> <!-- e-mail address to contact in case of errors -->
         <!-- configure either epl or pdf for each branch (or 'default') -->
         <!-- <ipostepl>
-          <unicode>no</unicode>
+          <encoding>UTF-8</encoding>
           <header>EPL111645560490TT002SD 0</header>
           <code>30041</code>
           <layout>
@@ -355,6 +355,7 @@ __PAZPAR2_TOGGLE_XML_POST__
             <otherpages>60</otherpages>
           </layout>
           <stagingdir>/home/koha/koha-dev/var/spool/pate-staging</stagingdir>
+          <fileprefix>JNS000_</fileprefix>
           <contact></contact> <!- e-mail address to contact in case of errors ->
         </ipostepl> -->
         <ipostpdf>
