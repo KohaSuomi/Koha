@@ -747,7 +747,7 @@ END_SQL
                     # Add single fine per lettercode or add fines for all the generated letters/Koha-Suomi Oy/PK KD1978
                     if (! $singlefine || ! defined $fine{$i}{$borrowernumber}) {
                       $fine{$i}{$borrowernumber} = 1;
-                      set_overdue_price($borrowernumber, $i, $overdue_rules->{categorycode}, $overdue_rules->{"letter$i"}, $branchcode);
+                      set_overdue_price($borrowernumber, $i, $overdue_rules->{categorycode}, $overdue_rules->{"letter$i"}, $branchcode) unless $test_mode;
                     }
 
                     if ($nomail) {
