@@ -32,7 +32,7 @@ sub hdiacritic {
 sub letterBody {
     my %hash = @_;
 
-    my $contpagecode = C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"$hash{'branchconfig'}"}->{'ipostepl'}->{'layout'}->{'contpagecode'};
+    my $contpagecode = C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"$hash{'branchconfig'}"}->{'ipostepl'}->{'layout'}->{'contpagecode'} || '';
     my $firstpage = C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"$hash{'branchconfig'}"}->{'ipostepl'}->{'layout'}->{'firstpage'};
     my $otherpages = C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"$hash{'branchconfig'}"}->{'ipostepl'}->{'layout'}->{'otherpages'};
 
@@ -45,7 +45,7 @@ sub letterBody {
              $line = '30'. $line . "\r\n";
              $lines++
          }
-         elsif ( ( $pages == 1 && $lines == $firstpage ) or ( $lines == $otherpages ) ) {
+         elsif ( ($contpagecode ne '') && ( ( $pages == 1 && $lines == $firstpage ) or ( $lines == $otherpages ) ) ) {
              $line = ' 0' . $line . "\r\n" . '10' . "\r\n" . $contpagecode . "\r\n";
              $pages++;
              $lines = 1;
