@@ -102,18 +102,24 @@ my @relations = split /\|/, C4::Context->preference('borrowerRelationship'), -1;
 @relations = ('') unless @relations;
 my $empty_relationship_allowed = grep {$_ eq ""} @relations;
 $template->param( empty_relationship_allowed => $empty_relationship_allowed );
-
-my $guarantorinfo = $input->param('guarantorinfo');
 my $guarantor_id = $input->param('new_guarantor_id');
 my $guarantor = undef;
 $guarantor = Koha::Patrons->find( $guarantor_id ) if $guarantor_id;
 $template->param( guarantor => $guarantor );
-
 my @delete_guarantor = $input->multi_param('delete_guarantor');
 foreach my $id ( @delete_guarantor ) {
     my $r = Koha::Patron::Relationships->find( $id );
     $r->delete() if $r;
 }
+
+#Search existing guarantor id(s) and new ones from params
+my @guarantor_ids;
+my @guarantors = $patron->guarantor_relationships()->guarantors unless !$patron;
+foreach my $guarantor (@guarantors){
+    push @guarantor_ids, $guarantor->id;
+};
+my @new_guarantor_ids = grep { $_ ne '' } $input->multi_param('new_guarantor_id');
+push (@guarantor_ids, @new_guarantor_ids);
 
 ## Deal with debarments
 $template->param(
@@ -280,15 +286,16 @@ if ( ( $op eq 'insert' ) and !$nodouble ) {
     }
 }
 
-if ( $guarantor_id ) {
-    if (my $guarantor = Koha::Patrons->find( $guarantor_id )) {
-        my $guarantor_category = $guarantor->category->category_type;
-        push @errors, 'ERROR_guarantor_is_guarantee' if ( ($guarantor_category eq 'C') &&
+if ( @guarantor_ids ) {
+    foreach my $guarantor_id ( @guarantor_ids ){
+        if (my $guarantor = Koha::Patrons->find( $guarantor_id )){
+            push @errors, 'ERROR_guarantor_is_guarantee' if ( ($guarantor->is_child) &&
                                                           ($op eq 'save' || $op eq 'insert') );
+        }
     }
 }
 
-my $valid_guarantor = $guarantor_id ? $guarantor_id : $newdata{'contactname'};
+my $valid_guarantor = @guarantor_ids || $newdata{'contactname'} ? 1 : 0;
 
 if($category_type eq 'C' && ($op eq 'save' ||  $op eq 'insert') && C4::Context->preference('ChildNeedsGuarantor')){
     if(!$valid_guarantor){

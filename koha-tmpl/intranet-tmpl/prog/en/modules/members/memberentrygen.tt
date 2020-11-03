@@ -597,7 +597,7 @@ legend:hover {
                                         </fieldset> <!-- /#memberentry_guarantor -->
                                     </div> <!-- #/memberentry_guarantor_anchor -->
 
-                                    [% UNLESS nocontactname && nocontactfirstname && norelationship %]
+                                    [% UNLESS nocontactname && nocontactfirstname && norelationship || Koha.Preference('GuarantorHasToBePatron') %]
                                         <fieldset class="rows" id="non_patron_guarantor">
                                             <legend>Non-patron guarantor</legend>
                                             <ol>
@@ -661,7 +661,7 @@ legend:hover {
                                     [% PROCESS 'main-address-style' %]
                                 [% END # /UNLESS nostreet && nocity etc group%]
 
-                                [% UNLESS nophone && nophonepro && nomobile && noemail && noemailpro && nofax || Koha.Preference('GuarantorHasToBePatron') %]
+                                [% UNLESS nophone && nophonepro && nomobile && noemail && noemailpro && nofax %]
                                     <fieldset class="rows" id="memberentry_contact">
                                         <legend id="contact_lgd">Contact information</legend>
                                         <ol>
