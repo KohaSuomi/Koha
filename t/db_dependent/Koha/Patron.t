@@ -19,7 +19,7 @@
 
 use Modern::Perl;
 
-use Test::More tests => 12;
+use Test::More tests => 13;
 use Test::Exception;
 use Test::Warn;
 
@@ -922,6 +922,41 @@ subtest 'messages' => sub {
     is( $messages->count, 2, "There are two messages for this patron" );
     is( $messages->next->message, $message_1->message );
     is( $messages->next->message, $message_2->message );
+
+    $schema->storage->txn_rollback;
+};
+
+subtest 'guarantor requirements tests' => sub {
+
+    plan tests => 3;
+
+    $schema->storage->txn_begin;
+
+    my $branchcode = $builder->build({ source => 'Branch' })->{branchcode};
+    my $child_category = $builder->build({ source => 'Category', value => { category_type => 'C' }})->{categorycode};
+    my $patron_category = $builder->build({ source => 'Category', value => { category_type => 'A' }})->{categorycode};
+
+    t::lib::Mocks::mock_preference( 'ChildNeedsGuarantor', 0 );
+
+    my $child = Koha::Patron->new({ branchcode => $branchcode, categorycode => $child_category, contactname => ''});
+    $child->store();
+
+    ok(Koha::Patrons->find($child->id), 'Child patron can be stored without guarantor when ChildNeedsGuarantor is off.');
+
+    t::lib::Mocks::mock_preference( 'ChildNeedsGuarantor', 1 );
+
+    my $child2 = Koha::Patron->new({ branchcode => $branchcode, categorycode => $child_category, contactname => ''});
+    my $child3 = $builder->build_object({ class => 'Koha::Patrons', value => { categorycode => $child_category }});
+    my $patron = $builder->build_object({ class => 'Koha::Patrons', value => { categorycode => $patron_category }});
+
+    throws_ok { $child2->store(); }
+    'Koha::Exceptions::Patron::Relationship::NoGuarantor',
+    'Exception thrown when guarantor is required but not provided.';
+
+    my @guarantor_ids = ( $patron->id, $child3->id );
+    throws_ok { $child2->store({ guarantor_ids => \@guarantor_ids }); }
+    'Koha::Exceptions::Patron::Relationship::InvalidRelationship',
+    'Exception thrown when child patron is added as guarantor.';
 
     $schema->storage->txn_rollback;
 };

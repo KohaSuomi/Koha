@@ -468,7 +468,7 @@ if ((!$nok) and $nodouble and ($op eq 'insert' or $op eq 'save')){
 	if ($op eq 'insert'){
 		# we know it's not a duplicate borrowernumber or there would already be an error
         delete $newdata{password2};
-        $patron = eval { Koha::Patron->new(\%newdata)->store };
+        $patron = eval { Koha::Patron->new(\%newdata)->store({ guarantor_ids => \@guarantor_ids }) };
         if ( $@ ) {
             # FIXME Urgent error handling here, we cannot fail without relevant feedback
             # Lot of code will need to be removed from this script to handle exceptions raised by Koha::Patron->store
@@ -552,7 +552,7 @@ if ((!$nok) and $nodouble and ($op eq 'insert' or $op eq 'save')){
         delete $newdata{password2};
 
         eval {
-            $patron->set(\%newdata)->store if scalar(keys %newdata) > 1; # bug 4508 - avoid crash if we're not
+            $patron->set(\%newdata)->store({ guarantor_ids => \@guarantor_ids }) if scalar(keys %newdata) > 1; # bug 4508 - avoid crash if we're not
                                                                     # updating any columns in the borrowers table,
                                                                     # which can happen if we're only editing the
                                                                     # patron attributes or messaging preferences sections

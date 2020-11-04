@@ -178,7 +178,10 @@ to db
 =cut
 
 sub store {
-    my ($self) = @_;
+    my $self = shift;
+    my $params = @_ ? shift : {};
+
+    my $guarantor_ids = $params->{guarantor_ids} // [];
 
     $self->_result->result_source->schema->txn_do(
         sub {
@@ -274,6 +277,20 @@ sub store {
                 $self = $self->SUPER::store;
 
                 $self->add_enrolment_fee_if_needed(0);
+
+                if ( C4::Context->preference('ChildNeedsGuarantor') and $self->is_child
+                    and $self->contactname eq "" and !@$guarantor_ids ) {
+                    Koha::Exceptions::Patron::Relationship::NoGuarantor->throw();
+                }
+
+                foreach my $guarantor_id (@$guarantor_ids){
+                    my $guarantor = Koha::Patrons->find({ borrowernumber => $guarantor_id });
+                    if($guarantor->is_child){
+                        Koha::Exceptions::Patron::Relationship::InvalidRelationship->throw(
+                            invalid_guarantor => 1
+                        );
+                    }
+                }
 
                 logaction( "MEMBERS", "CREATE", $self->borrowernumber, "" )
                   if C4::Context->preference("BorrowersLog");
