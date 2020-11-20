@@ -192,7 +192,7 @@ elsif ( $ARGV[0] eq '--letters' ) {
 
         # Format and transit will be defined by the branch, or 'default' if combineacrossbranches
         my $branchconfig = 'default';
-        if ( C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"@$message{'branchcode'}"} &&  C4::Context->config('ksmessaging')->{'letters'}->{'combineacrossbranches'} ne 'yes' ) {
+        if ( C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"@$message{'branchcode'}"} && keys C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"@$message{'branchcode'}"} ) {
             $branchconfig = @$message{'branchcode'}
         }
         print @$message{'branchcode'} . "\n";
