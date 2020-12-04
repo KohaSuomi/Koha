@@ -343,7 +343,6 @@
           { 'type': 'text' },
           { 'type': 'text' },
           { 'type': 'text' },
-          { 'type': 'text' },
           { 'type': 'select', 'values': [% branches.json %] },
           { 'type': 'select', 'values': [% branches.json %] },
           [% IF locations.size %]
