@@ -195,7 +195,7 @@ sub get_barcode {
                         )
                     );
 
-    my $prefix = $yaml->{$branchcode} || '666';
+    my $prefix = $yaml->{$branchcode} || $yaml->{'Default'} || '666';
 
     $query = "SELECT MAX(CAST(SUBSTRING(barcode,-4) AS signed)) from items where barcode REGEXP ?";
     $sth=C4::Context->dbh->prepare($query);
@@ -219,7 +219,7 @@ sub get_barcode {
             }
         }
 
-    var branchcode = document.f.field_value[fnum].value.substring(0,3);
+    var branchcode = document.f.field_value[fnum].value;
     var json; //Variable which receives the results
     var loc_url = '/cgi-bin/koha/cataloguing/barcode_ajax.pl?branchcode=' + branchcode; //Location
 
