@@ -268,7 +268,7 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
                     count++;
                 }
             });
-            self.submitToRemote(remoteAPI, {marc: result.sourcerecord, interface: remoteAPI.interface, source_id: self.activeBiblio.biblionumber, target_id: result.target_id, username: username});
+            self.submitToRemote(remoteAPI, {marc: result.sourcerecord, interface: remoteAPI.interface, source_id: self.activeBiblio.biblionumber, target_id: result.target_id, username: username, componentparts_count: result.componentparts.length});
             if (!result.targetrecord) {
                 self.submitcomponentParts(remoteAPI, result.componentparts, username, false);
             } else {
