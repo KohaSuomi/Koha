@@ -53,6 +53,9 @@
   "checkout": {
     "$ref": "definitions/checkout.json"
   },
+  "overdues": {
+    "$ref": "definitions/overdues.json"
+  },
   "checkoutexpanded": {
     "$ref": "definitions/checkoutexpanded.json"
   },

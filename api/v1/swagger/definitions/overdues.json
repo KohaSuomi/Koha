@@ -1,0 +1,41 @@
+{
+  "type": "object",
+  "properties": {
+    "borrowernumber": {
+      "type": ["integer", "null"],
+      "description": "internally assigned user identifier"
+    },
+    "cardnumber": {
+      "type": ["string", "null"],
+      "description": "Patron's cardnumber"
+    },
+    "firstname": {
+      "type": ["string", "null"],
+      "description": "Patron's firstname"
+    },
+    "surname": {
+      "type": ["string", "null"],
+      "description": "Patron's surname"
+    },
+    "address": {
+      "type": ["string", "null"],
+      "description": "Patron's address"
+    },
+    "city": {
+      "type": ["string", "null"],
+      "description": "Patron's city"
+    },
+    "zipcode": {
+      "type": ["string", "null"],
+      "description": "Patron's zipcode"
+    },
+    "guarantorid": {
+      "type": ["integer", "null"],
+      "description": "Patron's guarantor identifier"
+    },
+    "checkouts": {
+      "type": ["array", "null"],
+      "description": "Array of checkouts"
+    }
+  }
+}

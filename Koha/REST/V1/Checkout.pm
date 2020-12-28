@@ -394,6 +394,93 @@ sub deletehistory {
     };
 }
 
+sub list_overdues {
+    my $c = shift->openapi->valid_input or return;
+
+    my $startdate = $c->validation->param('startdate');
+    my $enddate = $c->validation->param('enddate');
+    my @libraries = split(',', $c->validation->param('libraries'));
+    my @categorycodes = split(',', $c->validation->param('categorycodes'));
+    my $invoicelibrary = $c->validation->param('invoicelibrary');
+    my $lastdate = $c->validation->param('lastdate');
+    my $invoiced = $c->validation->param('invoiced');
+    my $invoicedstatus = $c->validation->param('invoicedstatus');
+    my $other_params = {
+            'columns' => [ qw/borrowernumber/ ],
+            'group_by' => [ qw/borrowernumber/ ],
+            join => { 'item' => '', 'borrower'},
+        };
+    my %attributes;
+    my $notforloan = $invoiced ? { '=' => $invoicedstatus} : { '!=' => $invoicedstatus};
+    if ($invoicelibrary eq "itembranch") {
+        %attributes = (
+            date_due => { '-between' => [$startdate, $enddate] },
+            'item.homebranch' => \@libraries,
+            'borrower.categorycode' => \@categorycodes,
+            'item.notforloan' => $notforloan,
+        );
+    } else {
+        %attributes = (
+            date_due => { '-between' => [$startdate, $enddate] },
+            'me.branchcode' => \@libraries,
+            'borrower.categorycode' => \@categorycodes,
+            'item.notforloan' => $notforloan,
+        );
+    }
+
+    my $checkouts_count = Koha::Checkouts->search(
+          \%attributes,
+          $other_params
+        )->count;
+
+    my @columns = Koha::Checkouts->columns;
+    _populate_paging_params($other_params, $c, 'date_due', \@columns);
+
+    my $checkouts = Koha::Checkouts->search(
+        \%attributes,
+        $other_params
+    );
+
+    my $results = [];
+    foreach my $checkout (@{$checkouts->unblessed}){
+        my $items = [];
+        my $borcheckouts = Koha::Checkouts->search(
+            {
+                borrowernumber => $checkout->{borrowernumber},
+                date_due => { '>=' => $lastdate, '<=' => $enddate  },
+                'item.notforloan' => $notforloan,
+            }, 
+            {
+                join => { 'item' => 'biblio'},
+                '+select' => ['item.barcode', 'item.enumchron', 'item.itemcallnumber', 'item.itype', 'item.replacementprice', 'item.biblionumber', 'item.dateaccessioned', 'biblio.title', 'biblio.author'],
+                '+as' => ['barcode', 'enumchron', 'itemcallnumber', 'itype', 'replacementprice', 'biblionumber', 'dateaccessioned', 'title', 'author'],
+            }
+        )->unblessed;
+        my $borrowercheckouts;
+        my $patron = Koha::Patrons->find($checkout->{borrowernumber})->unblessed;
+        $borrowercheckouts = {
+            borrowernumber => $checkout->{borrowernumber},
+            cardnumber => $patron->{cardnumber},
+            firstname => $patron->{firstname},
+            surname => $patron->{surname},
+            dateofbirth => $patron->{dateofbirth},
+            address => $patron->{address},
+            city => $patron->{city},
+            zipcode => $patron->{zipcode},
+            guarantorid => $patron->{guarantorid},
+            lang => $patron->{lang}
+        };
+
+        $borrowercheckouts->{checkouts} = $borcheckouts;
+        push @{$results}, $borrowercheckouts
+    }
+
+    return $c->render( status => 200, openapi => {
+        total => $checkouts_count,
+        records => $results
+    });
+}
+
 sub _opac_renewal_allowed {
     my ($user, $borrowernumber) = @_;
 
