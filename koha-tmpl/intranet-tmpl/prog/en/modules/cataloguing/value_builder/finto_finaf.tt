@@ -1,0 +1,212 @@
+[% INCLUDE 'doc-head-open.inc' %]
+<title>Koha &rsaquo; Cataloging &rsaquo; Authority search</title>
+[% INCLUDE 'doc-head-close.inc' %]
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+</head>
+<body id="cat_marc21_field_finto_finaf" class="cat" style="padding:1em;">
+[% IF ERROR %]
+    <h4>Virhe: <span style="color:red;">[%ERROR%]</span></h4>
+[% ELSE%]
+    [% IF MARC_FORMATTED %]
+        <form name="f_pop" id="f_pop" action="#">
+            <input type="hidden" name="plugin_name" value="finto_finaf.pl" />
+            <input type="hidden" id="[% index %]" name="index" value="[% index %]" />
+            <input type="hidden" id="authid" name="authid" value="[% authid %]" />
+            <h3>Asteri authority</h3>
+            <br/>
+            <pre>[% MARC_FORMATTED %] </pre>
+            [% IF SUBFIELDS %]
+                [% FOREACH subfield IN SUBFIELDS %]
+                    <input type="hidden" id="subfield_[% subfield.code %]" name="subfield_[% subfield.code %]" value="[% subfield.value %]" />
+                [% END %]
+            [% END %]
+            <fieldset class="action"><a href="#" onclick="report();">Choose</a> <a href="#" class="cancel close" >Cancel</a></fieldset>
+        </form>
+    [% ELSE %]
+        <h3>Search authority</h3>
+        <br/>
+        <div id="app">
+            <select v-model="authtypecode">
+                <option value="">Default authority type</option>
+                <option value="PERSO_NAME">PERSO_NAME</option>
+                <option value="CORPO_NAME">CORPO_NAME</option>
+                <option value="MEETI_NAME">MEETI_NAME</option>
+            </select>
+            <select v-model="operator">
+                <option value="contains">contains</option>
+                <option value="start">starts with</option>
+                <option value="is">is exactly</option>
+            </select>
+            <input @keyup.enter="searchAuth" v-model="searchfield" style="width:400px;" />
+            <button type="button" v-on:click="searchAuth" >Search</button>
+            <button type="button" v-on:click="createNew" >Create new authority</button>
+            <a id="cancel" class="cancel close" href="#">Cancel</a>
+            <div>
+                <hr/>
+                <div id="loading" class="hidden"> <img src="[% interface %]/[% theme %]/img/spinner-small.gif" alt="" /> Loading </div>
+                <div class="alert alert-danger" role="alert" v-if="errors.length">
+                    <b>Tapahtui virhe:</b>
+                    <ul class="text-danger">
+                        <li v-for="error in errors">{{ error }}</li>
+                    </ul>
+                </div>
+                <br/>
+                <div id="resultdiv">
+                    <a v-if="offset > 0" href="#" v-on:click="previous()">
+                            &lt;&lt;
+                        </a>
+                    <a v-if="resultcount == limit" href="#" v-on:click="next()">
+                            &gt;&gt;
+                        </a>
+                    <br/>
+                    <table v-if="results.length">
+                        <tr>
+                            <th>Summary</th>
+                            <th>Used</th>
+                            <th>Get it!</th>
+                            <th>Other action</th>
+                        </tr>
+                        <tr v-for="(result, index) in results">
+                            <td><b>{{ result.summary.type}}:</b><br/>
+                            {{ result.summary.mainentry }}</td>
+                            <td>{{result.used}}</td>
+                            <td><a href="#" v-on:click="choose(result)">Choose</a></td>
+                            <td><a v-bind:href="'/cgi-bin/koha/authorities/authorities.pl?authid='+result.authid">Edit authority</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    [% END %]
+[%END%]
+
+<script type="text/javascript">
+//<![CDATA[
+function report() {
+        var index_start = "[% index %]";
+        var whichfield;
+        try {
+            whichfield = opener.document.getElementById(index_start);
+        } catch(e) {
+            return;
+        }
+        var indicators = whichfield.parentNode.parentNode.getElementsByClassName('indicator flat');
+        indicators[0].value="[% ind1 %]";
+        indicators[1].value="[% ind2 %]";
+        var subfields = whichfield.parentNode.parentNode.getElementsByTagName('input');
+        var re = /^tag_\d*_code_/;
+        for(var i=0, len = subfields.length ; i< len ; i++) {
+            if(subfields[i].getAttribute('name').match(re)){ // it s a subfield
+                var code     = subfields[i];
+                var subfield = subfields[i+1];
+                var field = document.getElementById("subfield_"+code.value);
+                if(field){
+                    subfield.value = field.value;
+                } else {
+                    subfield.value = '';
+                }
+                if (code.value == '0' && !subfield.value) {
+                    subfield.value = document.getElementById("authid").value;
+                }
+            }
+        }
+                
+        self.close();
+        return false;
+    };
+var app = new Vue({
+  el: '#app',
+  data: {
+    searchfield: '',
+    results: [],
+    errors: [],
+    operator: 'contains',
+    authtypecode: '',
+    offset: 0,
+    limit: 20,
+    resultcount: null,
+    index: '[% index %]'
+  },
+  methods: {
+    searchAuth() {
+        $("#loading").removeClass("hidden");
+        $("#resultdiv").addClass("hidden");
+        axios
+        .get("/cgi-bin/koha/cataloguing/plugin_launcher.pl?plugin_name=finto_finaf.pl&search=1&index=[% index %]", {
+          params: {
+            authtypecode : this.authtypecode,
+            term: this.searchfield,
+            type: "intranet",
+            and_or: "and",
+            operator: this.operator,
+            orderby: "HeadingAsc",
+            querytype: "mainmainentry",
+            offset: this.offset,
+            limit: this.limit
+          },
+        })
+        .then((response) => {
+          this.results = response.data;
+          this.resultcount = this.results.length;
+          $("#resultdiv").removeClass("hidden");
+          $("#loading").addClass("hidden");
+        })
+        .catch((error) => {
+            this.errors.push(error.response.data.error);
+        });
+    },
+    createNew() {
+        if(!this.authtypecode) {
+            this.errors.push("Select authority type first");
+        } else {
+            window.open('/cgi-bin/koha/authorities/authorities.pl?authtypecode=' + this.authtypecode,'','width=1000,height=600,resizable=yes,toolbar=false,scrollbars=yes,top');
+        }
+    },
+    next() {
+        this.offset = this.limit + 1;
+        this.searchAuth();
+    },
+    previous() {
+        if (this.offset > this.limit) {
+            this.offset = this.offset - this.limit - 1;
+        }
+        this.searchAuth();
+    },
+    choose(result) {
+        var whichfield;
+        try {
+            whichfield = opener.document.getElementById(this.index);
+        } catch(e) {
+            return;
+        }
+        var subfields = whichfield.parentNode.parentNode.getElementsByTagName('input');
+        var re = /^tag_\d*_code_/;
+        var arr = result.reported_tag.split("$");
+        for(var i=0, len = subfields.length ; i< len ; i++) {
+            if(subfields[i].getAttribute('name').match(re)){ // it s a subfield
+                var code     = subfields[i];
+                var subfield = subfields[i+1];
+                subfield.value = '';
+                arr.forEach(element => {
+                    if (element) {
+                        var subfieldtag = element.substring(0,1);
+                        var data = element.substring(1, element.length);
+                        if (code.value == subfieldtag) {
+                            subfield.value = data;
+                        }
+                    }
+                });
+                if (code.value == '0' && !subfield.value) {
+                    subfield.value = result.authid;
+                }
+            }
+        }
+        self.close();
+        return false;
+    }
+  }
+});
+	//]]>
+</script>
+[% INCLUDE 'popup-bottom.inc' %]
