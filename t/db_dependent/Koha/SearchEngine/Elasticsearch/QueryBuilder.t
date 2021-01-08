@@ -497,7 +497,7 @@ subtest "_convert_sort_fields() tests" => sub {
     is_deeply(
         \@sort_by,
         [
-            { field => 'local-classification', direction => 'asc' },
+            { field => 'cn-sort', direction => 'asc' },
             { field => 'author',  direction => 'desc' }
         ],
         'sort fields should have been split correctly'
@@ -508,7 +508,7 @@ subtest "_convert_sort_fields() tests" => sub {
     is_deeply(
         \@sort_by,
         [
-            { field => 'local-classification', direction => 'asc' },
+            { field => 'cn-sort', direction => 'asc' },
             { field => 'author',  direction => 'desc' }
         ],
         'sort fields should have been split correctly'
