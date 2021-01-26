@@ -1,0 +1,71 @@
+{
+  "/invoices/{patron_id}": {
+    "post": {
+      "x-mojo-to": "Invoice#add",
+      "operationId": "addInvoice",
+      "tags": ["notices"],
+      "x-koha-authorization": {
+        "permissions": {
+          "messages": "create_message"
+        }
+      },
+      "parameters": [
+        {
+          "name": "patron_id",
+          "in": "path",
+          "type": "number",
+          "description": "Patron's id",
+          "required": true
+        },
+        {
+          "name": "body",
+          "in": "body",
+          "description": "A JSON object containing informations about the new invoice",
+          "required": true,
+          "schema": { "$ref" : "../definitions.json#/invoice" }
+        }
+      ],
+      "consumes": ["application/x-www-form-urlencoded"],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "201": {
+          "description": "Added invoice",
+          "schema": {
+            "type": "object"
+
+          }
+        },
+        "400": {
+          "description": "Missing or wrong parameters",
+          "schema": { "$ref": "../definitions.json#/error" }
+        },
+        "401": {
+          "description": "Authentication required",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "403": {
+          "description": "Access forbidden",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "500": {
+          "description": "Internal error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      }
+    }
+  }
+}

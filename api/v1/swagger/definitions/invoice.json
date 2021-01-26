@@ -1,0 +1,90 @@
+{
+  "type": "object",
+  "properties": {
+    "module": {
+      "description": "",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "letter_code": {
+      "description": "",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "message_transport_type": {
+      "description": "Transport method. Values accepted by default are 'email', 'sms', 'phone' and 'print'",
+      "type": "string"
+    },
+    "branchcode": {
+      "description": "Notice branch",
+      "type": "string"
+    },
+    "repeat_type": {
+      "description": "Repeat type eg. item",
+      "type": "string"
+    },
+    "repeat": {
+      "description": "Repeat items",
+      "type": [
+        "array",
+        "null"
+      ]
+    },
+    "notforloan_status": {
+      "description": "Not for loan status for invoiced items",
+      "type": "string"
+    },
+    "debarment": {
+      "description": "Add debarment for patron",
+      "type": "boolean"
+    },
+    "addreplacementprice": {
+      "description": "Add item's replacement price to accountlines",
+      "type": "boolean"
+    },
+    "addreferencenumber": {
+      "description": "Add reference number to invoice",
+      "type": "boolean"
+    },
+    "increment": {
+      "description": "Add reference number increment",
+      "type": [
+        "number",
+        "string"
+      ]
+    },
+    "lang": {
+      "description": "Patron's language",
+      "type": "string"
+    },
+    "guarantee": {
+      "description": "Patron's guarantee",
+      "type": "number"
+    },
+    "preview": {
+      "description": "Get only preview of notice",
+      "type": "boolean"
+    },
+    "librarygroup": {
+      "description": "Set library group",
+      "type": "string"
+    },
+    "overduefines": {
+      "description": "Set overdue fines to invoice",
+      "type": "boolean"
+    },
+    "invoicefine": {
+      "description": "Set invoice fine",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "module",
+    "letter_code"
+  ]
+}
