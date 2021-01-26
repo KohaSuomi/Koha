@@ -176,6 +176,9 @@
   "/notices/{message_id}/report/labyrintti": {
     "$ref": "paths/notices.json#/~1notices~1{message_id}~1report~1labyrintti"
   },
+  "/invoices/{patron_id}": {
+    "$ref": "paths/invoices.json#/~1invoices~1{patron_id}"
+  },
   "/patrons": {
     "$ref": "paths/patrons.json#/~1patrons"
   },

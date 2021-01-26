@@ -92,6 +92,9 @@
   "notice": {
     "$ref": "definitions/notice.json"
   },
+  "invoice": {
+    "$ref": "definitions/invoice.json"
+  },
   "error": {
     "$ref": "definitions/error.json"
   },

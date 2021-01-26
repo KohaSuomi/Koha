@@ -1,0 +1,51 @@
+{
+  "type": "object",
+  "properties": {
+    "module": {
+      "description": "",
+      "type": ["string", "null"]
+    },
+    "letter_code": {
+      "description": "",
+      "type": ["string", "null"]
+    },
+    "message_transport_type": {
+      "description": "Transport method. Values accepted by default are 'email', 'sms', 'phone' and 'print'",
+      "type": "string"
+    },
+    "branchcode": {
+      "description": "Notice branch",
+      "type": "string"
+    },
+    "repeat_type": {
+      "description": "Repeat type eg. item",
+      "type": "string"
+    },
+    "repeat": {
+      "description": "Repeat items",
+      "type": ["array", "null"]
+    },
+    "notforloan_status": {
+      "description": "Not for loan status for invoiced items",
+      "type": "string"
+    },
+    "debarment": {
+      "description": "Add debarment for patron",
+      "type": "string"
+    },
+    "addreplacementprice": {
+      "description": "Add item's replacement price to accountlines",
+      "type": "string"
+    },
+    "lang": {
+      "description": "Patron's language",
+      "type": "string"
+    },
+    "guarantee": {
+      "description": "Patron's guarantee",
+      "type": "number"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["module", "letter_code"]
+}
