@@ -6,21 +6,44 @@
 [% INCLUDE 'header.inc' %]
 [% INCLUDE 'circ-search.inc' %]
 
+<script>
+    $(document).ready(function(){
+        $("#show_error_logs").click(function(){
+            $("#logs").show();
+            $('#hide_error_logs').show();
+            $('#show_error_logs').hide();
+        });
+        $("#hide_error_logs").click(function(){
+            $("#logs").hide();
+            $('#hide_error_logs').hide();
+            $('#show_error_logs').show();
+        });
+    });
+</script>
+
 <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Home</a> &rsaquo; <a href="/cgi-bin/koha/reports/reports-home.pl">Reports</a> &rsaquo; OKM annual report</div>
 
 [% IF okm_report_errors %]<div id="le_report_errors">[% okm_report_errors %]</div>[% END %]
 [% IF okm_conf_errors %]<div class="dialog alert">[% okm_conf_errors %]</div>[% END %]
 
 [% IF okm_logs %]
-    <div id="logs">
+
+    <div style="margin: 1em;">
+        <h4>Errors when creating OKM statistics</h4>
+
+        <input id="show_error_logs" class="show_button" type="button" value="Show error logs">
+        <input id="hide_error_logs" class="hide_button" type="button" value="Hide error logs" style="display: none;">
+    </div>
+
+    <div id="logs" style="display: none;">
         <ul>
-            <h4>Errors when creating OKM statistics</h4>
             <button id="removeLogEntries">Remove logs</button>
             [% FOREACH entry IN okm_logs %]
                 <li>[% entry.entry %]</li>
             [% END %]
         </ul>
     </div>
+
 [% END %]
 
 <div id="page" style="margin-left: 1em;">
