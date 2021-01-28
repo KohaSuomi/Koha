@@ -59,11 +59,6 @@
         <li><a href="/cgi-bin/koha/reports/borrowers_out.pl">Patrons who haven't checked out</a></li>
         <li><a href="/cgi-bin/koha/reports/catalogue_out.pl">Items with no checkouts</a></li>
     </ul>
-
-    <h2>Vaara-kirjastot</h2>
-	<ul>
-		<li><a href="/cgi-bin/koha/reports/okm_reports.pl">OKM annual report</a></li>
-	</ul>
     
     <h2>Other</h2>
     <ul>
