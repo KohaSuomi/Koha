@@ -1253,7 +1253,7 @@ sub _deserialize {
 
     #Rebuild some cumbersome objects
     if ($VAR1) {
-        my ($startDate, $endDate) = C4::OPLIB::OKM::StandardizeTimeperiodParameter($VAR1->{startDateISO}.' - '.$VAR1->{endDateISO});
+        my ($startDate, $endDate) = C4::OPLIB::OKM::StandardizeTimeperiodParameter($VAR1->{startDateISO}.'-'.$VAR1->{endDateISO});
         $VAR1->{startDate} = $startDate;
         $VAR1->{endDate} = $endDate;
         return $VAR1;
