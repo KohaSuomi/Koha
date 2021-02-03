@@ -2,10 +2,6 @@
 if (typeof Borrowers == "undefined") {
     this.Borrowers = {}; //Set the global package
 }
-var log = log;
-if (!log) {
-    log = log4javascript.getDefaultLogger();
-}
 
 /**
  * Performs a search against the Koha API looking for Borrowers with the given
@@ -25,10 +21,10 @@ if (!log) {
  */
 Borrowers.getBorrowers = function (params, callback) {
     //Expose arguments for closures.
-    params = (params ? params : {});
-    callback = (callback ? callback : null);
+    params = params ? params : {};
+    callback = callback ? callback : null;
     if (!params.borrowernumber && !params.cardnumber) {
-        log.error("Borrowers.getBorrowers():> No borrowernumber or cardnumber!");
+        alert("Borrowers.getBorrowers():> No borrowernumber or cardnumber!");
         return;
     }
 
@@ -41,29 +37,34 @@ Borrowers.getBorrowers = function (params, callback) {
         request.cardnumber = params.cardnumber;
     }
 
-    $.ajax("/api/v1/patrons",
-        { "method": "GET",
-          "accepts": "application/json",
-//          "contentType": "application/json; charset=utf8",
-//          "processData": false,
-          "data": request,
-          "success": function (jqXHR, textStatus, errorThrown) {
+    $.ajax("/api/v1/patrons", {
+        method: "GET",
+        accepts: "application/json",
+        //          "contentType": "application/json; charset=utf8",
+        //          "processData": false,
+        data: request,
+        success: function (jqXHR, textStatus, errorThrown) {
             if (callback) {
                 callback(jqXHR, textStatus, errorThrown);
+            } else {
+                alert(
+                    "Borrowers.getBorrowers():> Succesfully received Borrowers but don't know what to do with them?"
+                );
             }
-            else {
-                log.warning("Borrowers.getBorrowers():> Succesfully received Borrowers but don't know what to do with them?");
-            }
-          },
-          "error": function (jqXHR, textStatus, errorThrown) {
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
             if (callback) {
                 callback(jqXHR, textStatus, errorThrown);
-            }
-            else {
+            } else {
                 var responseObject = JSON.parse(jqXHR.responseText);
-                log.warning("Borrowers.getBorrowers():> Failed receiving Borrowers with error '"+textStatus+" "+(responseObject ? responseObject.error : errorThrown)+"'but don't know what to do?");
+                alert(
+                    "Borrowers.getBorrowers():> Failed receiving Borrowers with error '" +
+                        textStatus +
+                        " " +
+                        (responseObject ? responseObject.error : errorThrown) +
+                        "'but don't know what to do?"
+                );
             }
-          },
-        }
-    );
-}
+        },
+    });
+};
