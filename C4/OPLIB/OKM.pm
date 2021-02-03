@@ -1368,7 +1368,7 @@ sub _validateConfigurationAndPreconditions {
         my $mapping = $self->getItypeToOKMCategory($it);
         unless ($mapping) { #Is itemtype mapped?
             my @cc = caller(0);
-            Koha::Exception::BadSystemPreference->throw(error => $cc[3]."():> System preference 'OKM' has an unmapped itemtype '".$itype->{itemtype}."'. Put it under 'itemTypeToStatisticalCategory'.");
+            Koha::Exception::BadSystemPreference->throw(error => $cc[3]."():> System preference 'OKM' has an unmapped itemtype '".$itype->itemtype."'. Put it under 'itemTypeToStatisticalCategory'.");
         }
         else {
             delete $mappedItypes{$it};
