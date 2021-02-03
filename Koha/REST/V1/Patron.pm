@@ -430,8 +430,6 @@ sub getalldata {
             return $c->render(status  => 404,
                               openapi => {error => "Data not found"});
         }
-        # KD-4345 We will not return password hash via REST.
-        undef $retval->{personal}{password};
         return $c->render( status => 200, openapi => $retval);
     } catch {
         return $c->render(status  => 500,
