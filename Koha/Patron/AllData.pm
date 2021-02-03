@@ -60,6 +60,7 @@ sub getall {
     my $error;
     try {
         $jsonObject->{personal} = Koha::Patrons->find($borrowernumber)->unblessed;
+        undef $jsonObject->{personal}{password};
         $jsonObject->{checkouts} = Koha::Checkouts->search({borrowernumber => $borrowernumber})->unblessed;
         $jsonObject->{oldcheckouts} = Koha::Old::Checkouts->search({borrowernumber => $borrowernumber})->unblessed;
         $jsonObject->{holds} = Koha::Holds->search({borrowernumber => $borrowernumber})->unblessed;
@@ -93,6 +94,7 @@ sub getpersonal {
 
     try {
         $jsonObject->{personal} = Koha::Patrons->find($borrowernumber)->unblessed;
+        undef $jsonObject->{personal}{password};
     } catch {
         $error = $_->error;
     };
