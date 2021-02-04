@@ -847,7 +847,10 @@ sub createLibraryGroupsFromIndividualBranches {
     my @iBranchcodes;
 
     if ($individualBranches eq '_A') {
-        @iBranchcodes = keys %{C4::Branch::GetBranches()};
+        my @branchcodes = Koha::Libraries->search();
+        foreach my $branchcode (@branchcodes){
+            push @iBranchcodes, $branchcode->branchcode;
+        }
     }
     else {
         @iBranchcodes = split(',',$individualBranches);
@@ -995,7 +998,7 @@ sub getOKMBranchCategories {
 
     foreach my $library_category (@library_categories){
         my $code = $library_category->categorycode;
-        if ( $code =~ /^\w\w\w_OKM$/) { #Catch branchcategories which are OKM statistical groups.
+        if ( $code =~ /^\w\w\w_OKM$/ || $code =~ /^\w\w_OKM$/ ) { #Catch branchcategories which are OKM statistical groups.
             #HASHify the categorycodes for easy access
             $libraryGroups->{$code} = $library_category;
         }       
