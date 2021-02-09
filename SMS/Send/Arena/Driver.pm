@@ -75,6 +75,18 @@ sub new {
         return $self;
 }
 
+# get config value for smsProviders->arena, first trying smsProviders->arena->FULL_BRANCH->foo,
+# then smsProviders->arena->FIRST_3_LETTERS_OF_BRANCH->foo, and finally
+# smsProviers->arena->foo
+sub _get_arena_config {
+    my ($branch, $cnf) = @_;
+    my $br3 = substr($branch, 0, 3);
+
+    my $value = C4::Context->config('smsProviders')->{'arena'}->{$branch}->{$cnf} || C4::Context->config('smsProviders')->{'arena'}->{$br3}->{$cnf} || C4::Context->config('smsProviders')->{'arena'}->{$cnf};
+
+    return $value;
+}
+
 sub send_sms {
     my $self    = shift;
     my $params = {@_};
@@ -85,9 +97,8 @@ sub send_sms {
     my $branches=$dbh->prepare("SELECT branchcode FROM branches WHERE branchemail = ?;");
     $branches->execute($self->{_from});
     my $branch = $branches->fetchrow;
-    my $branchcode = substr($branch, 0, 3);
 
-    my $clientid = C4::Context->config('smsProviders')->{'arena'}->{$branchcode}->{'clientid'};
+    my $clientid = _get_arena_config($branch, 'clientid');
 
     if (! defined $message ) {
         warn "->send_sms(text) must be defined!";
@@ -107,7 +118,7 @@ sub send_sms {
     $recipientNumber =~ s/'//g;
     $message =~ s/(")|(\$\()|(`)/\\"/g; #Sanitate " so it won't break the system( iconv'ed curl command )
 
-    my $base_url = "https://e1.steam.fi/input/smsout/utf8";
+    my $base_url = _get_arena_config($branch, 'sendUrl') || 'https://api.arena.fi/input/smsout/v1/e1/';
     my $parameters = {
         'l'         => $self->{_login},
         'p'         => $self->{_password},
@@ -121,7 +132,7 @@ sub send_sms {
     #  -> else maxlenght = 160 chars (140 bytes, GSM 03.38)
     my $gsm0388 = decode("gsm0338",encode("gsm0338", $message));
 
-    if ($message ne $gsm0388 and C4::Context->config('smsProviders')->{'arena'}->{'Unicode'} eq "yes"){
+    if ($message ne $gsm0388 and _get_arena_config($branch, 'Unicode') eq "yes"){
         $parameters->{'unicode'} = 'yes';
         my $notice = Koha::Notice::Messages->find($params->{_message_id});
         $notice->set({ metadata   => 'UTF-16' })->store if defined $notice;
@@ -129,9 +140,10 @@ sub send_sms {
         #$parameters->{'unicode'} = 'no';
     }
 
-    my $report_url = C4::Context->config('smsProviders')->{'arena'}->{'reportUrl'};
+    my $report_url = _get_arena_config($branch, 'reportUrl');
     if ($report_url) {
         my $msg_id = $params->{_message_id};
+        $parameters->{'dlrurl'} = $report_url;
         $report_url =~ s/\{message_id\}|\{messagenumber\}/$msg_id/g;
         $parameters->{'report'} = $report_url;
     }
