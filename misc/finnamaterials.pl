@@ -15,6 +15,7 @@ my $help = 0;
 my $verbose = 0;
 my $confirm = 0;
 my $field = '942c';
+my $lang = 'fi-FI';
 my $sqlquery = 'select biblionumber, metadata from biblio_metadata order by biblionumber asc';
 
 
@@ -24,6 +25,7 @@ GetOptions(
     'v|verbose' => \$verbose,
     'confirm' => \$confirm,
     'help|h|?' => \$help,
+    'lang=s' => \$lang,
     ) or die("Param Error"); 
 
 if ($help) {
@@ -35,6 +37,7 @@ if ($help) {
     --verbose
     --confirm
     --help
+    --lang='$lang'
   
     Without confirm, runs in a dry-run mode.
 HELPPI
@@ -70,7 +73,7 @@ while (my $ref = $sth->fetchrow_hashref()) {
 	eval {
 	    $record = MARC::Record->new_from_xml($ref->{'metadata'});
 	};
-	my $finnamaterial = getFinnaMaterialType($record);
+	my $finnamaterial = getFinnaMaterialType($record, $lang);
 
 	my @flds = $record->field($realfield);
 

@@ -14,8 +14,72 @@ BEGIN {
     );
 }
 
+my %FinnaMaterialLang = (
+
+    'Article' => { 'fi-FI' =>'ARTIKKELI' },
+    'Atlas' => { 'fi-FI' =>'ATLAS' },
+    'BluRay' => { 'fi-FI' =>'BLURAY' },
+    'BookSection' => { 'fi-FI' =>'KIRJANOSA' },
+    'Book' => { 'fi-FI' =>'KIRJA' },
+    'Braille' => { 'fi-FI' =>'BRAILLE' },
+    'CDROM' => { 'fi-FI' =>'CDROM' },
+    'CD' => { 'fi-FI' =>'CD' },
+    'ChipCartridge' => { 'fi-FI' =>'PIIRIKO' },
+    'Drawing' => { 'fi-FI' =>'PIIRROS' },
+    'DVD' => { 'fi-FI' =>'DVD' },
+    'eBook' => { 'fi-FI' =>'EKIRJA' },
+    'Electronic' => { 'fi-FI' =>'ELEKTRO' },
+    'Journal' => { 'fi-FI' =>'ALEHTI' },
+    'Kit' => { 'fi-FI' =>'MONIVIES' },
+    'Manuscript' => { 'fi-FI' =>'KASIKIRJ' },
+    'Map' => { 'fi-FI' =>'KARTTA' },
+    'Microfilm' => { 'fi-FI' =>'MIKROF' },
+    'MusicalScore' => { 'fi-FI' =>'NUOTTI' },
+    'MusicRecording' => { 'fi-FI' =>'MUSATAL' },
+    'Newspaper' => { 'fi-FI' =>'SLEHTI' },
+    'NonmusicalCassette' => { 'fi-FI' =>'PUHEKAS' },
+    'NonmusicalCD' => { 'fi-FI' =>'PUHECD' },
+    'NonmusicalDisc' => { 'fi-FI' =>'PUHELEVY' },
+    'NonmusicalRecording' => { 'fi-FI' =>'PUHETAL' },
+    'OnlineVideo' => { 'fi-FI' =>'EVIDEO' },
+    'Painting' => { 'fi-FI' =>'MAALAUS' },
+    'Photo' => { 'fi-FI' =>'VALOKUVA' },
+    'PhysicalObject' => { 'fi-FI' =>'ESINE' },
+    'Print' => { 'fi-FI' =>'PAINOKUVA' },
+    'Serial' => { 'fi-FI' =>'KAUSIJULK' },
+    'Slide' => { 'fi-FI' =>'DIA' },
+    'SoundCassette' => { 'fi-FI' =>'AANIKAS' },
+    'SoundDisc' => { 'fi-FI' =>'AANILEVY' },
+    'SoundRecording' => { 'fi-FI' =>'AANITAL' },
+    'TechnicalDrawing' => { 'fi-FI' =>'TYOPIIR' },
+    'VideoCassette' => { 'fi-FI' =>'VIDEOKAS' },
+    'VideoDisc' => { 'fi-FI' =>'VIDEOLEVY' },
+    'Video' => { 'fi-FI' =>'VIDEO' },
+    'ConsoleGame' => { 'fi-FI' =>'KONSOLIPE' },
+    'TapeCartridge' => { 'fi-FI' =>'NAUHAKAS' },
+    'DiscCartridge' => { 'fi-FI' =>'OPTINEN' },
+    'TapeCasette' => { 'fi-FI' =>'DATKAS' },
+    'TapeReel' => { 'fi-FI' =>'MAGNEETTI' },
+    'FloppyDisc' => { 'fi-FI' =>'LEVYKE' },
+    'Filmstrip' => { 'fi-FI' =>'RAINA' },
+    'Transparency' => { 'fi-FI' =>'KALVO' },
+    'Collage' => { 'fi-FI' =>'KOLLAASI' },
+    'Photonegative' => { 'fi-FI' =>'NEGATIIVI' },
+    'Flashcard' => { 'fi-FI' =>'KORTTI' },
+    'Chart' => { 'fi-FI' =>'KAAVIO' },
+    'MotionPicture' => { 'fi-FI' =>'ELOKUVA' },
+    'SensorImage' => { 'fi-FI' =>'KAUKOKART' },
+    'VideoCartridge' => { 'fi-FI' =>'SILMUKKA' },
+    'VideoReel' => { 'fi-FI' =>'VIDEOKELA' },
+    'Collection' => { 'fi-FI' =>'KOKOELMA' },
+    'SubUnit' => { 'fi-FI' =>'OSAKOHDE' },
+    'ContinuouslyUpdatedRecource' => { 'fi-FI' =>'JATKUVA' },
+    'Other' => { 'fi-FI' =>'MUU' }
+
+    );
+
 # Conversion of getFormat() in https://github.com/NatLibFi/RecordManager/blob/dev/src/RecordManager/Finna/Record/Marc.php
-sub getFinnaMaterialType {
+sub getFinnaMaterialType_core {
     my ($record) = @_;
 
     my $leader = $record->leader();
@@ -129,5 +193,14 @@ sub getFinnaMaterialType {
     return 'ContinuouslyUpdatedResource' if ($bibliographicLevel eq 'I');
     return 'Other';
 };
+
+sub getFinnaMaterialType {
+    my ($record, $lang) = @_;
+
+    $lang = 'en' if (!defined($lang));
+    my $fmt = getFinnaMaterialType_core($record);
+    return $FinnaMaterialLang{$fmt}{$lang} if (defined($FinnaMaterialLang{$fmt}) && defined($FinnaMaterialLang{$fmt}{$lang}));
+    return $fmt;
+}
 
 1;
