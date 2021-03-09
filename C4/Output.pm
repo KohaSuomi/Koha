@@ -241,6 +241,14 @@ caching whatsoever.
 
 =cut
 
+##############################################################
+sub output_ajax {
+    my ($data) = @_;
+    
+    print $data;
+}
+
+#############################################################
 sub output_with_http_headers {
     my ( $query, $cookie, $data, $content_type, $status, $extra_options ) = @_;
     $status ||= '200 OK';
