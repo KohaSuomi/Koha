@@ -31,6 +31,15 @@ use Mojo::UserAgent;
 use Mojo::JSON qw(decode_json encode_json);
 use Koha::DateUtils qw( dt_from_string );
 use MARC::Record;
+use Fcntl qw( :DEFAULT :flock :seek );
+
+
+my $logdir = C4::Context->config('logdir');
+
+my $pidfile = "$logdir/broadcastbiblios.pid";
+
+my $pid_handle = check_pidfile();
+
 
 my $help = 0;
 my $dt = strftime "%Y-%m-%d %H:%M:%S", ( localtime(time - 5*60) );
@@ -115,12 +124,19 @@ my $params = {
     page => 1
 };
 
-
 my $pageCount = 1;
 my $ua = Mojo::UserAgent->new;
 my $apikey = Digest::SHA::hmac_sha256_hex($config->{apiKey});
 my $headers = {"Authorization" => $apikey};
-my $endpoint;  
+my $last_itemnumber;
+if ($all && $active) {
+    my $tx = $ua->get($config->{activeEndpoint}.'/lastrecord' => $headers => form => {interface => $interface});
+    my $response = decode_json($tx->res->body);
+    unless ($biblionumber) {
+        $biblionumber = $response->{target_id};
+    }
+}
+my $endpoint;
 if ($staged) {
     $endpoint = $config->{exportEndpoint};
     my @biblios = import_records();
@@ -255,4 +271,25 @@ sub endpointParams {
         return {marcxml => $biblio->{metadata}, source_id => $biblio->{biblionumber}, updated => $biblio->{timestamp}};
     }
 
+}
+
+if ( close $pid_handle ) {
+    unlink $pidfile;
+    exit 0;
+} else {
+    warn "Error on pidfile close\n";
+    exit 1;
+}
+
+sub check_pidfile {
+
+    # sysopen my $fh, $pidfile, O_EXCL | O_RDWR or log_exit "$0 already running"
+    sysopen my $fh, $pidfile, O_RDWR | O_CREAT;
+    flock $fh => LOCK_EX;
+
+    sysseek $fh, 0, SEEK_SET;
+    truncate $fh, 0;
+    print $fh "$$\n";
+
+    return $fh;
 }
