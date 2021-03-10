@@ -233,6 +233,7 @@
                                     </thead>
                                     <tbody>
                                         [% FOREACH ISSUE IN ISSUES %]
+                                            [% IF ( ISSUE.issuedate == todaydate ) %]
                                             <tr>
                                                 <td>[% ISSUE.issuedate %]</td>
                                                 <td>
@@ -284,6 +285,7 @@
                                                     </td>
                                                 [% END %]
                                             </tr>
+                                            [% END %]
                                         [% END # / FOREACH ISSUE %]
                                     </tbody>
                                 </table>
