@@ -50,6 +50,7 @@ use Koha::Patron::Images;
 use Koha::Patron::Messages;
 use Koha::Token;
 use Koha::Calendar;
+use Koha::DateUtils;
 
 
 my $query = new CGI;
@@ -357,6 +358,8 @@ if ($borrower->{cardnumber}) {
     my $borrowername = sprintf "%s %s", ($borrower->{firstname} || ''), ($borrower->{surname} || '');
     my @issues;
     my ($issueslist) = GetPendingIssues( $borrower->{'borrowernumber'} );
+    my $issues_count = 0;
+    my $dt = output_pref({ dt => dt_from_string, dateformat => 'iso', dateonly => 1 });
     foreach my $it (@$issueslist) {
         my ($can_be_renewed, $renew_error) = CanBookBeRenewed(
             $borrower->{borrowernumber},
@@ -365,19 +368,24 @@ if ($borrower->{cardnumber}) {
         $it->{can_be_renewed} = $can_be_renewed;
         $it->{renew_error} = $renew_error;
         $it->{date_due}  = $it->{date_due_sql};
+        $it->{issuedate} = output_pref({ dt => $it->{issuedate}, dateformat => 'iso', dateonly => 1 });
+        if ($it->{issuedate} eq  $dt) {
+            $issues_count++;
+        }
         push @issues, $it;
     }
-
+    
     $template->param(
         validuser => 1,
         borrowername => $borrowername,
-        issues_count => scalar(@issues),
+        issues_count => $issues_count,
         ISSUES => \@issues,
         patronid => $patronid,
         patronlogin => $patronlogin,
         patronpw => $patronpw,
         noitemlinks => 1 ,
         borrowernumber => $borrower->{'borrowernumber'},
+        todaydate => $dt,
     );
 
     my $patron_messages = Koha::Patron::Messages->search(
