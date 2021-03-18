@@ -501,6 +501,16 @@ __PAZPAR2_TOGGLE_XML_POST__
         </branchcode>
         <sourceName></sourceName> <!-- Displays as sender name in phones. Maxlength 11 chars -->
     </sonera>
+    <dna>
+        <!-- Login details for DNA Viestit service -->
+        <user></user>
+        <passwd></passwd>
+        <baseUrl></baseUrl>
+        <!-- Send messages with separated billing. Three options to define, first smsProviders->dna->FULL_BRANCH->foo, then smsProviders->dna->FIRST_3_LETTERS_OF_BRANCH->foo, and finally smsProviers->dna->foo-->
+        <branchcode>
+            <appId></appId>
+        </branchcode>
+    </dna>
  </smsProviders>
 </config>
 </yazgfs>
