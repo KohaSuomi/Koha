@@ -209,6 +209,7 @@ is_plack_running()
     local instancename=$1
 
     if start-stop-daemon --pidfile "/var/run/koha/${instancename}/plack.pid" \
+            --user=$DAEMON_USER \
             --status ; then
         return 0
     else
