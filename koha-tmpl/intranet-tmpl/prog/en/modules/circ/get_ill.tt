@@ -1,0 +1,35 @@
+[% USE Koha %]
+[% SET KOHA_VERSION = Koha.Preference('Version') %]
+
+[% IF ( ill_checkout_count ) %]
+    <div id="illcheckouts">
+   <br> <b>Interlibrary loans</b> 
+       <table id="ill-table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Author</th>
+                    <th scope="col">Number</th>
+                    <th scope="col">Order date</th>
+                    <th scope="col">Arrival date</th>
+                    <th scope="col">Due date</th>
+                    <th scope="col">Pick up place</th>
+                    <th scope="col">Library</th>
+                    
+                </tr>
+            </thead>
+            [% FOREACH ill_loan IN ILLCHECKOUTS %]
+              <tr>
+                <td>[% ill_loan.Julkaisu %]</td>
+                <td>[% ill_loan.Tekija %]</td>
+                <td>[% ill_loan.Tilausnumero %]</td>
+                <td>[% ill_loan.Tilauspvm %]</td>
+                <td>[% ill_loan.Saapunut %]</td>
+                <td>[% ill_loan.Erapvm %]</td>
+                <td>[% ill_loan.Noutopaikka %]</td>
+                <td>[% ill_loan.Alkupera %]</td>
+              </tr>
+            [% END %]
+        </table>
+    </div>
+[% END %]
