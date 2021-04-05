@@ -156,6 +156,8 @@ $(document).ready(function() {
         minDate: 1, // require that hold suspended until date is after today
     });
 
+    $('#ill_ajax').load('/cgi-bin/koha/circ/get_ill.pl?bnumber=[% borrowernumber %]');
+
     //1457 Alt-P will print slip on checkout
     function printKeyCode(e) {
         var keycode;
@@ -977,10 +979,11 @@ No patron matched <span class="ex">[% message | html %]</span>
             <a href="#article-requests" id="article-requests-tab"> [% patron.article_requests_current.count %] Article requests</a>
         </li>
     [% END %]
-
+<!--
     [% IF ( ill_checkout_count ) %]
         <li><a href="#illcheckouts" >[% ill_checkout_count %] ILL </a></li>
     [% END %]
+-->
     <li><a id="debarments-tab-link" href="#reldebarments">[% debarments.count %] Restrictions</a></li>
 
     [% SET enrollments = patron.get_club_enrollments(1) %]
@@ -1028,7 +1031,7 @@ No patron matched <span class="ex">[% message | html %]</span>
     </div>
 [% END %]
 
-
+<!--
 [% IF ( ill_checkout_count ) %]
     <div id="illcheckouts">
        <table id="ill-table">
@@ -1052,7 +1055,7 @@ No patron matched <span class="ex">[% message | html %]</span>
         </table>
     </div>
 [% END %]
-
+-->
 
 [% INCLUDE borrower_debarments.inc %]
 
@@ -1119,6 +1122,14 @@ No patron matched <span class="ex">[% message | html %]</span>
     <div class="dialog message">This patron does not exist. <a href="/cgi-bin/koha/members/members-home.pl">Find another patron?</a></div>
 [% END %] <!-- borrowernumber and borrower-->
 </div></div>
+
+<!-- ILL -->
+<div class="yui-g">
+<div id = "ill_ajax">
+
+</div>
+</div>
+
 [% END %]
 [% IF Koha.Preference('CircSidebar') %]
 [% UNLESS ( borrowers ) %]

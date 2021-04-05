@@ -55,7 +55,6 @@ use Koha::Patron::Images;
 use Koha::SearchEngine;
 use Koha::SearchEngine::Search;
 use Koha::Patron::Modifications;
-use REST::Client;
 use JSON;
 use Date::Calc qw(
   Today
@@ -70,8 +69,6 @@ use Try::Tiny;
 #
 my $error;
 my $query = new CGI;
-my $ill_checkouts_ref;
-my $ill_checkout_count;
 my $override_high_holds     = $query->param('override_high_holds');
 my $override_high_holds_tmp = $query->param('override_high_holds_tmp');
 my $sessionID = $query->cookie("CGISESSID") ;
@@ -601,33 +598,6 @@ my $relatives_issues_count =
   Koha::Database->new()->schema()->resultset('Issue')
   ->count( { borrowernumber => \@relatives } );
 
-if ( $borrowernumber ) {
-     $borrower = GetMember( borrowernumber => $borrowernumber );
-     $cardnumber = $borrower->{cardnumber};     
-    try {
-        # get ill_checkouts from webkake 
-        my $restclient = REST::Client->new();
-        my $consortium = C4::Context->config("webkakecon");
-        
-        if($consortium) {
-            my $resturl = "https://webkake.kirjastot.fi/wrest/rest/wrest/ill_loans?mhknum=".$cardnumber."&mulfinna=".$consortium;
-            $restclient->GET($resturl);
-            my $json_string = $restclient->responseContent();
-            my @ill_checkouts = @{decode_json($json_string)};
-            $ill_checkout_count = scalar @ill_checkouts;
-            $ill_checkouts_ref = \@ill_checkouts;
-        }
-    }
-    catch {
-        $error = $_;
-    };
-    
-    if($error) {
-        $ill_checkout_count = undef;
-    }
-
-}
-
 my $av = Koha::AuthorisedValues->search({ category => 'ROADTYPE', authorised_value => $borrower->{streettype} });
 my $roadtype = $av->count ? $av->next->lib : '';
 
@@ -674,8 +644,6 @@ $template->param(
     RoutingSerials => C4::Context->preference('RoutingSerials'),
     relatives_issues_count => $relatives_issues_count,
     relatives_borrowernumbers => \@relatives,
-    ill_checkout_count => $ill_checkout_count,
-    ILLCHECKOUTS => $ill_checkouts_ref,
 );
 
 my $patron_image = Koha::Patron::Images->find($borrower->{borrowernumber});
