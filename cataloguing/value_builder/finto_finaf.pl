@@ -212,9 +212,12 @@ my $launcher = sub {
 		output_with_http_headers $input, $cookie, to_json($authresults, { utf8 => 1 }), 'json';
 	} else {
 		if ($localname) {
-			my $base_url = "https://sru.api.melinda.kansalliskirjasto.fi/aut-names?operation=searchRetrieve&version=2.0&maximumRecords=1&query=rec.id=".$localname;
+			my $config = C4::Context->config("finto")->{"finaf"};
+			my $base_url = $config->{"base_url"}."?operation=searchRetrieve&version=2.0&maximumRecords=1&query=rec.id=".$localname;
 			my $ua = Mojo::UserAgent->new;
-			##$ua->proxy->https('socks://127.0.0.1:1338'); ### FOR TESTING
+			if ($config->{"proxy_url"}) {
+				$ua->proxy->https($config->{"proxy_url"});
+			}
 			my $tx = $ua->build_tx(GET => $base_url);
 			$tx = $ua->start($tx);
 			$error = $tx->error if $tx->error;
@@ -226,18 +229,18 @@ my $launcher = sub {
 					$authrecord .= $records[0]->toString();
 					$record = MARC::Record::new_from_xml($authrecord, 'UTF-8');
 					my $authresult = searchauthority($record);
-					if ($record->field($tag)) {
-						foreach my $subfield( $record->field($tag)->subfields ) {
+					my ($authtypecode, $newtag) = authtypecodehelper($tag);
+					if ($record->field($newtag)) {
+						foreach my $subfield( $record->field($newtag)->subfields ) {
 							my $subfieldcode  = shift @$subfield;
 							my $subfieldvalue = shift @$subfield;
 							push @{$subfields}, {code => $subfieldcode, value => $subfieldvalue};
 						}
-						my $authtypecode = authtypecodehelper($tag);
-						$ind1 = $record->field($tag)->indicator("1");
-						$ind2 = $record->field($tag)->indicator("2");
+						$ind1 = $record->field($newtag)->indicator("1");
+						$ind2 = $record->field($newtag)->indicator("2");
 						$authid= AddAuthority($record, $authresult, $authtypecode);
 					} else {
-						$error->{message} = Encode::decode('UTF-8',"$tag-kenttä ei ole valitussa auktoriteetissa");
+						$error->{message} = Encode::decode('UTF-8',"$newtag-kenttää ei löydy valitusta auktoriteetista");
 					}
 				}
 			}
@@ -257,16 +260,21 @@ my $launcher = sub {
 sub authtypecodehelper {
 	my ( $tag ) = @_;
 	my $authtypecode;
+	my $newtag = $tag;
 	if ($tag eq "100" || $tag eq "600" || $tag eq "696" || $tag eq "700" || $tag eq "796" || $tag eq "800" || $tag eq "896") {
 		$authtypecode = 'PERSO_NAME';
+		$newtag = '100';
 	}
 	if ($tag eq "110" || $tag eq "610" || $tag eq "697" || $tag eq "710" || $tag eq "797" || $tag eq "810" || $tag eq "897") {
 		$authtypecode = 'CORPO_NAME';
+		$newtag = '110';
 	}
 	if ($tag eq "111" || $tag eq "611" || $tag eq "698" || $tag eq "711" || $tag eq "798" || $tag eq "811" || $tag eq "898") {
 		$authtypecode = 'MEETI_NAME';
+		$newtag = '111';
 	}
-	return $authtypecode;
+
+	return ($authtypecode, $newtag);
 };
 
 sub searchauthority {

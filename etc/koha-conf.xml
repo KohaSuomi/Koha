@@ -502,5 +502,11 @@ __PAZPAR2_TOGGLE_XML_POST__
         <sourceName></sourceName> <!-- Displays as sender name in phones. Maxlength 11 chars -->
     </sonera>
  </smsProviders>
+ <finto>
+  <finaf>
+    <base_url></base_url> <!-- Base url for Asteri SRU -->
+    <proxy_url></proxy_url> <!-- Can be used for testing -->
+  </finaf>
+ </finto>
 </config>
 </yazgfs>
