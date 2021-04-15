@@ -56,6 +56,7 @@ my $stage_type;
 my $target_field;
 my $target_subfield = "";
 my $field_check;
+my $lastrecord = 0;
 
 GetOptions(
     'h|help'                     => \$help,
@@ -72,25 +73,27 @@ GetOptions(
     'f|field:s'                  => \$target_field,
     'subfield:s'                 => \$target_subfield,
     'check:s'                    => \$field_check,
+    'lastrecord'                 => \$lastrecord,
 
 );
 
 my $usage = <<USAGE;
     Broadcast biblios to REST endpoint
 
-    -h, --help              This message
-    -v, --verbose           Verbose
-    -c, --chunks            Process biblios in chunks, default is 200
-    -a, --active            Send active biblios
-    --all                   Send all biblios, default sends biblios from today
-    -b, --biblionumber      Start sending from defined biblionumber
-    -l, --limit             Limiting the results of biblios
+    -h, --help              This message.
+    -v, --verbose           Verbose.
+    -c, --chunks            Process biblios in chunks, default is 200.
+    -a, --active            Send active biblios.
+    --all                   Send all biblios, default sends biblios from today.
+    -b, --biblionumber      Start sending from defined biblionumber.
+    -l, --limit             Limiting the results of biblios.
     -i, --interface         Interface name: with active add your system interface and with staged add remote.
-    -s, --staged            Export staged records to interface
+    -s, --staged            Export staged records to interface.
     --batchdate             Import batch date, used with 'staged' parameter. Default is today.
     -t, --type              Stage type, used with 'staged' parameter. Add or update, default is add.
     -f, --field             Find target id from marcxml, used with 'staged' parameter and update type.
-    --check                 Check that field contains some spesific identifier
+    --check                 Check that field contains some spesific identifier.
+    --lastrecord            Automatically check which is lastly activated record.
 
 USAGE
 
@@ -129,7 +132,7 @@ my $ua = Mojo::UserAgent->new;
 my $apikey = Digest::SHA::hmac_sha256_hex($config->{apiKey});
 my $headers = {"Authorization" => $apikey};
 my $last_itemnumber;
-if ($all && $active) {
+if ($lastrecord && $all && $active) {
     my $tx = $ua->get($config->{activeEndpoint}.'/lastrecord' => $headers => form => {interface => $interface});
     my $response = decode_json($tx->res->body);
     unless ($biblionumber) {
