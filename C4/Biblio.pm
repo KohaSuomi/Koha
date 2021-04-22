@@ -110,6 +110,7 @@ BEGIN {
       &CountItemsIssued
       &CountBiblioInOrders
       &GetSubscriptionsId
+      &getHostRecord
     );
 
     # To modify something
@@ -4507,42 +4508,46 @@ sub RemoveAllNsb {
 
     C4::Biblio::getHostRecord($r);
 
-NOTE! THIS subroutine is not used anywhere. If you use this, remove this label.
-If this gives you any bs during git rebase, just drop this subroutine.
-
-@RETURNS MARC::Record, the host record of the given component part record, or any record which might have a host record.
-                       or undef
+@RETURNS MARC::Record, the host record of the given component part record, or any record which might have a host record or undef
 
 =cut
 
 sub getHostRecord {
     my ($r) = @_;
 
-    my ($cn, $cni);
-    eval {
-        $cn = $r->field('001')->data();
-        $cni = $r->field('003')->data();
-    };
-    if ($@) {
-        die "getHostRecord():> Record '".$r->subfield('999','c')."' doesn't have controlfields 001 or/and 003. Those fields are mandatory.";
-    }
+    my $cn = $r->subfield('773', 'w');
+    my $cni = $r->field('003')->data();
 
-    require C4::Search; #For some reason importing this to C4::Biblio's namespace makes other modules unable to import these functions into their namespace.
-    my ($error, $recordXMLs, $resultSetSize) = C4::Search::SimpleSearch("Control-number='$cn' and cni='$cni'");
+    return undef unless $cn && $cni;
+
+    my $query = "Control-number,ext:\"$cn\" AND cni,ext:\"$cni\"";
+    require Koha::SearchEngine::QueryBuilder;
+    require Koha::SearchEngine::Search;
+    require Koha::Exception::Search;
+
+    my $builder  = Koha::SearchEngine::QueryBuilder->new({index => $Koha::SearchEngine::BIBLIOS_INDEX});
+    my $searcher = Koha::SearchEngine::Search->new({index => $Koha::SearchEngine::BIBLIOS_INDEX});
+    my @operands = $query;
+    my @sortBy = 'id_asc';
+    my (undef, $builtQuery, $simpleQuery) = $builder->build_query_compat(undef, \@operands, undef, undef, \@sortBy);
+    my $results;
+    my $error;
+    my $resultSetSize = 0;
+    my @servers = 'biblioserver';
+
+    ($error, $results) = $searcher->search_compat($builtQuery, $simpleQuery, \@sortBy, \@servers, 1000, 0, undef, undef, undef, 'ccl');
     if ($error) {
-        require Koha::Exception::Search;
-        Koha::Exception::Search->throw(error => "C4::Biblio::getHostRecord():> Searching (\"Control-number='$cn' and cni='$cni'\"):> Returned an error:\n$error");
+        Koha::Exception::Search->throw(error => "C4::Biblio::getHostRecord():> Searching ($query):> Returned an error:\n$error");
     }
 
     my $marcflavour = C4::Context->preference('marcflavour');
+    $resultSetSize = $results->{biblioserver}->{hits};
 
     if ($resultSetSize == 1) {
-        my $marcrecord = MARC::Record->new_from_xml( $recordXMLs->[0], 'UTF-8', $marcflavour );
-        my $record = TransformMarcToKoha($marcrecord);
-        return $record;
+        return @{$results->{biblioserver}->{RECORDS}}[0];
     }
     elsif ($resultSetSize > 1) {
-        Koha::Exception::Search->throw(error => "C4::Biblio::getHostRecord():> Searching (\"Control-number='$cn' and cni='$cni'\"):> Returned more than one record?");
+        Koha::Exception::Search->throw(error => "C4::Biblio::getHostRecord():> Searching ($query):> Returned more than one record?");
     }
     return undef;
 }

@@ -19,7 +19,7 @@ use Modern::Perl;
 
 use Mojo::Base 'Mojolicious::Controller';
 
-use C4::Biblio qw( GetBiblioData AddBiblio ModBiblio DelBiblio BiblioAutoLink GetFrameworkCode GetMarcBiblio );
+use C4::Biblio qw( GetBiblioData AddBiblio ModBiblio DelBiblio BiblioAutoLink GetFrameworkCode GetMarcBiblio getHostRecord );
 use C4::Matcher;
 use C4::Items qw ( AddItemBatchFromMarc );
 use Koha::Biblios;
@@ -186,6 +186,11 @@ sub add {
     } else {
         if (C4::Context->preference("BiblioAddsAuthorities")){
             BiblioAutoLink($record, '');
+        }
+        my $hostrecord = C4::Biblio::getHostRecord($record);
+        if ($hostrecord) {
+            my $field = MARC::Field->new('942','','','c' => $hostrecord->subfield('942','c'));
+            $record->append_fields($field);
         }
         ( $biblionumber, $biblioitemnumber ) = &AddBiblio($record, '');
     }
