@@ -4515,7 +4515,13 @@ sub RemoveAllNsb {
 sub getHostRecord {
     my ($r) = @_;
 
-    my $cn = $r->subfield('773', 'w');
+    my $f773w = $r->subfield('773', 'w');
+    my $f003;
+    if ($f773w =~ /\((.*)\)/ ) { 
+        $f003 = $1; 
+        $f773w =~ s/\D//g;
+    }
+    my $cn = $f773w;
     my $cni = $r->field('003')->data();
 
     return undef unless $cn && $cni;
@@ -4544,7 +4550,8 @@ sub getHostRecord {
     $resultSetSize = $results->{biblioserver}->{hits};
 
     if ($resultSetSize == 1) {
-        return @{$results->{biblioserver}->{RECORDS}}[0];
+        my $record = @{$results->{biblioserver}->{RECORDS}}[0];
+        return ref($record) ne 'MARC::Record' ? MARC::Record::new_from_xml($record, 'UTF-8') : $record;
     }
     elsif ($resultSetSize > 1) {
         Koha::Exception::Search->throw(error => "C4::Biblio::getHostRecord():> Searching ($query):> Returned more than one record?");
