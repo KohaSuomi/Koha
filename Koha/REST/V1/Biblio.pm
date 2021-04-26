@@ -230,6 +230,11 @@ sub update {
         if (C4::Context->preference("BiblioAddsAuthorities")){
             BiblioAutoLink($record, $frameworkcode);
         }
+        my $hostrecord = C4::Biblio::getHostRecord($record);
+        if ($hostrecord) {
+           my $field = MARC::Field->new('942','','','c' => $hostrecord->subfield('942','c'));
+           $record->append_fields($field);
+        }
         if($matcher_id) {
             my $old_record = C4::Biblio::GetMarcBiblio($biblionumber);
             my $matcher = C4::Matcher->fetch($matcher_id);
