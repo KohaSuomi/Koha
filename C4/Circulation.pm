@@ -2224,9 +2224,9 @@ sub AddReturn {
     ($resfound, $resrec, undef) = C4::Reserves::CheckReserves( $item->itemnumber, undef, $lookahead ) unless ( $item->withdrawn );
     # if a hold is found and is waiting at another branch, change the priority back to 1 and trigger the hold (this will trigger a transfer and update the hold status properly)
     if ( $resfound and $resfound eq "Waiting" and $branch ne $resrec->{branchcode} ) {
-        my $hold = C4::Reserves::RevertWaitingStatus( { itemnumber => $item->itemnumber } );
-        $resfound = 'Reserved';
-        $resrec = $hold->unblessed;
+        C4::Reserves::RevertWaitingStatus( { itemnumber => $item->itemnumber } );
+        #If the hold is reverted we need to refetch for the return values
+        ($resfound, $resrec, undef) = C4::Reserves::CheckReserves( $item->itemnumber, undef, $lookahead ) unless ( $item->withdrawn );
     }
     if ($resfound) {
           $resrec->{'ResFound'} = $resfound;
