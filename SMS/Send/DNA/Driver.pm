@@ -25,6 +25,7 @@ use Koha::Exception::SMSDeliveryFailure;
 use Koha::Notice::Messages;
 use Mojo::JSON qw(from_json);
 use Mojo::URL;
+use POSIX;
 
 use Try::Tiny;
 
@@ -95,11 +96,12 @@ sub _rest_call {
         $tx = $ua->post($url => $headers => json => $params);
     }
     if ($tx->error) {
-        Koha::Exception::ConnectionFailed->throw(error => $tx->error->{message});
-        die $tx->error->{message};
+        return ($tx->error, undef);
+    } else {
+        return (undef, from_json($tx->res->body));
     }
 
-    return from_json($tx->res->body);
+    
 }
 
 sub send_sms {
@@ -133,26 +135,50 @@ sub send_sms {
     $recipientNumber =~ s/'//g;
     substr($recipientNumber, 0, 1, "+358") unless "+" eq substr($recipientNumber, 0, 1);
     $message =~ s/(")|(\$\()|(`)/\\"/g; #Sanitate " so it won't break the system( iconv'ed curl command )
+    $message_length = length($message);
+
+    my $fragments;
+    if ($message_length > 160) {
+        $fragments = ceil($message_length / 160);
+    } else {
+        $fragments = 1;
+    }
+
+    if ($fragments > 10) {
+        Koha::Exception::SMSDeliveryFailure->throw(error => "text content is too big!");
+        return;
+    }
 
     my $base_url = _get_dna_config($branch, 'baseUrl');
 
     my $authorization = $self->{_login}.":".$self->{_password};
     my $headers = {'Content-Type' => 'application/x-www-form-urlencoded'};
-    my $token = _rest_call($base_url.$appid.'/token', $headers, $authorization, {grant_type => 'client_credentials'});
+    my ($error, $token, $res, $revoke);
+    ($error, $token) = _rest_call($base_url.$appid.'/token', $headers, $authorization, {grant_type => 'client_credentials'});
+
+    if ($error) {
+        Koha::Exception::SMSDeliveryFailure->throw(error => $error->{message});
+        return;
+    }
 
     $headers = {Authorization => "Bearer $token->{access_token}", 'Content-Type' => 'application/json'};
 
     my $params = {
         recipient => {number => $recipientNumber},
-        data => {message => Encode::decode( "utf8", $message)}
+        data => {message => Encode::decode( "utf8", $message), allowed_fragments => $fragments }
     };
 
-    my $res = _rest_call($base_url.$appid.'/sms', $headers, undef, $params);
+    ($error, $res) = _rest_call($base_url.$appid.'/sms', $headers, undef, $params);
 
-    if ($res->{status} eq "error") {
+    if ($error) {
+        Koha::Exception::SMSDeliveryFailure->throw(error => $error->{error});
+        return;
+    }
+    elsif ($res->{status} eq "error") {
         Koha::Exception::SMSDeliveryFailure->throw(error => $res->{error});
+        return;
     } else {
-        my $revoke = _rest_call($base_url.$appid.'/revoke', {'Content-Type' => 'application/x-www-form-urlencoded'}, $authorization, {token => $token->{access_token}});
+        ($error, $revoke) = _rest_call($base_url.$appid.'/revoke', {'Content-Type' => 'application/x-www-form-urlencoded'}, $authorization, {token => $token->{access_token}});
         return 1;
     }
 }
