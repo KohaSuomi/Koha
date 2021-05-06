@@ -46,7 +46,7 @@ sub process {
 	my $c = shift->openapi->valid_input or return;
 
 	my $body          = $c->req->body;
-	my $xmlrequest = $body;
+	my $xmlrequest = $c->param('query') || '';
 
 	$log->info("Request received.");
 
@@ -141,14 +141,14 @@ sub tradeSip {
 
 	$log->info("Trying login: $loginsip");
 
-	my $respdata;
+	my $respdata = "";
 
 	print $sipsock $loginsip . $terminator;
 
 	$sipsock->recv( $respdata, 1024 );
 	$sipsock->flush;
 
-	if ( $respdata eq "941" ) {
+	if ( $respdata =~ /^941/ ) {
 
 		$log->info("Login OK. Sending: $command_message");
 
@@ -173,6 +173,11 @@ sub tradeSip {
 	$log->error(
 "Unauthorized login for $login: $respdata. Can't process attached SIP message."
 	);
+
+        $sipsock->flush;
+        $sipsock->shutdown(SHUT_WR);
+        $sipsock->shutdown(SHUT_RDWR);    # we stopped using this socket
+        $sipsock->close;
 
 	return $respdata;
 }
