@@ -165,18 +165,20 @@ sub getFinnaMaterialType_core {
 
     } # 007 fields
 
+    my $field008 = $record->field('008');
+
     return 'MusicalScore'   if ($typeOfRecord eq 'C' || $typeOfRecord eq 'D');
     return 'Map'            if ($typeOfRecord eq 'E' || $typeOfRecord eq 'F');
     return 'Slide'          if ($typeOfRecord eq 'G');
     return 'SoundRecording' if ($typeOfRecord eq 'I');
     return 'MusicRecording' if ($typeOfRecord eq 'J');
     return 'Photo'          if ($typeOfRecord eq 'K');
+    return 'ConsoleGame'    if ($typeOfRecord eq 'M' && uc(substr($field008, 26, 1)) eq 'G');
     return 'Electronic'     if ($typeOfRecord eq 'M');
     return 'Kit'            if ($typeOfRecord eq 'O' || $typeOfRecord eq 'P');
     return 'PhysicalObject' if ($typeOfRecord eq 'R');
     return 'Manuscript'     if ($typeOfRecord eq 'T');
 
-    my $field008 = $record->field('008');
     $online = (substr($field008, 23, 1) eq 'o' ? 1 : 0) if (!$online);
 
     return ($online ? 'eBook' : 'Book') if ($bibliographicLevel eq 'M');
