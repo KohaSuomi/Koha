@@ -145,7 +145,7 @@ sub send_sms {
     }
 
     if ($fragments > 10) {
-        Koha::Exception::SMSDeliveryFailure->throw(error => "text content is too big!");
+        Koha::Exception::SMSDeliveryFailure->throw(error => "message content is too big!");
         return;
     }
 
@@ -165,13 +165,13 @@ sub send_sms {
 
     my $params = {
         recipient => {number => $recipientNumber},
-        data => {message => Encode::decode( "utf8", $message), allowed_fragments => $fragments }
+        data => {message => $message, allowed_fragments => $fragments }
     };
 
     ($error, $res) = _rest_call($base_url.$appid.'/sms', $headers, undef, $params);
 
     if ($error) {
-        Koha::Exception::SMSDeliveryFailure->throw(error => $error->{error});
+        Koha::Exception::SMSDeliveryFailure->throw(error => $error->{message});
         return;
     }
     elsif ($res->{status} eq "error") {
