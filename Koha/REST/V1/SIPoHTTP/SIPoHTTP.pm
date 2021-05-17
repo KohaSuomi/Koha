@@ -46,7 +46,7 @@ sub process {
 	my $c = shift->openapi->valid_input or return;
 
 	my $body          = $c->req->body;
-	my $xmlrequest = $c->param('query') || '';
+	my $xmlrequest = $c->param('query') || $body || '';
 
 	$log->info("Request received.");
 
