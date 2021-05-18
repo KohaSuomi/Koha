@@ -259,3 +259,10 @@ Searching:
                   yes: "search"
                   no: "don't search"
             - on all variations of the ISBN. Note that this preference has no effect if UseQueryParser is on.
+        -
+            - pref: PassItemMarcToXSLT
+              type: boolean
+              choices:
+                  1: Do
+                  0: "Don't"
+            - "make item MARC tags available to XSLT stylesheets. Default is \"Don't\", items are disaplyed using other methods"
