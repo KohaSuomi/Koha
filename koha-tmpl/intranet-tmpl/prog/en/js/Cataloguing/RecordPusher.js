@@ -25,7 +25,13 @@ if (typeof Cataloguing == "undefined") {
  *  @param {Array of RemoteAPI-objects} remoteAPIs, which APIs should be made available to connect to?
  *  @param {Biblio} activeBiblio, which biblio is being pushed?
  */
-Cataloguing.RecordPusher = function (displayElementContainer, displayType, operationsMenuContainer, remoteAPIs, activeBiblio) {
+Cataloguing.RecordPusher = function (
+    displayElementContainer,
+    displayType,
+    operationsMenuContainer,
+    remoteAPIs,
+    activeBiblio
+) {
     var self = this;
     this.displayElementContainer = $(displayElementContainer);
     this.operationsMenuContainer = $(operationsMenuContainer);
@@ -38,20 +44,26 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
     var decHtml;
     if (this.displayType == "dropdown-menu-list") {
         decHtml = Cataloguing.RecordPusher.template_dropdownMenuList(this);
-    }
-    else {
-        alert("Cataloguing.RecordPusher unknown displayType '"+this.displayType+"'.");
+    } else {
+        alert(
+            "Cataloguing.RecordPusher unknown displayType '" +
+                this.displayType +
+                "'."
+        );
     }
     this.displayElementContainer.append(decHtml);
     Cataloguing.RecordPusher.dropdownMenuListBindEvents(this, decHtml);
     //Rendering done!
 
     this.setOperationsMenuLocation = function (event) {
-        self.menuActivationClickLocation = {left: event.pageX, top: event.pageY};
+        self.menuActivationClickLocation = {
+            left: event.pageX,
+            top: event.pageY,
+        };
     };
     this.parseRecord = function (record) {
         return Cataloguing.RecordPusher.parseRecord(record);
-    }
+    };
     this.castRemoteAPI = function (remoteAPIorId) {
         if (remoteAPIorId instanceof Object) {
             return remoteAPIorId;
@@ -61,7 +73,13 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
     this.pushToRemote = function (remoteAPIOrId) {
         var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
         if (!remoteAPIPushDestination) {
-            alert("Cataloguing.RecordPusher.pushToRemote("+remoteAPIOrId+"):> Unknown remote API id '"+remoteAPIOrId+"' given. Don't know where to push?");
+            alert(
+                "Cataloguing.RecordPusher.pushToRemote(" +
+                    remoteAPIOrId +
+                    "):> Unknown remote API id '" +
+                    remoteAPIOrId +
+                    "' given. Don't know where to push?"
+            );
             return;
         }
         // if (! confirm("Are you sure you want to push Record '"+self.activeBiblio.biblionumber+"' to '"+remoteAPIPushDestination.name+"' ?")) {
@@ -70,112 +88,224 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
         self.displayModal(remoteAPIPushDestination);
     };
     this.getRecord = function (remoteAPIPushDestination) {
-        RemoteAPIs.Driver.KohaSuomi.records_get("local", self.activeBiblio, function (remoteAPI, error, result) {
-
-            if (error) {
-                alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_get() failed with "+error);
-                return;
-            }
-            RemoteAPIs.Driver.records_check(remoteAPIPushDestination, self.activeBiblio, result, function (remoteAPI, error, result, recordXml) {
+        RemoteAPIs.Driver.KohaSuomi.records_get(
+            "local",
+            self.activeBiblio,
+            function (remoteAPI, error, result) {
                 if (error) {
-                    alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_check() failed with "+error);
+                    alert(
+                        "Accessing API '" +
+                            remoteAPI.name +
+                            "' using RemoteAPIs.Driver.records_get() failed with " +
+                            error
+                    );
                     return;
                 }
-                self.displayContent(remoteAPI, result);
-            });
-        });
-    }
+                RemoteAPIs.Driver.records_check(
+                    remoteAPIPushDestination,
+                    self.activeBiblio,
+                    result,
+                    function (remoteAPI, error, result, recordXml) {
+                        if (error) {
+                            alert(
+                                "Accessing API '" +
+                                    remoteAPI.name +
+                                    "' using RemoteAPIs.Driver.records_check() failed with " +
+                                    error
+                            );
+                            return;
+                        }
+                        self.displayContent(remoteAPI, result);
+                    }
+                );
+            }
+        );
+    };
     this.submitToRemote = function (remoteAPIOrId, params) {
         var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
-        RemoteAPIs.Driver.records_add(remoteAPIPushDestination, params, function (remoteAPI, error, result, recordXml) {
-            if (error) {
-                alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_add() failed with "+error);
-                return;
-            }
-        });
-        $( "#pushRecordOpModal" ).find("#report").click();
-
-    }
-    this.submitcomponentParts = function (remoteAPIOrId, componentparts, username, check) {
-        var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
-        $.each(componentparts, function (index, record) {
-            RemoteAPIs.Driver.records_add(remoteAPIPushDestination, {source_id: record.biblionumber, interface: remoteAPIOrId.interface, marc: record.marcxml, target_id: null, username: username, parent_id: self.activeBiblio.biblionumber, force: 1, check: check}, undefined, function (remoteAPI, error, result, recordXml) {
+        RemoteAPIs.Driver.records_add(
+            remoteAPIPushDestination,
+            params,
+            function (remoteAPI, error, result, recordXml) {
                 if (error) {
-                    alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.records_add() failed with "+error);
+                    alert(
+                        "Accessing API '" +
+                            remoteAPI.name +
+                            "' using RemoteAPIs.Driver.records_add() failed with " +
+                            error
+                    );
                     return;
                 }
-            });
+            }
+        );
+        $("#pushRecordOpModal").find("#report").click();
+    };
+    this.submitcomponentParts = function (
+        remoteAPIOrId,
+        componentparts,
+        username,
+        check
+    ) {
+        var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
+        $.each(componentparts, function (index, record) {
+            RemoteAPIs.Driver.records_add(
+                remoteAPIPushDestination,
+                {
+                    source_id: record.biblionumber,
+                    interface: remoteAPIOrId.interface,
+                    marc: record.marcxml,
+                    target_id: null,
+                    username: username,
+                    parent_id: self.activeBiblio.biblionumber,
+                    force: 1,
+                    check: check,
+                },
+                undefined,
+                function (remoteAPI, error, result, recordXml) {
+                    if (error) {
+                        alert(
+                            "Accessing API '" +
+                                remoteAPI.name +
+                                "' using RemoteAPIs.Driver.records_add() failed with " +
+                                error
+                        );
+                        return;
+                    }
+                }
+            );
         });
-    }
+    };
     this.deletecomponentParts = function (componentparts) {
         $.each(componentparts, function (index, record) {
-            RemoteAPIs.Driver.KohaSuomi.records_delete("local", record.biblionumber, function (remoteAPI, error, result) {
-                if (error) {
-                    alert("Cataloguing.RecordPusher.pushToRemote():> Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.KohaSuomi.records_delete() failed with "+error);
-                    return;
+            RemoteAPIs.Driver.KohaSuomi.records_delete(
+                "local",
+                record.biblionumber,
+                function (remoteAPI, error, result) {
+                    if (error) {
+                        alert(
+                            "Cataloguing.RecordPusher.pushToRemote():> Accessing API '" +
+                                remoteAPI.name +
+                                "' using RemoteAPIs.Driver.KohaSuomi.records_delete() failed with " +
+                                error
+                        );
+                        return;
+                    }
                 }
-            });
+            );
         });
-    }
+    };
     this.getReports = function (remoteAPIOrId, id) {
         var remoteAPIPushDestination = this.castRemoteAPI(remoteAPIOrId);
-        RemoteAPIs.Driver.reports_get(remoteAPIPushDestination, id, function (remoteAPI, error, results) {
-            if (error) {
-                alert("Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.reports_get() failed with "+error);
-                return;
+        RemoteAPIs.Driver.reports_get(
+            remoteAPIPushDestination,
+            id,
+            function (remoteAPI, error, results) {
+                if (error) {
+                    alert(
+                        "Accessing API '" +
+                            remoteAPI.name +
+                            "' using RemoteAPIs.Driver.reports_get() failed with " +
+                            error
+                    );
+                    return;
+                }
+                $("#report-wrapper").find(".table-responsive").remove();
+                self.showReports(remoteAPI, results);
+                $("#pushRecordOpModal")
+                    .find("#spinner-wrapper")
+                    .addClass("hidden");
             }
-            $("#report-wrapper").find(".table-responsive").remove();
-            self.showReports(remoteAPI, results);
-            $( "#pushRecordOpModal" ).find("#spinner-wrapper").addClass("hidden");;
-        });
-    }
+        );
+    };
     this.deleteFromRemote = function (remoteAPIOrId, biblionumber) {
         var remoteAPI = this.castRemoteAPI(remoteAPIOrId);
         if (!remoteAPI) {
-            alert("Cataloguing.RecordPusher.pushToRemote():> Remote API not known. Don't know where to DELETE!");
+            alert(
+                "Cataloguing.RecordPusher.pushToRemote():> Remote API not known. Don't know where to DELETE!"
+            );
             return;
         }
-        if (! confirm("Are you sure you want to DELETE a Record from '"+remoteAPI.name+"' ?")) {
+        if (
+            !confirm(
+                "Are you sure you want to DELETE a Record from '" +
+                    remoteAPI.name +
+                    "' ?"
+            )
+        ) {
             return;
         }
-        RemoteAPIs.Driver.records_delete(remoteAPI, biblionumber, function (remoteAPI, error, result) {
-            if (error) {
-                alert("Cataloguing.RecordPusher.pushToRemote():> Accessing API '"+remoteAPI.name+"' using RemoteAPIs.Driver.KohaSuomi.records_delete() failed with "+error);
-                return;
+        RemoteAPIs.Driver.records_delete(
+            remoteAPI,
+            biblionumber,
+            function (remoteAPI, error, result) {
+                if (error) {
+                    alert(
+                        "Cataloguing.RecordPusher.pushToRemote():> Accessing API '" +
+                            remoteAPI.name +
+                            "' using RemoteAPIs.Driver.KohaSuomi.records_delete() failed with " +
+                            error
+                    );
+                    return;
+                }
+                //Delete succeeded, hide the Operations menu
+                self.operationsMenuContainer
+                    .find("#pushRecordOpMenu .circular-menu .circle")
+                    .removeClass("open");
+                self.operationsMenuContainer
+                    .find("#pushRecordOpMenu a")
+                    .hide(1000, function () {
+                        $(this).parent().remove();
+                    });
             }
-            //Delete succeeded, hide the Operations menu
-            self.operationsMenuContainer.find("#pushRecordOpMenu .circular-menu .circle").removeClass('open');
-            self.operationsMenuContainer.find("#pushRecordOpMenu a").hide(1000, function () {$(this).parent().remove();});
-        });
+        );
     };
-    this.displayMenu = function (remoteAPI, biblionumber, record, hateoasLinks) {
+    this.displayMenu = function (
+        remoteAPI,
+        biblionumber,
+        record,
+        hateoasLinks
+    ) {
         this.operationsMenuContainer.find("#pushRecordOpMenu").remove();
         var html = $("<div id='pushRecordOpMenu'></div>");
 
         var nativeViewUrl;
-        hateoasLinks.forEach(function(v,i,a){
-            if(v.ref == "self.nativeView"){    nativeViewUrl = remoteAPI.host+'/'+v.href;    }
+        hateoasLinks.forEach(function (v, i, a) {
+            if (v.ref == "self.nativeView") {
+                nativeViewUrl = remoteAPI.host + "/" + v.href;
+            }
         });
         this.operationsMenuContainer.append(html);
         var radialMenu = new RadialMenu(html, [
-                                {   class: "fa fa-trash-o fa-2x",
-                                    title: "DELETE",
-                                    "data-verb": "DELETE",
-                                    events: {   click: function (event) { event.preventDefault(); self.deleteFromRemote(remoteAPI, biblionumber) }    }
-                                },
-                                {   class: "fa fa-sign-in fa-2x",
-                                    title: "OPEN IN HOME",
-                                    "data-verb": "GET",
-                                    href: nativeViewUrl,
-                                    target: '_blank'
-                                },
-                        ]);
-        this.operationsMenuContainer.find("#pushRecordOpMenu").css(self.menuActivationClickLocation);
-        this.operationsMenuContainer.find("#pushRecordOpMenu .menu-button").click(); //Open up the radial menu
+            {
+                class: "fa fa-trash-o fa-2x",
+                title: "DELETE",
+                "data-verb": "DELETE",
+                events: {
+                    click: function (event) {
+                        event.preventDefault();
+                        self.deleteFromRemote(remoteAPI, biblionumber);
+                    },
+                },
+            },
+            {
+                class: "fa fa-sign-in fa-2x",
+                title: "OPEN IN HOME",
+                "data-verb": "GET",
+                href: nativeViewUrl,
+                target: "_blank",
+            },
+        ]);
+        this.operationsMenuContainer
+            .find("#pushRecordOpMenu")
+            .css(self.menuActivationClickLocation);
+        this.operationsMenuContainer
+            .find("#pushRecordOpMenu .menu-button")
+            .click(); //Open up the radial menu
     };
     this.displayModal = function (remoteAPI) {
         this.operationsMenuContainer.find("#pushRecordOpModal").remove();
-        var html = $('<div id="pushRecordOpModal" class="modal fade" role="dialog">\
+        var html = $(
+            '<div id="pushRecordOpModal" class="modal fade" role="dialog">\
                         <div class="modal-dialog">\
                             <div class="modal-content">\
                                 <div class="modal-header">\
@@ -202,96 +332,155 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
                                 </div>\
                             </div>\
                         </div>\
-                    </div>');
+                    </div>'
+        );
         this.operationsMenuContainer.append(html);
-        $('#pushRecordOpModal').modal('toggle');
+        $("#pushRecordOpModal").modal("toggle");
         self.getRecord(remoteAPI);
-        $( "#exporter" ).click(function( event ) {
+        $("#exporter").click(function (event) {
             event.preventDefault();
             $("#export-wrapper").find("#exportRecord").remove();
             $("#report").removeAttr("style");
             $("#report").find(".fa-refresh").addClass("hidden");
-            $(this).find( ".fa-refresh" ).removeClass("hidden");
-            $(this).css({"background-color": "#007bff", "color": "#fff"});
-            $( "#report-wrapper" ).addClass("hidden");
-            $( "#export-wrapper" ).removeClass("hidden");
-            $( "#spinner-wrapper" ).removeClass("hidden");
+            $(this).find(".fa-refresh").removeClass("hidden");
+            $(this).css({ "background-color": "#007bff", color: "#fff" });
+            $("#report-wrapper").addClass("hidden");
+            $("#export-wrapper").removeClass("hidden");
+            $("#spinner-wrapper").removeClass("hidden");
             self.getRecord(remoteAPI);
         });
-        $( "#report" ).click(function( event ) {
+        $("#report").click(function (event) {
             event.preventDefault();
-            $( "#spinner-wrapper" ).removeClass("hidden");
+            $("#spinner-wrapper").removeClass("hidden");
             $("#exporter").removeAttr("style");
             $("#exporter").find(".fa-refresh").addClass("hidden");
             $(this).find(".fa-refresh").removeClass("hidden");
-            $(this).css({"background-color": "#007bff", "color": "#fff"});
-            $( "#export-wrapper" ).addClass("hidden");
-            $( "#report-wrapper" ).removeClass("hidden");
-            $('#export').addClass("hidden");
-            $('#import').addClass("hidden");
-            setTimeout(function(){
-                self.getReports(remoteAPI, self.activeBiblio.biblionumber)
-            },1000);
+            $(this).css({ "background-color": "#007bff", color: "#fff" });
+            $("#export-wrapper").addClass("hidden");
+            $("#report-wrapper").removeClass("hidden");
+            $("#export").addClass("hidden");
+            $("#import").addClass("hidden");
+            setTimeout(function () {
+                self.getReports(remoteAPI, self.activeBiblio.biblionumber);
+            }, 1000);
         });
-        
     };
     this.displayContent = function (remoteAPI, result) {
-        $( "#spinner-wrapper" ).addClass("hidden");
+        $("#spinner-wrapper").addClass("hidden");
         var sourceboxes = false;
-        var source = Cataloguing.RecordPusher.parseRecord(result.sourcerecord, sourceboxes);
+        var source = Cataloguing.RecordPusher.parseRecord(
+            result.sourcerecord,
+            sourceboxes
+        );
         var html;
-        if (!result.targetrecord) {
-            html = $('<div id="exportRecord">'+source+'</div>');
-            $('#export').removeClass("hidden");
+        if (!result.targetrecord && remoteAPI.type == "export") {
+            html = $('<div id="exportRecord">' + source + "</div>");
+            $("#export").removeClass("hidden");
+        } else if (!result.targetrecord && remoteAPI.type == "import") {
+            html = $(
+                "<div><h2>Tietueen standardinumeroilla ei löytynyt tuloksia.</h2></div>"
+            );
         } else {
             var targetboxes = false;
-            var target = Cataloguing.RecordPusher.parseRecord(result.targetrecord, targetboxes);
-            html = $('<div id="exportRecord"><div class="col-sm-6"><h3>Paikallinen</h4><hr/>'+source+'</div><div class="col-sm-6"><h3>'+result.interface+'</h4><hr/>'+target+'</div></div>');
-            if (remoteAPI.type == "export" && !result.source_id) {$('#export').removeClass("hidden");}
-            if (self.selfAPI) {$('#import').removeClass("hidden");}
-            $('.modal-dialog').addClass("modal-lg");
+            var target = Cataloguing.RecordPusher.parseRecord(
+                result.targetrecord,
+                targetboxes
+            );
+            html = $(
+                '<div id="exportRecord"><div class="col-sm-6"><h3>Paikallinen</h4><hr/>' +
+                    source +
+                    '</div><div class="col-sm-6"><h3>' +
+                    result.interface +
+                    "</h4><hr/>" +
+                    target +
+                    "</div></div>"
+            );
+            if (remoteAPI.type == "export" && !result.source_id) {
+                $("#export").removeClass("hidden");
+            }
+            if (self.selfAPI) {
+                $("#import").removeClass("hidden");
+            }
+            $(".modal-dialog").addClass("modal-lg");
         }
         this.operationsMenuContainer.find("#export-wrapper").append(html);
         self.handleButtons(remoteAPI, result);
-
     };
     this.handleButtons = function (remoteAPI, result) {
         var username = $(".loggedinusername").html().trim();
-        $( "#export" ).unbind().click(function( event ) {
-            event.preventDefault();
-            var count = 0;
-            $("input:checkbox[name=record]:not(:checked)").each(function(){
-                if ($(this).val() == "leader") {
-                    delete result.sourcerecord[$(this).val()];
+        $("#export")
+            .unbind()
+            .click(function (event) {
+                event.preventDefault();
+                var count = 0;
+                $("input:checkbox[name=record]:not(:checked)").each(
+                    function () {
+                        if ($(this).val() == "leader") {
+                            delete result.sourcerecord[$(this).val()];
+                        } else {
+                            result.sourcerecord.fields.splice(
+                                $(this).val() - count,
+                                1
+                            );
+                            count++;
+                        }
+                    }
+                );
+                self.submitToRemote(remoteAPI, {
+                    marc: result.sourcerecord,
+                    interface: remoteAPI.interface,
+                    source_id: self.activeBiblio.biblionumber,
+                    target_id: result.target_id,
+                    username: username,
+                    componentparts_count: result.componentparts.length,
+                });
+                if (!result.targetrecord) {
+                    self.submitcomponentParts(
+                        remoteAPI,
+                        result.componentparts,
+                        username,
+                        false
+                    );
                 } else {
-                    result.sourcerecord.fields.splice($(this).val()-count,1);
-                    count++;
+                    self.submitcomponentParts(
+                        remoteAPI,
+                        result.componentparts,
+                        username,
+                        true
+                    );
                 }
             });
-            self.submitToRemote(remoteAPI, {marc: result.sourcerecord, interface: remoteAPI.interface, source_id: self.activeBiblio.biblionumber, target_id: result.target_id, username: username, componentparts_count: result.componentparts.length});
-            if (!result.targetrecord) {
-                self.submitcomponentParts(remoteAPI, result.componentparts, username, false);
-            } else {
-                self.submitcomponentParts(remoteAPI, result.componentparts, username, true);
-            }
-        });
-        $( "#import" ).unbind().click(function( event ) {
-            event.preventDefault();
-            var sourceid;
-            if (result.source_id) {
-                sourceid = result.source_id;
-            } else {
-                sourceid = result.target_id;
-            }
-            if (result.componentparts) {
-                self.deletecomponentParts(result.componentparts);
-            }
-            self.submitToRemote(self.selfAPI, {marc: result.targetrecord, interface: self.selfAPI.interface, source_id: sourceid, target_id: self.activeBiblio.biblionumber, username: username, componentparts: 1, fetch_interface: remoteAPI.interface});
-        });
-
-    }
+        $("#import")
+            .unbind()
+            .click(function (event) {
+                event.preventDefault();
+                var sourceid;
+                if (result.source_id) {
+                    sourceid = result.source_id;
+                } else {
+                    sourceid = result.target_id;
+                }
+                if (result.componentparts) {
+                    self.deletecomponentParts(result.componentparts);
+                }
+                self.submitToRemote(self.selfAPI, {
+                    marc: result.targetrecord,
+                    interface: self.selfAPI.interface,
+                    source_id: sourceid,
+                    target_id: self.activeBiblio.biblionumber,
+                    username: username,
+                    componentparts: 1,
+                    fetch_interface: remoteAPI.interface,
+                });
+            });
+    };
     this.showReports = function (remoteAPI, result) {
-        var html = Cataloguing.RecordPusher.parseReports(result, self.activeBiblio.biblionumber, remoteAPI.interface, self.selfAPI.interface);
+        var html = Cataloguing.RecordPusher.parseReports(
+            result,
+            self.activeBiblio.biblionumber,
+            remoteAPI.interface,
+            self.selfAPI.interface
+        );
         $("#report-wrapper").append(html);
     };
 };
@@ -303,93 +492,134 @@ Cataloguing.RecordPusher = function (displayElementContainer, displayType, opera
  */
 Cataloguing.RecordPusher.getValidRemoteAPIs = function (remoteAPIs) {
     return remoteAPIs;
-}
+};
 
 Cataloguing.RecordPusher.template_dropdownMenuList = function (recordPusher) {
     var remoteAPIs = recordPusher.remoteAPIs;
     if (!remoteAPIs) {
-        return '';
+        return "";
     }
 
-    var html =  '<li class="divider" role="presentation"></li>\n'+
-                '<li role="presentation"><a href="#" tabindex="-1" class="menu-inactive" role="menuitem"><strong>Push / Pull:</strong></a></li>\n'+
-                '<li class="divider" role="presentation"></li>\n';
-    Object.keys(remoteAPIs).sort().forEach(function(v, i, a) { var api =remoteAPIs[v];
-        if (api.id != "self") {
-            html += '<li><a href="#" id="pushTarget_'+api.id+'">'+api.name+'</a></li>\n';
-        }
-    });
+    var html =
+        '<li class="divider" role="presentation"></li>\n' +
+        '<li role="presentation"><a href="#" tabindex="-1" class="menu-inactive" role="menuitem"><strong>Push / Pull:</strong></a></li>\n' +
+        '<li class="divider" role="presentation"></li>\n';
+    Object.keys(remoteAPIs)
+        .sort()
+        .forEach(function (v, i, a) {
+            var api = remoteAPIs[v];
+            if (api.id != "self") {
+                html +=
+                    '<li><a href="#" id="pushTarget_' +
+                    api.id +
+                    '">' +
+                    api.name +
+                    "</a></li>\n";
+            }
+        });
     return $(html);
-}
-Cataloguing.RecordPusher.dropdownMenuListBindEvents = function (recordPusher, displayHtml) {
+};
+Cataloguing.RecordPusher.dropdownMenuListBindEvents = function (
+    recordPusher,
+    displayHtml
+) {
     displayHtml.find("[id^='pushTarget_']").click(function (event) {
         recordPusher.setOperationsMenuLocation(event);
         recordPusher.pushToRemote($(this).attr("id").substr(11));
         event.preventDefault();
     });
-}
+};
 Cataloguing.RecordPusher.parseRecord = function (record, checkbox) {
-    var html = '<div>';
+    var html = "<div>";
     html += '<li class="row"> <div class="col-xs-3">';
-    if (checkbox) { html += '<input type="checkbox" value="leader" name="record" checked> '}
-    html += '<b>000</b></div><div class="col-xs-9">'+record.leader+'</li>';
-    record.fields.forEach(function(v,i,a){
+    if (checkbox) {
+        html += '<input type="checkbox" value="leader" name="record" checked> ';
+    }
+    html += '<b>000</b></div><div class="col-xs-9">' + record.leader + "</li>";
+    record.fields.forEach(function (v, i, a) {
         if ($.isNumeric(v.tag)) {
             html += '<li class="row"><div class="col-xs-3">';
         } else {
             html += '<li class="row hidden"><div class="col-xs-3">';
         }
-        if (checkbox) { html += '<input type="checkbox" value="'+i+'" name="record" checked> '}
-        html += '<b>'+v.tag;
-        if (v.ind1) {html += ' '+v.ind1}
-        if (v.ind2) {html += ' '+v.ind2}
+        if (checkbox) {
+            html +=
+                '<input type="checkbox" value="' +
+                i +
+                '" name="record" checked> ';
+        }
+        html += "<b>" + v.tag;
+        if (v.ind1) {
+            html += " " + v.ind1;
+        }
+        if (v.ind2) {
+            html += " " + v.ind2;
+        }
         html += '</b></div><div class="col-xs-9">';
         if (v.subfields) {
-            v.subfields.forEach(function(v,i,a){
-                html += '<b>_'+v.code+'</b>'+v.value+'<br/>';
+            v.subfields.forEach(function (v, i, a) {
+                html += "<b>_" + v.code + "</b>" + v.value + "<br/>";
             });
         } else {
             html += v.value;
         }
-        html += '</div></li>';
+        html += "</div></li>";
     });
-    html += '</div>';
+    html += "</div>";
     return html;
-}
-Cataloguing.RecordPusher.parseReports = function (reports, biblionumber, interface, selfAPI) {
+};
+Cataloguing.RecordPusher.parseReports = function (
+    reports,
+    biblionumber,
+    interface,
+    selfAPI
+) {
     var html = '<div class="table-responsive">';
     if (reports.length != 0) {
         html += '<table class="table table-striped table-sm">';
-        html += '<thead>\
+        html +=
+            "<thead>\
                 <tr>\
                 <th>Tapahtuma</th>\
                 <th>Aika</th>\
                 <th>Tila</th>\
                 </tr>\
-            </thead><tbody>';
-        reports.forEach(function(v,i,a){
+            </thead><tbody>";
+        reports.forEach(function (v, i, a) {
             if (interface == v.interface_name || v.interface_name == selfAPI) {
-                html += '<tr>';
+                html += "<tr>";
                 if (v.target_id == biblionumber) {
-                    html += '<td style="padding:0 5px;">tuonti (päivitys)</td>'
+                    html += '<td style="padding:0 5px;">tuonti (päivitys)</td>';
                 } else {
                     if (v.target_id != "" && v.target_id != null) {
-                        html += '<td style="padding:0 5px;">vienti (päivitys)</td>';
+                        html +=
+                            '<td style="padding:0 5px;">vienti (päivitys)</td>';
                     } else {
                         html += '<td style="padding:0 5px;">vienti (uusi)</td>';
                     }
-                };
-                html += '<td style="padding:0 5px;">'+v.timestamp+'</td>';
-                if (v.status == 'success') {html += '<td style="padding:0 5px; color:green;">onnistui</td>'};
-                if (v.status == 'failed') {html += '<td style="padding:0 5px; color:red;">epäonnistui ('+v.errorstatus+')</td>'};
-                if (v.status == 'pending' || v.status == 'waiting') {html += '<td style="padding:0 5px; color:orange;">odottaa</td>'};
-                html += '</tr>';
+                }
+                html += '<td style="padding:0 5px;">' + v.timestamp + "</td>";
+                if (v.status == "success") {
+                    html +=
+                        '<td style="padding:0 5px; color:green;">onnistui</td>';
+                }
+                if (v.status == "failed") {
+                    html +=
+                        '<td style="padding:0 5px; color:red;">epäonnistui (' +
+                        v.errorstatus +
+                        ")</td>";
+                }
+                if (v.status == "pending" || v.status == "waiting") {
+                    html +=
+                        '<td style="padding:0 5px; color:orange;">odottaa</td>';
+                }
+                html += "</tr>";
             }
         });
-        html += '</tbody></table>';
+        html += "</tbody></table>";
     } else {
-        html += '<div><h2>Ei siirtoja</h2></div>'
+        html += "<div><h2>Ei siirtoja</h2></div>";
     }
-    html += '</div>';
+    html += "</div>";
     return html;
-}
+};
