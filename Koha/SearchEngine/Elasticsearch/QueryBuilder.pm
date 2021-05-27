@@ -922,6 +922,12 @@ sub _fix_limit_special_cases {
         elsif ( $l =~ /^available$/ ) {
             push @new_lim, 'onloan:0';
         }
+        elsif ( $l =~ /^only_component_parts$/ ) {
+            push @new_lim, 'bib-level:a';
+        }
+        elsif ( $l =~ /^only_host_items$/ ) {
+            push @new_lim, 'bib-level:m';
+        }
         else {
             push @new_lim, $l;
         }
