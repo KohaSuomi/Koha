@@ -30,6 +30,16 @@ my $undelivered = 0;
 our $pseudotime=time();
 our $filename;
 
+sub find_branchconfig {
+    my ( $section, $message ) = @_;
+
+    # Format and transit will be defined by the branch, or 'default'. Why does C4::Context return sometimes undef and sometimes empty hash here on the exact same query???
+    if ( C4::Context->config('ksmessaging')->{$section}->{'branches'}->{"@$message{'branchcode'}"} && keys %{ C4::Context->config('ksmessaging')->{$section}->{'branches'}->{"@$message{'branchcode'}"} } ) {
+        return "@$message{'branchcode'}";
+    }
+    return "default";
+}
+
 unless ( $ARGV[0] ) {
     print "\nSelect either '--letters' or '--suomifi'.\n" unless ( $ARGV[0] );
 }
@@ -39,12 +49,7 @@ elsif ( $ARGV[0] eq '--suomifi' ) {
     foreach my $message ( @{ GetSuomiFiMessages() } ) {
         $letters++;
 
-        # Format and transit will be defined by the branch, or 'default'. Why does C4::Context return sometimes undef and sometimes empty hash here on the exact same query???
-        # We need to get rid of 'keys' here, because it's experimental with hashrefs and support for it has been dropped.
-        my $branchconfig = 'default';
-        if ( C4::Context->config('ksmessaging')->{'suomifi'}->{'branches'}->{"@$message{'branchcode'}"} && keys C4::Context->config('ksmessaging')->{'suomifi'}->{'branches'}->{"@$message{'branchcode'}"} ) {
-            $branchconfig = "@$message{'branchcode'}";
-        }
+        my $branchconfig = find_branchconfig('suomifi', $message);
 
         if ( C4::Context->config('ksmessaging')->{'suomifi'}->{'branches'}->{"$branchconfig"}->{'wsapi'} ) {
             if ( my $formattedmessage = SOAPEnvelope ( %{$message}, 'branchconfig' => $branchconfig ) ) {
@@ -190,11 +195,8 @@ elsif ( $ARGV[0] eq '--letters' ) {
         $letters++;
         # Combining will happen here
 
-        # Format and transit will be defined by the branch, or 'default' if combineacrossbranches
-        my $branchconfig = 'default';
-        if ( C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"@$message{'branchcode'}"} && keys C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"@$message{'branchcode'}"} ) {
-            $branchconfig = @$message{'branchcode'}
-        }
+        my $branchconfig = find_branchconfig('letters', $message);
+
         print @$message{'branchcode'} . "\n";
         print Dumper ( C4::Context->config('ksmessaging')->{'suomifi'}->{'branches'}->{"@$message{'branchcode'}"}  );
 
