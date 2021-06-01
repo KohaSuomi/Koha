@@ -188,7 +188,7 @@ sub add {
             BiblioAutoLink($record, '');
         }
         my $hostrecord = C4::Biblio::getHostRecord($record);
-        if ($hostrecord) {
+        if ($hostrecord && $hostrecord->subfield('942','c')) {
             my $field = MARC::Field->new('942','','','c' => $hostrecord->subfield('942','c'));
             $record->append_fields($field);
         }
@@ -237,13 +237,13 @@ sub update {
             my $matcher = C4::Matcher->fetch($matcher_id);
 
             my $mergedrecord = $matcher->overlayRecord($old_record, $record);
-            if ($hostrecord && !$mergedrecord->subfield('942', 'c')) {
+            if ($hostrecord && $hostrecord->subfield('942','c') && !$mergedrecord->subfield('942', 'c')) {
                 my $field = MARC::Field->new('942','','','c' => $hostrecord->subfield('942','c'));
                 $mergedrecord->append_fields($field);
             }
             $success = &ModBiblio($mergedrecord, $biblionumber, $frameworkcode);
         } else {
-            if ($hostrecord) {
+            if ($hostrecord && $hostrecord->subfield('942','c')) {
                 my $field = MARC::Field->new('942','','','c' => $hostrecord->subfield('942','c'));
                 $record->append_fields($field);
             }
