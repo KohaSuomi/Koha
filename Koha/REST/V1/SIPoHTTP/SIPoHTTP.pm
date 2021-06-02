@@ -31,7 +31,9 @@ use Try::Tiny;
 use Mojo::Log;
 use File::Basename;
 use C4::Context;
+use Encode;
 
+use utf8;
 use strict;
 use warnings qw( all );
 
@@ -160,6 +162,8 @@ sub tradeSip {
 		$sipsock->shutdown(SHUT_WR);
 		$sipsock->shutdown(SHUT_RDWR);    # we stopped using this socket
 		$sipsock->close;
+
+                $respdata = decode_utf8($respdata);
 
 		my $respmes = $respdata;
 		$respmes =~ s/.{1}$//;
