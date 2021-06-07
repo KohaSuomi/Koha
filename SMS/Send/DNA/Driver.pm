@@ -135,11 +135,16 @@ sub send_sms {
     $recipientNumber =~ s/'//g;
     substr($recipientNumber, 0, 1, "+358") unless "+" eq substr($recipientNumber, 0, 1);
     $message =~ s/(")|(\$\()|(`)/\\"/g; #Sanitate " so it won't break the system( iconv'ed curl command )
-    $message_length = length($message);
+    my $fragment_length = 160;
+    if($message =~ /[^\@£\$¥èéùìòÇØøÅå&#916;_&#934;&#915;&#923;&#937;&#928;&#936;&#931;&#920;&#926;ÆæßÉ !"#¤%\&\'\(\)\*\+\,\-\.\/0-9:;<=>\?¡A-ZÄÖÑÜ§¿a-zäöñüà]/ ) {
+        $fragment_length = 70;
+    }
+    my $gsm0338 = encode("gsm0338", $message);
+    my $message_length = length($gsm0338);
 
     my $fragments;
-    if ($message_length > 160) {
-        $fragments = ceil($message_length / 160);
+    if ($message_length > $fragment_length) {
+        $fragments = ceil($message_length / $fragment_length);
     } else {
         $fragments = 1;
     }
