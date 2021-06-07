@@ -63,7 +63,7 @@ sub check_catcode_age {
     my $age = $patron->get_age;
     my $borrowercategory = Koha::Patron::Categories->find($categorycode);
     my ($low,$high) = ($borrowercategory->dateofbirthrequired, $borrowercategory->upperagelimit);
-    if (($high && ($age > $high)) or ($age < $low)) {
+    if (($high && ($age >= $high)) or ($age < $low)) {
 	return 'ERROR_age_limitations';
     }
     return '';
