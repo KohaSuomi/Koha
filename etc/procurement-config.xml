@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <data>
-    <settings>
+  <settings>
+        <use_finna_materialtype>no</use_finna_materialtype> <!-- Do we put finna materialtype into 942c? default "no" -->
         <import_tmp_path>/home/koha/koha-dev/var/spool/editx/tmp</import_tmp_path> <!-- The folder where files should be first put. The Integrations external entrypoint -->
         <import_load_path>/home/koha/koha-dev/var/spool/editx/load</import_load_path> <!-- The path from where the script reads files to import -->
         <import_archive_path>/home/koha/koha-dev/var/spool/editx/archive</import_archive_path> <!-- The path where files are archived after succesfull import-->

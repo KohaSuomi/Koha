@@ -65,4 +65,14 @@ sub getUseAutomatchBiblios {
     return $result;
 }
 
+sub getUseFinnaMaterials {
+    my $self = shift;
+    $settings = $self->getSettings();
+    my $result = 'no';
+    if(defined $settings->{'settings'}->{'use_finna_materialtype'}){
+        $result = $settings->{'settings'}->{'use_finna_materialtype'};
+    }
+    return $result;
+}
+
 1;
