@@ -21,6 +21,9 @@ use Koha::Procurement::EditX::LibraryShipNotice::MarcHelper;
 use Koha::Procurement::Logger;
 use Koha::Procurement::Config;
 
+use C4::KohaSuomi::FinnaMaterialType;
+use C4::Languages qw(getlanguage);
+
 has 'schema' => (
     is      => 'rw',
     isa => 'DBIx::Class::Schema',
@@ -127,8 +130,14 @@ sub getBiblioDatas {
         ($biblio, $biblioitem) = $self->getBiblioItemData($copyDetail, $itemDetail, $order);
     }
     if( !$biblio && !$biblioitem ){
+        my $prodform;
         $biblio = $self->createBiblio($copyDetail, $itemDetail, $order);
-        $copyDetail->addMarc942($self->getProductForm($itemDetail->getProductForm()));
+        if ($self->getConfig()->getUseFinnaMaterials() eq 'yes') {
+            $prodform = getFinnaMaterialType($copyDetail->getMarcData(), 'fi_FI');
+        } else {
+            $prodform = $self->getProductForm($itemDetail->getProductForm());
+        }
+        $copyDetail->addMarc942($prodform);
         $copyDetail->fixMarcIsbn();
         ($biblioitem) = $self->createBiblioItem($copyDetail, $itemDetail, $order, $biblio);
         ($bibliometa) = $self->createBiblioMetadata($copyDetail, $itemDetail, $order, $biblio);
