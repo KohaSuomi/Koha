@@ -130,8 +130,8 @@ $(document).ready(function() {
    <div id="bd">
     <div id="yui-main" style="padding-left:10px">
 
-<h2>Holds to pull reported on [% reporteddate %]</h2>
-<p>The following holds have not been filled. Please retrieve them and check them in.</p>
+<h2>Holds to pull</h2>
+<p>During the last update of this report <b>about [% reporteddate %] minutes ago</b>, the following holds were found to be pending retrieval. Please retrieve them from the shelf and check them in.</p>
 <div class="searchresults">
     [% IF ( reserveloop ) %]
     <table id="holdst" style="width:100%;">

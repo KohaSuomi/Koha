@@ -24,8 +24,6 @@ use C4::Output;
 use CGI qw ( -utf8 );
 use C4::Auth;
 use C4::Debug;
-use File::stat;
-use Time::localtime;
 use Storable;
 
 my $input = new CGI;
@@ -48,7 +46,7 @@ my @reservedata;
 
 if ( -e '/tmp/HoldsToPull' ) {
     my $stored=retrieve('/tmp/HoldsToPull');
-    $reporteddate = ctime(stat('/tmp/HoldsToPull')->mtime);
+    $reporteddate = int((time - (stat '/tmp/HoldsToPull')[9]) / 60);
     @reservedata=@{$stored};
 }
 

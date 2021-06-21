@@ -30,6 +30,8 @@ use DateTime::Duration;
 use List::MoreUtils qw(uniq);
 use Storable;
 
+my $starttime=time;
+
 my @reservedata;
 my $dbh = C4::Context->dbh;
 
@@ -182,6 +184,7 @@ while ( my $data = $sth->fetchrow_hashref ) {
 $sth->finish;
 
 store \@reservedata, "/tmp/HoldsToPull";
+utime (time, $starttime, "/tmp/HoldsToPull");
 
 sub check_issuingrules {
     my ($data) = @_;
