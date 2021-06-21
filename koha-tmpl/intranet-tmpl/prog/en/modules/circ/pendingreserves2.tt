@@ -74,7 +74,7 @@ $(document).ready(function() {
           holdst.fnFilter( filter_value, 10, true, false );
       } );
   } );
-  $("#locationfilter").each( function () {
+  $("#mtypefilter").each( function () {
       $(this).html( createSelect( holdst.fnGetColumnData(11) ) );
       $('select', this).change( function () {
           var to_filter = $(this).val();
@@ -82,7 +82,7 @@ $(document).ready(function() {
           holdst.fnFilter( filter_value, 11, true, false );
       } );
   } );
-  $("#sublocationfilter").each( function () {
+   $("#locationfilter").each( function () {
       $(this).html( createSelect( holdst.fnGetColumnData(12) ) );
       $('select', this).change( function () {
           var to_filter = $(this).val();
@@ -90,7 +90,7 @@ $(document).ready(function() {
           holdst.fnFilter( filter_value, 12, true, false );
       } );
   } );
-  $("#ccodefilter").each( function () {
+  $("#sublocationfilter").each( function () {
       $(this).html( createSelect( holdst.fnGetColumnData(13) ) );
       $('select', this).change( function () {
           var to_filter = $(this).val();
@@ -98,12 +98,20 @@ $(document).ready(function() {
           holdst.fnFilter( filter_value, 13, true, false );
       } );
   } );
-  $("#genrefilter").each( function () {
+  $("#ccodefilter").each( function () {
       $(this).html( createSelect( holdst.fnGetColumnData(14) ) );
       $('select', this).change( function () {
           var to_filter = $(this).val();
           var filter_value = (to_filter == '') ? to_filter : "\\b" + to_filter + "\\b";
           holdst.fnFilter( filter_value, 14, true, false );
+      } );
+  } );
+  $("#genrefilter").each( function () {
+      $(this).html( createSelect( holdst.fnGetColumnData(15) ) );
+      $('select', this).change( function () {
+          var to_filter = $(this).val();
+          var filter_value = (to_filter == '') ? to_filter : "\\b" + to_filter + "\\b";
+          holdst.fnFilter( filter_value, 15, true, false );
       } );
   } );
 });
@@ -140,12 +148,13 @@ $(document).ready(function() {
         <td><input type="text" class="filter" data-column_num="8" placeholder="Available copy" style="width:100%"/></td>
         <td><input type="text" class="filter" data-column_num="9" placeholder="Available enumeration" style="width:100%"/></td>
         <td id="itypefilter"></td> <!-- 10 -->
-        <td id="locationfilter"></td> <!-- 11 -->
-        <td id="sublocationfilter"></td> <!-- 12 -->
-        <td id="ccodefilter"></td> <!-- 13 -->
-        <td id="genrefilter"></td> <!-- 14 -->
-        <td><input type="text" class="filter" data-column_num="15" placeholder="Item notes" style="width:100%"/></td>
-        <td><input type="text" class="filter" data-column_num="16" placeholder="Earliest hold date" style="width:100%"/></td>
+        <td id="mtypefilter"></td> <!-- 11 -->
+        <td id="locationfilter"></td> <!-- 12 -->
+        <td id="sublocationfilter"></td> <!-- 13 -->
+        <td id="ccodefilter"></td> <!-- 14 -->
+        <td id="genrefilter"></td> <!-- 15 -->
+        <td><input type="text" class="filter" data-column_num="16" placeholder="Item notes" style="width:100%"/></td>
+        <td><input type="text" class="filter" data-column_num="17" placeholder="Earliest hold date" style="width:100%"/></td>
         </tr>
         <tr>
         <th>Pull this many items</th>
@@ -159,6 +168,7 @@ $(document).ready(function() {
         <th>Available copy numbers</th>
         <th>Available enumeration</th>
         <th class="string-sort">Available itypes</th>
+        <th class="string-sort">Available mtypes</th>
         <th class="string-sort">Available locations</th>
         <th class="string-sort">Available sublocations</th>
         <th class="string-sort">Available collections</th>
@@ -204,6 +214,11 @@ $(document).ready(function() {
         <td>
           [% FOREACH itype IN reserveloo.itypes %]
               <ul style="padding-left:0"><li style="list-style-type:none">[% itype %]</li></ul>
+          [% END %]
+        </td>
+         <td>
+          [% FOREACH mtype IN reserveloo.mtypes %]
+              <ul style="padding-left:0"><li style="list-style-type:none">[% mtype %]</li></ul>
           [% END %]
         </td>
         <td>

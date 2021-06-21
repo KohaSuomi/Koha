@@ -81,6 +81,8 @@ my $strsth =
                     ORDER BY items.itemnumber SEPARATOR '|') l_holdingbranch,
             reserves.biblionumber,
             reserves.branchcode AS l_branch,
+            GROUP_CONCAT(DISTINCT biblioitems.itemtype
+                    ORDER BY items.itemnumber SEPARATOR '|') l_mtype,
             GROUP_CONCAT(DISTINCT items.itype
                     ORDER BY items.itemnumber SEPARATOR '|') l_itype,
             GROUP_CONCAT(DISTINCT items.location
@@ -167,6 +169,7 @@ while ( my $data = $sth->fetchrow_hashref ) {
                 count           => $data->{icount},
                 rcount          => $data->{rcount},
                 itypes          => [split('\|', $data->{l_itype})],
+                mtypes          => [split('\|', $data->{l_mtype})],
                 pullcount       => $data->{icount} <= $data->{rcount} ? $data->{icount} : $data->{rcount},
                 locations       => [split('\|', $data->{l_location})],
                 sublocations    => [split('\|', $data->{l_sublocation})],
