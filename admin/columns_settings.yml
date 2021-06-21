@@ -441,6 +441,8 @@ modules:
         -
           columnname: itemtypes
         -
+          columnname: materialtypes
+        -
           columnname: locations
         -
           columnname: sublocations
