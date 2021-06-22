@@ -10,22 +10,15 @@
 
 logdirectory="$(grep -Po '(?<=<logdir>).*?(?=</logdir>)' $KOHA_CONF)/cronjobs"
 logfile=$logdirectory/${1##*/}.log
-croncommand=$KOHA_PATH"/misc/$@"
-lockdirectory="${KOHA_CONF%/etc/koha-conf.xml}/var/lock"
+croncommand="$KOHA_PATH/misc/$@"
+lockdirectory="/var/lock/cronjobtimer"
 lockfile="$lockdirectory/${1##*/}.lock"
-disableCronjobsFlag=$KOHA_PATH"/misc/cronjobs/disableCronjobs.flag"
+disableCronjobsFlag="$lockdirectory/disableCronjobs.flag"
 
 if [ -z "$1" ]; then
   printf "You need to provide a cronscript name and it's parameters as arguments."
   exit 1
 fi
-
-# Create required directories
-mkdir -p "$logdirectory" "$lockdirectory"
-
-starttime=$(date +%s)
-startMsg='Start: '$(date --date="@$starttime" "+%Y-%m-%d %H:%M:%S")
-printf "$startMsg\n" >> $logfile
 
 #Check if cronjobs are disabled by the preproduction to production migration process
 if [ -e $disableCronjobsFlag ]; then
@@ -33,14 +26,19 @@ if [ -e $disableCronjobsFlag ]; then
     exit 0
 fi
 
+# Create required directories
+mkdir -p "$logdirectory" "$lockdirectory"
+
 #Lock the cronjob we are running!
 if kill -0 $(cat $lockfile 2> /dev/null) 2> /dev/null; then
-   printf "$1 already locked and running!\n"
+   printf "$1 already locked and running!\n" >> $logfile
    exit 1
 fi
 echo $$ > $lockfile
 
 starttime=$(date +%s)
+startMsg='Start: '$(date --date="@$starttime" "+%Y-%m-%d %H:%M:%S")
+printf "$startMsg\n" >> $logfile
 
 $croncommand 1>> $logfile 2>&1
 wait # We need to wait here so that lockfile doesn't get released too early!
