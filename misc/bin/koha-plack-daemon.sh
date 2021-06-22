@@ -166,7 +166,13 @@ stop_plack()
 
         log_daemon_msg "Stopping Plack daemon"
 
-        if start-stop-daemon --pidfile $PIDFILE --stop; then
+        start-stop-daemon --pidfile $PIDFILE --stop
+        PLACKSTOP=$?
+
+        while pgrep -fc '^starman.*plack.psgi' > /dev/null 2>&1; do sleep 1; done
+        sleep 1
+
+        if test $PLACKSTOP; then
             log_end_msg 0
         else
             log_end_msg 1
