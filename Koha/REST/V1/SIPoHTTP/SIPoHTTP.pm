@@ -193,8 +193,10 @@ sub buildXml {
 	}
 
 	$doc->setDocumentElement($root);
-    
-	print decode("utf-8", $doc->toString);
+
+	print $doc->toString();
+
+    $doc = decode_utf8($doc);
 
     return $doc;
 }
