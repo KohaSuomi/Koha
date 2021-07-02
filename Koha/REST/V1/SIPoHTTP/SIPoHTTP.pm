@@ -148,8 +148,6 @@ sub tradeSip {
         $sipsock->shutdown(SHUT_RDWR);    # we stopped using this socket
         $sipsock->close;
 
-        $respdata = decode_utf8($respdata);
-
         $log->info("Received: $respdata");
 
         return $respdata;
@@ -195,7 +193,8 @@ sub buildXml {
 	}
 
 	$doc->setDocumentElement($root);
-	print $doc->toString();
+    
+	print decode("utf-8", $doc->toString);
 
     return $doc;
 }
