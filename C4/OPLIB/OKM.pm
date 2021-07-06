@@ -434,7 +434,7 @@ sub fetchItemsDataMountain {
     #Get all the Items' informations for Items residing in the libraryGroup.
     my $sth = $dbh->prepare("
         (
-        SELECT  i.itemnumber, i.biblionumber, i.itype, i.location, i.price,
+        SELECT  i.itemnumber, i.biblionumber, bi.itemtype, i.location, i.price,
                 ao.ordernumber, ao.datereceived, i.dateaccessioned,
                 bde.primary_language, bde.fiction, bde.musical,
                 0 as deleted
@@ -448,7 +448,7 @@ sub fetchItemsDataMountain {
         )
         UNION
         (
-        SELECT  di.itemnumber, di.biblionumber, di.itype, di.location, di.price,
+        SELECT  di.itemnumber, di.biblionumber, bi.itemtype, di.location, di.price,
                 ao.ordernumber, ao.datereceived, di.dateaccessioned,
                 bde.primary_language, bde.fiction, bde.musical,
                 1 as deleted
@@ -494,7 +494,7 @@ sub fetchIssuesDataMountain {
     #This means that Patrons can check-out Items whose homebranch is not in this libraryGroup, but whom are checked out/renewed from this libraryGroup.
     my $sth = $dbh->prepare("
         (
-        SELECT s.itemnumber, i.biblionumber, i.itype, i.location, 0 as deleted, COUNT(s.itemnumber) as issues,
+        SELECT s.itemnumber, i.biblionumber, bi.itemtype, i.location, 0 as deleted, COUNT(s.itemnumber) as issues,
                bde.primary_language, bde.fiction, bde.musical
             FROM statistics s
             LEFT JOIN items i ON s.itemnumber = i.itemnumber
@@ -509,7 +509,7 @@ sub fetchIssuesDataMountain {
         )
         UNION
         (
-        SELECT s.itemnumber, di.biblionumber, di.itype, di.location, 1 as deleted, COUNT(s.itemnumber) as issues,
+        SELECT s.itemnumber, di.biblionumber, bi.itemtype, di.location, 1 as deleted, COUNT(s.itemnumber) as issues,
                bde.primary_language, bde.fiction, bde.musical
             FROM statistics s
             LEFT JOIN deleteditems di ON s.itemnumber = di.itemnumber
