@@ -405,6 +405,12 @@ sub TooMany {
   			? $item->{'itype'}         # item-level
 			: $item->{'itemtype'};     # biblio-level
  
+    my $checkout_type = $onsite_checkout
+        ? $switch_onsite_checkout
+            ? $Koha::Checkouts::type->{checkout}
+            : $Koha::Checkouts::type->{onsite_checkout}
+        : $Koha::Checkouts::type->{checkout};
+
     # given branch, patron category, and item type, determine
     # applicable issuing rule
     my $issuing_rule = Koha::IssuingRules->get_effective_issuing_rule(
@@ -415,7 +421,7 @@ sub TooMany {
             permanent_location => $item->{permanent_location},
             sub_location => $item->{sub_location},
             genre        => $item->{genre},
-            circulation_level => $item->{circulation_level},
+            checkout_type => $checkout_type,
             reserve_level => $item->{reserve_level},
         }
     );
@@ -446,7 +452,7 @@ sub TooMany {
                                     AND   permanent_location = ?
                                     AND   sub_location = ?
                                     AND   genre = ?
-                                    AND   circulation_level = ?
+                                    AND   checkout_type = ?
                                     AND   reserve_level = ?
                                     AND   itemtype <> '*'
                                   ) ";
@@ -460,7 +466,7 @@ sub TooMany {
                                     AND   permanent_location = ?
                                     AND   sub_location = ?
                                     AND   genre = ?
-                                    AND   circulation_level = ?
+                                    AND   checkout_type = ?
                                     AND   reserve_level = ?
                                     AND   itemtype <> '*'
                                   ) ";
@@ -471,7 +477,7 @@ sub TooMany {
             push @bind_params, $issuing_rule->permanent_location;
             push @bind_params, $issuing_rule->sub_location;
             push @bind_params, $issuing_rule->genre;
-            push @bind_params, $issuing_rule->circulation_level;
+            push @bind_params, $issuing_rule->checkout_type;
             push @bind_params, $issuing_rule->reserve_level;
             push @bind_params, $cat_borrower;
         } else {
@@ -503,15 +509,14 @@ sub TooMany {
 
         my ( $checkout_count, $onsite_checkout_count ) = $dbh->selectrow_array( $count_query, {}, @bind_params );
 
-        my $max_checkouts_allowed = $issuing_rule->maxissueqty;
-        my $max_onsite_checkouts_allowed = $issuing_rule->maxonsiteissueqty;
+        my $max_checkouts_allowed = $issuing_rule ? $issuing_rule->maxissueqty : undef;
 
-        if ( $onsite_checkout ) {
-            if ( $onsite_checkout_count >= $max_onsite_checkouts_allowed )  {
+        if ( $onsite_checkout and $max_checkouts_allowed ne '' ) {
+            if ( $onsite_checkout_count >= $max_checkouts_allowed )  {
                 return {
                     reason => 'TOO_MANY_ONSITE_CHECKOUTS',
                     count => $onsite_checkout_count,
-                    max_allowed => $max_onsite_checkouts_allowed,
+                    max_allowed => $max_checkouts_allowed,
                 }
             }
         }
@@ -557,15 +562,16 @@ sub TooMany {
             push @bind_params, $branch;
         }
         my ( $checkout_count, $onsite_checkout_count ) = $dbh->selectrow_array( $branch_count_query, {}, @bind_params );
-        my $max_checkouts_allowed = $branch_borrower_circ_rule->{maxissueqty};
-        my $max_onsite_checkouts_allowed = $branch_borrower_circ_rule->{maxonsiteissueqty};
+        my $max_checkouts_allowed = !$onsite_checkout
+            ? $branch_borrower_circ_rule->{maxissueqty}
+            : $branch_borrower_circ_rule->{maxonsiteissueqty};
 
-        if ( $onsite_checkout ) {
-            if ( $onsite_checkout_count >= $max_onsite_checkouts_allowed )  {
+        if ( $onsite_checkout and $max_checkouts_allowed ne '' ) {
+            if ( $onsite_checkout_count >= $max_checkouts_allowed )  {
                 return {
                     reason => 'TOO_MANY_ONSITE_CHECKOUTS',
                     count => $onsite_checkout_count,
-                    max_allowed => $max_onsite_checkouts_allowed,
+                    max_allowed => $max_checkouts_allowed,
                 }
             }
         }
@@ -723,6 +729,10 @@ sub CanBookBeIssued {
 	my $biblioitem = GetBiblioItemData($item->{biblioitemnumber});
 	$item->{'itemtype'}=$item->{'itype'}; 
     my $dbh             = C4::Context->dbh;
+    my $checkout_type = $onsite_checkout
+        ? $Koha::Checkouts::type->{onsite_checkout}
+        : $Koha::Checkouts::type->{checkout};
+    my $item_object = Koha::Items->find({barcode => $barcode });
 
     # MANDATORY CHECKS - unless item exists, nothing else matters
     unless ( $item->{barcode} ) {
@@ -749,7 +759,7 @@ sub CanBookBeIssued {
         my $branch = _GetCircControlBranch($item,$borrower);
         my $itype = ( C4::Context->preference('item-level_itypes') ) ? $item->{'itype'} : $biblioitem->{'itemtype'};
         $duedate = CalcDateDue( $issuedate, $itype, $branch, $borrower,
-                                undef,      $item );
+                                $checkout_type, undef,      $item );
 
         # Offline circ calls AddIssue directly, doesn't run through here
         #  So issuingimpossible should be ok.
@@ -985,7 +995,7 @@ sub CanBookBeIssued {
     my $rentalConfirmation = C4::Context->preference("RentalFeesCheckoutConfirmation");
 
     if ( $rentalConfirmation ){
-        my ($rentalCharge) = GetIssuingCharges( $item->{'itemnumber'}, $borrower->{'borrowernumber'} );
+        my ($rentalCharge) = GetIssuingCharges( $item->{'itemnumber'}, $borrower->{'borrowernumber'}, $checkout_type );
         if ( $rentalCharge > 0 ){
             $needsconfirmation{RENTALCHARGE} = $rentalCharge;
         }
@@ -1266,7 +1276,7 @@ sub checkHighHolds {
           : $biblio->{'itemtype'};
 
         my $orig_due = C4::Circulation::CalcDateDue( $issuedate, $itype, $branch,
-                                                     $borrower,  undef,  $item );
+                                                     $borrower,  $Koha::Checkouts::type->{checkout}, undef,  $item );
 
         my $decreaseLoanHighHoldsDuration = C4::Context->preference('decreaseLoanHighHoldsDuration');
 
@@ -1331,6 +1341,11 @@ sub AddIssue {
     my $auto_renew = $params && $params->{auto_renew};
     my $dbh          = C4::Context->dbh;
     my $barcodecheck = CheckValidBarcode($barcode);
+    my $checkout_type = $onsite_checkout
+        ? $switch_onsite_checkout
+            ? $Koha::Checkouts::type->{checkout}
+            : $Koha::Checkouts::type->{onsite_checkout}
+        : $Koha::Checkouts::type->{checkout};
 
     my $issue;
 
@@ -1412,7 +1427,7 @@ sub AddIssue {
                         permanent_location => $item->{permanent_location},
                         sub_location => $item->{sub_location},
                         genre        => $item->{genre},
-                        circulation_level => $item->{circulation_level},
+                        checkout_type => $checkout_type,
                         reserve_level => $item->{reserve_level},
                     }
                 );
@@ -1427,7 +1442,7 @@ sub AddIssue {
                   ? $biblio->{'itype'}
                   : $biblio->{'itemtype'};
                 $datedue = CalcDateDue( $issuedate, $itype, $branch, $borrower,
-                                        undef,      $item );
+                                        $checkout_type, undef, $item );
 
             }
             $datedue->truncate( to => 'minute' );
@@ -1505,7 +1520,7 @@ sub AddIssue {
             ModDateLastSeen( $item->{'itemnumber'} );
 
            # If it costs to borrow this book, charge it to the patron's account.
-            my ( $charge, $itemtype ) = GetIssuingCharges( $item->{'itemnumber'}, $borrower->{'borrowernumber'} );
+            my ( $charge, $itemtype ) = GetIssuingCharges( $item->{'itemnumber'}, $borrower->{'borrowernumber'}, $checkout_type );
             if ( $charge > 0 ) {
                 AddIssuingCharge( $item->{'itemnumber'}, $borrower->{'borrowernumber'}, $charge );
                 $item->{'charge'} = $charge;
@@ -1559,7 +1574,7 @@ sub AddIssue {
 
   my $loanlength = &GetLoanLength( $borrowertype,$itemtype,branchcode,
                                    $ccode,$permanent_location,$sub_location,
-                                   $genre,$circulation_level,$reserve_level )
+                                   $genre,$checkout_type,$reserve_level )
 
 Get loan length for an itemtype, a borrower type and a branch
 
@@ -1568,7 +1583,7 @@ Get loan length for an itemtype, a borrower type and a branch
 sub GetLoanLength {
     my ( $borrowertype, $itemtype, $branchcode,
         $ccode, $permanent_location, $sub_location, $genre,
-        $circulation_level, $reserve_level ) = @_;
+        $checkout_type, $reserve_level ) = @_;
 
     my $rule = Koha::IssuingRules->get_effective_issuing_rule({
         categorycode => $borrowertype,
@@ -1578,7 +1593,7 @@ sub GetLoanLength {
         permanent_location => $permanent_location,
         sub_location => $sub_location,
         genre => $genre,
-        circulation_level => $circulation_level,
+        checkout_type => $checkout_type,
         reserve_level => $reserve_level,
     });
     return {
@@ -1593,7 +1608,6 @@ sub GetLoanLength {
         renewalperiod => 0,
         lengthunit => 'days',
     };
-
 }
 
 
@@ -1601,7 +1615,7 @@ sub GetLoanLength {
 
   my ($hardduedate,$hardduedatecompare) = &GetHardDueDate(
     $borrowertype,$itemtype,branchcode,$ccode,$permanent_location,$sub_location,
-    $genre,$circulation_level,$reserve_level
+    $genre,$checkout_type,$reserve_level
   )
 
 Get the Hard Due Date and it's comparison for an itemtype, a borrower type and a branch
@@ -1611,7 +1625,7 @@ Get the Hard Due Date and it's comparison for an itemtype, a borrower type and a
 sub GetHardDueDate {
     my ( $borrowertype, $itemtype, $branchcode, $ccode,
          $permanent_location, $sub_location, $genre,
-         $circulation_level, $reserve_level ) = @_;
+         $checkout_type, $reserve_level ) = @_;
 
     my $issuing_rule = Koha::IssuingRules->get_effective_issuing_rule(
         {   categorycode => $borrowertype,
@@ -1621,7 +1635,7 @@ sub GetHardDueDate {
             permanent_location => $permanent_location,
             sub_location => $sub_location,
             genre        => $genre,
-            circulation_level => $circulation_level,
+            checkout_type => $checkout_type,
             reserve_level => $reserve_level,
         }
     );
@@ -2090,7 +2104,7 @@ sub AddReturn {
         if ( $issue->{overdue} && $issue->{date_due} ) {
         # fix fine days
             $today = $dropboxdate if $dropbox;
-            my ($debardate,$reminder) = _debar_user_on_return( $borrower, $item, $issue->{date_due}, $today );
+            my ($debardate,$reminder) = _debar_user_on_return( $borrower, $item, $issue->{onsite_checkout}, $issue->{date_due}, $today );
             if ($reminder){
                 $messages->{'PrevDebarred'} = $debardate;
             } else {
@@ -2305,11 +2319,13 @@ sub MarkIssueReturned {
 
 =head2 _debar_user_on_return
 
-    _debar_user_on_return($borrower, $item, $datedue, today);
+    _debar_user_on_return($borrower, $item, $checkout_type, $datedue, today);
 
 C<$borrower> borrower hashref
 
 C<$item> item hashref
+
+C<$checkout_type> One of $Koha::Checkouts::type values
 
 C<$datedue> date due DateTime object
 
@@ -2323,7 +2339,7 @@ Should only be called for overdue returns
 =cut
 
 sub _debar_user_on_return {
-    my ( $borrower, $item, $dt_due, $return_date ) = @_;
+    my ( $borrower, $item, $checkout_type, $dt_due, $return_date ) = @_;
 
     my $branchcode = _GetCircControlBranch( $item, $borrower );
 
@@ -2336,7 +2352,7 @@ sub _debar_user_on_return {
             permanent_location => $item->{permanent_location},
             sub_location => $item->{sub_location},
             genre        => $item->{genre},
-            circulation_level => $item->{circulation_level},
+            checkout_type => $checkout_type,
             reserve_level => $item->{reserve_level},
         }
     );
@@ -2777,7 +2793,9 @@ sub CanBookBeRenewed {
 
     my $item      = GetItem($itemnumber)      or return ( 0, 'no_item' );
     my $itemissue = GetItemIssue($itemnumber) or return ( 0, 'no_checkout' );
-    return ( 0, 'onsite_checkout' ) if $itemissue->{onsite_checkout};
+    my $checkout_type = $itemissue->{onsite_checkout} 
+                ? $Koha::Checkouts::type->{onsite_checkout}
+                : $Koha::Checkouts::type->{checkout};
 
     if (defined $item->{notforloan} && $item->{notforloan} != 0) {
         return (0, 'non_renewable');
@@ -2866,7 +2884,7 @@ sub CanBookBeRenewed {
             permanent_location => $item->{permanent_location},
             sub_location => $item->{sub_location},
             genre        => $item->{genre},
-            circulation_level => $item->{circulation_level},
+            checkout_type => $checkout_type,
             reserve_level => $item->{reserve_level},
         }
     );
@@ -2994,7 +3012,9 @@ sub AddRenewal {
 
     # Find the issues record for this book
     my $issuedata  = GetItemIssue($itemnumber);
-
+    my $checkout_type = $issuedata->{onsite_checkout} 
+                ? $Koha::Checkouts::type->{onsite_checkout}
+                : $Koha::Checkouts::type->{checkout};
     return unless ( $issuedata );
 
     $borrowernumber ||= $issuedata->{borrowernumber};
@@ -3021,7 +3041,7 @@ sub AddRenewal {
         $datedue = (C4::Context->preference('RenewalPeriodBase') eq 'date_due') ?
                                         dt_from_string( $issuedata->{date_due} ) :
                                         DateTime->now( time_zone => C4::Context->tz());
-        $datedue =  CalcDateDue($datedue, $itemtype, _GetCircControlBranch($item, $borrower), $borrower, 'is a renewal',
+        $datedue =  CalcDateDue($datedue, $itemtype, _GetCircControlBranch($item, $borrower), $borrower, $checkout_type, 'is a renewal',
                                 $item);
     }
 
@@ -3040,7 +3060,7 @@ sub AddRenewal {
     ModItem({ renewals => $renews, onloan => $datedue->strftime('%Y-%m-%d %H:%M')}, $biblio->{'biblionumber'}, $itemnumber);
 
     # Charge a new rental fee, if applicable?
-    my ( $charge, $type ) = GetIssuingCharges( $itemnumber, $borrowernumber );
+    my ( $charge, $type ) = GetIssuingCharges( $itemnumber, $borrowernumber, $checkout_type );
     if ( $charge > 0 ) {
         my $accountno = getnextacctno( $borrowernumber );
         my $item = GetBiblioFromItemNumber($itemnumber);
@@ -3140,6 +3160,9 @@ sub GetRenewCount {
     $renewcount = $data->{'renewals'} if $data->{'renewals'};
     # $item and $borrower should be calculated
     my $branchcode = _GetCircControlBranch($item, $borrower);
+    my $checkout_type = $data->{'onsite_checkout'}
+        ? $Koha::Checkouts::type->{onsite_checkout}
+        : $Koha::Checkouts::type->{checkout};
 
     my $issuing_rule = Koha::IssuingRules->get_effective_issuing_rule(
         {   categorycode => $borrower->{categorycode},
@@ -3149,7 +3172,7 @@ sub GetRenewCount {
             permanent_location => $item->{permanent_location},
             sub_location => $item->{sub_location},
             genre        => $item->{genre},
-            circulation_level => $item->{circulation_level},
+            checkout_type => $checkout_type,
             reserve_level => $item->{reserve_level},
         }
     );
@@ -3200,7 +3223,9 @@ sub GetSoonestRenewDate {
             permanent_location => $item->{permanent_location},
             sub_location => $item->{sub_location},
             genre        => $item->{genre},
-            circulation_level => $item->{circulation_level},
+            checkout_type => $itemissue->{onsite_checkout}
+                ? $Koha::Checkouts::type->{onsite_checkout}
+                : $Koha::Checkouts::type->{checkout},
             reserve_level => $item->{reserve_level},
         }
     );
@@ -3266,7 +3291,9 @@ sub GetLatestAutoRenewDate {
             permanent_location => $item->{permanent_location},
             sub_location => $item->{sub_location},
             genre        => $item->{genre},
-            circulation_level => $item->{circulation_level},
+            checkout_type => $itemissue->{onsite_checkout} 
+                ? $Koha::Checkouts::type->{onsite_checkout}
+                : $Koha::Checkouts::type->{checkout},
             reserve_level => $item->{reserve_level},
         }
     );
@@ -3296,7 +3323,7 @@ sub GetLatestAutoRenewDate {
 
 =head2 GetIssuingCharges
 
-  ($charge, $item_type) = &GetIssuingCharges($itemnumber, $borrowernumber);
+  ($charge, $item_type) = &GetIssuingCharges($itemnumber, $borrowernumber, $checkout_type);
 
 Calculate how much it would cost for a given patron to borrow a given
 item, including any applicable discounts.
@@ -3304,6 +3331,8 @@ item, including any applicable discounts.
 C<$itemnumber> is the item number of item the patron wishes to borrow.
 
 C<$borrowernumber> is the patron's borrower number.
+
+C<$checkout_type> is the checkout type (normal or on-site).
 
 C<&GetIssuingCharges> returns two values: C<$charge> is the rental charge,
 and C<$item_type> is the code for the item's item type (e.g., C<VID>
@@ -3314,14 +3343,14 @@ if it's a video).
 sub GetIssuingCharges {
 
     # calculate charges due
-    my ( $itemnumber, $borrowernumber ) = @_;
+    my ( $itemnumber, $borrowernumber, $checkout_type ) = @_;
     my $charge = 0;
     my $dbh    = C4::Context->dbh;
     my $item_type;
 
     # Get the book's item type and rental charge (via its biblioitem).
     my $charge_query = 'SELECT itemtypes.itemtype,rentalcharge,ccode,permanent_location,
-                                sub_location,genre,circulation_level,reserve_level
+                                sub_location,genre,reserve_level
                         FROM items
         LEFT JOIN biblioitems ON biblioitems.biblioitemnumber = items.biblioitemnumber';
     $charge_query .= (C4::Context->preference('item-level_itypes'))
@@ -3347,13 +3376,13 @@ sub GetIssuingCharges {
             AND (issuingrules.permanent_location = ? OR issuingrules.permanent_location = '*')
             AND (issuingrules.sub_location = ? OR issuingrules.sub_location = '*')
             AND (issuingrules.genre = ? OR issuingrules.genre = '*')
-            AND (issuingrules.circulation_level = ? OR issuingrules.circulation_level = '*')
+            AND (issuingrules.checkout_type = ? OR issuingrules.checkout_type = '*')
             AND (issuingrules.reserve_level = ? OR issuingrules.reserve_level = '*')|;
         my $discount_sth = $dbh->prepare($discount_query);
         $discount_sth->execute( $borrowernumber, $item_type, $branch,
             $item_data->{ccode}, $item_data->{permanent_location},
             $item_data->{sub_location}, $item_data->{genre},
-            $item_data->{circulation_level}, $item_data->{reserve_level}
+            $checkout_type, $item_data->{reserve_level}
         );
         my $discount_rules = $discount_sth->fetchall_arrayref({});
         if (@{$discount_rules}) {
@@ -3639,7 +3668,7 @@ sub UpdateHoldingbranch {
 
 =head2 CalcDateDue
 
-$newdatedue = CalcDateDue($startdate,$itemtype,$branchcode,$borrower,$isrenewal,$item);
+$newdatedue = CalcDateDue($startdate,$itemtype,$branchcode,$borrower,$checkout_type,$isrenewal,$item);
 
 this function calculates the due date given the start date and configured circulation rules,
 checking against the holidays calendar as per the 'useDaysMode' syspref.
@@ -3647,13 +3676,14 @@ C<$startdate>   = DateTime object representing start date of loan period (assume
 C<$itemtype>  = itemtype code of item in question
 C<$branch>  = location whose calendar to use
 C<$borrower> = Borrower object
+C<$checkout_type> = Checkout type
 C<$isrenewal> = Boolean: is true if we want to calculate the date due for a renewal. Else is false.
 C<$item> = Item object (either a Koha::Item or a HASHref containing item data)
 
 =cut
 
 sub CalcDateDue {
-    my ( $startdate, $itemtype, $branch, $borrower, $isrenewal, $item ) = @_;
+    my ( $startdate, $itemtype, $branch, $borrower, $checkout_type, $isrenewal, $item ) = @_;
 
     $isrenewal ||= 0;
 
@@ -3661,14 +3691,12 @@ sub CalcDateDue {
     my $permanent_location;
     my $sub_location;
     my $genre;
-    my $circulation_level;
     my $reserve_level;
     if (ref($item) eq 'Koha::Item') {
         $ccode = $item->ccode;
         $permanent_location = $item->permanent_location;
         $sub_location = $item->sub_location;
         $genre = $item->genre;
-        $circulation_level = $item->circulation_level;
         $reserve_level = $item->reserve_level;
     }
     elsif (ref($item) eq 'HASH') {
@@ -3676,7 +3704,6 @@ sub CalcDateDue {
         $permanent_location = $item->{permanent_location};
         $sub_location = $item->{sub_location};
         $genre = $item->{genre};
-        $circulation_level = $item->{circulation_level};
         $reserve_level = $item->{reserve_level};
     }
 
@@ -3684,7 +3711,7 @@ sub CalcDateDue {
     my $loanlength =
             GetLoanLength( $borrower->{'categorycode'}, $itemtype, $branch,
                            $ccode, $permanent_location, $sub_location, $genre,
-                           $circulation_level, $reserve_level );
+                           $checkout_type, $reserve_level );
 
     my $length_key = ( $isrenewal and defined $loanlength->{renewalperiod} )
             ? qq{renewalperiod}
@@ -3733,7 +3760,7 @@ sub CalcDateDue {
     # if Hard Due Dates are used, retrieve them and apply as necessary
     my ( $hardduedate, $hardduedatecompare ) =
       GetHardDueDate( $borrower->{'categorycode'}, $itemtype, $branch, $ccode,
-        $permanent_location, $sub_location, $genre, $circulation_level,
+        $permanent_location, $sub_location, $genre, $checkout_type,
         $reserve_level );
     if ($hardduedate) {    # hardduedates are currently dates
         $hardduedate->truncate( to => 'minute' );
@@ -4267,6 +4294,9 @@ sub _CalculateAndUpdateFine {
     unless ($item)     { carp "No item passed in!"     && return; }
     unless ($issue)    { carp "No issue passed in!"    && return; }
 
+    my $checkout_type = $issue->{onsite_checkout} 
+                ? $Koha::Checkouts::type->{onsite_checkout}
+                : $Koha::Checkouts::type->{checkout};
     my $datedue = $issue->{date_due};
 
     # we only need to calculate and change the fines if we want to do that on return
@@ -4280,7 +4310,7 @@ sub _CalculateAndUpdateFine {
     my $date_returned = $return_date ? dt_from_string($return_date) : dt_from_string();
 
     my ( $amount, $type, $unitcounttotal ) =
-      C4::Overdues::CalcFine( $item, $borrower->{categorycode}, $control_branchcode, $datedue, $date_returned );
+      C4::Overdues::CalcFine( $item, $borrower->{categorycode}, $control_branchcode, $checkout_type, $datedue, $date_returned );
 
     $type ||= q{};
 

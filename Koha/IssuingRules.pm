@@ -47,7 +47,7 @@ sub get_effective_issuing_rule {
     my $permanent_location = $params->{permanent_location};
     my $sub_location = $params->{sub_location};
     my $genre        = $params->{genre};
-    my $circulation_level = $params->{circulation_level};
+    my $checkout_type = $params->{checkout_type};
     my $reserve_level = $params->{reserve_level};
 
     my $search_categorycode = $default;
@@ -57,7 +57,7 @@ sub get_effective_issuing_rule {
     my $search_permanent_location = $default;
     my $search_sub_location = $default;
     my $search_genre        = $default;
-    my $search_circulation_level = $default;
+    my $search_checkout_type = $default;
     my $search_reserve_level = $default;
 
     if ($categorycode) {
@@ -81,8 +81,8 @@ sub get_effective_issuing_rule {
     if ($genre) {
         $search_genre = { 'in' => [ $genre, $default ] };
     }
-    if ($circulation_level) {
-        $search_circulation_level = { 'in' => [ $circulation_level, $default ] };
+    if ($checkout_type) {
+        $search_checkout_type = { 'in' => [ $checkout_type, $default ] };
     }
     if ($reserve_level) {
         $search_reserve_level = { 'in' => [ $reserve_level, $default ] };
@@ -96,12 +96,12 @@ sub get_effective_issuing_rule {
         permanent_location => $search_permanent_location,
         sub_location => $search_sub_location,
         genre        => $search_genre,
-        circulation_level => $search_circulation_level,
+        checkout_type => $search_checkout_type,
         reserve_level => $search_reserve_level,
     }, {
         order_by => {
             -desc => [
-                'branchcode', 'circulation_level', 'reserve_level',
+                'branchcode', 'checkout_type', 'reserve_level',
                 'categorycode', 'itemtype', 'ccode', 'permanent_location',
                 'sub_location', 'genre',
             ]

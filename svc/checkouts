@@ -131,7 +131,10 @@ my $item_level_itypes = C4::Context->preference('item-level_itypes');
 my @checkouts_today;
 my @checkouts_previous;
 while ( my $c = $sth->fetchrow_hashref() ) {
-    my ($charge) = GetIssuingCharges( $c->{itemnumber}, $c->{borrowernumber} );
+    my $checkout_type = $c->{onsite_checkout}
+        ? $Koha::Checkouts::type->{onsite_checkout}
+        : $Koha::Checkouts::type->{checkout};
+    my ($charge) = GetIssuingCharges( $c->{itemnumber}, $c->{borrowernumber}, $checkout_type );
     my $fine = GetFine( $c->{itemnumber}, $c->{borrowernumber} );
 
     my ( $can_renew, $can_renew_error ) =

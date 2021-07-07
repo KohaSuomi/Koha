@@ -94,28 +94,6 @@ columns_settings = [% ColumnsSettings.GetColumns( 'circ', 'circulation', 'issues
 
 [% UNLESS ( borrowernumber ) %][% UNLESS ( borrowers ) %]window.onload=function(){ $('#findborrower').focus(); };[% END %][% END %]
 
-// On-site checkout
-function toggle_onsite_checkout(){
-    if ( $("#onsite_checkout").prop('checked') ) {
-        $("#duedatespec").val("[% todaysdate | $KohaDates with_hours => 1%]")
-        [% IF !Koha.Preference('SpecifyDueDate') %]
-            $("#duedatespec").datetimepicker('destroy');
-        [% END %]
-    } else {
-        $("#duedatespec").datetimepicker({
-            onClose: function(dateText, inst) {
-                if (validate_date(dateText, inst) ) {
-                    $("#barcode").focus();
-                }
-            },
-            hour: 23,
-            minute: 59
-        }).on("change", function(e, value) {
-            if ( ! is_valid_date( $(this).val() ) ) {$(this).val("");}
-        });
-    }
-}
-
 function Dopop(link) {
     var newin = window.open(link, 'popup', 'width=600,height=400,resizable=1,toolbar=0,scrollbars=1,top');
 }
@@ -144,10 +122,6 @@ $(document).ready(function() {
             }
         });
     [% END %]
-    toggle_onsite_checkout();
-    $("#onsite_checkout").click(function(){
-        toggle_onsite_checkout();
-    });
 
     $("#suspend_until").datepicker({
         onClose: function(dateText, inst) {

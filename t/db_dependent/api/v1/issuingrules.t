@@ -338,7 +338,7 @@ sub create_issuing_rule {
     $params->{permanent_location} ||= '*';
     $params->{sub_location} ||= '*';
     $params->{genre} ||= '*';
-    $params->{circulation_level} ||= '*';
+    $params->{checkout_type} ||= '*';
     $params->{reserve_level} ||= '*';
 
     my $rule = $builder->build({

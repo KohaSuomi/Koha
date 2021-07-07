@@ -71,6 +71,16 @@
                                     <span class="required"> Required</span>
                                 </li>
                                 <li>
+                                    <label for="itemtype"> Checkout type: </label>
+                                    <select id="checkout_type" name="checkout_type" required="required">
+                                        <option value=""> Choose </option>
+                                        <option value="*" selected="selected">All</option>
+                                        <option value="CHECKOUT">Normal checkout</option>
+                                        <option value="ONSITE">On-site checkout</option>
+                                    </select>
+                                    <span class="required"> Required</span>
+                                </li>
+                                <li>
                                     <label for="maxissueqty" class="required">Current checkouts allowed: </label>
                                     <input type="number" min="0" name="maxissueqty" id="maxissueqty" size="10" value="50" class="required" required="required" />
                                     <span class="required">Required</span>

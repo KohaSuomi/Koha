@@ -19,7 +19,8 @@
 
 use Modern::Perl;
 
-use Test::More tests => 7;
+use Test::More tests => 9;
+use Test::Exception;
 
 use Koha::Checkouts;
 use Koha::Database;
@@ -54,6 +55,12 @@ is( Koha::Checkouts->search->count, $nb_of_checkouts + 2, 'The 2 checkouts shoul
 
 my $retrieved_checkout_1 = Koha::Checkouts->find( $new_checkout_1->issue_id );
 is( $retrieved_checkout_1->itemnumber, $new_checkout_1->itemnumber, 'Find a checkout by id should return the correct checkout' );
+
+subtest 'Koha::Checkouts checkout_codes' => sub {
+    plan tests => 2;
+    is( $Koha::Checkouts::type->{checkout}, 'CHECKOUT' );
+    is( $Koha::Checkouts::type->{onsite_checkout}, 'ONSITE' );
+};
 
 subtest 'is_overdue' => sub {
     plan tests => 6;

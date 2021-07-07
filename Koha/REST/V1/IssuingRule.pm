@@ -44,7 +44,7 @@ sub get_effective {
         my $params = $c->req->query_params->to_hash;
 
         my ($categorycode, $itemtype, $branchcode, $ccode, $permanent_location,
-            $sub_location, $genre, $circulation_level, $reserve_level);
+            $sub_location, $genre, $checkout_type, $reserve_level);
         my $user      = $c->stash('koha.user');
         my $patron    = _find_patron($params);
         my $item      = _find_item($params);
@@ -55,7 +55,7 @@ sub get_effective {
         $permanent_location = _find_permanent_location($params, $item);
         $sub_location = _find_sub_location($params, $item);
         $genre        = _find_genre($params, $item);
-        $circulation_level = _find_circulation_level($params, $item);
+        $checkout_type = _find_checkout_type($params);
         $reserve_level = _find_reserve_level($params, $item);
 
         my $rule = Koha::IssuingRules->get_effective_issuing_rule({
@@ -66,7 +66,7 @@ sub get_effective {
             permanent_location => $permanent_location,
             sub_location => $sub_location,
             genre        => $genre,
-            circulation_level => $circulation_level,
+            checkout_type => $checkout_type,
             reserve_level => $reserve_level,
         });
 
@@ -163,20 +163,10 @@ sub _find_categorycode {
     return $categorycode;
 }
 
-sub _find_circulation_level {
-    my ($params, $item) = @_;
+sub _find_checkout_type {
+    my ($params) = @_;
 
-    if (defined $item && length $params->{circulation_level}) {
-        unless ($item->circulation_level eq $params->{circulation_level}) {
-            Koha::Exceptions::BadParameter->throw(
-                error => "Item's circulation level does not match given level"
-            );
-        }
-    }
-
-    return $item->circulation_level if $item;
-
-    return $params->{circulation_level};
+    return $params->{checkout_type};
 }
 
 sub _find_ccode {

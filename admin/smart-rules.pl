@@ -72,7 +72,7 @@ if ($op eq 'delete') {
     my $permanent_location = $input->param('permanent_location');
     my $sub_location = $input->param('sub_location');
     my $genre        = $input->param('genre');
-    my $circulation_level = $input->param('circulation_level');
+    my $checkout_type = $input->param('checkout_type');
     my $reserve_level = $input->param('reserve_level');
     $debug and warn "deleting $1 $2 $branch";
 
@@ -84,12 +84,12 @@ if ($op eq 'delete') {
         and permanent_location=?
         and sub_location=?
         and genre=?
-        and circulation_level=?
+        and checkout_type=?
         and reserve_level=?
     ");
     $sth_Idelete->execute($branch, $categorycode, $itemtype,
                           $ccode, $permanent_location, $sub_location,
-                          $genre, $circulation_level, $reserve_level);
+                          $genre, $checkout_type, $reserve_level);
 }
 elsif ($op eq 'delete-branch-cat') {
     my $categorycode  = $input->param('categorycode');
@@ -144,7 +144,7 @@ elsif ($op eq 'add') {
     my $permanent_location = $input->param('permanent_location');
     my $sub_location = $input->param('sub_location');
     my $genre        = $input->param('genre');
-    my $circulation_level = $input->param('circulation_level');
+    my $checkout_type = $input->param('checkout_type');
     my $reserve_level = $input->param('reserve_level');
     my $fine = $input->param('fine');
     my $finedays     = $input->param('finedays');
@@ -186,7 +186,16 @@ elsif ($op eq 'add') {
     my $article_requests = $input->param('article_requests') || 'no';
     my $overduefinescap = $input->param('overduefinescap') || undef;
     my $cap_fine_to_replacement_price = $input->param('cap_fine_to_replacement_price') eq 'on';
-    $debug and warn "Adding $br, $bor, $itemtype, $ccode, $permanent_location, $sub_location, $genre, $circulation_level, $reserve_level, $fine, $maxissueqty, $maxonsiteissueqty, $cap_fine_to_replacement_price";
+    $debug and warn "Adding $br, $bor, $itemtype, $ccode, $permanent_location, $sub_location, $genre, $checkout_type, $reserve_level, $fine, $maxissueqty, $maxonsiteissueqty, $cap_fine_to_replacement_price";
+
+    # disable hold rules for checkout types
+    if ($checkout_type && $checkout_type ne '*') {
+        $reservesallowed        = 0;
+        $holds_per_record       = 0;
+        $hold_max_pickup_delay  = 0;
+        $hold_expiration_charge = 0;
+        $onshelfholds           = 0;
+    }
 
     my $params = {
         branchcode                    => $br,
@@ -196,7 +205,7 @@ elsif ($op eq 'add') {
         permanent_location            => $permanent_location,
         sub_location                  => $sub_location,
         genre                         => $genre,
-        circulation_level             => $circulation_level,
+        checkout_type             => $checkout_type,
         reserve_level                 => $reserve_level,
         fine                          => $fine,
         finedays                      => $finedays,
@@ -236,7 +245,7 @@ elsif ($op eq 'add') {
         permanent_location => $permanent_location,
         sub_location => $sub_location,
         genre => $genre,
-        circulation_level => $circulation_level,
+        checkout_type => $checkout_type,
         reserve_level => $reserve_level,
     });
     if ($issuingrule) {
@@ -533,10 +542,6 @@ my $genres = Koha::AuthorisedValues->search({
     category => 'GENRE',
     branchcode => $branch eq '*' ? undef : $branch
 });
-my $circlevels = Koha::AuthorisedValues->search({
-    category => 'CIRCULATION_LEVEL',
-    branchcode => $branch eq '*' ? undef : $branch
-});
 my $reservelevels = Koha::AuthorisedValues->search({
     category => 'RESERVE_LEVEL',
     branchcode => $branch eq '*' ? undef : $branch
@@ -551,8 +556,7 @@ my $sth2 = $dbh->prepare("
             a2.lib AS humanpermanent_location,
             a3.lib AS humansub_location,
             a4.lib AS humangenre,
-            a5.lib AS humancirculation_level,
-            a6.lib AS humanreserve_level
+            a5.lib AS humanreserve_level
     FROM issuingrules
     LEFT JOIN itemtypes
         ON (itemtypes.itemtype = issuingrules.itemtype)
@@ -565,8 +569,7 @@ my $sth2 = $dbh->prepare("
     LEFT JOIN authorised_values a2 ON issuingrules.permanent_location = a2.authorised_value AND a2.category = 'LOC'
     LEFT JOIN authorised_values a3 ON issuingrules.sub_location = a3.authorised_value AND a3.category = 'SUBLOC'
     LEFT JOIN authorised_values a4 ON issuingrules.genre = a4.authorised_value AND a4.category = 'GENRE'
-    LEFT JOIN authorised_values a5 ON issuingrules.circulation_level = a5.authorised_value AND a5.category = 'CIRCULATION_LEVEL'
-    LEFT JOIN authorised_values a6 ON issuingrules.reserve_level = a6.authorised_value AND a6.category = 'RESERVE_LEVEL'
+    LEFT JOIN authorised_values a5 ON issuingrules.reserve_level = a5.authorised_value AND a5.category = 'RESERVE_LEVEL'
     WHERE issuingrules.branchcode = ?
 ");
 $sth2->execute($language, $branch);
@@ -580,14 +583,14 @@ while (my $row = $sth2->fetchrow_hashref) {
     $row->{'humanpermanent_location'} ||= $row->{'permanent_location'};
     $row->{'humansub_location'} ||= $row->{'sub_location'};
     $row->{'humangenre'} ||= $row->{'genre'};
-    $row->{'humancirculation_level'} ||= $row->{'circulation_level'};
+    $row->{'humancheckout_type'} ||= $row->{'checkout_type'};
     $row->{'humanreserve_level'} ||= $row->{'reserve_level'};
     $row->{'default_humancategorycode'} = 1 if $row->{'humancategorycode'} eq '*';
     $row->{'default_ccode'} = 1 if $row->{'ccode'} eq '*';
     $row->{'default_permanent_location'} = 1 if $row->{'permanent_location'} eq '*';
     $row->{'default_sub_location'} = 1 if $row->{'sub_location'} eq '*';
     $row->{'default_genre'} = 1 if $row->{'genre'} eq '*';
-    $row->{'default_circulation_level'} = 1 if $row->{'circulation_level'} eq '*';
+    $row->{'default_checkout_type'} = 1 if $row->{'checkout_type'} eq '*';
     $row->{'default_reserve_level'} = 1 if $row->{'reserve_level'} eq '*';
     $row->{'fine'} = sprintf('%.2f', $row->{'fine'});
     if ($row->{'hardduedate'} && $row->{'hardduedate'} ne '0000-00-00') {
@@ -721,7 +724,6 @@ $template->param(
                         locloop => $locations,
                         sublocloop => $sub_locations,
                         genreloop => $genres,
-                        circlevelloop => $circlevels,
                         reservelevelloop => $reservelevels,
                         rules => \@sorted_row_loop,
                         humanbranch => ($branch ne '*' ? $branch : ''),

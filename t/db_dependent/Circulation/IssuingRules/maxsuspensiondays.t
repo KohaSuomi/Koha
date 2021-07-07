@@ -42,7 +42,7 @@ $builder->build(
             permanent_location => '*',
             sub_location => '*',
             genre        => '*',
-            circulation_level => '*',
+            checkout_type => '*',
             reserve_level => '*',
             firstremind  => 0,
             finedays     => 2,

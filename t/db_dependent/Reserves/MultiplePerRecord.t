@@ -112,6 +112,19 @@ my $item3 = $builder->build(
 my $rules_rs = Koha::Database->new()->schema()->resultset('Issuingrule');
 $rules_rs->delete();
 
+# Add a rule that explicitly defined checkout_type to make sure
+# it does not conflict with hold rules
+$rules_rs->new(
+    {
+        categorycode     => '*',
+        itemtype         => '*',
+        branchcode       => '*',
+        checkout_type    => $Koha::Checkouts::type->{onsite_checkout},
+        reservesallowed  => 5,
+        holds_per_record => 5,
+    }
+)->insert();
+
 # Test GetMaxPatronHoldsForRecord and GetHoldRule
 my $rule1 = $rules_rs->new(
     {
