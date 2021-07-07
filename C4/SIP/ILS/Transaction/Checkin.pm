@@ -83,6 +83,9 @@ sub do_checkin {
         $self->{item}->destination_loc($messages->{Wrongbranch}->{Rightbranch});
         $self->alert_type('04');            # send to other branch
     }
+    if ($messages->{Transferlimit}) {
+        $self->alert_type('04');
+    }
     if ($messages->{WrongTransfer}) {
         $self->{item}->destination_loc($messages->{WrongTransfer});
         $self->alert_type('04');            # send to other branch

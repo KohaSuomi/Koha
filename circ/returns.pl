@@ -463,6 +463,12 @@ if ( $messages->{'ResFound'}) {
                 reserve_id   => $reserve->{reserve_id},
                 reserved     => 1,
             );
+
+            if ( $messages->{'ResCannotBeTransferred'} ) {
+                $template->param(
+                    ResCannotBeTransferred => $reserve->{branchcode}
+                );
+            }
         }
 
         # same params for Waiting or Reserved
@@ -549,6 +555,12 @@ foreach my $code ( keys %$messages ) {
     elsif ( $code eq 'NeedsTransfer' ) {
     }
     elsif ( $code eq 'Wrongbranch' ) {
+    }
+    elsif ( $code eq 'Transferlimit' ) {
+        $err{transferlimit} = $messages->{'Transferlimit'};
+    }
+    elsif ( $code eq 'ResCannotBeTransferred' ) {
+        $err{rescannotbetransferred} = $messages->{'ResCannotBeTransferred'};
     }
     elsif ( $code eq 'Debarred' ) {
         $err{debarred}            = $messages->{'Debarred'};

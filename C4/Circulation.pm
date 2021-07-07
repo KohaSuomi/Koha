@@ -736,6 +736,7 @@ sub CanBookBeIssued {
     return ( \%issuingimpossible, \%needsconfirmation ) if %issuingimpossible;
  
 
+    my $koha_item = Koha::Items->find($item->{itemnumber});
     #
     # DUE DATE is OK ? -- should already have checked.
     #
@@ -1027,11 +1028,11 @@ sub CanBookBeIssued {
         my $currborinfo =    C4::Members::GetMember( borrowernumber => $issue->{borrowernumber} );
 
 
-        my ( $can_be_returned, $message ) = CanBookBeReturned( $item, C4::Context->userenv->{branch} );
+        my ( $can_be_returned, $message ) = CanBookBeReturned( $koha_item, C4::Context->userenv->{branch} );
 
         unless ( $can_be_returned ) {
             $issuingimpossible{RETURN_IMPOSSIBLE} = 1;
-            $issuingimpossible{branch_to_return} = $message;
+            $issuingimpossible{branch_to_return} = $message->{toBranch};
         } else {
             $needsconfirmation{ISSUED_TO_ANOTHER} = 1;
             $needsconfirmation{issued_firstname} = $currborinfo->{'firstname'};
@@ -1149,7 +1150,7 @@ Check whether the item can be returned to the provided branch
 
 =over 4
 
-=item C<$item> is a hash of item information as returned from GetItem
+=item C<$item> is a Koha::Item object
 
 =item C<$branch> is the branchcode where the return is taking place
 
@@ -1161,33 +1162,47 @@ Returns:
 
 =item C<$returnallowed> is 0 or 1, corresponding to whether the return is allowed (1) or not (0)
 
-=item C<$message> is the branchcode where the item SHOULD be returned, if the return is not allowed
+=item C<$message> is a HASHref of following possible keys:
+
+C<toBranch> branchcode where the item SHOULD be returned, if the return is not allowed
+C<transferLimit> transfer limit exists, HASHref of following keys: C<from>, C<to>
 
 =back
 
 =cut
 
 sub CanBookBeReturned {
-  my ($item, $branch) = @_;
-  my $allowreturntobranch = C4::Context->preference("AllowReturnToBranch") || 'anywhere';
+    my ($item, $branch) = @_;
+    my $allowreturntobranch = C4::Context->preference("AllowReturnToBranch") || 'anywhere';
 
-  # assume return is allowed to start
-  my $allowed = 1;
-  my $message;
+    # assume return is allowed to start
+    my $allowed = 1;
+    my $to_branch = $branch;
+    my $message;
 
-  # identify all cases where return is forbidden
-  if ($allowreturntobranch eq 'homebranch' && $branch ne $item->{'homebranch'}) {
-     $allowed = 0;
-     $message = $item->{'homebranch'};
-  } elsif ($allowreturntobranch eq 'holdingbranch' && $branch ne $item->{'holdingbranch'}) {
-     $allowed = 0;
-     $message = $item->{'holdingbranch'};
-  } elsif ($allowreturntobranch eq 'homeorholdingbranch' && $branch ne $item->{'homebranch'} && $branch ne $item->{'holdingbranch'}) {
-     $allowed = 0;
-     $message = $item->{'homebranch'}; # FIXME: choice of homebranch is arbitrary
-  }
+    # identify all cases where return is forbidden
+    if ($allowreturntobranch eq 'homebranch' && $branch ne $item->homebranch) {
+        $allowed = 0;
+        $message->{toBranch} = $to_branch = $item->homebranch;
+    } elsif ($allowreturntobranch eq 'holdingbranch' && $branch ne $item->holdingbranch) {
+        $allowed = 0;
+        $message->{toBranch} = $to_branch = $item->holdingbranch;
+    } elsif ($allowreturntobranch eq 'homeorholdingbranch' && $branch ne $item->homebranch && $branch ne $item->holdingbranch) {
+        $allowed = 0;
+        $message->{toBranch} = $to_branch = $item->homebranch; # FIXME: choice of homebranch is arbitrary
+    }
 
-  return ($allowed, $message);
+    # Make sure there are no branch transfer limits between item's current
+    # branch (holdinbranch) and the return branch
+    if (!$item->can_be_transferred({ to => $to_branch })) {
+        $allowed = 0;
+        $message->{transferLimit} = {
+            from => $item->holdingbranch,
+            to   => $to_branch
+        };
+    }
+
+    return ($allowed, $message);
 }
 
 =head2 CheckHighHolds
@@ -1354,6 +1369,7 @@ sub AddIssue {
         # find which item we issue
         my $item = GetItem( '', $barcode )
           or return;    # if we don't get an Item, abort.
+        my $koha_item = Koha::Items->find($item->{itemnumber});
 
         my $branch = _GetCircControlBranch( $item, $borrower );
 
@@ -1380,7 +1396,7 @@ sub AddIssue {
                     and not $switch_onsite_checkout ) {
                 # This book is currently on loan, but not to the person
                 # who wants to borrow it now. mark it returned before issuing to the new borrower
-                my ( $allowed, $message ) = CanBookBeReturned( $item, C4::Context->userenv->{branch} );
+                my ( $allowed, $message ) = CanBookBeReturned( $koha_item, C4::Context->userenv->{branch} );
                 return unless $allowed;
                 AddReturn( $item->{'barcode'}, C4::Context->userenv->{'branch'} );
             }
@@ -1847,6 +1863,10 @@ This book has was returned to the wrong branch.  The value is a hashref
 so that C<$messages->{Wrongbranch}->{Wrongbranch}> and C<$messages->{Wrongbranch}->{Rightbranch}>
 contain the branchcode of the incorrect and correct return library, respectively.
 
+=item C<Transferlimit>
+
+A transfer limit exists between item's holding branch and the return branch.
+
 =item C<ResFound>
 
 The item was reserved. The value is a reference-to-hash whose keys are
@@ -1891,6 +1911,8 @@ sub AddReturn {
     unless ($item) {
         return ( 0, { BadBarcode => $barcode } );    # no barcode means no item or borrower.  bail out.
     }
+
+    my $koha_item = Koha::Items->find($item->{itemnumber});
 
     my $itemnumber = $item->{ itemnumber };
 
@@ -1969,12 +1991,17 @@ sub AddReturn {
     }
 
     # check if the return is allowed at this branch
-    my ($returnallowed, $message) = CanBookBeReturned($item, $branch);
+    my ($returnallowed, $message) = CanBookBeReturned($koha_item, $branch);
     unless ($returnallowed){
         $messages->{'Wrongbranch'} = {
             Wrongbranch => $branch,
-            Rightbranch => $message
-        };
+            Rightbranch => $message->{toBranch}
+        } if $message->{toBranch};
+
+        if ($message->{'transferLimit'}) {
+            $messages->{'Transferlimit'} = $message->{'transferLimit'};
+        }
+
         $doreturn = 0;
         return ( $doreturn, $messages, $issue, $borrower );
     }
@@ -2013,7 +2040,7 @@ sub AddReturn {
             } else {
                 $messages->{'Wrongbranch'} = {
                     Wrongbranch => $branch,
-                    Rightbranch => $message
+                    Rightbranch => $message->{'toBranch'}
                 };
                 carp $@;
                 return ( 0, { WasReturned => 0 }, $issue, $borrower );
@@ -2119,6 +2146,10 @@ sub AddReturn {
     if ($resfound) {
           $resrec->{'ResFound'} = $resfound;
         $messages->{'ResFound'} = $resrec;
+
+        if (!$koha_item->can_be_transferred({ from => $branch, to => $resrec->{branchcode} })) {
+            $messages->{'ResCannotBeTransferred'} = $resrec->{branchcode};
+        }
     }
 
     # Record the fact that this book was returned.
