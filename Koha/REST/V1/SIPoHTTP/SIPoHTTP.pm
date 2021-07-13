@@ -35,9 +35,9 @@ use strict;
 use warnings qw( all );
 
 #Exchange sip messages via REST endpoint /sipmessages.
-#Configuration for sip services using sipohttp must be placed in SIPconfig.xml
+#Configuration for sip services using sipohttp must be placed under KOHA_CONF/SIPconfig/ path in an XML file
 
-# SIPconfig.xml example:
+# SIP config XML example for accounts using SIPoHTTP:
 #<sipohttp>
 #    <service name="foo" host="10.0.3.217" port="6009" />
 #    <service name="fighters" host="10.0.3.217" port="6010" />
@@ -262,76 +262,81 @@ sub extractServer {
     my ($xmlmessage, $c)    = @_;
     my ($term,       $pass) = getLogin($xmlmessage);
 
-    my $parser     = XML::LibXML->new();
-    my $doc        = XML::LibXML->load_xml(location => $CONFPATH . '/SIPconfig/SIPconfig.xml');
-    my $xc         = XML::LibXML::XPathContext->new($doc);
+    #Handle all sip config XML files under /KOHA_CONF/SIPconfig
+    foreach my $file (glob("$CONFPATH/SIPconfig/*.xml")) {
 
-    $xc->registerNs('acs', "http://openncip.org/acs-config/1.0/");
-    
-    #get account node with user id that matches received XML message's login id from SIPconfig.xml
-    my $xpath = '/acs:acsconfig/acs:accounts/acs:login[@id="' . $term . '"]';
+        my $parser = XML::LibXML->new();
+        my $doc    = XML::LibXML->load_xml(location => $file);
+        my $xc     = XML::LibXML::XPathContext->new($doc);
 
-    foreach my $node ($xc->findnodes($xpath)) {
+        $xc->registerNs('acs', "http://openncip.org/acs-config/1.0/");
 
-        my $id = $node->getAttribute('id');
-        
-        if ($id eq $term) {
-            
-            #find sipohttp host and port attributes inside <sipohttp></sipohttp> by service name.
-            #Sipohttp service name is defined in sip account line (sipohttp parameter) and in service name parameter inside <sipohttp></sipohttp>.
-            
-            #get attribute 'sipohttp' from matching account line 
-            my $service = $node->getAttribute('sipohttp');
-                      
-            my $xpath = '/acs:acsconfig/acs:sipohttp/acs:service[@name="' . $service . '"]';
+        #get account node with user id that matches received XML message's login id from sip config xml
+        my $xpath = '/acs:acsconfig/acs:accounts/acs:login[@id="' . $term . '"]';
 
-            foreach my $node ($xc->findnodes($xpath)) {
-                
-                
-                my $servName = $node->getAttribute('name');
-                
-                if ($servName eq $service) {
+        foreach my $node ($xc->findnodes($xpath)) {
 
-                    my $host = $node->getAttribute('host');
-                    my $port = $node->getAttribute('port');
+            my $id = $node->getAttribute('id');
 
-                    return $host, $port;
+            if ($id eq $term) {
+
+                #find sipohttp host and port attributes inside <sipohttp></sipohttp> by service name.
+                #Sipohttp service name is defined in sip account line (sipohttp parameter) and in service name parameter inside <sipohttp></sipohttp>.
+
+                #get attribute 'sipohttp' from matching account line
+                my $service = $node->getAttribute('sipohttp');
+
+                my $xpath = '/acs:acsconfig/acs:sipohttp/acs:service[@name="' . $service . '"]';
+
+                foreach my $node ($xc->findnodes($xpath)) {
+
+
+                    my $servName = $node->getAttribute('name');
+
+                    if ($servName eq $service) {
+
+                        my $host = $node->getAttribute('host');
+                        my $port = $node->getAttribute('port');
+
+                        return $host, $port;
+
+                    }
+
                 }
-                
-                else {
-                    $log->error("Can't find sipohttp service parameters for $term in SIPconfig.xml");
-                }
+
+                $log->error("Can't find SIPoHTTP service parameters $service for $term in sip config XMLs");
+                return 0;
 
             }
 
         }
 
     }
-    
-    $log->error("Missing account parameters for $term in SIPconfig.xml");
-        return 0;
-    
+
+    $log->error("Missing SIPoHTTP account for $term in sip config XMLs");
+    return 0;
+
 }
 
-    sub validateXml {
+sub validateXml {
 
-        #For validating the content of the XML SIP message
-        my ($c, $xmlbody) = @_;
-        my $parser = XML::LibXML->new();
+    #For validating the content of the XML SIP message
+    my ($c, $xmlbody) = @_;
+    my $parser = XML::LibXML->new();
 
-        # parse and validate the xml against sipschema
-        # https://koha-suomi.fi/sipschema.xsd
-        my $schema = XML::LibXML::Schema->new(location => $KOHAPATH . '/koha-tmpl/sipschema.xsd');
+    # parse and validate the xml against sipschema
+    # https://koha-suomi.fi/sipschema.xsd
+    my $schema = XML::LibXML::Schema->new(location => $KOHAPATH . '/koha-tmpl/sipschema.xsd');
 
-        try {
-            my $xmldoc = $parser->load_xml(string => $xmlbody);
-            $schema->validate($xmldoc);
-            $log->info("XML Validated OK.");
-            return 1;
-        } catch {
-            $log->error("Could not validate XML - @_");
-            return 0;
-        };
-    }
+    try {
+        my $xmldoc = $parser->load_xml(string => $xmlbody);
+        $schema->validate($xmldoc);
+        $log->info("XML Validated OK.");
+        return 1;
+    } catch {
+        $log->error("Could not validate XML - @_");
+        return 0;
+    };
+}
 
-    1;
+1;
