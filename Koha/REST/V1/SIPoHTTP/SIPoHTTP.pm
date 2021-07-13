@@ -34,6 +34,20 @@ use utf8;
 use strict;
 use warnings qw( all );
 
+#Exchange sip messages via REST endpoint /sipmessages.
+#Configuration for sip services using sipohttp must be placed in SIPconfig.xml
+
+# SIPconfig.xml example:
+#<sipohttp>
+#    <service name="foo" host="10.0.3.217" port="6009" />
+#    <service name="fighters" host="10.0.3.217" port="6010" />
+#  </sipohttp>
+#
+#  <accounts>
+#    <login id="SIPDEVICE" password="SIPDEVICE1PASS" delimiter="|" error-detect="enabled" institution="SIPDEVICE" terminator="CR" encoding="utf8" checked_in_ok="1" no_alert="1" sipohttp="foo"/>
+#    <login id="SIPaccount1" password="SIPaccount1pass" delimiter="|" error-detect="enabled" institution="SIPDEVICE" terminator="CR" encoding="utf8" checked_in_ok="1" no_alert="1" sipohttp="fighters"/>
+#  </accounts>
+
 my $CONFPATH = dirname($ENV{'KOHA_CONF'});
 my $KOHAPATH = C4::Context->config('intranetdir');
 
@@ -69,7 +83,7 @@ sub process {
         $c->render(text => "Invalid request. Missing login/pw in XML.", status => 400);
         return;
     }
-    
+
     my $sipmes = extractSip($xmlrequest, $c);
 
     unless ($sipmes) {
@@ -130,11 +144,11 @@ sub tradeSip {
 
     $sipsock->recv($respdata, 1024);
     $sipsock->flush;
-    
+
     #remove carriage return/line feed from response
     $respdata =~ s/\r//g;
     $respdata =~ s/\n//g;
-    
+
     if ($respdata eq '941') {
 
         $log->info("Login OK. Sending: $command_message");
@@ -152,12 +166,12 @@ sub tradeSip {
 
         return $respdata;
     }
-    
+
     $log->error("Unauthorized login for $login: $respdata. Can't process attached SIP message.");
 
     $sipsock->flush;
     $sipsock->shutdown(SHUT_WR);
-    $sipsock->shutdown(SHUT_RDWR);    # we stopped using this socket
+    $sipsock->shutdown(SHUT_RDWR);        # we stopped using this socket
     $sipsock->close;
 
     return $respdata;
@@ -173,28 +187,26 @@ sub buildLogin {
 sub buildXml {
 
     my $responsemessage = shift;
-    
-	my $doc = XML::LibXML::Document->new('1.0', 'utf-8');
 
-	my $root = $doc->createElement('ns1:sip');
+    my $doc = XML::LibXML::Document->new('1.0', 'utf-8');
 
-	$root->setAttribute('xsi:schemaLocation'=> 'https://koha-suomi.fi/sipschema.xsd');
-	$root->setAttribute('xmlns:ns1'=> 'https://koha-suomi.fi/sipschema.xsd');
-	$root->setAttribute('xmlns:xsi'=> 'http://www.w3.org/2001/XMLSchema-instance');
-	my %tags = (
-    	response => $responsemessage,
-	);
+    my $root = $doc->createElement('ns1:sip');
 
-	for my $name (keys %tags) {
-    	my $tag = $doc->createElement($name);
-    	my $value = $tags{$name};
-    	$tag->appendTextNode($value);
-    	$root->appendChild($tag);
-	}
+    $root->setAttribute('xsi:schemaLocation' => 'https://koha-suomi.fi/sipschema.xsd');
+    $root->setAttribute('xmlns:ns1'          => 'https://koha-suomi.fi/sipschema.xsd');
+    $root->setAttribute('xmlns:xsi'          => 'http://www.w3.org/2001/XMLSchema-instance');
+    my %tags = (response => $responsemessage,);
 
-	$doc->setDocumentElement($root);
+    for my $name (keys %tags) {
+        my $tag   = $doc->createElement($name);
+        my $value = $tags{$name};
+        $tag->appendTextNode($value);
+        $root->appendChild($tag);
+    }
 
-	print $doc->toString();
+    $doc->setDocumentElement($root);
+
+    print $doc->toString();
 
     $doc = decode_utf8($doc);
 
@@ -212,7 +224,7 @@ sub extractSip {
     my ($node) = $xc->findnodes('//request');
 
     my $siprequest = $node->textContent;
-    
+
     #remove carriage return/line feed from request
     $siprequest =~ s/\r//g;
     $siprequest =~ s/\n//g;
@@ -249,42 +261,77 @@ sub extractServer {
 
     my ($xmlmessage, $c)    = @_;
     my ($term,       $pass) = getLogin($xmlmessage);
-    my $configfile = 'sip2ohttp-config.xml';
 
-    my $doc = XML::LibXML->load_xml(location => $CONFPATH . '/' . $configfile);
-    my $xc  = XML::LibXML::XPathContext->new($doc->documentElement());
+    my $parser     = XML::LibXML->new();
+    my $doc        = XML::LibXML->load_xml(location => $CONFPATH . '/SIPconfig/SIPconfig.xml');
+    my $xc         = XML::LibXML::XPathContext->new($doc);
 
-    my ($node) = $xc->findnodes('//' . $term);
+    $xc->registerNs('acs', "http://openncip.org/acs-config/1.0/");
+    
+    #get account node with user id that matches received XML message's login id from SIPconfig.xml
+    my $xpath = '/acs:acsconfig/acs:accounts/acs:login[@id="' . $term . '"]';
 
-    unless ($node) {
-        $log->error("Missing server config parameters for $term in $configfile");
+    foreach my $node ($xc->findnodes($xpath)) {
+
+        my $id = $node->getAttribute('id');
+        
+        if ($id eq $term) {
+            
+            #find sipohttp host and port attributes inside <sipohttp></sipohttp> by service name.
+            #Sipohttp service name is defined in sip account line (sipohttp parameter) and in service name parameter inside <sipohttp></sipohttp>.
+            
+            #get attribute 'sipohttp' from matching account line 
+            my $service = $node->getAttribute('sipohttp');
+                      
+            my $xpath = '/acs:acsconfig/acs:sipohttp/acs:service[@name="' . $service . '"]';
+
+            foreach my $node ($xc->findnodes($xpath)) {
+                
+                
+                my $servName = $node->getAttribute('name');
+                
+                if ($servName eq $service) {
+
+                    my $host = $node->getAttribute('host');
+                    my $port = $node->getAttribute('port');
+
+                    return $host, $port;
+                }
+                
+                else {
+                    $log->error("Can't find sipohttp service parameters for $term in SIPconfig.xml");
+                }
+
+            }
+
+        }
+
+    }
+    
+    $log->error("Missing account parameters for $term in SIPconfig.xml");
         return 0;
+    
+}
+
+    sub validateXml {
+
+        #For validating the content of the XML SIP message
+        my ($c, $xmlbody) = @_;
+        my $parser = XML::LibXML->new();
+
+        # parse and validate the xml against sipschema
+        # https://koha-suomi.fi/sipschema.xsd
+        my $schema = XML::LibXML::Schema->new(location => $KOHAPATH . '/koha-tmpl/sipschema.xsd');
+
+        try {
+            my $xmldoc = $parser->load_xml(string => $xmlbody);
+            $schema->validate($xmldoc);
+            $log->info("XML Validated OK.");
+            return 1;
+        } catch {
+            $log->error("Could not validate XML - @_");
+            return 0;
+        };
     }
 
-    $host = $node->findvalue('./host');
-    $port = $node->findvalue('./port');
-    return $host, $port;
-}
-
-sub validateXml {
-
-    #For validating the content of the XML SIP message
-    my ($c, $xmlbody) = @_;
-    my $parser = XML::LibXML->new();
-
-    # parse and validate the xml against sipschema
-    # https://koha-suomi.fi/sipschema.xsd
-    my $schema = XML::LibXML::Schema->new(location => $KOHAPATH . '/koha-tmpl/sipschema.xsd');
-
-    try {
-        my $xmldoc = $parser->load_xml(string => $xmlbody);
-        $schema->validate($xmldoc);
-        $log->info("XML Validated OK.");
-        return 1;
-    } catch {
-        $log->error("Could not validate XML - @_");
-        return 0;
-    };
-}
-
-1;
+    1;
