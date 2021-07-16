@@ -38,6 +38,7 @@ use C4::Templates qw(gettemplate);
 
 use Koha::BiblioDataElements;
 use Koha::ItemTypes;
+use Koha::AuthorisedValues;
 
 use Koha::Exception::BadSystemPreference;
 use Koha::Exception::FeatureUnavailable;
@@ -300,119 +301,6 @@ sub _processIssuesDataRow {
     }
 }
 
-sub _processItemsDataRow_old {
-    my ($self, $libraryGroup, $row) = @_;
-
-    my $stats = $libraryGroup->getStatistics();
-
-    my $deleted = $row->{deleted}; #These inlcude also Issues for Items outside of this libraryGroup.
-    my $primaryLanguage = $row->{primary_language};
-    my $isChildrensMaterial = $self->isItemChildrens($row);
-    my $isFiction = $row->{fiction};
-    my $isMusicalRecording = $row->{musical};
-    my $isAcquired = (not($deleted)) ? $self->isItemAcquired($row) : undef; #If an Item is deleted, omit the acquisitions calculations because they wouldn't be accurate. Default to not acquired.
-    my $itemtype = $row->{itemtype};
-    my $issues = $row->{issuesQuery}->{issues} || 0;
-    my $serial = ($itemtype eq 'AL' || $itemtype eq 'SL') ? 1 : 0;
-
-    #Increase the collection for every Item found
-    $stats->{collection}++ if not($deleted) && not($serial);
-    $stats->{acquisitions}++ if $isAcquired && not($serial);
-    $stats->{issues} += $issues; #Serials are included in the cumulative issues.
-    $stats->{expenditureAcquisitions} += $row->{price} if $isAcquired && not($serial) && $row->{price};
-
-    if ($itemtype eq 'KI') {
-
-        $stats->{collectionBooksTotal}++ if not($deleted);
-        $stats->{acquisitionsBooksTotal}++ if $isAcquired;
-        $stats->{expenditureAcquisitionsBooks} += $row->{price} if $isAcquired && $row->{price};
-        $stats->{issuesBooksTotal} += $issues;
-
-        if (not(defined($primaryLanguage)) || $primaryLanguage eq 'fin') {
-            $stats->{collectionBooksFinnish}++ if not($deleted);
-            $stats->{acquisitionsBooksFinnish}++ if $isAcquired;
-            $stats->{issuesBooksFinnish} += $issues;
-        }
-        elsif ($primaryLanguage eq 'swe') {
-            $stats->{collectionBooksSwedish}++ if not($deleted);
-            $stats->{acquisitionsBooksSwedish}++ if $isAcquired;
-            $stats->{issuesBooksSwedish} += $issues;
-        }
-        else {
-            $stats->{collectionBooksOtherLanguage}++ if not($deleted);
-            $stats->{acquisitionsBooksOtherLanguage}++ if $isAcquired;
-            $stats->{issuesBooksOtherLanguage} += $issues;
-        }
-
-        if ($isFiction) {
-            if ($isChildrensMaterial) {
-                $stats->{collectionBooksFictionJuvenile}++ if not($deleted);
-                $stats->{acquisitionsBooksFictionJuvenile}++ if $isAcquired;
-                $stats->{issuesBooksFictionJuvenile} += $issues;
-            }
-            else { #Adults fiction
-                $stats->{collectionBooksFictionAdult}++ if not($deleted);
-                $stats->{acquisitionsBooksFictionAdult}++ if $isAcquired;
-                $stats->{issuesBooksFictionAdult} += $issues;
-            }
-        }
-        else { #Non-Fiction
-            if ($isChildrensMaterial) {
-                $stats->{collectionBooksNonFictionJuvenile}++ if not($deleted);
-                $stats->{acquisitionsBooksNonFictionJuvenile}++ if $isAcquired;
-                $stats->{issuesBooksNonFictionJuvenile} += $issues;
-            }
-            else { #Adults Non-fiction
-                $stats->{collectionBooksNonFictionAdult}++ if not($deleted);
-                $stats->{acquisitionsBooksNonFictionAdult}++ if $isAcquired;
-                $stats->{issuesBooksNonFictionAdult} += $issues;
-            }
-        }
-    }
-    elsif ($itemtype eq 'NU' || $itemtype eq 'PA') {
-        $stats->{collectionSheetMusicAndScores}++ if not($deleted);
-        $stats->{acquisitionsSheetMusicAndScores}++ if $isAcquired;
-        $stats->{issuesSheetMusicAndScores} += $issues;
-    }
-    elsif ($itemtype eq 'KA' || $itemtype eq 'CD' || $itemtype eq 'MP' || $itemtype eq 'LE' || $itemtype eq 'ÄT' || $itemtype eq 'NÄ') {
-        if ($isMusicalRecording) {
-            $stats->{collectionMusicalRecordings}++ if not($deleted);
-            $stats->{acquisitionsMusicalRecordings}++ if $isAcquired;
-            $stats->{issuesMusicalRecordings} += $issues;
-        }
-        else {
-            $stats->{collectionOtherRecordings}++ if not($deleted);
-            $stats->{acquisitionsOtherRecordings}++ if $isAcquired;
-            $stats->{issuesOtherRecordings} += $issues;
-        }
-    }
-    elsif ($itemtype eq 'VI') {
-        $stats->{collectionVideos}++ if not($deleted);
-        $stats->{acquisitionsVideos}++ if $isAcquired;
-        $stats->{issuesVideos} += $issues;
-    }
-    elsif ($itemtype eq 'CR' || $itemtype eq 'DR' || $itemtype eq 'KP') {
-        $stats->{collectionCDROMs}++ if not($deleted);
-        $stats->{acquisitionsCDROMs}++ if $isAcquired;
-        $stats->{issuesCDROMs} += $issues;
-    }
-    elsif ($itemtype eq 'BR' || $itemtype eq 'DV') {
-        $stats->{collectionDVDsAndBluRays}++ if not($deleted);
-        $stats->{acquisitionsDVDsAndBluRays}++ if $isAcquired;
-        $stats->{issuesDVDsAndBluRays} += $issues;
-    }
-    elsif ($serial || $itemtype eq 'DI' || $itemtype eq 'ES' || $itemtype eq 'KO' || $itemtype eq 'KR' || $itemtype eq 'MM' || $itemtype eq 'MO' || $itemtype eq 'SK' || $itemtype eq 'TY' || $itemtype eq 'MF' || $itemtype eq 'KU' || $itemtype eq 'MK' || $itemtype eq 'KÄ') {
-        $stats->{collectionOther}++ if not($deleted) && not($serial);
-        $stats->{acquisitionsOther}++ if $isAcquired && not($serial);
-        $stats->{issuesOther} += $issues;
-        #Serials and magazines are collected from the subscriptions-table using statisticsSubscriptions()
-        #Don't count them for the collection or acquisitions. Serials must be included in the cumulative Issues.
-    }
-    else {
-        $self->log("\nUnmapped itemtype \n'$itemtype'\n with this statistical row:\n".Data::Dumper::Dumper($row));
-    }
-}
-
 =head fetchItemsDataMountain
 
     my $itemBomb = $okm->fetchItemsDataMountain();
@@ -434,7 +322,7 @@ sub fetchItemsDataMountain {
     #Get all the Items' informations for Items residing in the libraryGroup.
     my $sth = $dbh->prepare("
         (
-        SELECT  i.itemnumber, i.biblionumber, bi.itemtype, i.location, i.price,
+        SELECT  i.itemnumber, i.biblionumber, bi.itemtype as itype, i.location, i.price,
                 ao.ordernumber, ao.datereceived, i.dateaccessioned,
                 bde.primary_language, bde.fiction, bde.musical,
                 0 as deleted
@@ -448,7 +336,7 @@ sub fetchItemsDataMountain {
         )
         UNION
         (
-        SELECT  di.itemnumber, di.biblionumber, bi.itemtype, di.location, di.price,
+        SELECT  di.itemnumber, di.biblionumber, bi.itemtype as itype, di.location, di.price,
                 ao.ordernumber, ao.datereceived, di.dateaccessioned,
                 bde.primary_language, bde.fiction, bde.musical,
                 1 as deleted
@@ -494,7 +382,7 @@ sub fetchIssuesDataMountain {
     #This means that Patrons can check-out Items whose homebranch is not in this libraryGroup, but whom are checked out/renewed from this libraryGroup.
     my $sth = $dbh->prepare("
         (
-        SELECT s.itemnumber, i.biblionumber, bi.itemtype, i.location, 0 as deleted, COUNT(s.itemnumber) as issues,
+        SELECT s.itemnumber, i.biblionumber, bi.itemtype as itype, i.location, 0 as deleted, COUNT(s.itemnumber) as issues,
                bde.primary_language, bde.fiction, bde.musical
             FROM statistics s
             LEFT JOIN items i ON s.itemnumber = i.itemnumber
@@ -509,7 +397,7 @@ sub fetchIssuesDataMountain {
         )
         UNION
         (
-        SELECT s.itemnumber, di.biblionumber, bi.itemtype, di.location, 1 as deleted, COUNT(s.itemnumber) as issues,
+        SELECT s.itemnumber, di.biblionumber, bi.itemtype as itype, di.location, 1 as deleted, COUNT(s.itemnumber) as issues,
                bde.primary_language, bde.fiction, bde.musical
             FROM statistics s
             LEFT JOIN deleteditems di ON s.itemnumber = di.itemnumber
@@ -532,108 +420,6 @@ sub fetchIssuesDataMountain {
     return $issuesBomb;
 }
 
-sub fetchItemsDataMountain_old {
-    my ($self, $libraryGroup) = @_;
-
-    my $in_libraryGroupBranches = $libraryGroup->getBranchcodesINClause();
-    my $limit = $self->getLimit();
-
-    my $dbh = C4::Context->dbh();
-    #Get all the Items' informations for Items residing in the libraryGroup.
-    #NOTE! Column 'datereceived' should be replaced with 'dateaccessioned' after version update
-    my $sthItems = $dbh->prepare(
-                "SELECT i.itemnumber, i.biblionumber, i.location, i.price, ao.ordernumber, ao.datereceived, av.imageurl, i.dateaccessioned,
-                        bde.primary_language, bde.fiction, bde.musical, bde.itemtype
-                 FROM items i LEFT JOIN aqorders_items ai ON i.itemnumber = ai.itemnumber
-                              LEFT JOIN aqorders ao ON ai.ordernumber = ao.ordernumber LEFT JOIN statistics s ON s.itemnumber = i.itemnumber
-                              LEFT JOIN authorised_values av ON av.authorised_value = i.permanent_location
-                              LEFT JOIN biblioitems bi ON i.biblionumber = bi.biblioitemnumber
-                              LEFT JOIN biblio_data_elements bde ON bi.biblioitemnumber = bde.biblioitemnumber
-                 WHERE i.homebranch $in_libraryGroupBranches
-                 GROUP BY i.itemnumber ORDER BY i.itemnumber $limit;");
-#    $sth->execute(  $self->{startDateISO}, $self->{endDateISO}  ); #This will take some time.....
-    $sthItems->execute(  ); #This will take some time.....
-    my $itemBomb = $sthItems->fetchall_hashref('itemnumber');
-
-    #Get all the Deleted Items' informations. We need them for the statistical entries that have a deleted item.
-    my $sthDeleteditems = $dbh->prepare(
-                "SELECT i.itemnumber, i.biblionumber, i.location, i.price, av.imageurl, i.dateaccessioned, 1 as deleted,
-                        bde.primary_language, bde.fiction, bde.musical, bde.itemtype
-                 FROM deleteditems i
-                              LEFT JOIN authorised_values av ON av.authorised_value = i.permanent_location
-                              LEFT JOIN biblioitems bi ON i.biblionumber = bi.biblioitemnumber
-                              LEFT JOIN biblio_data_elements bde ON bi.biblioitemnumber = bde.biblioitemnumber
-                 WHERE i.homebranch $in_libraryGroupBranches
-                 GROUP BY i.itemnumber ORDER BY i.itemnumber $limit;");
-#    $sth->execute(  $self->{startDateISO}, $self->{endDateISO}  ); #This will take some time.....
-    $sthDeleteditems->execute(  ); #This will take some time.....
-    my $deleteditemBomb = $sthDeleteditems->fetchall_hashref('itemnumber');
-
-    #Get all the Issues informations. We can have issues for other branches Items' which are not included in the $sthItems and $sthDeleteditems -queries.
-    #This means that Patrons can check-out Items whose homebranch is not in this libraryGroup, but whom are checked out/renewed from this libraryGroup.
-    my $sthIssues = $dbh->prepare(
-                "SELECT s.itemnumber, i.biblionumber, i.itype as itemtype, i.location, COUNT(s.itemnumber) as issues
-                 FROM statistics s LEFT JOIN items i ON i.itemnumber = s.itemnumber
-                 WHERE s.branch $in_libraryGroupBranches
-                   AND s.type IN ('issue','renew')
-                   AND s.datetime >= ? AND datetime <= ?".
-#                  "AND (s.usercode = 'HENKILO' OR s.usercode = 'VIRKAILIJA' OR s.usercode = 'LAPSI' OR s.usercode = 'MUUKUINLAP' OR s.usercode = 'TAKAAJA' OR s.usercode = 'YHTEISO')
-                   "AND (s.usercode != 'KIRJASTO' AND s.usercode != 'TILASTO' AND s.usercode != 'KAUKOLAINA')
-                 GROUP BY s.itemnumber ORDER BY s.itemnumber $limit;");
-    $sthIssues->execute(  $self->{startDateISO}, $self->{endDateISO}  ); #This will take some time.....
-    my $issuesBomb = $sthIssues->fetchall_hashref('itemnumber');
-    #Get the same stuff for possibly deleted Items.
-    my $sthDeleteditemsIssues = $dbh->prepare(
-                "SELECT s.itemnumber, i.biblionumber, i.itype as itemtype, i.location, COUNT(s.itemnumber) as issues
-                 FROM statistics s LEFT JOIN deleteditems i ON i.itemnumber = s.itemnumber
-                 WHERE s.branch $in_libraryGroupBranches
-                   AND s.type IN ('issue','renew')
-                   AND s.datetime >= ? AND datetime <= ?".
-#                  "AND (s.usercode = 'HENKILO' OR s.usercode = 'VIRKAILIJA' OR s.usercode = 'LAPSI' OR s.usercode = 'MUUKUINLAP' OR s.usercode = 'TAKAAJA' OR s.usercode = 'YHTEISO')
-                   "AND (s.usercode != 'KIRJASTO' AND s.usercode != 'TILASTO' AND s.usercode != 'KAUKOLAINA')
-                    AND other != 'KONVERSIO'
-                 GROUP BY s.itemnumber ORDER BY s.itemnumber $limit;");
-    $sthDeleteditemsIssues->execute(  $self->{startDateISO}, $self->{endDateISO}  ); #This will take some time.....
-    my $deleteditemsIssuesBomb = $sthDeleteditemsIssues->fetchall_hashref('itemnumber');
-
-    #Merge Issues to Items' informations.
-    foreach my $itemnumber (sort {$a <=> $b} (keys(%$issuesBomb))) {
-        my $it = $itemBomb->{$itemnumber};
-        my $id = $deleteditemBomb->{$itemnumber};
-        my $is = $issuesBomb->{$itemnumber};
-        my $di = $deleteditemsIssuesBomb->{$itemnumber};
-
-        unless ($it) {
-            unless ($id) {
-                if (($is && $is->{itype}) || ($di && $di->{itype})) { #We have an Issue with no item anywhere
-                    print "OKM->fetchDataMountain(): Issue with no Item or deleted Item. Using itemnumber '$itemnumber'.\n" if $self->{verbose};
-                }
-                else {
-                    print "OKM->fetchDataMountain(): No Item or deleted Item found for Issues? Using itemnumber '$itemnumber'. Not inlcuding '".$is->{issues}."' issues to the statistics.\n";
-                    next();
-                }
-                #Store the Issue with partial Item statistical information. These are counted only as issues towards different itemtypes.
-                #Because these Items-data are not from the libraryGroup whose collection/acquisitions are being calculated.
-                $itemBomb->{$itemnumber} = $is;
-                $it = $is; #Consider this like any other deleted Item from now on, so don't include it to collection/acquisitions statistics, but make sure the itemtype is accessible properly.
-                $it->{deleted} = 1;
-                #Discard are calculated in statisticsDiscards() and this has nothing to do with that.
-            }
-            else {
-                $itemBomb->{$itemnumber} = $id; #Take the deleted Item from the dead and reuse it.
-                #print "OKM->fetchDataMountain(): Issues for deleted Item? Using deleted itemnumber '$itemnumber'.\n" if $self->{verbose};
-            }
-        }
-        unless ($is) {
-            print "OKM->fetchDataMountain(): No Issues in issuesBomb? Using itemnumber '$itemnumber'. This should never happen, since we get these itemnumbers from this same issues Hash.\n";
-            next();
-        }
-
-        $it->{issuesQuery} = $is;
-    }
-
-    return $itemBomb;
-}
 =head getBranchCounts
 
     getBranchCounts( $branchcode, $mainLibrariesCount );
@@ -724,10 +510,10 @@ sub statisticsDiscards {
     my $dbh = C4::Context->dbh();
     my $in_libraryGroupBranches = $libraryGroup->getBranchcodesINClause();
     my $limit = $self->getLimit();
-    my $sql =  "SELECT count(*) FROM deleteditems ".
+    my $sql =  "SELECT count(*) FROM biblio_data_elements bde LEFT JOIN deleteditems ON bde.biblioitemnumber = deleteditems.biblioitemnumber ".
                "WHERE homebranch $in_libraryGroupBranches ".
                "  AND timestamp >= ? AND timestamp <= ? ".
-               "  AND itype NOT IN (".join(',', map {"'$_'"} @$excludedItemTypes).") ".
+               "  AND itemtype NOT IN (".join(',', map {"'$_'"} @$excludedItemTypes).") ".
 #                 AND itype != 'SL' AND itype != 'AL'
                "  $limit; ";
 
@@ -1355,53 +1141,93 @@ sub _validateConfigurationAndPreconditions {
                      "  - CHILD \n".
                      "  - AV \n");
     }
+    
+    my @authorised_values_by_category = Koha::AuthorisedValues->new->search( { category => 'MTYPE' } );
 
-    my @itypes = Koha::ItemTypes->search();
+    my @loop_data = ();
+    # builds value list
+    for my $av ( @authorised_values_by_category ) {
+        my %row_data;  # get a fresh hash for the row data
+        #$row_data{category}              = $av->category;
+        $row_data{authorised_value}      = $av->authorised_value;
+        #$row_data{branches}              = $av->branch_limitations;
+        #$row_data{id}                    = $av->id;
+        #$row_data{lib}                   = $av->lib;
+        push(@loop_data, \%row_data);
+    }
+
+    my $itemcount = scalar (@loop_data);
+
+    my @itypes = ();
+
+    for (my $i=0; $i < $itemcount; $i++) {
+      push ( @itypes, $loop_data [$i]{authorised_value} );
+   }
+
+    #Old itemtypes were collected like this
+    #my @itypes = Koha::ItemTypes->search();
 
     ##Check that we haven't accidentally mapped any itemtypes that don't actually exist in our database
     my %mappedItypes = map {$_ => 1} @statCatKeys; #Copy the itemtypes-as-keys
+    my @preconditionerr = ();
 
     ##Check that all itemtypes and statistical categories are mapped
     my %statCategories = ( "Books" => 0, "SheetMusicAndScores" => 0,
                         "Recordings" => 0, "Videos" => 0, "Other" => 0, 
                         "Serials" => 0, "Celia" => 0, "Online" => 0,
                         "Electronic" => 0);
+    
     foreach my $itype (@itypes) {
-        my $it = $itype->itemtype;
-        my $mapping = $self->getItypeToOKMCategory($it);
-        unless ($mapping) { #Is itemtype mapped?
-            my @cc = caller(0);
-            Koha::Exception::BadSystemPreference->throw(error => $cc[3]."():> System preference 'OKM' has an unmapped itemtype '".$itype->itemtype."'. Put it under 'itemTypeToStatisticalCategory'.");
-        }
-        else {
-            delete $mappedItypes{$it};
-        }
-        if(exists($statCategories{$mapping})) {
-            $statCategories{$mapping} = 1; #Mark this mapping as used.
-        }
-        else { #Do we have extra statistical mappings we dont care of?
-            my @cc = caller(0);
-            my @statCatKeys = keys(%statCategories);
-            Koha::Exception::BadSystemPreference->throw(error => $cc[3]."():> System preference 'OKM' has an unknown mapping '$mapping'. Allowed statistical categories under 'itemTypeToStatisticalCategory' are @statCatKeys");
-        } 
+        
+            my $it = $itype;
+            my $mapping = $self->getItypeToOKMCategory($it);
+                    
+            unless ($mapping) { #Is itemtype mapped?
+                my @cc = caller(0);
+                push (@preconditionerr, $cc[3]."():> System preference 'OKM' has an unmapped itemtype '" . $itype . "'. Put it under 'itemTypeToStatisticalCategory'."."\n");
+            }
+            else {
+                delete $mappedItypes{$it};
+            }
+            if(exists($statCategories{$mapping})) {
+                $statCategories{$mapping} = 1; #Mark this mapping as used.
+            }
+            else { #Do we have extra statistical mappings we dont care of?
+               my @cc = caller(0);
+               my @statCatKeys = keys(%statCategories);
+               push (@preconditionerr, $cc[3]."():> System preference 'OKM' has an unknown mapping '$mapping'. Allowed statistical categories under 'itemTypeToStatisticalCategory' are @statCatKeys");
+            } 
     }
+    
+    
     #Do we have extra mapped item types?
     if (scalar(keys(%mappedItypes))) {
-        my @cc = caller(0);
+        #my @cc = caller(0);
         my @itypes = keys(%mappedItypes);
-        Koha::Exception::BadSystemPreference->throw(error => $cc[3]."():> System preference 'OKM' has an mapped itemtypes '@itypes' that don't exist in your database itemtypes-listing?");
+        my @cc = caller(0);
+        push (@preconditionerr, $cc[3]."():> System preference 'OKM' has an mapped itemtypes '@itypes' that don't exist in your database itemtypes-listing?");
     }
 
     #Check that all statistical categories are mapped
     while (my ($k, $v) = each(%statCategories)) {
         unless ($v) {
             my @cc = caller(0);
-            Koha::Exception::BadSystemPreference->throw(error => $cc[3]."():> System preference 'OKM' has an unmapped statistical category '$k'. Map it to the 'itemTypeToStatisticalCategory'");
+            push (@preconditionerr, $cc[3]."():> System preference 'OKM' has an unmapped statistical category '$k'. Map it to the 'itemTypeToStatisticalCategory'");
         }
     }
 
     ##Check that koha.biblio_data_elements -table is being updated regularly.
-    Koha::BiblioDataElements::verifyFeatureIsInUse($self->{verbose});
+    my $staletest = Koha::BiblioDataElements::verifyFeatureIsInUse;
+     #push (@unmappederr, "Staletest: ". $staletest);
+    if ($staletest ne 1){
+        my @cc = caller(0);
+         push (@preconditionerr, $cc[3]."():> koha.biblio_data_elements-table is stale. You must configure cronjob 'update_biblio_data_elements.pl' to run daily.");
+    }
+    
+    #Show all errors
+    if (@preconditionerr ne 0) {
+        Koha::Exception::BadSystemPreference->throw(error => "@preconditionerr");
+    }
 }
 
 sub _makeStatisticalCategoryToItemTypesMap {
