@@ -96,7 +96,7 @@ sub createStatistics {
     my ($self) = @_;
 
     my $libraryGroups = $self->getLibraryGroups();
-
+    my $patronCategories = $self->{conf}->{patronCategories};
     foreach my $groupcode (sort keys %$libraryGroups) {
         my $libraryGroup = $libraryGroups->{$groupcode};
         print '    #'.DateTime->now()->iso8601()."# Starting $groupcode #\n" if $self->{verbose};
@@ -109,7 +109,7 @@ sub createStatistics {
             $self->_processItemsDataRow( $libraryGroup, $itemBomb->{$itemnumber} );
         }
         #calculate issues
-        my $issuesBomb = $self->fetchIssuesDataMountain($libraryGroup);
+        my $issuesBomb = $self->fetchIssuesDataMountain($libraryGroup, $patronCategories);
         foreach my $itemnumber (sort {$a <=> $b} keys %$issuesBomb) {
             $self->_processIssuesDataRow( $libraryGroup, $issuesBomb->{$itemnumber} );
         }
@@ -482,7 +482,7 @@ Collects the related issuing data for the given timeperiod.
 =cut
 
 sub fetchIssuesDataMountain {
-    my ($self, $libraryGroup) = @_;
+    my ($self, $libraryGroup, $patronCategories) = @_;
 
     my @cc = caller(0);
     print '    #'.DateTime->now()->iso8601()."# Starting ".$cc[3]." #\n" if $self->{verbose};
@@ -503,7 +503,7 @@ sub fetchIssuesDataMountain {
             WHERE s.branch $in_libraryGroupBranches
             AND s.type IN ('issue','renew')
             AND s.datetime BETWEEN ? AND ?
-            AND (s.usercode != 'KIRJASTO' AND s.usercode != 'TILASTO' AND s.usercode != 'KAUKOLAINA')
+            AND s.usercode IN(" . join(",", map {"?"} @{$patronCategories}).")
             AND i.itemnumber IS NOT NULL
             GROUP BY s.itemnumber $limit
         )
@@ -518,11 +518,11 @@ sub fetchIssuesDataMountain {
             WHERE s.branch $in_libraryGroupBranches
             AND s.type IN ('issue','renew')
             AND s.datetime BETWEEN ? AND ?
-            AND (s.usercode != 'KIRJASTO' AND s.usercode != 'TILASTO' AND s.usercode != 'KAUKOLAINA')
+            AND s.usercode IN(" . join(",", map {"?"} @{$patronCategories}).")
             AND di.itemnumber IS NOT NULL
             GROUP BY s.itemnumber $limit
         )");
-    $sth->execute(  $self->{startDateISO}, $self->{endDateISO}, $self->{startDateISO}, $self->{endDateISO}  ); #This will take some time.....
+    $sth->execute(  $self->{startDateISO}, $self->{endDateISO}, @{$patronCategories}, $self->{startDateISO}, $self->{endDateISO}, @{$patronCategories}  ); #This will take some time.....
     if ($sth->err) {
         Koha::Exception::DB->throw(error => $cc[3]."():> ".$sth->errstr);
     }
@@ -998,7 +998,7 @@ sub getOKMBranchCategories {
 
     foreach my $library_category (@library_categories){
         my $code = $library_category->categorycode;
-        if ( $code =~ /^\w\w\w_OKM$/ || $code =~ /^\w\w_OKM$/ ) { #Catch branchcategories which are OKM statistical groups.
+        if ( $code =~ /_OKM$/ ) { #Catch branchcategories which are OKM statistical groups.
             #HASHify the categorycodes for easy access
             $libraryGroups->{$code} = $library_category;
         }       
@@ -1079,7 +1079,7 @@ sub IsItemFiction {
     my ($marcxml) = @_;
 
     my $sf = FindMarcField('084','a', $marcxml);
-    if ($sf =~/^8[1-5].*/) { #ykl numbers 81.* to 85.* are fiction.
+    if ($sf =~/^8[0-5].*/) { #ykl numbers 80.* to 85.* are fiction.
         return 1;
     }
     return 0;
