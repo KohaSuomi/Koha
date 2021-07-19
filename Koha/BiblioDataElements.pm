@@ -260,15 +260,16 @@ sub verifyFeatureIsInUse {
     my $now = DateTime->now(time_zone => C4::Context->tz());
     my $lastUpdateTime = Koha::BiblioDataElements::GetLatestDataElementUpdateTime($verbose) || DateTime::Format::HTTP->parse_datetime('1900-01-01 01:01:01');
     my $difference = $now->subtract_datetime( $lastUpdateTime );
-    if (($difference->in_units( 'days' ) > 2) && $verbose ne 0) {
+    if (($difference->in_units( 'days' ) > 2) && $verbose) {
         my @cc = caller(0);
         Koha::Exception::FeatureUnavailable->throw(error => $cc[3]."():> koha.biblio_data_elements-table is stale. You must configure cronjob 'update_biblio_data_elements.pl' to run daily.");
     }
     elsif ($difference->in_units( 'days' ) > 2) {
         return 0;
     }
-
-    return 1;
+    else {
+        return 1;
+    }
 }
 
 =head markForReindex
