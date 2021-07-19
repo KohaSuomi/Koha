@@ -1205,7 +1205,7 @@ sub _validateConfigurationAndPreconditions {
         #my @cc = caller(0);
         my @itypes = keys(%mappedItypes);
         my @cc = caller(0);
-        push (@preconditionerr, $cc[3]."():> System preference 'OKM' has an mapped itemtypes '@itypes' that don't exist in your database itemtypes-listing?");
+        push (@preconditionerr, $cc[3]."():> System preference 'OKM' has mapped itemtypes '@itypes' that don't exist in your database itemtypes-listing?");
     }
 
     #Check that all statistical categories are mapped
@@ -1219,13 +1219,13 @@ sub _validateConfigurationAndPreconditions {
     ##Check that koha.biblio_data_elements -table is being updated regularly.
     my $staletest = Koha::BiblioDataElements::verifyFeatureIsInUse;
      #push (@unmappederr, "Staletest: ". $staletest);
-    if ($staletest ne 1){
+    if (!$staletest){
         my @cc = caller(0);
          push (@preconditionerr, $cc[3]."():> koha.biblio_data_elements-table is stale. You must configure cronjob 'update_biblio_data_elements.pl' to run daily.");
     }
     
     #Show all errors
-    if (@preconditionerr ne 0) {
+    if (@preconditionerr) {
         Koha::Exception::BadSystemPreference->throw(error => "@preconditionerr");
     }
 }
