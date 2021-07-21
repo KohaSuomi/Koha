@@ -15,7 +15,7 @@ use MARC::Field;
 sub createRecord{
      my $self = shift;
      my ($xmlString) = @_;
-     my $record = MARC::Record->new_from_xml( $xmlString );
+     my $record = MARC::Record->new_from_xml( $xmlString, 'UTF-8' );
 }
 
 sub addMarc942 {
