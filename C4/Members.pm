@@ -29,11 +29,15 @@ use C4::Reserves;
 use C4::Accounts;
 use C4::Letters qw( GetPreparedLetter );
 use DateTime;
+use Koha::Account::Lines;
+use Koha::Checkouts;
+use Koha::Old::Checkouts;
 use Koha::Database;
 use Koha::DateUtils qw( dt_from_string output_pref );
 use Koha::Database;
 use Koha::Holds;
 use Koha::AdditionalContents;
+use Koha::Items;
 use Koha::Patrons;
 use Koha::Patron::Categories;
 
@@ -684,39 +688,37 @@ WHERE borrowernumber = 0 AND DATEDIFF( NOW(), timestamp ) > ?|;
     return $cnt eq '0E0'? 0: $cnt;
 }
 
-sub GetBorrowerFines {
-    my ($borrowernumber) = @_;
-    my $dbh       = C4::Context->dbh;
-    my $query = qq{
-        SELECT * FROM accountlines
-        LEFT JOIN borrowers ON borrowers.borrowernumber = accountlines.borrowernumber
-        LEFT JOIN items ON accountlines.itemnumber = items.itemnumber
-        WHERE accountlines.borrowernumber = ?
-        ORDER BY accountlines.timestamp
-    };
-    my $sth = $dbh->prepare( $query );
-    $sth->execute( $borrowernumber );
-    my $data = $sth->fetchall_arrayref({});
-    return $data;
-}
+=head2 FineSlip
+
+    Returns letter hash and populates FINESLIP.
+
+=cut
 
 sub FineSlip {
     my ($borrowernumber, $branch) = @_;
 
-    #my $now       = POSIX::strftime("%Y-%m-%d", localtime);
+    my $lines = Koha::Account::Lines->search({ borrowernumber => $borrowernumber });
+    my $total = $lines->total_outstanding;
+    my @issueslist;
 
-    my $issueslist = GetBorrowerFines($borrowernumber);
+    while (my $line = $lines->next) {
+        next if ($line->amountoutstanding =~ /^0.0+$/);
 
-    my $total = 0.0;
+        my $item = Koha::Items->find({itemnumber => $line->itemnumber});
+        $item = $item ? $item->unblessed : undef;
+        my $issue = Koha::Checkouts->find({issue_id => $line->issue_id})
+        || Koha::Old::Checkouts->find({issue_id => $line->issue_id});
+        my $dt = dt_from_string( $issue->date_due );
 
-    foreach my $it (@$issueslist){
-        my $dt = dt_from_string( $it->{'date'} );
-        $it->{'date_due'} = output_pref({ dt => $dt, dateonly => 1 });
-        $it->{'amount'} = sprintf('%.2f', $it->{'amount'});
-        $total = $total + $it->{'amount'};
-        $it->{'barcode'} = '-' if (!defined($it->{'barcode'}));
+        $item->{'date_due'} = output_pref({ dt => $dt, dateonly => 1 });
+        $item->{'amount'} = sprintf('%.2f', $line->amount);
+        $item->{'barcode'} = $item->{barcode} ? $item->{barcode} : '-';
+        $item->{'timestamp'} = $line->timestamp;
+        $item->{'description'} = $line->description;
+
+        push @issueslist, $item;
     }
-    my @issues = sort { $b->{'timestamp'} <=> $a->{'timestamp'} } @$issueslist;
+    my @issues = sort { $b->{'timestamp'} <=> $a->{'timestamp'} } @issueslist;
 
     my %repeat = (
         'fines' => [ map {

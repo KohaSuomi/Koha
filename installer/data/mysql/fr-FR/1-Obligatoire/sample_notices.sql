@@ -475,3 +475,18 @@ INSERT IGNORE INTO letter (module, code, name, title, content, message_transport
     [% END %]
 [% END %]
 ", 'email');
+
+INSERT INTO  letter (module, code, branchcode, name, is_html, title, content, message_transport_type)
+VALUES ( 'circulation', 'FINESLIP', '', 'Patron fines -slip', '1', 'Fines', '<<borrowers.firstname>> <<borrowers.surname>><br>
+<<borrowers.cardnumber>><br>
+Fines: <<total.fines>>
+<ul>
+<fines>
+<li><<fines.date_due>>, <<fines.amount>><br>
+Bar code: <<items.barcode>><br>
+<<fines.description>></li>
+</fines>
+</ul>
+Total: <<total.amount>>
+', 'print'
+);
