@@ -1172,10 +1172,11 @@ sub _validateConfigurationAndPreconditions {
     my @preconditionerr = ();
 
     ##Check that all itemtypes and statistical categories are mapped
-    my %statCategories = ( "Books" => 0, "SheetMusicAndScores" => 0,
-                        "Recordings" => 0, "Videos" => 0, "Other" => 0, 
-                        "Serials" => 0, "Celia" => 0, "Online" => 0,
-                        "Electronic" => 0);
+    ##when set to 0, statistical category must be used
+    my %statCategories = ( "Books" => 1, "SheetMusicAndScores" => 1,
+                        "Recordings" => 1, "Videos" => 1, "Other" => 1, 
+                        "Serials" => 1, "Celia" => 1, "Online" => 1,
+                        "Electronic" => 1);
     
     foreach my $itype (@itypes) {
         
