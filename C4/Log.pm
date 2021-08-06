@@ -81,26 +81,7 @@ sub logaction {
     my $sth=$dbh->prepare("Insert into action_logs (timestamp,user,module,action,object,info,interface) values (now(),?,?,?,?,?,?)");
     $sth->execute($usernumber,$modulename,$actionname,$objectnumber,$infos,$interface);
     $sth->finish;
-
-    # Insert log mark to action_logs_cache. Data of this table will be copied to MongoDB 
-    my @modules = ('MEMBERS', 'CIRCULATION', 'FINES', 'SS', 'HOLDS');
-    if (defined($objectnumber) && grep { $_ eq $modulename } @modules) {
-        if ($modulename eq 'HOLDS'){
-            if ($interface eq 'opac') {
-                $objectnumber = $usernumber;
-            } else {
-                $infos =~ tr/\/\'//d; 
-                my @info = $infos =~ /borrowernumber => (.*?)(,|}|\n)/;
-                $objectnumber = $info[0];
-                $objectnumber =~ s/\D+//g;
-            }
-        }
-        
-        $sth=$dbh->prepare("Insert into action_logs_cache (timestamp,user,module,action,object,info,interface) values (now(),?,?,?,?,?,?)");
-        $sth->execute($usernumber,$modulename,$actionname,$objectnumber,$infos,$interface);
-        $sth->finish;
-    }
-
+    
     my $logger = Koha::Logger->get(
         {
             interface => 'intranet',
