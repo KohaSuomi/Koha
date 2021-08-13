@@ -29,11 +29,11 @@ sub new {
     bless($self, $class);
 
     $self->{branchCategory} = 0;
-    $self->{mainLibraries} = 0;
-    $self->{branchLibraries} = 0;
-    $self->{institutionalLibraries} = 0;
-    $self->{bookmobiles} = 0;
-    $self->{bookboats} = 0;
+#    $self->{mainLibraries} = 0;
+#    $self->{branchLibraries} = 0;
+#    $self->{institutionalLibraries} = 0;
+#    $self->{bookmobiles} = 0;
+#    $self->{bookboats} = 0;
     $self->{collection} = 0;
     $self->{collectionBooksTotal} = 0;
     $self->{collectionBooksFinnish} = 0;
@@ -47,8 +47,8 @@ sub new {
     $self->{collectionMusicalRecordings} = 0;
     $self->{collectionOtherRecordings} = 0;
     $self->{collectionVideos} = 0;
-    $self->{collectionCDROMs} = 0;
-    $self->{collectionDVDsAndBluRays} = 0;
+#    $self->{collectionCDROMs} = 0;
+#    $self->{collectionDVDsAndBluRays} = 0;
     $self->{collectionCelia} = 0;
     $self->{collectionOther} = 0;
     $self->{acquisitions} = 0;
@@ -64,8 +64,8 @@ sub new {
     $self->{acquisitionsMusicalRecordings} = 0;
     $self->{acquisitionsOtherRecordings} = 0;
     $self->{acquisitionsVideos} = 0;
-    $self->{acquisitionsCDROMs} = 0;
-    $self->{acquisitionsDVDsAndBluRays} = 0;
+#    $self->{acquisitionsCDROMs} = 0;
+#    $self->{acquisitionsDVDsAndBluRays} = 0;
     $self->{acquisitionsCelia} = 0;
     $self->{acquisitionsOther} = 0;
     $self->{issues} = 0;
@@ -81,8 +81,8 @@ sub new {
     $self->{issuesMusicalRecordings} = 0;
     $self->{issuesOtherRecordings} = 0;
     $self->{issuesVideos} = 0;
-    $self->{issuesCDROMs} = 0;
-    $self->{issuesDVDsAndBluRays} = 0;
+#    $self->{issuesCDROMs} = 0;
+#    $self->{issuesDVDsAndBluRays} = 0;
     $self->{issuesCelia} = 0;
     $self->{issuesOther} = 0;
     $self->{newspapers} = 0;
@@ -94,11 +94,11 @@ sub new {
 
     my @printOrder = (
         'branchCategory',
-        'mainLibraries',
-        'branchLibraries',
-        'institutionalLibraries',
-        'bookmobiles',
-        'bookboats',
+       # 'mainLibraries',
+       # 'branchLibraries',
+       # 'institutionalLibraries',
+       # 'bookmobiles',
+       # 'bookboats',
         'collection',
         'collectionBooksTotal',
         'collectionBooksFinnish',
@@ -112,8 +112,8 @@ sub new {
         'collectionMusicalRecordings',
         'collectionOtherRecordings',
         'collectionVideos',
-        'collectionCDROMs',
-        'collectionDVDsAndBluRays',
+#        'collectionCDROMs',
+#        'collectionDVDsAndBluRays',
         'collectionCelia',
         'collectionOther',
         'acquisitions',
@@ -129,8 +129,8 @@ sub new {
         'acquisitionsMusicalRecordings',
         'acquisitionsOtherRecordings',
         'acquisitionsVideos',
-        'acquisitionsCDROMs',
-        'acquisitionsDVDsAndBluRays',
+#        'acquisitionsCDROMs',
+#        'acquisitionsDVDsAndBluRays',
         'acquisitionsCelia',
         'acquisitionsOther',
         'issues',
@@ -146,8 +146,8 @@ sub new {
         'issuesMusicalRecordings',
         'issuesOtherRecordings',
         'issuesVideos',
-        'issuesCDROMs',
-        'issuesDVDsAndBluRays',
+#        'issuesCDROMs',
+#        'issuesDVDsAndBluRays',
         'issuesCelia',
         'issuesOther',
         'newspapers',

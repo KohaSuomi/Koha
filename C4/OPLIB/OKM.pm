@@ -444,20 +444,20 @@ sub statisticsBranchCounts {
             $stats->{bookmobiles}++;
         }
         #Get them bookboats!
-        elsif ($branchcode =~ /^\w\w\w_\w\w\wVE$/) {  #JOE_JOEVE, JOE_LIPVE
-            $stats->{bookboats}++;
-        }
+        #elsif ($branchcode =~ /^\w\w\w_\w\w\wVE$/) {  #JOE_JOEVE, JOE_LIPVE
+        #    $stats->{bookboats}++;
+        #}
         #Get them institutional libraries!
-        elsif ($branchcode =~ /^\w\w\w_LA\w\w$/) {  #JOE_LAKO, JOE_LASI
-            $stats->{institutionalLibraries}++;
-        }
+        #elsif ($branchcode =~ /^\w\w\w_LA\w\w$/) {  #JOE_LAKO, JOE_LASI
+        #    $stats->{institutionalLibraries}++;
+        #}
         #Get them branch libraries!
-        else {
-            $stats->{branchLibraries}++;
-        }
+        #else {
+        #    $stats->{branchLibraries}++;
+        #}
     }
     #After all is counted, we remove the given main branches from branch libraries and set the main libraries count.
-    $stats->{branchLibraries} = $stats->{branchLibraries} - $mainLibrariesCount;
+    #$stats->{branchLibraries} = $stats->{branchLibraries} - $mainLibrariesCount;
     $stats->{mainLibraries} = $mainLibrariesCount;
 }
 
@@ -1218,12 +1218,12 @@ sub _validateConfigurationAndPreconditions {
     }
 
     ##Check that koha.biblio_data_elements -table is being updated regularly.
-    my $staletest = Koha::BiblioDataElements::verifyFeatureIsInUse;
+    #my $staletest = Koha::BiblioDataElements::verifyFeatureIsInUse;
      #push (@unmappederr, "Staletest: ". $staletest);
-    if (!$staletest){
-        my @cc = caller(0);
-         push (@preconditionerr, $cc[3]."():> koha.biblio_data_elements-table is stale. You must configure cronjob 'update_biblio_data_elements.pl' to run daily.");
-    }
+    #if (!$staletest){
+    #    my @cc = caller(0);
+    #     push (@preconditionerr, $cc[3]."():> koha.biblio_data_elements-table is stale. You must configure cronjob 'update_biblio_data_elements.pl' to run daily.");
+    #}
     
     #Show all errors
     if (@preconditionerr) {
