@@ -110,6 +110,7 @@ sub add {
         my $date = time + (14 * 24 * 60 * 60);
         my $duedate = strftime "%d.%m.%Y", localtime($date);
         my $finvoice_duedate = strftime "%Y%m%d", localtime($date);
+        $totalfines = $totalfines + $body->{invoicefine} if $body->{invoicefine};
         $totalfines = sprintf("%.2f", $totalfines);
         $totalfines =~ tr/./,/;
         my $reference = '12345678901234567890';
