@@ -57,6 +57,7 @@ my $target_field;
 my $target_subfield = "";
 my $field_check;
 my $lastrecord = 0;
+my $identifier_fetch = 0;
 
 GetOptions(
     'h|help'                     => \$help,
@@ -74,6 +75,7 @@ GetOptions(
     'subfield:s'                 => \$target_subfield,
     'check:s'                    => \$field_check,
     'lastrecord'                 => \$lastrecord,
+    'identifier'                 => \$identifier_fetch,
 
 );
 
@@ -94,6 +96,7 @@ my $usage = <<USAGE;
     -f, --field             Find target id from marcxml, used with 'staged' parameter and update type.
     --check                 Check that field contains some spesific identifier.
     --lastrecord            Automatically check which is lastly activated record.
+    --identifier            Push to active records with identifier.
 
 USAGE
 
@@ -177,18 +180,24 @@ if ($staged) {
 
 } else {
     $endpoint = $active ? $config->{activeEndpoint} : $config->{broadcastEndpoint};
+    $endpoint = $identifier_fetch && $active ? $endpoint.'/identifier' : $endpoint;
     while ($pageCount >= $params->{page}) {
         my $biblios = biblios($params);
         my $count = 0;
         my $lastnumber;
         foreach my $biblio (@{$biblios}) {
-            my $tx = $ua->post($endpoint => $headers => json => endpointParams($biblio));
-            my $response = decode_json($tx->res->body);
-            if ($response->{error}) {
-                print "$biblio->{biblionumber} biblio failed with: $response->{error}!\n";
-            }
-            if ($verbose && defined $response->{message} && $response->{message} eq "Success") {
-                print "$biblio->{biblionumber} biblio added succesfully\n";
+            my $params = endpointParams($biblio);
+            if ($params) {
+                my $tx = $ua->post($endpoint => $headers => json => $params);
+                my $response = decode_json($tx->res->body);
+                if ($response->{error}) {
+                    print "$biblio->{biblionumber} biblio failed with: $response->{error}!\n";
+                }
+                if ($verbose && defined $response->{message} && $response->{message} eq "Success") {
+                    print "$biblio->{biblionumber} biblio added succesfully\n";
+                }
+            } else {
+                print "$biblio->{biblionumber} biblio failed with: No valid identifier!\n";
             }
             $count++;
             $lastnumber = $biblio->{biblionumber};
@@ -268,12 +277,68 @@ sub endpointParams {
     my ($biblio) = @_;
 
     if ($active) {
-        return {marcxml => $biblio->{metadata}, target_id => $biblio->{biblionumber}, interface_name => $interface} if !$all;
-        return {marcxml => $biblio->{metadata}, target_id => $biblio->{biblionumber}, interface_name => $interface, updated => $biblio->{timestamp}};
+        if ($identifier_fetch) {
+            my ($identifier, $identifier_field) = active_field($biblio);
+            return unless $identifier && $identifier_field;
+            return {identifier => $identifier, identifier_field => $identifier_field, target_id => $biblio->{biblionumber}, interface_name => $interface} if !$all;
+            return {identifier => $identifier, identifier_field => $identifier_field, target_id => $biblio->{biblionumber}, interface_name => $interface, updated => $biblio->{timestamp}};
+        } else {
+            return {marcxml => $biblio->{metadata}, target_id => $biblio->{biblionumber}, interface_name => $interface} if !$all;
+            return {marcxml => $biblio->{metadata}, target_id => $biblio->{biblionumber}, interface_name => $interface, updated => $biblio->{timestamp}};
+        }
     } else {
         return {marcxml => $biblio->{metadata}, source_id => $biblio->{biblionumber}, updated => $biblio->{timestamp}};
     }
 
+}
+
+sub active_field {
+    my ($biblio) = @_;
+    my $record = MARC::Record::new_from_xml($biblio->{metadata}, 'UTF-8');
+    my $activefield;
+    my $fieldname;
+
+    if ($record->field('035')) {
+        my @f035 = $record->field( '035' );
+        foreach my $f035 (@f035) {
+            if($f035->subfield('a') =~ /FI-MELINDA/) {
+                $activefield = $f035->subfield('a');
+                $fieldname = '035a';
+            }
+        }
+    }
+
+    if ($record->field('020') && !$activefield) {
+        my @f020 = $record->field( '020' );
+        foreach my $f020 (@f020) {
+            if ($f020->subfield('a')) {
+                $activefield = $f020->subfield('a');
+                $fieldname = '020a';
+            }
+        }
+
+    }
+
+    if ($record->field( '024') && !$activefield) {
+        my @f024 = $record->field( '024' );
+        foreach my $f024 (@f024) {
+            if ($f024->subfield('a') && $f024->indicator('1') eq '3') {
+                $activefield = $f024->subfield('a');
+                $fieldname = '024a';
+                last;
+            } elsif ($f024->subfield('a')) {
+                $activefield = $f024->subfield('a');
+                $fieldname = '024a';
+                last;
+            }
+        }
+    }
+    if ($record->field( '003')->data =~ /FI-BTJ/ && !$activefield) {
+        $activefield = $record->field( '003')->data.'|'.$record->field( '001')->data;
+        $fieldname = '003|001';
+    }
+
+    return ($activefield, $fieldname);
 }
 
 if ( close $pid_handle ) {
