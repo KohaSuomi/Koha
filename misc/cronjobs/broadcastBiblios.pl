@@ -58,6 +58,7 @@ my $target_subfield = "";
 my $field_check;
 my $lastrecord = 0;
 my $identifier_fetch = 0;
+my $inactivity_timeout = 30;
 
 GetOptions(
     'h|help'                     => \$help,
@@ -76,6 +77,7 @@ GetOptions(
     'check:s'                    => \$field_check,
     'lastrecord'                 => \$lastrecord,
     'identifier'                 => \$identifier_fetch,
+    'inactivity_timeout'         => \$inactivity_timeout,
 
 );
 
@@ -97,6 +99,7 @@ my $usage = <<USAGE;
     --check                 Check that field contains some spesific identifier.
     --lastrecord            Automatically check which is lastly activated record.
     --identifier            Push to active records with identifier.
+    --inactivity_timeout    Can be used to increase response waiting time, default is 30.
 
 USAGE
 
@@ -136,7 +139,7 @@ my $apikey = Digest::SHA::hmac_sha256_hex($config->{apiKey});
 my $headers = {"Authorization" => $apikey};
 my $last_itemnumber;
 if ($lastrecord && $all && $active) {
-    my $tx = $ua->get($config->{activeEndpoint}.'/lastrecord' => $headers => form => {interface => $interface});
+    my $tx = $ua->inactivity_timeout($inactivity_timeout)->get($config->{activeEndpoint}.'/lastrecord' => $headers => form => {interface => $interface});
     my $response = decode_json($tx->res->body);
     unless ($biblionumber) {
         $biblionumber = $response->{target_id};
@@ -163,7 +166,7 @@ if ($staged) {
             $parameters = $biblio->{parent_id} ? {marc => $biblio->{marcxml}, source_id => $biblio->{biblionumber}, interface => $interface, parent_id => $biblio->{parent_id}, force => 1} : {marc => $biblio->{marcxml}, source_id => $biblio->{biblionumber}, interface => $interface};
         }
         if ($parameters) {
-            my $tx = $ua->post($endpoint => $headers => json => $parameters);
+            my $tx = $ua->inactivity_timeout($inactivity_timeout)->post($endpoint => $headers => json => $parameters);
             my $response = decode_json($tx->res->body);
             my $error = $response->{error} || $tx->res->error->{message} if $response->{error} || $tx->res->error;
             if ($error) {
@@ -188,7 +191,7 @@ if ($staged) {
         foreach my $biblio (@{$biblios}) {
             my $params = endpointParams($biblio);
             if ($params) {
-                my $tx = $ua->post($endpoint => $headers => json => $params);
+                my $tx = $ua->inactivity_timeout($inactivity_timeout)->post($endpoint => $headers => json => $params);
                 my $response = decode_json($tx->res->body);
                 if ($response->{error}) {
                     print "$biblio->{biblionumber} biblio failed with: $response->{error}!\n";
