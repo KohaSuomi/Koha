@@ -188,9 +188,16 @@ if ($staged) {
         my $biblios = biblios($params);
         my $count = 0;
         my $lastnumber;
+        my @pusharray;
         foreach my $biblio (@{$biblios}) {
             my $params = endpointParams($biblio);
-            if ($params) {
+            if ($identifier_fetch) { 
+                if ($params) {
+                    push @pusharray, $params;
+                } else {
+                    print "$biblio->{biblionumber} biblio failed with: No valid identifier!\n";
+                }
+            } else {
                 my $tx = $ua->inactivity_timeout($inactivity_timeout)->post($endpoint => $headers => json => $params);
                 my $response = decode_json($tx->res->body);
                 if ($response->{error}) {
@@ -199,11 +206,16 @@ if ($staged) {
                 if ($verbose && defined $response->{message} && $response->{message} eq "Success") {
                     print "$biblio->{biblionumber} biblio added succesfully\n";
                 }
-            } else {
-                print "$biblio->{biblionumber} biblio failed with: No valid identifier!\n";
             }
             $count++;
             $lastnumber = $biblio->{biblionumber};
+        }
+        if ($identifier_fetch && @pusharray) {
+            my $txchunk = $ua->inactivity_timeout($inactivity_timeout)->post($endpoint => $headers => json => \@pusharray);
+            my $res = decode_json($txchunk->res->body);
+            if ($res->{error}) {
+                print "Chunk push failed with: $res->{error}";
+            }
         }
         print "last processed biblio $lastnumber\n";
         print "$count biblios processed!\n";
@@ -316,6 +328,7 @@ sub active_field {
         foreach my $f020 (@f020) {
             if ($f020->subfield('a')) {
                 $activefield = $f020->subfield('a');
+                $activefield =~ s/-//gi;
                 $fieldname = '020a';
             }
         }
