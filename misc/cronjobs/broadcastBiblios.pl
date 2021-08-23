@@ -77,7 +77,7 @@ GetOptions(
     'check:s'                    => \$field_check,
     'lastrecord'                 => \$lastrecord,
     'identifier'                 => \$identifier_fetch,
-    'inactivity_timeout'         => \$inactivity_timeout,
+    'inactivity_timeout:i'       => \$inactivity_timeout,
 
 );
 
