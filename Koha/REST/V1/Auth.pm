@@ -526,6 +526,9 @@ sub check_object_ownership {
             return &$check_ownership($c, $user, $c->match->stack->[-1]->{$param});
         }
         elsif ($c->req->json && $c->req->json->{$param}) {
+            if (uc($c->req->method) ne 'POST') {
+                return 0;
+            }
             return 1 if &$check_ownership($c, $user, $c->req->json->{$param});
         }
     }
