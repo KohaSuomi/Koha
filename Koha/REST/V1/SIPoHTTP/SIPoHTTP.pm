@@ -20,7 +20,6 @@ use Mojo::Base 'Mojolicious::Controller';
 use FindBin qw($Bin);
 use lib "$Bin";
 use Koha::Exceptions;
-use Koha::Logger;
 use XML::LibXML;
 use IO::Socket::INET;
 use IO::Socket qw(AF_INET AF_UNIX SOCK_STREAM SHUT_WR);
@@ -33,11 +32,15 @@ use Encode;
 use utf8;
 use strict;
 use warnings qw( all );
+use Log::Log4perl;
 
 my $CONFPATH = dirname($ENV{'KOHA_CONF'});
 my $KOHAPATH = C4::Context->config('intranetdir');
 
-my $log = Koha::Logger->get();
+# Initialize Logger
+my $log_conf = $CONFPATH . "/log4perl.conf";
+Log::Log4perl::init($log_conf);
+my $log = Log::Log4perl->get_logger('sipohttp');
 
 #This gets called from REST api
 sub process {
@@ -135,6 +138,8 @@ sub tradeSip {
     $respdata =~ s/\r//g;
     $respdata =~ s/\n//g;
     
+    $respdata = substr($respdata, 0, 3);
+    
     if ($respdata eq '941') {
 
         $log->info("Login OK. Sending: $command_message");
@@ -153,7 +158,7 @@ sub tradeSip {
         return $respdata;
     }
     
-    $log->error("Unauthorized login for $login: $respdata. Can't process attached SIP message.");
+    $log->error("Login failed for $login. Sip server response: '$respdata'. Expected '941'. Can't process attached SIP message.");
 
     $sipsock->flush;
     $sipsock->shutdown(SHUT_WR);
@@ -165,9 +170,41 @@ sub tradeSip {
 
 sub buildLogin {
 
-    my ($login, $password) = @_;
+    my ($login, $password, $c) = @_;
+    
+    my $login_mes = "9300CN" . shift . "|CO" . shift . "|CPSIP2OHTTP|" . "AY0AZ";
+    
+    #from https://fossies.org/linux/koha/C4/SIP/Sip/Checksum.pm
+    my $checksum = (-unpack('%16C*', $login_mes) & 0xFFFF);
+    my $fullpkt = sprintf("%s%4X", $login_mes, $checksum);
+    
+    $log->error("sip message with checksum: $fullpkt");
+    
+    return $fullpkt;
+}
 
-    return "9300CN" . shift . "|CO" . shift . "|CPSIP2OHTTP|";
+sub verify_cksum {
+     my $debug;
+     my $pkt = shift;
+     my $cksum;
+     my $shortsum;
+ 
+     if ($pkt =~ /AZ(....)$/) {
+         $debug and warn "verify_cksum: sum ($1) detected";
+     } else {
+         warn "verify_cksum: no sum detected";
+         return 0; # No checksum at end
+     }
+     # return 0 if (substr($pkt, -6, 2) ne "AZ");
+ 
+     # Convert the checksum back to hex and calculate the sum of the
+     # pack without the checksum.
+     $cksum = hex($1);
+     $shortsum = unpack("%16C*", substr($pkt, 0, -4));
+ 
+     # The checksum is valid if the hex sum, plus the checksum of the 
+     # base packet short when truncated to 16 bits.
+     return (($cksum + $shortsum) & 0xFFFF) == 0;
 }
 
 sub buildXml {
