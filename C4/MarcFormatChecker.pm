@@ -5,6 +5,7 @@ use strict;
 use C4::Context;
 use Koha::Caches;
 use XML::LibXML;
+use Storable;
 
 use vars qw(@ISA @EXPORT);
 
@@ -408,26 +409,28 @@ sub parse_MARC21_format_definition {
 
     return undef if (scalar(@xmlfiles) < 1);
 
-    $field_data{'regex'} = copy_allow_to_regex($field_data{'allow_regex'}, $field_data{'regex'});
+    my $fd = Storable::dclone(\%field_data);
+
+    $fd->{'regex'} = copy_allow_to_regex($fd->{'allow_regex'}, $fd->{'regex'});
 
     foreach my $file (@xmlfiles) {
-	parse_xml_data($file, \%field_data);
+	parse_xml_data($file, $fd);
     }
 
-    $field_data{'regex'} = fix_regex_data($field_data{'regex'});
-    $field_data{'allow_regex'} = fix_allow_regex_data($field_data{'allow_regex'});
+    $fd->{'regex'} = fix_regex_data($fd->{'regex'});
+    $fd->{'allow_regex'} = fix_allow_regex_data($fd->{'allow_regex'});
 
     # indicators are listed as sets of allowed chars. eg. ' ab' or '1-9'
-    foreach my $tmp (keys(%{$field_data{'allow_indicators'}})) {
-	$field_data{'allow_indicators'}{$tmp} = '[' . $field_data{'allow_indicators'}{$tmp} . ']';
+    foreach my $tmp (keys(%{$fd->{'allow_indicators'}})) {
+	$fd->{'allow_indicators'}{$tmp} = '[' . $fd->{'allow_indicators'}{$tmp} . ']';
     }
 
     my %tmpignores = map {($_, 1)} generate_tag_sequence(C4::Context->preference('MARC21FormatWarningsIgnoreFields'));
-    $field_data{'ignore_fields'} = \%tmpignores;
+    $fd->{'ignore_fields'} = \%tmpignores;
 
-    $cache->set_in_cache($cache_key, \%field_data);
+    $cache->set_in_cache($cache_key, $fd);
 
-    return \%field_data;
+    return $fd;
 }
 
 sub sort_by_number {
