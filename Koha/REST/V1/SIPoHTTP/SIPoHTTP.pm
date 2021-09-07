@@ -51,7 +51,9 @@ sub process {
     my $xmlrequest = $c->param('query') || $body || '';
 
     $log->info("Request received.");
-
+    
+    $log->debug("Received request XML: ". $xmlrequest);
+    
     #my $validation = validateXml( $c, $xmlrequest );
     my $validation = 1;
 
@@ -128,10 +130,15 @@ sub tradeSip {
     $log->info("Trying login: $loginsip");
 
     my $respdata = "";
-
+    
     print $sipsock $loginsip . $terminator;
+    
+    $log->debug($login . " ---> ". $loginsip);
 
     $sipsock->recv($respdata, 1024);
+    
+    $log->debug($login . " <--- " . $respdata);
+    
     $sipsock->flush;
     
     #remove carriage return/line feed from response
@@ -145,14 +152,18 @@ sub tradeSip {
         $log->info("Login OK. Sending: $command_message");
 
         print $sipsock $command_message . $terminator;
+        
+        $log->debug($login . " ---> ". $command_message);
 
         $sipsock->recv($respdata, 1024);
+        
+        $log->debug($login . " <--- ". $respdata);
+        
         $sipsock->flush;
 
         $sipsock->shutdown(SHUT_WR);
         $sipsock->shutdown(SHUT_RDWR);    # we stopped using this socket
         $sipsock->close;
-
         $log->info("Received: $respdata");
 
         return $respdata;
@@ -178,7 +189,7 @@ sub buildLogin {
     my $checksum = (-unpack('%16C*', $login_mes) & 0xFFFF);
     my $fullpkt = sprintf("%s%4X", $login_mes, $checksum);
     
-    $log->error("sip message with checksum: $fullpkt");
+    $log->info("sip message with checksum: $fullpkt");
     
     return $fullpkt;
 }
