@@ -302,14 +302,16 @@
                                 <form id="mainform" action="/cgi-bin/koha/sco/sco-main.pl" name="mainform" method="post">
                                     <fieldset class="checkout brief">
                                         [% IF ( authbylogin ) %]
-                                            <legend>Log in to your account</legend>
-                                            <label for="patronlogin">Login:</label>
-                                            <input type="text" id="patronlogin" class="focus" size="20" name="patronlogin" />
-                                            <label for="patronpw">Password:</label>
-                                            <input type="password" id="patronpw" size="20" name="patronpw" />
-                                            <fieldset class="action">
-                                                <button type="submit" class="btn">Log in</button>
-                                            </fieldset>
+                                            <div class="input-append-green">
+                                                <h4>CHECK OUT</h4>
+                                                <label for="patronlogin">Login:</label>
+                                                <input type="text" id="patronlogin" class="focus" size="20" name="patronlogin" />
+                                                <label for="patronpw">Password:</label>
+                                                <input type="password" id="patronpw" size="20" name="patronpw" />
+                                                <fieldset class="action">
+                                                    <button type="submit" class="btn">Log in</button>
+                                                </fieldset>
+                                            </div>
                                         [% ELSE %]
                                             <div class="input-append-green">
                                                 <label for="patronid"><h4>CHECK OUT<br><br>Please enter your card number:</h4></label>
@@ -333,16 +335,6 @@
 
                                <form id="barcodeform" action="/cgi-bin/koha/sco/sco-main.pl" name="barcodeform" method="post">
                                     <fieldset class="checkout brief">
-                                        [% IF ( authbylogin ) %]
-                                            <legend>Log in to your account</legend>
-                                            <label for="patronlogin">Login:</label>
-                                            <input type="text" id="patronlogin" class="focus" size="20" name="patronlogin" />
-                                            <label for="patronpw">Password:</label>
-                                            <input type="password" id="patronpw" size="20" name="patronpw" />
-                                            <fieldset class="action">
-                                            <button type="submit" class="btn">Log in</button>
-                                            </fieldset>
-                                        [% ELSE %]
                                             <div class="input-append-blue">
                                             <label for="uibarcode"><h4>CHECK IN<br><br>Please enter barcode:</h4></label>
                                             [% IF ( checkinmessage ) %] 
@@ -352,8 +344,6 @@
                                             [% END %]
                                             <button type="submit" class="btn" style="margin: 0px;" >Submit</button>
                                             </div>
-                                        [% END # / IF authbylogin %]
-
                                         [% FOREACH INPUT IN INPUTS %]
                                            <input type="hidden" name="[% INPUT.name |html %]" value="[% INPUT.value |html %]">
                                         [% END %]
