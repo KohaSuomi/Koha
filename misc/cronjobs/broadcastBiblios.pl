@@ -349,7 +349,7 @@ sub active_field {
             }
         }
     }
-    if ($record->field( '003')->data =~ /FI-BTJ/ && !$activefield) {
+    if ($record->field(003) && $record->field( '003')->data =~ /FI-BTJ/ && !$activefield) {
         $activefield = $record->field( '003')->data.'|'.$record->field( '001')->data;
         $fieldname = '003|001';
     }
