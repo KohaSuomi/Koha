@@ -24,16 +24,6 @@
             [% SWITCH statKey %]
             [% CASE 'branchCategory' %]
                 Branch category
-            [% CASE 'mainLibraries' %]
-                Main libraries
-            [% CASE 'branchLibraries' %]
-                Branch libraries
-            [% CASE 'institutionalLibraries' %]
-                Institutional libraries
-            [% CASE 'bookmobiles' %]
-                Bookmobiles
-            [% CASE 'bookboats' %]
-                Bookboats
             [% CASE 'collection' %]
                 Collection
             [% CASE 'collectionBooksTotal' %]
