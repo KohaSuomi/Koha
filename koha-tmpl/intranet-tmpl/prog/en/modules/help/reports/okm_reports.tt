@@ -6,17 +6,6 @@
 <h5>Statistical OKM library groups</h5>
 <p>Library groups are defined in the "Libraries and groups"-page (admin/branches.pl).<br/>
 Library groups that are statistical OKM groups are named as &lt;group_code&gt;_OKM. For ex. JOE_OKM, VAL_OKM, JUU_OKM. Only libraries that are in the properly named statistical groups are included in the statistics.</p>
-<h5>Main libraries</h5>
-<p>By default there is only one main library in each statistical group and that cannot currently be changed.</p>
-<h5>Branch libraries</h5>
-<p>Branch libraries are calculated by subtracting from the sum of libraries in the group, every other kind of library.</p>
-<h5>Institutional libraries</h5>
-<p>A library is calculated as a institutional libary if the name matches regexp /$\w\w\w_LA\w{1,3}^/ . Eg. JOE_LAKO, LIP_LASI, VAL_LAMA</p>
-<h5>Bookmobiles</h5>
-<p>A library is calculated as a bookmobile if the branchcode ends in AU</p>
-<h5>Bookboats</h5>
-<p>A library is calculated as a bookboat if the branchcode ends in VE</p>
-<br/>
 <h4>Languages</h4>
 <h5>Finnish material</h5>
 <p>An Item is counted as finnish language, if the first subfield 'a' of Field '084' is 'fin', or if the language is not given.</p>

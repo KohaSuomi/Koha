@@ -102,8 +102,6 @@ sub createStatistics {
         my $libraryGroup = $libraryGroups->{$groupcode};
         print '    #'.DateTime->now()->iso8601()."# Starting $groupcode #\n" if $self->{verbose};
 
-        $self->statisticsBranchCounts( $libraryGroup, 1); #We have one main library here.
-
         #Calculate collections and acquisitions
         my $itemBomb = $self->fetchItemsDataMountain($libraryGroup);
         foreach my $itemnumber (sort {$a <=> $b} keys %$itemBomb) {
