@@ -195,8 +195,10 @@ if ($index_authorities) {
 
 if ($slice_index == 0) {
     # Main process, wait for children
-    for (my $proc = 1; $proc < $processes; $proc++) {
-        wait();
+    if ( $processes ) {
+        for (my $proc = 1; $proc < $processes; $proc++) {
+            wait();
+        }
     }
 }
 
@@ -301,7 +303,7 @@ Parse the return from update_index and display errors depending on verbosity of 
 
 sub _handle_response {
     my ($response) = @_;
-    if( $response->{errors} eq 'true' ){
+    if( $response->{errors} && $response->{errors} eq 'true' ){
         _log( 1, "There were errors during indexing\n" );
         if ( $verbose > 1 ){
             foreach my $item (@{$response->{items}}){
