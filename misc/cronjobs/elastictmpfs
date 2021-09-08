@@ -1,0 +1,94 @@
+#!/bin/sh
+
+# Elastictmps V210908 Written by Kodo Korkalo / Koha-Suomi Oy
+# Manage elasticsearch indices on /dev/shm
+#
+# To deploy stop elasticsearch (systemctl stop elasticsearch) and add:
+#
+# ExecStartPre=[path_to_script]/elastictmpfs start
+# ExecStop=[path_to_script]/elastictmpfs stop
+#
+# to /etc/systemd/system/multi-user-target.wants/elastisearch.service systemd-unit
+# and run systemctl daemon-reload.
+#
+# Move current elasticsearch index directory (probably /var/lib/elasticsearch) to
+# /var/lib/elasticsearch.ondisk (or whereever you want to place the ondisk).
+#
+# Edit /etc/default/elasticsearch DATA_DIR=/dev/shm/elasticsearch.
+#
+# Start elasticsearch (systemctl start elasticsearch).
+#
+# It's probably a good idea to sync the indice to disk at least daily, so add:
+#
+# %koha ALL=(root) NOPASSWD: /usr/local/bin/elastictmpfs synctodisk
+#
+# To sudoers with visudo.
+#
+# Then add something like:
+#
+# 00 23 * * * sudo [path_to_script]/elastictmpfs synctodisk
+#
+# To koha-users crontab.
+
+export indexshm=/dev/shm/elasticsearch
+export indexondisk=/var/lib/elasticsearch.ondisk
+
+log() { echo "$(date): $@" ; }
+
+elasticdaemon() {
+  # Manage running elasticsearch daemon (stop&start as needed when running as root)
+  if test $(id -u) -eq 0; then
+    case $1 in stop )
+      elasticrunning=$(pgrep -f ^/usr/bin/java.*elasticsearch)
+      if test $elasticrunning; then
+        log "Elasticsearch daemon is running, stopping."
+        systemctl stop elasticsearch
+      fi
+    ;; start )
+      if test $elasticrunning; then
+        log "Starting elasticsearch daemon."
+        systemctl start elasticsearch
+      fi
+    esac
+  fi
+}
+
+if test $(id -u) -ne 0 && test $(id -un) != "elasticsearch"; then
+  log "This script can only be run as root or elasticsearch."
+  exit 1
+fi
+
+# Check/create dirs and set owners
+if ! test -d "$indexondisk"; then
+  echo "You need $indexondisk. Create it by\n"
+  echo "1) stopping elasticsearch"
+  echo "2) moving current elasticsearch directory (probably /var/lib/elasticsearch) to $indexondisk\n"
+  echo "Then run $0 start\n"
+  exit 1
+fi
+
+mkdir -p $indexshm
+test $(id -u) -eq 0 && chown elasticsearch:elasticsearch $indexshm 
+
+log "Called $0 $@."
+
+case $1 in start )
+
+  # Sync data from disk
+  elasticdaemon stop
+  log "Fetching indices from disk."
+  cp -au $indexondisk/* $indexshm
+  elasticdaemon start
+
+;; stop | synctodisk )
+
+  # Sync data to disk
+  elasticdaemon stop
+  log "Syncing indices to disk."
+  nice -n 19 ionice -c 3 cp -au $indexshm/* $indexondisk
+  elasticdaemon start
+
+esac
+
+log "Done $0 $@."
+exit 0
