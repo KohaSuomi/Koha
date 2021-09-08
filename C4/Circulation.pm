@@ -1830,6 +1830,7 @@ returnbranch => branch to which to return item.  Possible values:
   noreturn: do not return, let item remain where checked in (floating collections)
   homebranch: return to item's home branch
   holdingbranch: return to issuer branch
+  returnbylibrarygroup: if item is returned to float group library, let it float
 
 This searches branchitemrules in the following order:
 
@@ -2002,8 +2003,19 @@ sub AddReturn {
 
         # full item data, but no borrowernumber or checkout info (no issue)
     my $hbr = GetBranchItemRule($item->homebranch, $itemtype)->{'returnbranch'} || "homebranch";
+        # check if returnbranch and homebranch belong to the same float group
+    my $validate_float = Koha::Libraries->find( $item->homebranch )->validate_float_sibling({ branchcode => $branch });
         # get the proper branch to which to return the item
-    my $returnbranch = $hbr ne 'noreturn' ? $item->$hbr : $branch;
+    my $returnbranch;
+    if($hbr eq 'noreturn'){
+        $returnbranch = $branch;
+    }elsif($hbr eq 'returnbylibrarygroup'){
+            # if library isn't in same the float group, transfer item to homebranch
+        $hbr = 'homebranch';
+        $returnbranch = $validate_float ? $branch : $item->$hbr;
+    }else{
+        $returnbranch = $item->$hbr;
+    }
         # if $hbr was "noreturn" or any other non-item table value, then it should 'float' (i.e. stay at this branch)
     my $transfer_trigger = $hbr eq 'homebranch' ? 'ReturnToHome' : $hbr eq 'holdingbranch' ? 'ReturnToHolding' : undef;
 
