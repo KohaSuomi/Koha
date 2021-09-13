@@ -36,7 +36,7 @@ sub isFiction {
     my $val = 0;
 
     my $sf = $record->subfield('084','a');
-    if ($sf && $sf =~/^8[1-5].*/) { #ykl numbers 81.* to 85.* are fiction.
+    if ($sf && $sf =~/^8[0-5].*/) { #ykl numbers 80.* to 85.* are fiction.
         $val = 1;
     }
     ($self->{dbi}) ? $self->{$col} = $val : $self->set({$col => $val});

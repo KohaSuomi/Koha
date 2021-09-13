@@ -861,26 +861,6 @@ sub isItemChildrens {
     return 0;
 }
 
-sub IsItemFiction {
-    my ($marcxml) = @_;
-
-    my $sf = FindMarcField('084','a', $marcxml);
-    if ($sf =~/^8[0-5].*/) { #ykl numbers 80.* to 85.* are fiction.
-        return 1;
-    }
-    return 0;
-}
-
-sub IsItemMusicalRecording {
-    my ($marcxml) = @_;
-
-    my $sf = FindMarcField('084','a', $marcxml);
-    if ($sf =~/^78.*/) { #ykl number 78 is a musical recording.
-        return 1;
-    }
-    return 0;
-}
-
 sub isItemAcquired {
     my ($self, $row) = @_;
 
