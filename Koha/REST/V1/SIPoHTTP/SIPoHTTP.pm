@@ -297,21 +297,61 @@ sub extractServer {
 
     my ($xmlmessage, $c)    = @_;
     my ($term,       $pass) = getLogin($xmlmessage);
-    my $configfile = 'sip2ohttp-config.xml';
 
-    my $doc = XML::LibXML->load_xml(location => $CONFPATH . '/' . $configfile);
-    my $xc  = XML::LibXML::XPathContext->new($doc->documentElement());
+    #Handle all sip config XML files under /KOHA_CONF/SIPconfig
+    foreach my $file (glob("$CONFPATH/SIPconfig/*.xml")) {
 
-    my ($node) = $xc->findnodes('//' . $term);
+        my $parser = XML::LibXML->new();
+        my $doc    = XML::LibXML->load_xml(location => $file);
+        my $xc     = XML::LibXML::XPathContext->new($doc);
 
-    unless ($node) {
-        $log->error("Missing server config parameters for $term in $configfile");
-        return 0;
+        $xc->registerNs('acs', "http://openncip.org/acs-config/1.0/");
+
+        #get account node with user id that matches received XML message's login id from sip config xml
+        my $xpath = '/acs:acsconfig/acs:accounts/acs:login[@id="' . $term . '"]';
+
+        foreach my $node ($xc->findnodes($xpath)) {
+
+            my $id = $node->getAttribute('id');
+
+            if ($id eq $term) {
+
+                #find sipohttp host and port attributes inside <sipohttp></sipohttp> by service name.
+                #Sipohttp service name is defined in sip account line (sipohttp parameter) and in service name parameter inside <sipohttp></sipohttp>.
+
+                #get attribute 'sipohttp' from matching account line
+                my $service = $node->getAttribute('sipohttp');
+
+                my $xpath = '/acs:acsconfig/acs:sipohttp/acs:service[@name="' . $service . '"]';
+
+                foreach my $node ($xc->findnodes($xpath)) {
+
+
+                    my $servName = $node->getAttribute('name');
+
+                    if ($servName eq $service) {
+
+                        my $host = $node->getAttribute('host');
+                        my $port = $node->getAttribute('port');
+
+                        return $host, $port;
+
+                    }
+
+                }
+
+                $log->error("Can't find SIPoHTTP service parameters $service for $term in sip config XMLs");
+                return 0;
+
+            }
+
+        }
+
     }
 
-    $host = $node->findvalue('./host');
-    $port = $node->findvalue('./port');
-    return $host, $port;
+    $log->error("Missing SIPoHTTP account for $term in sip config XMLs");
+    return 0;
+
 }
 
 sub validateXml {
