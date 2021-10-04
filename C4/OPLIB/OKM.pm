@@ -133,7 +133,7 @@ sub createStatistics {
 
 sub _processItemsDataRow {
     my ($self, $libraryGroup, $row) = @_;
-    my $statCat = $self->getItypeToOKMCategory($row->{itype});
+    my $statCat = $self->getItypeToOKMCategory($row->{itype}) if $row->{itype};
     return undef if (!defined $statCat || $statCat eq 'Electronic');
     unless ($statCat) {
         $self->log("Couldn't get the statistical category for this item:<br/> - biblionumber => ".$row->{biblionumber}."<br/> - itemnumber => ".$row->{itemnumber}."<br/> - itype => ".$row->{itype}."<br/>Using category 'Other'.");
@@ -231,7 +231,7 @@ sub _processItemsDataRow {
 
 sub _processIssuesDataRow {
     my ($self, $libraryGroup, $row) = @_;
-    my $statCat = $self->getItypeToOKMCategory($row->{itype});
+    my $statCat = $self->getItypeToOKMCategory($row->{itype}) if $row->{itype};
     return undef if $statCat eq 'Electronic';
     unless ($statCat) {
         #Already logged in _processItemsDataRow()# $self->log("Couldn't get the statistical category for this item:<br/> - biblionumber => ".$row->{biblionumber}."<br/> - itemnumber => ".$row->{itemnumber}."<br/> - itype => ".$row->{itype}."<br/>Using category 'Other'.");
@@ -320,7 +320,7 @@ sub fetchItemsDataMountain {
     #Get all the Items' informations for Items residing in the libraryGroup.
     my $sth = $dbh->prepare("
         (
-        SELECT  i.itemnumber, i.biblionumber, bi.itemtype as itype, i.location, i.price,
+        SELECT  i.itemnumber, i.biblionumber, bde.itemtype as itype, i.location, i.price,
                 ao.ordernumber, ao.datereceived, i.dateaccessioned,
                 bde.primary_language, bde.fiction, bde.musical,
                 0 as deleted
@@ -334,7 +334,7 @@ sub fetchItemsDataMountain {
         )
         UNION
         (
-        SELECT  di.itemnumber, di.biblionumber, bi.itemtype as itype, di.location, di.price,
+        SELECT  di.itemnumber, di.biblionumber, bde.itemtype as itype, di.location, di.price,
                 ao.ordernumber, ao.datereceived, di.dateaccessioned,
                 bde.primary_language, bde.fiction, bde.musical,
                 1 as deleted
