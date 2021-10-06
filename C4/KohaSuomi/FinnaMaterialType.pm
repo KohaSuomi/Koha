@@ -47,6 +47,7 @@ my %FinnaMaterialLang = (
     'Photo' => { 'fi_FI' => 'VALOKUVA' },
     'PhysicalObject' => { 'fi_FI' => 'ESINE' },
     'Print' => { 'fi_FI' => 'MUUPAINATE' },
+    'eSerial' => { 'fi_FI' => 'KAUSIJULK' },
     'Serial' => { 'fi_FI' => 'KAUSIJULK' },
     'Slide' => { 'fi_FI' => 'DIA' },
     'SoundCassette' => { 'fi_FI' => 'AANIKAS' },
@@ -166,7 +167,7 @@ sub getFinnaMaterialType_core {
 
     } # 007 fields
 
-    my $field008 = $record->field('008');
+    my $field008 = $record->field('008')->data() if $record->field('008');
 
     return 'MusicalScore'   if ($typeOfRecord eq 'C' || $typeOfRecord eq 'D');
     return 'Map'            if ($typeOfRecord eq 'E' || $typeOfRecord eq 'F');

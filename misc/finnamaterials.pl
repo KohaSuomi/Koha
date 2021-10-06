@@ -71,7 +71,7 @@ while (my $ref = $sth->fetchrow_hashref()) {
 	my $changed = 0;
 	my $record;
 	eval {
-	    $record = MARC::Record->new_from_xml($ref->{'metadata'});
+	    $record = MARC::Record->new_from_xml($ref->{'metadata'}, 'UTF-8');
 	};
 	my $finnamaterial = getFinnaMaterialType($record, $lang);
 
