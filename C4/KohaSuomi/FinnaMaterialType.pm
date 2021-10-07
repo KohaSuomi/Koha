@@ -27,8 +27,6 @@ my %FinnaMaterialLang = (
     'ChipCartridge' => { 'fi_FI' => 'PIIRIKOT' },
     'Drawing' => { 'fi_FI' => 'PIIRROS' },
     'DVD' => { 'fi_FI' => 'DVD' },
-    'eBookSection' => { 'fi_FI' => 'EKIRJA' },
-    'eBook' => { 'fi_FI' => 'EKIRJA' },
     'Electronic' => { 'fi_FI' => 'ELEKTRON' },
     'Journal' => { 'fi_FI' => 'ALEHTI' },
     'Kit' => { 'fi_FI' => 'MONIVIES' },
@@ -47,7 +45,6 @@ my %FinnaMaterialLang = (
     'Photo' => { 'fi_FI' => 'VALOKUVA' },
     'PhysicalObject' => { 'fi_FI' => 'ESINE' },
     'Print' => { 'fi_FI' => 'MUUPAINATE' },
-    'eSerial' => { 'fi_FI' => 'KAUSIJULK' },
     'Serial' => { 'fi_FI' => 'KAUSIJULK' },
     'Slide' => { 'fi_FI' => 'DIA' },
     'SoundCassette' => { 'fi_FI' => 'AANIKAS' },
@@ -77,6 +74,12 @@ my %FinnaMaterialLang = (
     'SubUnit' => { 'fi_FI' => 'SARJANOSA' },
     'ContinuouslyUpdatedRecource' => { 'fi_FI' => 'PAIVITTYVA' },
     'Other' => { 'fi_FI' => 'MUU' },
+    'eArticle' => { 'fi_FI' => 'ARTIKKELI' },
+    'eBook' => { 'fi_FI' => 'EKIRJA' },
+    'eBookSection' => { 'fi_FI' => 'EKIRJA' },
+    'eJournal' => { 'fi_FI' => 'ALEHTI' },
+    'eNewspaper' => { 'fi_FI' => 'SLEHTI' },
+    'eSerial' => { 'fi_FI' => 'KAUSIJULK' },
 
     );
 
