@@ -99,6 +99,12 @@ sub getFinnaMaterialType_core {
         my $format2 = uc(substr($contents, 1, 1)); # $formatCode2
         my $formats = uc(substr($contents, 0, 2)); # $formatCode + $formatCode2
 
+        #first deduce if record is ConsoleGame so it isn't categorized incorrectly as CDROM
+        if ($typeOfRecord eq 'M' && $formats eq 'CO'){
+            my $field008 = $record->field('008')->data() if $record->field('008');
+            return 'ConsoleGame' if (uc(substr($field008, 26, 1)) eq 'G');
+        }
+
         return 'Atlas' if ($formats eq 'AD');
         return 'Map'   if ($format1 eq 'A');
 
@@ -178,7 +184,6 @@ sub getFinnaMaterialType_core {
     return 'SoundRecording' if ($typeOfRecord eq 'I');
     return 'MusicRecording' if ($typeOfRecord eq 'J');
     return 'Photo'          if ($typeOfRecord eq 'K');
-    return 'ConsoleGame'    if ($typeOfRecord eq 'M' && uc(substr($field008, 26, 1)) eq 'G');
     return 'Electronic'     if ($typeOfRecord eq 'M');
     return 'Kit'            if ($typeOfRecord eq 'O' || $typeOfRecord eq 'P');
     return 'PhysicalObject' if ($typeOfRecord eq 'R');
