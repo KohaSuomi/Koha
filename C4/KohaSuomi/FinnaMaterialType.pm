@@ -100,7 +100,7 @@ sub getFinnaMaterialType_core {
         my $formats = uc(substr($contents, 0, 2)); # $formatCode + $formatCode2
 
         #first deduce if record is ConsoleGame so it isn't categorized incorrectly as CDROM
-        if ($typeOfRecord eq 'M' && $formats eq 'CO'){
+        if ($typeOfRecord eq 'M' && $format1 eq 'C'){
             my $field008 = $record->field('008')->data() if $record->field('008');
             return 'ConsoleGame' if (uc(substr($field008, 26, 1)) eq 'G');
         }
