@@ -12,6 +12,8 @@ use Koha::Biblio;
 use Koha::Biblioitem;
 use Koha::Biblio::Metadata;
 use C4::Biblio;
+use Koha::DateUtils;
+use C4::Barcodes::ValueBuilder;
 use utf8;
 use List::MoreUtils qw(uniq);
 
@@ -461,11 +463,21 @@ sub createItem{
         $data->{'biblio'} = $biblio;
         $data->{'biblioitem'} = $biblioitem;
 
-        if($barcode){
-            $data->{'barcode'} = "HANK_" . $barcode;
+        my $autoBarcodeType = C4::Context->preference("autoBarcode");
+        my (%args, $nextnum, $scr);
+
+        ($args{year}, $args{mon}, $args{day}) = split('-', output_pref({ dt => dt_from_string, dateformat => 'iso', dateonly => 1 }));
+        ($args{tag},$args{subfield})       =  GetMarcFromKohaField("items.barcode", '');
+        ($args{loctag},$args{locsubfield}) =  GetMarcFromKohaField("items.homebranch", '');
+
+        if ($autoBarcodeType eq 'hbyyyyincr'){
+            ($nextnum, $scr) = C4::Barcodes::ValueBuilder::hbyyyyincr::get_barcode(\%args);
+            $data->{"barcode"} = $nextnum;
+        }else{
+            $data->{"barcode"} = undef;
         }
 
-        my @paramsToValidate = ('biblio', 'biblioitem', 'booksellerid', 'destinationlocation', 'price', 'replacementprice', 'productform', 'notes', 'datecreated', 'collectioncode', 'barcode');
+        my @paramsToValidate = ('biblio', 'biblioitem', 'booksellerid', 'destinationlocation', 'price', 'replacementprice', 'productform', 'notes', 'datecreated', 'collectioncode');
         if($self->validate({'params', \@paramsToValidate , 'data', $data })){
             my $item  = new Koha::Item;
             $item->set({'biblionumber', $data->{'biblio'}});
