@@ -8,7 +8,8 @@
         <import_failed_path>/home/koha/koha-dev/var/spool/editx/fail</import_failed_path> <!-- The path where files are archived if something fails during import-->
         <import_failed_archived_path>/home/koha/koha-dev/var/spool/editx/failed_archived</import_failed_archived_path> <!-- The path where files are archived if something fails during import-->
         <authoriser>0</authoriser> <!-- A borrowers id used in import, change this! -->
-        <allowed_locations>LN,AIK,MUS</allowed_locations>
+        <allowed_locations>LAP,AIK,MUS</allowed_locations>
+        <productform_alternative_triggers>LAP</productform_alternative_triggers> <!-- The shelving location that is found in fundnumber, used for assigning productform_alternative from db map_productform-->
         <automatch_biblios>yes</automatch_biblios> <!-- Set to 'no' if you want to create a new biblio and biblioitem on every order. -->
     </settings>
     <notifications>

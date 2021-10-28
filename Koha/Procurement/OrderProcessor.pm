@@ -449,6 +449,7 @@ sub createItem{
     my ($copyDetail, $itemDetail, $order, $barcode, $biblio, $biblioitem) = @_;
     my $result = 0;
     my $data = {};
+    my $fundnr = $copyDetail->getFundNumber();
 
     if($itemDetail->isa('Koha::Procurement::EditX::LibraryShipNotice::ItemDetail') ){
         $data->{'booksellerid'} = $order->getSellerId();
@@ -456,7 +457,7 @@ sub createItem{
         $data->{'price'} = $itemDetail->getPriceFixedRPExcludingTax();
         $data->{'replacementprice'} = $itemDetail->getPriceSRPIncludingTax();
         $data->{'timestamp'} = $order->getTimeStamp();
-        $data->{'productform'} = $self->getProductForm($itemDetail->getProductForm());
+        $data->{'productform'} = $self->getItemProductForm($itemDetail->getProductForm(), $fundnr);
         $data->{'notes'} = $itemDetail->getNotes();
         $data->{'datecreated'} = $order->getDateCreated();
         $data->{'collectioncode'} = $copyDetail->getLocation();
@@ -574,7 +575,7 @@ sub getProductForm {
     my $productForm = $_[0];
     my $result;
 
-    if($productForm){
+    if($productForm){       
         my $dbh = C4::Context->dbh;
         my $stmnt = $dbh->prepare("SELECT max(productform) from map_productform where onix_code = ?");
         $stmnt->execute($productForm) or die($DBI::errstr);
@@ -585,6 +586,52 @@ sub getProductForm {
         $productForm = $result;
     }
     return $productForm;
+}
+
+sub getItemProductForm {
+    my $self = shift;
+    my $productForm = $_[0];
+    my $productFormAlternative;
+    my $fundnr = $_[1];
+    my $result;
+
+    if($productForm){
+
+        my $dbh = C4::Context->dbh;
+        my $stmnt = $dbh->prepare("SELECT productform_alternative from map_productform where onix_code = ?");
+        $stmnt->execute($productForm) or die($DBI::errstr);
+        $result = $stmnt->fetchrow_array();
+
+        if($result){
+            $productFormAlternative = $result;
+
+            my $settings = $self->getConfig()->getSettings();
+            if(defined $settings->{settings}->{productform_alternative_triggers} ){
+                my $productform_alternatives = $settings->{settings}->{productform_alternative_triggers};
+
+                my @productform_alternatives = split(',', $productform_alternatives);
+
+                my $pf_alternative_trigger;
+
+                foreach $pf_alternative_trigger (@productform_alternatives) {
+
+                    if($fundnr =~ m[$pf_alternative_trigger])
+                    {
+                        return $productFormAlternative;
+                    }
+                }
+            }
+        }
+
+        $stmnt = $dbh->prepare("SELECT productform from map_productform where onix_code = ?");
+        $stmnt->execute($productForm) or die($DBI::errstr);
+        $result = $stmnt->fetchrow_array();
+
+        if($result){
+            $productForm = $result;
+            return $productForm;
+        }
+    }
 }
 
 sub validate{
