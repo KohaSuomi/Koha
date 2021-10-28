@@ -30,7 +30,7 @@ sub loadConfigXml{
 sub getConfigXmlPath{
     my $self = shift;
     my $kohaConfigPath = $ENV{'KOHA_CONF'};
-    my $kohaPath = $ENV{KOHA_PATH};
+    my $kohaPath = $ENV{'KOHA_PATH'};
     my($file, $path, $ext) = fileparse($kohaConfigPath);
     my $procurementConfigPath = $path . $configFile; # use the same path as koha_config.xml file
     return $procurementConfigPath;
