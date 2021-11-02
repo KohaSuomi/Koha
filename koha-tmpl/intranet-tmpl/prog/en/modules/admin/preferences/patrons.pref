@@ -110,7 +110,7 @@ Patrons:
          - pref: DebarmentsToLiftAfterPayment
            type: textarea
            class: code
-         - Lift these debarments after Borrower has paid his/her fees. Matches dynamic content in debarment comment.
+         - Lift these debarments after Borrower has paid their charges. Matches dynamic content in debarment comment.
          - "<p>Example, debarments with comment (either exact match or dynamic content, e.g. 'Debarment message for Patron 123') that match 'Debarment message' are lifted after all fees are paid:</p>"
          - "<pre>Debarment message:</pre>
             <pre>  outstanding: 0</pre>"
