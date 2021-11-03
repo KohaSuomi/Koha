@@ -197,17 +197,18 @@ sub get_barcode {
 
     my $prefix = $yaml->{$branchcode} || $yaml->{'Default'} || '666';
 
-    $query = "SELECT MAX(CAST(SUBSTRING(barcode,-4) AS signed)) from items where barcode REGEXP ?";
+    my $update_query = "UPDATE sequences set item_barcode_nextval = item_barcode_nextval+1";
+    $sth=C4::Context->dbh->prepare($update_query);
+    $sth->execute();
+
+    $query = "SELECT max(item_barcode_nextval) from sequences";
     $sth=C4::Context->dbh->prepare($query);
-    $sth->execute("^$prefix$args->{year}$args->{mon}");
+    $sth->execute();
 
-    while (my ($count)= $sth->fetchrow_array) {
-        warn "Examining Record: $count" if $DEBUG;
-        $nextnum = $count if $count;
+    while (my ($item_barcode_nextval)= $sth->fetchrow_array) {
+        warn "Examining Record: $item_barcode_nextval" if $DEBUG;
+        $nextnum = $item_barcode_nextval if $item_barcode_nextval;
     }
-
-    $nextnum++;
-    $nextnum = sprintf("%0*d", "5",$nextnum);
 
     $barcode = $prefix;
     $barcode .= $args->{year}.$args->{mon}.$nextnum;
