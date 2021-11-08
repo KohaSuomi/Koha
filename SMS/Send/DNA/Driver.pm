@@ -183,7 +183,6 @@ sub send_sms {
         Koha::Exception::SMSDeliveryFailure->throw(error => $res->{error});
         return;
     } else {
-        ($error, $revoke) = _rest_call($base_url.$appid.'/revoke', {'Content-Type' => 'application/x-www-form-urlencoded'}, $authorization, {token => $token->{access_token}});
         return 1;
     }
 }
