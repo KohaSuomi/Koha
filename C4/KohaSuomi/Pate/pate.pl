@@ -251,10 +251,7 @@ elsif ( $ARGV[0] eq '--letters' ) {
 
         else {
             if ( $branchconfig eq 'default' ) {
-                print STDERR "No letter created for message " . @$message{'message_id'}. ". The letter format for the branch is not configured.\n";
-
-                C4::Letters::_set_message_status ( { message_id => @$message{'message_id'},
-                                                     status     => 'failed' } );
+                print STDERR "No letter created for message " . @$message{'message_id'}. ". Process this manually with a plugin!\n";
 
                 # We'll consider this non-fatal and keep on going with other messages
                 $undelivered++;
