@@ -102,8 +102,6 @@ sub pay {
         }
     );
 
-    Koha::Patron::Debarments::DelDebarmentsAfterPayment({ borrowernumber => $self->{patron_id} });
-
     # NOTE: Pay historically always applied as much credit as it could to all
     # existing outstanding debits, whether passed specific debits or otherwise.
     if ( $payment->amountoutstanding ) {

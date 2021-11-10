@@ -197,22 +197,56 @@ is( Koha::Patrons->find($borrowernumber3)->debarredcomment,
 
 # Test removing debartments after payment
 my $debarmentsRulesPref = C4::Context->preference("DebarmentsToLiftAfterPayment");
-C4::Context->set_preference("DebarmentsToLiftAfterPayment", "Test debarment:\n  outstanding: 0\nTest debarment 2:");
+C4::Context->set_preference("DebarmentsToLiftAfterPayment", "Test debarment:\n  outstanding: 0\nTest debarment 2:\n  outstanding: 2");
 
-AddDebarment({
-    borrowernumber => $borrowernumber,
+my $register = $builder->build_object( { class => 'Koha::Cash::Registers' } );
+my $patron2  = $builder->build_object( { class => 'Koha::Patrons' } );
+my $account = $patron2->account;
+my $fine = $account->add_debit(
+    {
+        amount    => '5.00',
+        type      => 'OVERDUE',
+        interface => 'cron'
+    }
+);
+
+Koha::Patron::Debarments::AddDebarment({
+    borrowernumber => $patron2->borrowernumber,
     comment => 'Test debarment',
 });
-AddDebarment({
-    borrowernumber => $borrowernumber,
+Koha::Patron::Debarments::AddDebarment({
+    borrowernumber => $patron2->borrowernumber,
     comment => 'Test debarment 2',
 });
 
-$debarments = GetDebarments({ borrowernumber => $borrowernumber });
+$debarments = Koha::Patron::Debarments::GetDebarments({ borrowernumber => $patron2->borrowernumber });
 is( @$debarments, 2, "GetDebarments returns 2 debarments before payment" );
 
-DelDebarmentsAfterPayment({ borrowernumber => $borrowernumber });
-C4::Context->set_preference("DebarmentsToLiftAfterPayment", $debarmentsRulesPref);
+my $payment1 = $account->pay(
+    {
+        cash_register => $register->id,
+        amount        => '4.00',
+        credit_type   => 'PAYMENT',
+        lines         => [$fine]
+    }
+);
 
-$debarments = GetDebarments({ borrowernumber => $borrowernumber });
-is( @$debarments, 0, "GetDebarments returns 0 debarments after payment" );
+$debarments = Koha::Patron::Debarments::GetDebarments({ borrowernumber => $patron2->borrowernumber });
+is( @$debarments, 1, "GetDebarments returns 1 debarment after first payment" );
+my $debarment_comment;
+foreach my $debarment (@$debarments){
+    $debarment_comment = $debarment->{comment};
+}
+is( $debarment_comment, "Test debarment", "Returned debartments comment is 'Test debarment'" );
+
+my $payment2 = $account->pay(
+    {
+        cash_register => $register->id,
+        amount        => '1.00',
+        credit_type   => 'PAYMENT',
+        lines         => [$fine]
+    }
+);
+
+$debarments = Koha::Patron::Debarments::GetDebarments({ borrowernumber => $patron2->borrowernumber });
+is( @$debarments, 0, "GetDebarments returns 0 debarments after second payment" );

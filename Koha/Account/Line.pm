@@ -701,6 +701,8 @@ sub apply {
         }
     });
 
+    Koha::Patron::Debarments::DelDebarmentsAfterPayment({ borrowernumber => $self->borrowernumber });
+
     return $self;
 }
 
