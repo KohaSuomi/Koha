@@ -203,7 +203,7 @@ sub get_barcode {
     $sth->execute("^$prefix$args->{year}$args->{mon}");
 
     while (my ($count)= $sth->fetchrow_array) { 
-        $update_query = "UPDATE sequences set item_barcode_nextval = '1'" unless $count;  
+        $update_query = "UPDATE sequences set item_barcode_nextval = '1'";  
     }
 
     $sth=C4::Context->dbh->prepare($update_query);

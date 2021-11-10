@@ -468,6 +468,7 @@ sub createItem{
         ($args{year}, $args{mon}, $args{day}) = split('-', output_pref({ dt => dt_from_string, dateformat => 'iso', dateonly => 1 }));
         ($args{tag},$args{subfield})       =  GetMarcFromKohaField("items.barcode", '');
         ($args{loctag},$args{locsubfield}) =  GetMarcFromKohaField("items.homebranch", '');
+        ($args{branchcode}) = $data->{'destinationlocation'};
 
         if ($autoBarcodeType eq 'hbyyyyincr'){
             ($nextnum, $scr) = C4::Barcodes::ValueBuilder::hbyyyyincr::get_barcode(\%args);
