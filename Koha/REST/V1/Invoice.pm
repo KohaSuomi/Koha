@@ -112,14 +112,14 @@ sub add {
         my $finvoice_duedate = strftime "%Y%m%d", localtime($date);
         $totalfines = sprintf("%.2f", $totalfines);
         $totalfines =~ tr/./,/;
-        my $reference = '12345678901234567890';
-        
-        if ($body->{addreferencenumber} && !$preview) {
-            $reference =_reference_number($body->{librarygroup}, $body->{increment});
-        }
+
         my $invoicenumber;
         if (!$preview) {
             $invoicenumber = _invoice_number();
+        }
+        my $reference;
+        if ($body->{addreferencenumber} && !$preview) {
+            $reference =_reference_number($body->{librarygroup}, $invoicenumber, $body->{increment});
         }
 
         $params{"substitute"} = {
@@ -204,17 +204,17 @@ sub _escape_string {
 }
 
 sub _reference_number {
-    my ($librarygroup, $increment) = @_;
+    my ($librarygroup, $invoicenumber, $increment) = @_;
     my $dbh = C4::Context->dbh;
 
     my $sth_refnumber=$dbh->prepare('SELECT ' . $librarygroup . ' FROM sequences;');
 
     $sth_refnumber->execute() or return 0;
     my @refno=$sth_refnumber->fetchrow_array();
-
+    
     $dbh->do('UPDATE sequences SET '. $librarygroup . ' = ' . $librarygroup . ' + ' . $increment);
-
-    return $refno[0] . _ref_checksum($refno[0]);
+    my $reference = $refno[0].'0'.$invoicenumber;
+    return $reference . _ref_checksum($reference);
 }
 
 sub _ref_checksum {
