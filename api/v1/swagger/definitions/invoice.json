@@ -80,6 +80,14 @@
     "invoicefine": {
       "description": "Set invoice fine",
       "type": "string"
+    },
+    "accountnumber": {
+      "description": "Set library group accountnumber",
+      "type": "string"
+    },
+    "biccode": {
+      "description": "Set library group bic code",
+      "type": "string"
     }
   },
   "additionalProperties": false,
