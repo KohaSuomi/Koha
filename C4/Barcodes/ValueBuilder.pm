@@ -218,11 +218,9 @@ sub get_barcode {
                 fnum = i;
             }
         }
-
     var branchcode = document.f.field_value[fnum].value;
     var json; //Variable which receives the results
     var loc_url = '/cgi-bin/koha/cataloguing/barcode_ajax.pl?branchcode=' + branchcode; //Location
-
     \$.getJSON(loc_url, function(jsonData){
         json = jsonData;
         \$('#' + id).val(json['barcode']);

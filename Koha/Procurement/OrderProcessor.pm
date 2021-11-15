@@ -215,23 +215,57 @@ sub getFundYear {
      return $year;
 }
 
+sub generateBarcode {
+    my ($self, $args, $autoBarcodeType) = @_;
+
+    my $prefix = $args->{prefix} || undef;
+    my $date = $args->{date};
+    $self->advanceBarcodeValue($prefix, $date);
+
+    my $barcode;
+    my $nextnum = $self->getBarcodeValue();
+
+    if( ($autoBarcodeType eq 'hbyyyyincr' && $prefix) ){
+        $barcode = $prefix.$date.$nextnum;
+    } else {
+        $barcode = "HANK_".$date.$nextnum;
+    }
+
+    return $barcode;
+}
 
 sub advanceBarcodeValue {
-    my $self = shift;
+    my ($self, $prefix, $date) = @_;
     my $dbh = C4::Context->dbh;
-    my $stmnt = $dbh->prepare("UPDATE sequences set item_barcode_nextval = item_barcode_nextval+1");
+
+    my $update_query = "UPDATE sequences set item_barcode_nextval = item_barcode_nextval+1";
+    my $query = "SELECT MAX(CAST(SUBSTRING(barcode,-4) AS signed)) from items where barcode REGEXP ?";
+    my $stmnt = $dbh->prepare($query);
+    my $regex = $prefix ? $prefix.$date : "HANK_".$date;
+    $stmnt->execute("^$regex");
+
+    while (my ($count)= $stmnt->fetchrow_array) {
+        if(!$count || $count == 9999){
+            $update_query = "UPDATE sequences set item_barcode_nextval = 1";
+        }
+    }
+
+    $stmnt = $dbh->prepare($update_query);
     $stmnt->execute();
 }
 
 
-sub getBarcodeValue{
+sub getBarcodeValue {
     my $self = shift;
+
     my $dbh = C4::Context->dbh;
     my $stmnt = $dbh->prepare("SELECT max(item_barcode_nextval) from sequences");
     $stmnt->execute();
-    return $stmnt->fetchrow_array();
-}
 
+    my $nextnum = sprintf("%0*d", "5",$stmnt->fetchrow_array());
+
+    return $nextnum;
+}
 
 sub getItemsByIsbns {
     my $self = shift;
@@ -466,18 +500,22 @@ sub createItem{
 
         my $autoBarcodeType = C4::Context->preference("autoBarcode");
         my (%args, $nextnum, $scr);
+        my $branchPrefixes = C4::Context->preference("BarcodePrefix");
+        my $yaml = YAML::XS::Load(
+                        Encode::encode(
+                            'UTF-8',
+                            $branchPrefixes,
+                            Encode::FB_CROAK
+                        )
+        );
 
-        ($args{year}, $args{mon}, $args{day}) = split('-', output_pref({ dt => dt_from_string, dateformat => 'iso', dateonly => 1 }));
+        ($args{date}) = strftime "%y%m%d", localtime;
         ($args{tag},$args{subfield})       =  GetMarcFromKohaField("items.barcode", '');
         ($args{loctag},$args{locsubfield}) =  GetMarcFromKohaField("items.homebranch", '');
         ($args{branchcode}) = $data->{'destinationlocation'};
+        ($args{prefix}) = $yaml->{$data->{'destinationlocation'}} || $yaml->{'Default'};
 
-        if ($autoBarcodeType eq 'hbyyyyincr'){
-            ($nextnum, $scr) = C4::Barcodes::ValueBuilder::hbyyyyincr::get_barcode(\%args);
-            $data->{"barcode"} = $nextnum;
-        }else{
-            $data->{"barcode"} = undef;
-        }
+        $data->{"barcode"} = $self->generateBarcode(\%args, $autoBarcodeType);
 
         my @paramsToValidate = ('biblio', 'biblioitem', 'booksellerid', 'destinationlocation', 'price', 'replacementprice', 'productform', 'notes', 'datecreated', 'collectioncode');
         if($self->validate({'params', \@paramsToValidate , 'data', $data })){
