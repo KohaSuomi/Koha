@@ -88,6 +88,10 @@
     "biccode": {
       "description": "Set library group bic code",
       "type": "string"
+    },
+    "businessid": {
+      "description": "Set library group business id",
+      "type": "string"
     }
   },
   "additionalProperties": false,
