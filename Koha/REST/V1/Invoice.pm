@@ -132,6 +132,7 @@ sub add {
             invoicefine => $body->{invoicefine}, 
             accountnumber => $body->{accountnumber},
             biccode => $body->{biccode},
+            businessid => $body->{businessid},
         };
 
         my $guarantee;
