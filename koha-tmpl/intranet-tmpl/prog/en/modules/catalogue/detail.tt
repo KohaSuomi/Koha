@@ -250,7 +250,7 @@ function verify_images() {
 <script src="[% themelang %]/js/RadialMenu_[% KOHA_VERSION %].js"></script>
 <link rel="stylesheet" type="text/css" href="[% themelang %]/css/RadialMenu_[% KOHA_VERSION %].css" />
 <link rel="stylesheet" type="text/css" href="[% themelang %]/css/jstree/style.min_[% KOHA_VERSION %].css" />
-<link rel="stylesheet" href="/css/font-awesome_[% KOHA_VERSION %].css" />
+<link rel="stylesheet" href="/intranet-tmpl/lib/font-awesome/css/font-awesome.css" />
 <script type="text/javascript" src="[% interface %]/js/browser_[% KOHA_VERSION %].js"></script>
 <script type="text/javascript">
 //<![CDATA[
