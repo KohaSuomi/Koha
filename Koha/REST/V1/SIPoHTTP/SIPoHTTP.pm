@@ -155,7 +155,7 @@ sub tradeSip {
         
         $log->debug($login . " ---> ". $command_message);
 
-        $sipsock->recv($respdata, 1024);
+        $sipsock->recv($respdata, 8192);
         
         $log->debug($login . " <--- ". $respdata);
         
