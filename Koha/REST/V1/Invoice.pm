@@ -127,6 +127,7 @@ sub add {
         $params{"substitute"} = {
             finvoice_today => $finvoice_now,
             finvoice_duedate => $finvoice_duedate,
+            invoice_duedate => $duedate,
             totalfines => $totalfines,
             referencenumber => $reference,
             invoicenumber => $invoicenumber,
