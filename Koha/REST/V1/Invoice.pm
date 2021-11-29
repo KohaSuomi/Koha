@@ -126,6 +126,7 @@ sub add {
             ssn => $ssn,
             finvoice_today => $finvoice_now,
             finvoice_duedate => $finvoice_duedate,
+            invoice_duedate => $duedate,
             totalfines => $totalfines,
             referencenumber => $reference,
             invoicenumber => $invoicenumber,
