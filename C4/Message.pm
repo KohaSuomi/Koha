@@ -25,6 +25,7 @@ use C4::Context;
 use C4::Letters;
 use YAML::Syck;
 use Carp;
+use Encode;
 
 =head1 NAME
 
