@@ -444,11 +444,13 @@ sub list_overdues {
     my $results = [];
     foreach my $checkout (@{$checkouts->unblessed}){
         my $items = [];
+        my $librarytable = $invoicelibrary eq "itembranch" ? 'item.homebranch' : 'me.branchcode';
         my $borcheckouts = Koha::Checkouts->search(
             {
                 borrowernumber => $checkout->{borrowernumber},
                 date_due => { '>=' => $lastdate, '<=' => $enddate  },
                 'item.notforloan' => $notforloan,
+                $librarytable => \@libraries,
             }, 
             {
                 join => { 'item' => 'biblio'},
