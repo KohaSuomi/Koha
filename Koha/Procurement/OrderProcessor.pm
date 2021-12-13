@@ -237,7 +237,7 @@ sub advanceBarcodeValue {
     my $dbh = C4::Context->dbh;
 
     my $update_query = "UPDATE sequences set item_barcode_nextval = item_barcode_nextval+1";
-    my $query = "SELECT MAX(CAST(SUBSTRING(barcode,-4) AS signed)) from items where barcode REGEXP ?";
+    my $query = "SELECT MAX(CAST(SUBSTRING(barcode,-5) AS signed)) from items where barcode REGEXP ?";
     my $stmnt = $dbh->prepare($query);
     my $regex = $prefix ? $prefix.$date : "HANK_".$date;
     $stmnt->execute("^$regex");
