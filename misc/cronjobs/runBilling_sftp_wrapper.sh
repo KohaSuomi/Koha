@@ -12,6 +12,5 @@ test ! -e "$billingconfig" && echo "No billing config" && exit 1
 stagingdir=$(xmllint --xpath "config/branchcategories/$2/targetdir/text()" $billingconfig)
 for transferfile in $(ls -1 $stagingdir/*.dat); do
   filename="$FILEPREFIX$(basename $transferfile)"
-  sshpass -e sftp -P $SSHPORT $SSHUSER@$SSHHOST <<< $"put $stagingdir/$filename $SSHDIR" && mv $stagingdir/$filename $stagingdir/siirretty/
+  sshpass -e sftp -P $SSHPORT $SSHUSER@$SSHHOST <<< $"put $transferfile $SSHDIR/$filename" && mv $transferfile $stagingdir/siirretty/
 done
-
