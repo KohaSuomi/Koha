@@ -314,6 +314,7 @@ sub fetchItemsDataMountain {
     my @cc = caller(0);
     print '    #'.DateTime->now()->iso8601()."# Starting ".$cc[3]." #\n" if $self->{verbose};
     my $in_libraryGroupBranches = $libraryGroup->getBranchcodesINClause();
+    my $notforloan = $self->{conf}->{notForLoanStatuses};
     my $limit = $self->getLimit();
 
     my $dbh = C4::Context->dbh();
@@ -330,6 +331,7 @@ sub fetchItemsDataMountain {
             LEFT JOIN biblioitems bi ON i.biblionumber = bi.biblioitemnumber
             LEFT JOIN biblio_data_elements bde ON bi.biblioitemnumber = bde.biblioitemnumber
             WHERE i.homebranch $in_libraryGroupBranches
+            AND notforloan NOT IN (" . join(',', map {"'$_'"} @{$notforloan}).")
             GROUP BY i.itemnumber $limit
         )
         UNION
@@ -344,6 +346,7 @@ sub fetchItemsDataMountain {
             LEFT JOIN biblioitems bi ON di.biblionumber = bi.biblioitemnumber
             LEFT JOIN biblio_data_elements bde ON bi.biblioitemnumber = bde.biblioitemnumber
             WHERE di.homebranch $in_libraryGroupBranches
+            AND notforloan NOT IN (" . join(',', map {"'$_'"} @{$notforloan}).")
             GROUP BY di.itemnumber $limit
         )
     ");
@@ -505,6 +508,7 @@ sub statisticsDiscards {
 
     #Do not statistize these itemtypes as item discard:
     my $excludedItemTypes = $self->getItemtypesByStatisticalCategories('Serials', 'Electronic');
+    my $notforloan = $self->{conf}->{notForLoanStatuses};
     my $dbh = C4::Context->dbh();
     my $in_libraryGroupBranches = $libraryGroup->getBranchcodesINClause();
     my $limit = $self->getLimit();
@@ -512,7 +516,7 @@ sub statisticsDiscards {
                "WHERE homebranch $in_libraryGroupBranches ".
                "  AND timestamp >= ? AND timestamp <= ? ".
                "  AND itemtype NOT IN (".join(',', map {"'$_'"} @$excludedItemTypes).") ".
-#                 AND itype != 'SL' AND itype != 'AL'
+               "  AND notforloan NOT IN (" . join(',', map {"'$_'"} @{$notforloan}).")".
                "  $limit; ";
 
     my $sth = $dbh->prepare($sql);
