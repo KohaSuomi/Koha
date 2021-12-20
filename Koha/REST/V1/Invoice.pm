@@ -25,7 +25,6 @@ use Koha::Notice::Messages;
 use C4::Letters;
 use POSIX qw(strftime);
 
-use C4::KohaSuomi::SSN::Access;
 use C4::Items;
 use Koha::Account;
 use Koha::Patron;
@@ -42,7 +41,6 @@ sub add {
         my $patron_id = $c->validation->param('patron_id');
         my $body = $c->req->json;
         my $preview = $body->{preview} || 0;
-        my $ssn = GetSSNByBorrowerNumber ( $patron_id );
 
         my %tables = ( 'borrowers' => $patron_id, 'branches' => $body->{branchcode} );
 
@@ -110,6 +108,9 @@ sub add {
         my $date = time + (14 * 24 * 60 * 60);
         my $duedate = strftime "%d.%m.%Y", localtime($date);
         my $finvoice_duedate = strftime "%Y%m%d", localtime($date);
+        my $invoicefine = $body->{invoicefine};
+        $invoicefine =~ tr/,/./;
+        $totalfines = $totalfines + $invoicefine if $invoicefine;
         $totalfines = sprintf("%.2f", $totalfines);
         $totalfines =~ tr/./,/;
 
@@ -123,7 +124,6 @@ sub add {
         }
 
         $params{"substitute"} = {
-            ssn => $ssn,
             finvoice_today => $finvoice_now,
             finvoice_duedate => $finvoice_duedate,
             invoice_duedate => $duedate,
