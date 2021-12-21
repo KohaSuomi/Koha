@@ -22,6 +22,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use C4::Log;
 
 use Koha::Notice::Messages;
+use Koha::Patron::Message;
 use C4::Letters;
 use POSIX qw(strftime);
 
@@ -169,7 +170,6 @@ sub add {
                     type           => 'OVERDUES',
                     comment        => "Lainauskielto laskutetusta aineistosta",
                 });
-                
                 if ($body->{guarantee}) {
                     Koha::Patron::Debarments::AddUniqueDebarment({
                         borrowernumber => $body->{guarantee},
@@ -177,6 +177,28 @@ sub add {
                         comment        => "Lainauskielto laskutetusta aineistosta",
                     });
                 }
+            }
+
+            if ($body->{patronmessage}) {
+                Koha::Patron::Message->new(
+                    {
+                        borrowernumber => $patron_id,
+                        branchcode     => $body->{branchcode},
+                        message_type   => 'L',
+                        message        => $body->{patronmessage},
+                    }
+                )->store;
+            }
+
+            if ($body->{guarenteemessage}) {
+                Koha::Patron::Message->new(
+                    {
+                        borrowernumber => $body->{guarantee},
+                        branchcode     => $body->{branchcode},
+                        message_type   => 'L',
+                        message        => $body->{guarenteemessage},
+                    }
+                )->store;
             }
         }
         
