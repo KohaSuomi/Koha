@@ -192,13 +192,25 @@ elsif ( $ARGV[0] eq '--letters' ) {
     print STDERR "Staging letters...\n";
 
     foreach my $message ( @{ GetPrintMessages() } ) {
+        # Skip defined letter_codes from the process
+        if ( C4::Context->config('ksmessaging')->{'letters'}->{'skipletters'} ) {
+            my $skipletter = 0;
+            my @skip = split(',', C4::Context->config('ksmessaging')->{'letters'}->{'skipletters'});
+            foreach my $skip (@skip) {
+                if (@$message{'letter_code'} eq $skip) {
+                    $skipletter = 1;
+                    last;
+                }
+            }
+            next if $skipletter;
+        }
         $letters++;
         # Combining will happen here
 
         my $branchconfig = find_branchconfig('letters', $message);
 
         print @$message{'branchcode'} . "\n";
-        print Dumper ( C4::Context->config('ksmessaging')->{'suomifi'}->{'branches'}->{"@$message{'branchcode'}"}  );
+        print Dumper ( C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"@$message{'branchcode'}"}  );
 
         if ( C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"$branchconfig"}->{'ipostepl'} ) {
             my $encoding = C4::Context->config('ksmessaging')->{'letters'}->{'branches'}->{"$branchconfig"}->{'ipostepl'}->{'encoding'} || 'latin1';

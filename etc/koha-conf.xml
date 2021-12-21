@@ -335,6 +335,7 @@ __PAZPAR2_TOGGLE_XML_POST__
  </printmailProviders>
  <ksmessaging>
   <letters>
+    <skipletters>FINVOICE,ODUECLAIM</skipletters>
     <combineacrossbranches>no</combineacrossbranches> <!-- not implemented yet -->
     <branches>
       <!-- You can either define individual configurations for known branches here or use the settings in 'default' tags -->
