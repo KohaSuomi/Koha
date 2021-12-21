@@ -101,7 +101,7 @@ sub add {
             $count++
         }
         $params{"repeat"} = {$body->{repeat_type} => \@items};
-        $params{"message_transport_type"} = $body->{message_transport_type} || 'print';
+        $params{"message_transport_type"} = $body->{message_transport_type} || 'invoice';
         
         my $now = strftime "%d%m%Y", localtime;
         my $finvoice_now = strftime "%Y%m%d", localtime;
