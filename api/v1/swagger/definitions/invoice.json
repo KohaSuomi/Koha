@@ -62,7 +62,7 @@
       "type": "string"
     },
     "guarantee": {
-      "description": "Patron's guarantee",
+      "description": "Patron's dependant",
       "type": "number"
     },
     "preview": {
@@ -92,6 +92,20 @@
     "businessid": {
       "description": "Set library group business id",
       "type": "string"
+    },
+    "patronmessage": {
+      "description": "Set message to patron",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "guaranteemessage": {
+      "description": "Set message to dependant",
+      "type": [
+        "string",
+        "null"
+      ]
     }
   },
   "additionalProperties": false,
