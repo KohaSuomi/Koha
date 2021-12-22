@@ -652,8 +652,14 @@ sub getItemProductForm {
                 my $pf_alternative_trigger;
 
                 foreach $pf_alternative_trigger (@productform_alternatives) {
+                    
+                    my $fundnr_regexedloc = $fundnr;
+                    my $n = 4;
+                    $fundnr_regexedloc =~ s/\d{$n}$//; #remove last $n digits
+                    my $matchlen = length($pf_alternative_trigger);
+                    $fundnr_regexedloc = substr $fundnr_regexedloc, -($matchlen);
 
-                    if($fundnr =~ m[$pf_alternative_trigger])
+                    if($fundnr_regexedloc eq $pf_alternative_trigger)
                     {
                         return $productFormAlternative;
                     }
