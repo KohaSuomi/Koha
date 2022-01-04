@@ -23,7 +23,7 @@ use strict;
 use warnings;
 use C4::Context;
 use C4::Letters;
-use YAML::Syck;
+use YAML::XS;
 use Carp;
 use Encode;
 
@@ -283,7 +283,7 @@ sub metadata {
         $self->content($self->render_metadata);
         return $data;
     } else {
-        return Load($self->{metadata});
+        return YAML::XS::Load(Encode::encode_utf8($self->{metadata}));
     }
 }
 
