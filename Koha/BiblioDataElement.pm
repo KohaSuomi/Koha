@@ -54,6 +54,20 @@ sub isMusicalRecording {
     ($self->{dbi}) ? $self->{$col} = $val : $self->set({$col => $val});
 }
 
+sub isCelia {
+    my ($self, $record) = @_;
+
+    my $col = 'celia';
+    my $val = 0;
+
+    my $sf = $record->subfield('599','a');
+    
+    if ($sf && $sf =~/^Daisy/) { #Daisy in 599a means it's a Celia.
+        $val = 1;
+    }
+    ($self->{dbi}) ? $self->{$col} = $val : $self->set({$col => $val});
+}
+
 sub isSerial {
     my ($self, $itemtype) = @_;
     my $col = 'serial';

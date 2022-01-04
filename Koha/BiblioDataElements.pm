@@ -166,6 +166,7 @@ sub UpdateBiblioDataElement {
     #Start creating data_elements.
     $bde->isFiction($record);
     $bde->isMusicalRecording($record);
+    $bde->isCelia($record);
     $bde->setDeleted($deleted);
     $bde->setItemtype($itemtype);
     $bde->isSerial($itemtype);
