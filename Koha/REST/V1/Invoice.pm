@@ -135,11 +135,13 @@ sub add {
             accountnumber => $body->{accountnumber},
             biccode => $body->{biccode},
             businessid => $body->{businessid},
+            issueborname => $body->{firstname}.' '.$body->{surname},
+            issueborbarcode => $body->{cardnumber},
         };
 
-        my $guarantee;
+
         if ($body->{guarantee}) {
-            $guarantee = Koha::Patrons->find($body->{guarantee});
+            my $guarantee = Koha::Patrons->find($body->{guarantee});
             $params{"substitute"}{"issueborname"} = $guarantee->firstname.' '.$guarantee->surname;
             $params{"substitute"}{"issueborbarcode"} = $guarantee->cardnumber;
         }
