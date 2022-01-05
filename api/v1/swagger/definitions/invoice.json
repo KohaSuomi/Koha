@@ -106,6 +106,18 @@
         "string",
         "null"
       ]
+    },
+    "surname": {
+      "description": "Set patron's surname",
+      "type": "string"
+    },
+    "firstname": {
+      "description": "Set patron's firstname",
+      "type": "string"
+    },
+    "cardnumber": {
+      "description": "Set patron's cardnumber",
+      "type": "string"
     }
   },
   "additionalProperties": false,
