@@ -199,14 +199,14 @@ sub _processItemsDataRow {
         }
     }
     elsif ($statCat eq 'Recordings') {
-        if ($isMusicalRecording) {
-            $stats->{'collectionMusicalRecordings'}++ if not($deleted);
-            $stats->{'acquisitionsMusicalRecordings'}++ if $isAcquired;
-        }
-        elsif ($isCelia) {           
+        if ($isCelia) {           
             $stats->{'collectionCelia'}++ if not($deleted);
             $stats->{'acquisitionsCelia'}++ if $isAcquired;
         }
+        elsif ($isMusicalRecording) {
+            $stats->{'collectionMusicalRecordings'}++ if not($deleted);
+            $stats->{'acquisitionsMusicalRecordings'}++ if $isAcquired;
+        }        
         else {
             $stats->{'collectionOtherRecordings'}++ if not($deleted);
             $stats->{'acquisitionsOtherRecordings'}++ if $isAcquired;
@@ -288,12 +288,12 @@ sub _processIssuesDataRow {
         }
     }
     elsif ($statCat eq 'Recordings') {
-        if ($isMusicalRecording) {
-            $stats->{'issuesMusicalRecordings'} += $issues;
-        }
-        elsif ($isCelia) {
+        if ($isCelia) {
             $stats->{'issuesCelia'} += $issues;
         }
+        elsif ($isMusicalRecording) {
+            $stats->{'issuesMusicalRecordings'} += $issues;
+        }        
         else {
             $stats->{'issuesOtherRecordings'} += $issues;
         }
