@@ -17,15 +17,24 @@
     },
     "message_transport_type": {
       "description": "Transport method. Values accepted by default are 'email', 'sms', 'phone' and 'print'",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "branchcode": {
       "description": "Notice branch",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "repeat_type": {
       "description": "Repeat type eg. item",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "repeat": {
       "description": "Repeat items",
@@ -36,7 +45,10 @@
     },
     "notforloan_status": {
       "description": "Not for loan status for invoiced items",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "debarment": {
       "description": "Add debarment for patron",
@@ -59,7 +71,10 @@
     },
     "lang": {
       "description": "Patron's language",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "guarantee": {
       "description": "Patron's dependant",
@@ -71,7 +86,10 @@
     },
     "librarygroup": {
       "description": "Set library group",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "overduefines": {
       "description": "Set overdue fines to invoice",
@@ -79,19 +97,31 @@
     },
     "invoicefine": {
       "description": "Set invoice fine",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "accountnumber": {
       "description": "Set library group accountnumber",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "biccode": {
       "description": "Set library group bic code",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "businessid": {
       "description": "Set library group business id",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "patronmessage": {
       "description": "Set message to patron",
@@ -109,15 +139,24 @@
     },
     "surname": {
       "description": "Set patron's surname",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "firstname": {
       "description": "Set patron's firstname",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "cardnumber": {
       "description": "Set patron's cardnumber",
-      "type": "string"
+      "type": [
+        "string",
+        "null"
+      ]
     }
   },
   "additionalProperties": false,

@@ -248,8 +248,8 @@ sub _reference_number {
     my @refno=$sth_refnumber->fetchrow_array();
     
     $dbh->do('UPDATE sequences SET '. $librarygroup . ' = ' . $librarygroup . ' + ' . $increment);
-    my $reference = $refno[0].'0'.$invoicenumber;
-    return $reference . _ref_checksum($reference);
+
+    return $refno[0] . _ref_checksum($refno[0]);
 }
 
 sub _ref_checksum {
