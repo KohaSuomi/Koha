@@ -470,7 +470,8 @@ sub list_overdues {
             city => $patron->{city},
             zipcode => $patron->{zipcode},
             guarantorid => $patron->{guarantorid},
-            lang => $patron->{lang}
+            lang => $patron->{lang},
+            categorycode => $patron->{categorycode}
         };
 
         $borrowercheckouts->{checkouts} = $borcheckouts;
