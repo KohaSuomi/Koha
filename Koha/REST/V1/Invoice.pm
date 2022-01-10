@@ -193,7 +193,7 @@ sub add {
                 )->store;
             }
 
-            if ($body->{guarenteemessage}) {
+            if ($body->{guaranteemessage}) {
                 Koha::Patron::Message->new(
                     {
                         borrowernumber => $body->{guarantee},
