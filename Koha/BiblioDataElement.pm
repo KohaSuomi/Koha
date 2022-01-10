@@ -54,6 +54,20 @@ sub isMusicalRecording {
     ($self->{dbi}) ? $self->{$col} = $val : $self->set({$col => $val});
 }
 
+sub isCelia {
+    my ($self, $record) = @_;
+
+    my $col = 'celia';
+    my $val = 0;
+
+    my $sf = $record->subfield('599','a');
+    
+    if ($sf && $sf =~/^Daisy/) { #Daisy in 599a means it's a Celia.
+        $val = 1;
+    }
+    ($self->{dbi}) ? $self->{$col} = $val : $self->set({$col => $val});
+}
+
 sub isSerial {
     my ($self, $itemtype) = @_;
     my $col = 'serial';
@@ -188,12 +202,13 @@ sub DBI_updateBiblioDataElement {
             languages = ?,
             fiction = ?,
             musical = ?,
+            celia = ?,
             itemtype = ?,
             serial = ?,
             encoding_level = ?
         WHERE biblioitemnumber = ?;
     ");
-    $sth->execute( $bde->{deleted}, $bde->{primary_language}, $bde->{languages}, $bde->{fiction}, $bde->{musical}, $bde->{itemtype}, $bde->{serial}, $bde->{encoding_level}, $bde->{biblioitemnumber} );
+    $sth->execute( $bde->{deleted}, $bde->{primary_language}, $bde->{languages}, $bde->{fiction}, $bde->{musical}, $bde->{celia}, $bde->{itemtype}, $bde->{serial}, $bde->{encoding_level}, $bde->{biblioitemnumber} );
     if ($sth->err) {
         my @cc = caller(0);
         Koha::Exception::DB->throw(error => $cc[3]."():> ".$sth->errstr);
@@ -205,11 +220,11 @@ sub DBI_insertBiblioDataElement {
     my $dbh = C4::Context->dbh();
     my $sth = $dbh->prepare("
         INSERT INTO biblio_data_elements
-            (biblioitemnumber, deleted, primary_language, languages, fiction, musical, itemtype, serial, encoding_level)
+            (biblioitemnumber, deleted, primary_language, languages, fiction, musical, celia, itemtype, serial, encoding_level)
             VALUES
-            (?               , ?      , ?               , ?        , ?      , ?      , ?       , ?     , ?);
+            (?               , ?      , ?               , ?        , ?      , ?      , ?      , ?       , ?     , ?);
     ");
-    $sth->execute( $biblioitemnumber, $bde->{deleted}, $bde->{primary_language}, $bde->{languages}, $bde->{fiction}, $bde->{musical}, $bde->{itemtype}, $bde->{serial}, $bde->{encoding_level} );
+    $sth->execute( $biblioitemnumber, $bde->{deleted}, $bde->{primary_language}, $bde->{languages}, $bde->{fiction}, $bde->{musical}, $bde->{celia}, $bde->{itemtype}, $bde->{serial}, $bde->{encoding_level} );
     if ($sth->err) {
         my @cc = caller(0);
         Koha::Exception::DB->throw(error => $cc[3]."():> ".$sth->errstr);

@@ -147,6 +147,7 @@ sub _processItemsDataRow {
     my $isChildrensMaterial = $self->isItemChildrens($row);
     my $isFiction = $row->{fiction};
     my $isMusicalRecording = $row->{musical};
+    my $isCelia = $row->{celia};
     my $isAcquired = (not($deleted)) ? $self->isItemAcquired($row) : undef; #If an Item is deleted, omit the acquisitions calculations because they wouldn't be accurate. Default to not acquired.
     my $itemtype = $row->{itemtype};
     my $issues = $row->{issuesQuery}->{issues} || 0;
@@ -198,10 +199,14 @@ sub _processItemsDataRow {
         }
     }
     elsif ($statCat eq 'Recordings') {
-        if ($isMusicalRecording) {
+        if ($isCelia) {           
+            $stats->{'collectionCelia'}++ if not($deleted);
+            $stats->{'acquisitionsCelia'}++ if $isAcquired;
+        }
+        elsif ($isMusicalRecording) {
             $stats->{'collectionMusicalRecordings'}++ if not($deleted);
             $stats->{'acquisitionsMusicalRecordings'}++ if $isAcquired;
-        }
+        }        
         else {
             $stats->{'collectionOtherRecordings'}++ if not($deleted);
             $stats->{'acquisitionsOtherRecordings'}++ if $isAcquired;
@@ -245,6 +250,7 @@ sub _processIssuesDataRow {
     my $isChildrensMaterial = $self->isItemChildrens($row);
     my $isFiction = $row->{fiction};
     my $isMusicalRecording = $row->{musical};
+    my $isCelia = $row->{celia};
     my $itemtype = $row->{itype};
     my $issues = $row->{issues} || 0;
     my $serial = ($statCat eq "Serials") ? 1 : 0; #Is the item type considered to be a serial or a magazine?
@@ -282,9 +288,12 @@ sub _processIssuesDataRow {
         }
     }
     elsif ($statCat eq 'Recordings') {
-        if ($isMusicalRecording) {
-            $stats->{'issuesMusicalRecordings'} += $issues;
+        if ($isCelia) {
+            $stats->{'issuesCelia'} += $issues;
         }
+        elsif ($isMusicalRecording) {
+            $stats->{'issuesMusicalRecordings'} += $issues;
+        }        
         else {
             $stats->{'issuesOtherRecordings'} += $issues;
         }
@@ -323,7 +332,7 @@ sub fetchItemsDataMountain {
         (
         SELECT  i.itemnumber, i.biblionumber, bde.itemtype as itype, i.location, i.price,
                 ao.ordernumber, ao.datereceived, i.dateaccessioned,
-                bde.primary_language, bde.fiction, bde.musical,
+                bde.primary_language, bde.fiction, bde.musical, bde.celia,
                 0 as deleted
             FROM items i
             LEFT JOIN aqorders_items ai ON i.itemnumber = ai.itemnumber
@@ -338,7 +347,7 @@ sub fetchItemsDataMountain {
         (
         SELECT  di.itemnumber, di.biblionumber, bde.itemtype as itype, di.location, di.price,
                 ao.ordernumber, ao.datereceived, di.dateaccessioned,
-                bde.primary_language, bde.fiction, bde.musical,
+                bde.primary_language, bde.fiction, bde.musical, bde.celia,
                 1 as deleted
             FROM deleteditems di
             LEFT JOIN aqorders_items ai ON di.itemnumber = ai.itemnumber
@@ -384,7 +393,7 @@ sub fetchIssuesDataMountain {
     my $sth = $dbh->prepare("
         (
         SELECT s.itemnumber, i.biblionumber, bi.itemtype as itype, i.location, 0 as deleted, COUNT(s.itemnumber) as issues,
-               bde.primary_language, bde.fiction, bde.musical
+               bde.primary_language, bde.fiction, bde.musical, bde.celia
             FROM statistics s
             LEFT JOIN items i ON s.itemnumber = i.itemnumber
             LEFT JOIN biblioitems bi ON i.biblionumber = bi.biblioitemnumber
@@ -399,7 +408,7 @@ sub fetchIssuesDataMountain {
         UNION
         (
         SELECT s.itemnumber, di.biblionumber, bi.itemtype as itype, di.location, 1 as deleted, COUNT(s.itemnumber) as issues,
-               bde.primary_language, bde.fiction, bde.musical
+               bde.primary_language, bde.fiction, bde.musical, bde.celia
             FROM statistics s
             LEFT JOIN deleteditems di ON s.itemnumber = di.itemnumber
             LEFT JOIN biblioitems bi ON di.biblionumber = bi.biblioitemnumber
