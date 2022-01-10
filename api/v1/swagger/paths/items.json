@@ -3,13 +3,20 @@
     "get": {
       "x-mojo-to": "Item#get",
       "operationId": "getItem",
-      "tags": ["items"],
-      "parameters": [{
+      "tags": [
+        "items"
+      ],
+      "parameters": [
+        {
           "$ref": "../parameters.json#/itemnumberPathParam"
         }
       ],
-      "consumes": ["application/json"],
-      "produces": ["application/json"],
+      "consumes": [
+        "application/json"
+      ],
+      "produces": [
+        "application/json"
+      ],
       "responses": {
         "200": {
           "description": "An item",
@@ -42,13 +49,88 @@
           }
         }
       }
+    },
+    "patch": {
+      "x-mojo-to": "Item#patch",
+      "operationId": "patchItem",
+      "x-koha-authorization": {
+        "permissions": {
+          "editcatalogue": "edit_items"
+        }
+      },
+      "tags": [
+        "items"
+      ],
+      "parameters": [
+        {
+          "name": "body",
+          "in": "body",
+          "description": "A JSON object containing updated fields",
+          "required": false,
+          "schema": {
+            "$ref": "../definitions.json#/item"
+          }
+        },
+        {
+          "$ref": "../parameters.json#/itemnumberPathParam"
+        }
+      ],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "An item",
+          "schema": {
+            "$ref": "../definitions.json#/item"
+          }
+        },
+        "400": {
+          "description": "Missing or wrong parameters",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "401": {
+          "description": "Authentication required",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "403": {
+          "description": "Access forbidden",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "404": {
+          "description": "Item not found",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "500": {
+          "description": "Internal error",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        },
+        "503": {
+          "description": "Under maintenance",
+          "schema": {
+            "$ref": "../definitions.json#/error"
+          }
+        }
+      }
     }
   },
   "/items": {
     "get": {
       "x-mojo-to": "Item#list",
       "operationId": "listItems",
-      "tags": ["items"],
+      "tags": [
+        "items"
+      ],
       "parameters": [
         {
           "$ref": "../parameters.json#/barcodesQueryParam"
