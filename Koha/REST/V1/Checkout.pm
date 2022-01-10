@@ -25,6 +25,7 @@ use C4::Circulation;
 use Koha::Availability::Checks::Patron;
 use Koha::Checkouts;
 use Koha::Old::Checkouts;
+use C4::Members::Attributes;
 
 use Try::Tiny;
 
@@ -458,6 +459,8 @@ sub list_overdues {
         )->unblessed;
         my $borrowercheckouts;
         my $patron = Koha::Patrons->find($checkout->{borrowernumber})->unblessed;
+        my $patronssnkey = C4::Members::Attributes::GetBorrowerAttributeValue($checkout->{borrowernumber}, 'SSN') || '';
+        my $guarantorssnkey = C4::Members::Attributes::GetBorrowerAttributeValue($patron->{guarantorid}, 'SSN') if $patron->{guarantorid};
         $borrowercheckouts = {
             borrowernumber => $checkout->{borrowernumber},
             cardnumber => $patron->{cardnumber},
@@ -469,7 +472,9 @@ sub list_overdues {
             zipcode => $patron->{zipcode},
             guarantorid => $patron->{guarantorid},
             lang => $patron->{lang},
-            categorycode => $patron->{categorycode}
+            categorycode => $patron->{categorycode},
+            patronssnkey => $patronssnkey,
+            guarantorssnkey => $guarantorssnkey || ''
         };
 
         $borrowercheckouts->{checkouts} = $borcheckouts;
