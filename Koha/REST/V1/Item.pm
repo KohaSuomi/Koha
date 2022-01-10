@@ -75,4 +75,26 @@ sub get {
     return $c->render( status => 200, openapi => $item );
 }
 
+sub patch {
+    my $c = shift->openapi->valid_input or return;
+
+    my $item;
+    return try {
+        my $itemnumber = $c->validation->param('itemnumber');
+        $item = Koha::Items->find($itemnumber);
+        my $body = $c->req->json;
+
+        $item->set($body);
+        $item->store;
+        return $c->render( status => 200, openapi => $item);
+    }
+    catch {
+        unless ($item) {
+            return $c->render( status  => 404,
+                               openapi => { error => "Item not found" } );
+        }
+        Koha::Exceptions::rethrow_exception($_);
+    };
+}
+
 1;
