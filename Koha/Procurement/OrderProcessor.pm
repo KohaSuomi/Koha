@@ -220,7 +220,7 @@ sub generateBarcode {
 
     my $prefix = $args->{prefix} || undef;
     my $date = $args->{date};
-    $self->advanceBarcodeValue($prefix, $date);
+    $self->advanceBarcodeValue($date, $args->{prefixes});
 
     my $barcode;
     my $nextnum = $self->getBarcodeValue();
@@ -235,14 +235,16 @@ sub generateBarcode {
 }
 
 sub advanceBarcodeValue {
-    my ($self, $prefix, $date) = @_;
+    my ($self, $date, $prefixes) = @_;
     my $dbh = C4::Context->dbh;
 
+    my $regex = sprintf "%s$date|" x @$prefixes, @$prefixes;
+    $regex .= "HANK_$date";
+
     my $update_query = "UPDATE sequences set item_barcode_nextval = item_barcode_nextval+1";
-    my $query = "SELECT MAX(CAST(SUBSTRING(barcode,-5) AS signed)) from items where barcode REGEXP ?";
+    my $query = 'SELECT MAX(CAST(SUBSTRING(barcode,-5) AS signed)) from items where barcode REGEXP "'.$regex.'"';
     my $stmnt = $dbh->prepare($query);
-    my $regex = $prefix ? $prefix.$date : "HANK_".$date;
-    $stmnt->execute("^$regex");
+    $stmnt->execute();
 
     while (my ($count)= $stmnt->fetchrow_array) {
         if(!$count || $count == 9999){
@@ -508,12 +510,14 @@ sub createItem{
                             Encode::FB_CROAK
                         )
         );
+        my @prefixes = values %$yaml;
 
         ($args{date}) = strftime "%y%m%d", localtime;
         ($args{tag},$args{subfield})       =  GetMarcFromKohaField("items.barcode", '');
         ($args{loctag},$args{locsubfield}) =  GetMarcFromKohaField("items.homebranch", '');
         ($args{branchcode}) = $data->{'destinationlocation'};
         ($args{prefix}) = $yaml->{$data->{'destinationlocation'}} || $yaml->{'Default'};
+        ($args{prefixes}) = \@prefixes;
 
         $data->{"barcode"} = $self->generateBarcode(\%args, $autoBarcodeType);
 
