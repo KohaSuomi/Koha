@@ -109,8 +109,6 @@ sub process{
                 $basketNumber = $basketHelper->getBasket($bookseller, $authoriser, $basketName );
                 $orderId = $orderCreator->createOrder($copyDetail, $item, $order, $biblio, $basketNumber);
                 for(my $i = 0; $copyQty > $i; $i++ ){
-                    $self->advanceBarcodeValue();
-                    $barCode = $self->getBarcodeValue();
                     $itemId = $self->createItem($copyDetail, $item, $order, $barCode, $biblio, $biblioitem);
                     $orderCreator->createOrderItem($itemId, $orderId);
                 }
