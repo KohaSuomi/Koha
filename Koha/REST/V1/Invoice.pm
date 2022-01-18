@@ -148,7 +148,7 @@ sub add {
 
         my $notice = C4::Letters::GetPreparedLetter(%params);
 
-        $notice->{content} =~ s/\s+/ /gs;
+        $notice->{content} =~ s/\s+/ /gs if $body->{letter_code} eq "FINVOICE";
 
         my $message_id;
 
