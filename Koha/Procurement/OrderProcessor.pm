@@ -107,7 +107,9 @@ sub process{
                 $basketNumber = $basketHelper->getBasket($bookseller, $authoriser, $basketName );
                 $orderId = $orderCreator->createOrder($copyDetail, $item, $order, $biblio, $basketNumber);
                 for(my $i = 0; $copyQty > $i; $i++ ){
-                    $itemId = $self->createItem($copyDetail, $item, $order, $biblio, $biblioitem);
+                    $self->advanceBarcodeValue();
+                    $barCode = $self->getBarcodeValue();
+                    $itemId = $self->createItem($copyDetail, $item, $order, $barCode, $biblio, $biblioitem);
                     $orderCreator->createOrderItem($itemId, $orderId);
                 }
                 ModZebra( $biblio, "specialUpdate", "biblioserver" );
@@ -478,7 +480,7 @@ sub createBiblioMetadata {
 
 sub createItem{
     my $self = shift;
-    my ($copyDetail, $itemDetail, $order, $biblio, $biblioitem) = @_;
+    my ($copyDetail, $itemDetail, $order, $barcode, $biblio, $biblioitem) = @_;
     my $result = 0;
     my $data = {};
     my $fundnr = $copyDetail->getFundNumber();
