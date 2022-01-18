@@ -12,8 +12,6 @@ use Koha::Biblio;
 use Koha::Biblioitem;
 use Koha::Biblio::Metadata;
 use C4::Biblio;
-use Koha::DateUtils;
-use C4::Barcodes::ValueBuilder;
 use utf8;
 use List::MoreUtils qw(uniq);
 
@@ -519,7 +517,7 @@ sub createItem{
 
         $data->{"barcode"} = $self->generateBarcode(\%args, $autoBarcodeType);
 
-        my @paramsToValidate = ('biblio', 'biblioitem', 'booksellerid', 'destinationlocation', 'price', 'replacementprice', 'productform', 'notes', 'datecreated', 'collectioncode');
+        my @paramsToValidate = ('biblio', 'biblioitem', 'booksellerid', 'destinationlocation', 'price', 'replacementprice', 'productform', 'notes', 'datecreated', 'collectioncode', 'barcode');
         if($self->validate({'params', \@paramsToValidate , 'data', $data })){
             my $item  = new Koha::Item;
             $item->set({'biblionumber', $data->{'biblio'}});
