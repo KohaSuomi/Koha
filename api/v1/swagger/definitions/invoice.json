@@ -157,6 +157,41 @@
         "string",
         "null"
       ]
+    },
+    "grouplibrary": {
+      "description": "Set library group's name",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "groupaddress": {
+      "description": "Set library group's address",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "groupcity": {
+      "description": "Set library group's city",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "groupzipcode": {
+      "description": "Set library group's zipcode",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "groupphone": {
+      "description": "Set library group's phone number",
+      "type": [
+        "string",
+        "null"
+      ]
     }
   },
   "additionalProperties": false,

@@ -137,6 +137,11 @@ sub add {
             businessid => $body->{businessid},
             issueborname => $body->{firstname}.' '.$body->{surname},
             issueborbarcode => $body->{cardnumber},
+            grouplibrary => $body->{grouplibrary},
+            groupaddress => $body->{groupaddress},
+            groupzipcode => $body->{groupzipcode}, 
+            groupcity => $body->{groupcity},
+            groupphone => $body->{groupphone},
         };
 
 
