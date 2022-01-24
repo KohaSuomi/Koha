@@ -48,8 +48,23 @@ my $builder = sub {
 
 	 function gatherdata$function_name(id, sels) {
 		\$("#" + id).val(sels.oldval);
-		if(sels.localname) {
-		 	newin=window.open(\"../cataloguing/plugin_launcher.pl?plugin_name=finto_finaf.pl&index=\"+ id +\"&localname=\"+sels.localname,\"tag_editor\",'width=1000,height=600,toolbar=false,scrollbars=yes');
+		if (sels.userdef) {
+			\$("#" + id).val(sels.id);
+			var fid = \$('#'+id).parent().parent().attr('id');
+			var re = /^(tag_..._)/;
+			var found = fid.match(re);
+			var sfid0 = found[1] + 'subfield_0_';
+			var sfid2 = found[1] + 'subfield_2_';
+			var sf2val;
+			var sf0val;
+			sf2val = "local";
+			sf0val = "";
+			if (typeof sf2val !== "undefined") \$('#'+id).parent().parent().find("input[id^='"+sfid2+"']").val(sf2val);
+        	if (typeof sf0val !== "undefined") \$('#'+id).parent().parent().find("input[id^='"+sfid0+"']").val(sf0val);
+		} else {
+			if(sels.localname) {
+				newin=window.open(\"../cataloguing/plugin_launcher.pl?plugin_name=finto_finaf.pl&index=\"+ id +\"&localname=\"+sels.localname,\"tag_editor\",'width=1000,height=600,toolbar=false,scrollbars=yes');
+			}
 		}
 	 }
 	 
@@ -66,6 +81,7 @@ my $builder = sub {
 	      callback({ id:v, text:v, uri: duri, vocab: dvocab });
 	  },
 	  escapeMarkup: function(m) { return m; },
+	  createSearchChoice: function(term, data) { return { id: term, text: term + " <i>(local)</i>", userdef: true }; },
 	  minimumInputLength: 2,
 	  ajax: {
 	      url:'https://api.finto.fi/rest/v1/search',
@@ -136,12 +152,12 @@ my $builder = sub {
 			   \$(this).select2('destroy'); })
            .on('select2-select', function(e) { \$(this).trigger({ type: 'select2-blur' }); })
            .on('select2-close', function() { \$(this).trigger({ type: 'select2-select' }); })
+		   .on('select2-open', function() {  \$(this).select2('search', oldval); })
            .data('select2').open()
 
 	 }
 	 function Click$function_name(event) {
 
-		/*NOT IN USE*/
 		var re = /^(tag_...)/;
 	    var found = event.data.id.match(re);
 		var authcode;
