@@ -162,7 +162,7 @@ sub add {
             $message_id = C4::Letters::EnqueueLetter(
                             {   letter                 => $notice,
                                 borrowernumber         => $patron_id,
-                                message_transport_type => 'print',
+                                message_transport_type => $params{"message_transport_type"},
                                 from_address => $body->{branchcode},
                             }
                         );
