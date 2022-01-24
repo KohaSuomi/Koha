@@ -92,8 +92,8 @@ sub add {
                 $totalfines = $totalfines + $item->{overduefine};
             }
             my $biblio = {
-                title => _escape_string($repeat->{title}),
-                author => _escape_string($repeat->{author}),
+                title => $repeat->{title},
+                author => $repeat->{author},
             };
             
             push @items, {"items" => $item, "biblio" => $biblio, "biblioitems" => $repeat->{biblionumber}};
