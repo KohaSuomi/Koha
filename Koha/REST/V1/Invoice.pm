@@ -204,7 +204,7 @@ sub add {
                         borrowernumber => $body->{guarantee},
                         branchcode     => $body->{branchcode},
                         message_type   => 'L',
-                        message        => $body->{guarenteemessage},
+                        message        => $body->{guaranteemessage},
                     }
                 )->store;
             }
