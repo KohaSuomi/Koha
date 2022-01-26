@@ -327,6 +327,7 @@ if ($barcode) {
       AddReturn( $barcode, $userenv_branch, $exemptfine, $dropboxmode, $return_date_override, $dropboxdate );
 
     if ($returned) {
+        DeleteTransfer($itemnumber);
         my $time_now = DateTime->now( time_zone => C4::Context->tz )->truncate( to => 'minute');
         my $duedate = $issueinformation->{date_due}->strftime('%Y-%m-%d %H:%M');
         $returneditems{0}      = $barcode;
@@ -444,6 +445,9 @@ if ( $messages->{'WrongTransfer'} and not $messages->{'WasTransfered'}) {
 # reserve found and item arrived at the expected branch
 #
 if ( $messages->{'ResFound'}) {
+    
+    ### Kuljetustilojen poisto?
+    
     my $reserve    = $messages->{'ResFound'};
     my $borr = C4::Members::GetMember( borrowernumber => $reserve->{'borrowernumber'} );
     my $holdmsgpreferences =  Koha::Patron::Message::Preferences->find_with_message_name({
