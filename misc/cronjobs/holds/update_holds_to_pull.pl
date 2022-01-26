@@ -52,7 +52,8 @@ foreach (@ARGV) {
         my $dbport=C4::Context->config('port');
         my $dbuser=C4::Context->config('user');
         my $dbpass=C4::Context->config('pass');
-        $dbh=DBI->connect("DBI:mysql:database=$dbname:host=$dbhost:port=$dbport", "$dbuser", "$dbpass");
+        $dbh=DBI->connect("DBI:mysql:database=$dbname:host=$dbhost:port=$dbport", "$dbuser", "$dbpass", { mysql_enable_utf8=>1 });
+        $dbh->do("SET NAMES 'utf8';");
     }
     else {
         die "Unknown command line option.\n";
