@@ -30,12 +30,11 @@ use DateTime::Duration;
 use List::MoreUtils qw(uniq);
 use Storable;
 
+my $starttime=time;
 my @reservedata;
-my $dbh = C4::Context->dbh;
-
 my @query_params = ();
-
 my $borrowerinfo;
+my $dbh;
 
 foreach (@ARGV) {
     if ( $_ eq '--with-names') {
@@ -47,10 +46,20 @@ foreach (@ARGV) {
     elsif ( $_ eq '--with-cardnumbers') {
         $borrowerinfo.="CONCAT (borrowers.cardnumber, '<br/><br/>') cardnumber,\n";
     }
+    elsif ( $_ eq '--althost' ) {
+        my $dbhost=C4::Context->config('althostname');
+        my $dbname=C4::Context->config('database');
+        my $dbport=C4::Context->config('port');
+        my $dbuser=C4::Context->config('user');
+        my $dbpass=C4::Context->config('pass');
+        $dbh=DBI->connect("DBI:mysql:database=$dbname:host=$dbhost:port=$dbport", "$dbuser", "$dbpass");
+    }
     else {
         die "Unknown command line option.\n";
     }
 }
+
+$dbh = C4::Context->dbh unless $dbh;
 
 my $borrowersjoin = '';
 
