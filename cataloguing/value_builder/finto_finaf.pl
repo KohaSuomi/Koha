@@ -50,17 +50,6 @@ my $builder = sub {
 		\$("#" + id).val(sels.oldval);
 		if (sels.userdef) {
 			\$("#" + id).val(sels.id);
-			var fid = \$('#'+id).parent().parent().attr('id');
-			var re = /^(tag_..._)/;
-			var found = fid.match(re);
-			var sfid0 = found[1] + 'subfield_0_';
-			var sfid2 = found[1] + 'subfield_2_';
-			var sf2val;
-			var sf0val;
-			sf2val = "local";
-			sf0val = "";
-			if (typeof sf2val !== "undefined") \$('#'+id).parent().parent().find("input[id^='"+sfid2+"']").val(sf2val);
-        	if (typeof sf0val !== "undefined") \$('#'+id).parent().parent().find("input[id^='"+sfid0+"']").val(sf0val);
 		} else {
 			if(sels.localname) {
 				newin=window.open(\"../cataloguing/plugin_launcher.pl?plugin_name=finto_finaf.pl&index=\"+ id +\"&localname=\"+sels.localname,\"tag_editor\",'width=1000,height=600,toolbar=false,scrollbars=yes');
