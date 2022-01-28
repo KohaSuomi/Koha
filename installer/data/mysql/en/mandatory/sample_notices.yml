@@ -1591,7 +1591,7 @@ tables:
             - "Fines: <<total.fines>>"
             - "<ul>"
             - "<fines>"
-            - "<li>""
+            - "<li>"
             - "<<fines.date_due>>, <<fines.amount>><br>"
             - "Barcode: <<items.barcode>><br>"
             - "<<fines.description>>"
