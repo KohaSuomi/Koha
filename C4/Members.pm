@@ -708,7 +708,7 @@ sub FineSlip {
         $item = $item ? $item->unblessed : undef;
         my $issue = Koha::Checkouts->find({issue_id => $line->issue_id})
         || Koha::Old::Checkouts->find({issue_id => $line->issue_id});
-        my $dt = dt_from_string( $issue->date_due );
+        my $dt = $issue ? dt_from_string( $issue->date_due ) : dt_from_string( $line->date );
 
         $item->{'date_due'} = output_pref({ dt => $dt, dateonly => 1 });
         $item->{'amount'} = sprintf('%.2f', $line->amount);
@@ -718,7 +718,7 @@ sub FineSlip {
 
         push @issueslist, $item;
     }
-    my @issues = sort { $b->{'timestamp'} <=> $a->{'timestamp'} } @issueslist;
+    my @issues = sort { $b->{'timestamp'} cmp $a->{'timestamp'} } @issueslist;
 
     my %repeat = (
         'fines' => [ map {
