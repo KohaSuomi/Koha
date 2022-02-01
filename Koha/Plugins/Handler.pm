@@ -24,6 +24,7 @@ use File::Path qw(remove_tree);
 use Module::Load::Conditional qw(can_load);
 
 use C4::Context;
+use JSON;
 
 BEGIN {
     my $pluginsdir = C4::Context->config("pluginsdir");
@@ -60,6 +61,13 @@ sub run {
     my $plugin_method = $args->{'method'};
     my $cgi           = $args->{'cgi'};
     my $params        = $args->{'params'};
+
+    if ($cgi->param('POSTDATA')) { ## Not needed in newer version.
+        my $data = JSON::from_json($cgi->param('POSTDATA'));
+        $plugin_class = $data->{'class'};
+        $plugin_method = $data->{'method'};
+        $params = $data->{'params'};
+    }
 
     if ( can_load( modules => { $plugin_class => undef } ) ) {
         my $plugin = $plugin_class->new( { cgi => $cgi, enable_plugins => $args->{'enable_plugins'} } );
