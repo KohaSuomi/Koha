@@ -1,3 +1,6 @@
+[% USE Koha %]
+[% SET KOHA_VERSION = Koha.Preference('Version') %]
+[% USE ColumnsSettings %]
 [% INCLUDE 'doc-head-open.inc' %]
 <title>Koha &rsaquo; Reports &rsaquo; OKM annual report</title>
 [% INCLUDE 'doc-head-close.inc' %]
@@ -5,21 +8,8 @@
 <body id="rep_reports-home" class="rep">
 [% INCLUDE 'header.inc' %]
 [% INCLUDE 'circ-search.inc' %]
-
-<script>
-    $(document).ready(function(){
-        $("#show_error_logs").click(function(){
-            $("#logs").show();
-            $('#hide_error_logs').show();
-            $('#show_error_logs').hide();
-        });
-        $("#hide_error_logs").click(function(){
-            $("#logs").hide();
-            $('#hide_error_logs').hide();
-            $('#show_error_logs').show();
-        });
-    });
-</script>
+<link rel="stylesheet" type="text/css" href="[% interface %]/[% theme %]/css/datatables_[% KOHA_VERSION %].css" />
+[% INCLUDE 'datatables.inc' %]
 
 <div id="breadcrumbs"><a href="/cgi-bin/koha/mainpage.pl">Home</a> &rsaquo; <a href="/cgi-bin/koha/reports/reports-home.pl">Reports</a> &rsaquo; OKM annual report</div>
 
@@ -72,16 +62,12 @@
         </fieldset>
     </form>
 
-    <div style="max-width: 600px">
-        <h5>Quote of the day!</h5>
-        [% quote %]
-    </div>
-
     <br/>
     <table id="available_reports">
         <thead>
             <tr>
                 <th>Report ID</th>
+                <th>Report created on</th>
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Statistical groups</th>
@@ -93,6 +79,7 @@
             [% FOREACH okm_report IN ready_okm_reports %]
                 <tr[% IF okm_report.selected %] class="highlighted-row"[% END %]>
                     <td>[% okm_report.id %]</td>
+                    <td>[% okm_report.timestamp %]</td>
                     <td>[% okm_report.startdate %]</td>
                     <td>[% okm_report.enddate %]</td>
                     <td>
@@ -141,6 +128,27 @@ var MSG_OKM_LOGS_DELETE_WARNING = _("Are you sure you want to delete all log ent
             }
             window.location="/cgi-bin/koha/reports/okm_reports.pl?op=deleteLogs";
         });
+
+        $("#show_error_logs").click(function(){
+            $("#logs").show();
+            $('#hide_error_logs').show();
+            $('#show_error_logs').hide();
+        });
+        $("#hide_error_logs").click(function(){
+            $("#logs").hide();
+            $('#hide_error_logs').hide();
+            $('#show_error_logs').show();
+        });
+        
+        $("#available_reports").dataTable($.extend(true, {}, dataTablesDefaults, {
+            "sPaginationType": "four_button",
+                "aoColumnDefs": [
+                    { "aTargets": [ -1, -2 ], "bSortable": false, "bSearchable": false },
+                ],
+                "aaSorting": [
+                    [1, "desc"]
+                ],
+        }));
     });
 </script>
 [% INCLUDE 'intranet-bottom.inc' %]
