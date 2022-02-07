@@ -34,6 +34,8 @@ use C4::Log;
 use Koha::AuthorisedValues;
 use Koha::Patron::Categories;
 
+use C4::KohaSuomi::Tweaks;
+
 BEGIN {
     require Exporter;
     @ISA    = qw(Exporter);
@@ -531,12 +533,17 @@ sub execute_query {
     }
     $sql .= " LIMIT ?, ?";
 
+    # This will need to be done on master, since it is an update
     my $dbh = C4::Context->dbh;
-
     $dbh->do( 'UPDATE saved_sql SET last_run = NOW() WHERE id = ?', undef, $report_id ) if $report_id;
+    $dbh->disconnect();
+
+    # Select can be run on althost if configured, initialize a new database handle 
+    $dbh=C4::KohaSuomi::Tweaks->dbh();
 
     my $sth = $dbh->prepare($sql);
     $sth->execute(@$sql_params, $offset, $limit);
+    $dbh->disconnect();
 
     return ( $sth, { queryerr => $sth->errstr } ) if ($sth->err);
     return ( $sth );
