@@ -1,5 +1,7 @@
 package C4::KohaSuomi::Tweaks;
 
+use strict; 
+
 # Copyright 2022 Koha-Suomi Oy 
 #
 # This file is part of Koha.
@@ -27,7 +29,7 @@ sub dbh {
        my $alt_host=C4::Context->config('althostname');
        my $alt_port;
        if ( C4::Context->config('altport') ) {
-           $slt_port=C4::Context->config('altport');
+           $alt_port=C4::Context->config('altport');
        } else {
            $alt_port=C4::Context->config('port');
        }
