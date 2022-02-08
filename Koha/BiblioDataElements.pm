@@ -25,6 +25,7 @@ use Try::Tiny;
 use Scalar::Util qw(blessed);
 use MARC::Record;
 use MARC::File::XML;
+use C4::KohaSuomi::Tweaks;
 
 use C4::Biblio::Chunker;
 use Koha::Database;
@@ -192,7 +193,7 @@ If the table is empty, returns undef
 =cut
 sub GetLatestDataElementUpdateTime {
     my ($verbose) = @_;
-    my $dbh = C4::Context->dbh();
+    my $dbh = C4::KohaSuomi::Tweaks->dbh();
     my $sthLastModTime = $dbh->prepare("SELECT MAX(last_mod_time) as last_mod_time FROM biblio_data_elements;");
     $sthLastModTime->execute( );
     my $rv = $sthLastModTime->fetchrow_hashref();
@@ -225,7 +226,7 @@ sub _getBiblioitemsNeedingUpdate {
     my $lastModTime = GetLatestDataElementUpdateTime($verbose) || Koha::Exception::FeatureUnavailable->throw($cc[3]."():> You must do a complete rebuilding since none of the biblios have been indexed yet.");
     $lastModTime = $lastModTime->iso8601();
 
-    my $dbh = C4::Context->dbh();
+    my $dbh = C4::KohaSuomi::Tweaks->dbh();
     my $sth = $dbh->prepare("
             (SELECT bi.biblioitemnumber, bi.itemtype, bmt.metadata, 0 AS deleted FROM biblioitems bi LEFT JOIN biblio_metadata bmt ON bi.biblionumber=bmt.biblionumber
              WHERE bi.timestamp >= ? $limit
