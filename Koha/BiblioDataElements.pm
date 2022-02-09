@@ -128,6 +128,8 @@ sub UpdateBiblioDataElement {
     my $deleted;
     my $itemtype;
     my $biblioitemnumber;
+    my $biblionumber;
+
     if (blessed $biblioitem && $biblioitem->isa('Koha::Object')) {
         if ($oldDbi) {
             $bde = Koha::BiblioDataElement::DBI_getBiblioDataElement($biblioitem->biblioitemnumber());
@@ -151,10 +153,13 @@ sub UpdateBiblioDataElement {
             $bde = $bde[0];
         }
 
-        $marcxml = C4::Biblio::GetXmlBiblio( $biblioitem->{biblioitemnumber} );
         $deleted = $biblioitem->{deleted};
         $itemtype = $biblioitem->{itemtype};
         $biblioitemnumber = $biblioitem->{biblioitemnumber};
+        $biblionumber = $biblioitem->{biblionumber};
+
+        $marcxml = $deleted ? C4::Biblio::GetDeletedXmlBiblio(undef, $biblionumber) : C4::Biblio::GetXmlBiblio( $biblionumber );
+
     }
     $bde = Koha::BiblioDataElement->new({biblioitemnumber => $biblioitemnumber}) if (not($bde) && not($oldDbi));
 
@@ -228,14 +233,18 @@ sub _getBiblioitemsNeedingUpdate {
 
     my $dbh = C4::KohaSuomi::Tweaks->dbh();
     my $sth = $dbh->prepare("
-            (SELECT bi.biblioitemnumber, bi.itemtype, bmt.metadata, 0 AS deleted FROM biblioitems bi LEFT JOIN biblio_metadata bmt ON bi.biblionumber=bmt.biblionumber
-             WHERE bi.timestamp >= ? $limit
+            (SELECT bi.biblioitemnumber, bi.biblionumber, bi.itemtype, 0 AS deleted FROM biblioitems bi
+             LEFT JOIN biblio_metadata bmd ON(bi.biblionumber = bmd.biblionumber)
+             WHERE bi.timestamp >= '". $lastModTime ."'
+             OR bmd.timestamp >= '". $lastModTime ."' $limit
             ) UNION (
-             SELECT bi.biblioitemnumber, bi.itemtype, bmt.metadata, 1 AS deleted FROM biblioitems bi LEFT JOIN biblio_metadata bmt ON bi.biblionumber=bmt.biblionumber
-             WHERE bi.timestamp >= ? $limit
+             SELECT dbi.biblioitemnumber, dbi.biblionumber, dbi.itemtype, 1 AS deleted FROM deletedbiblioitems dbi
+             LEFT JOIN deletedbiblio_metadata dbmd ON(dbi.biblionumber = dbmd.biblionumber)
+             WHERE dbi.timestamp >= '". $lastModTime ."'
+             OR dbmd.timestamp >= '". $lastModTime ."' $limit
             )
     ");
-    $sth->execute( $lastModTime, $lastModTime );
+    $sth->execute();
     if ($sth->err) {
         Koha::Exception::DB->throw(error => $cc[3]."():> ".$sth->errstr);
     }
