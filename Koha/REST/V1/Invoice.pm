@@ -57,8 +57,16 @@ sub add {
         my $count = 1;
         my $totalfines = 0;
         my @itemnumbers;
+        my $lastdatedue;
+        my $lastissuedate;
         foreach my $repeat (@{$body->{repeat}}) {
             my ($y, $m, $d) = $repeat->{date_due} =~ /^(\d\d\d\d)-(\d\d)-(\d\d)/;
+            my ($iy, $im, $id) = $repeat->{issuedate} =~ /^(\d\d\d\d)-(\d\d)-(\d\d)/;
+            my $finvoice_date = $y.$m.$d;
+            if ($finvoice_date > $lastdatedue || !$lastdatedue) {
+                $lastdatedue = $body->{letter_code} eq 'FINVOICE' ? $finvoice_date : $d.'.'.$m.'.'.$y;
+                $lastissuedate = $body->{letter_code} eq 'FINVOICE' ? $iy.$im.$id : $id.'.'.$im.'.'.$iy;
+            }
             $repeat->{replacementprice} =~ tr/,/./;
             if ($body->{addreplacementprice} && !$preview) {
                 my $accountline = Koha::Account::Lines->search({borrowernumber => $patron_id, itemnumber => $repeat->{itemnumber}, accounttype => 'B'});
@@ -79,7 +87,7 @@ sub add {
                 count => $count,
                 itemnumber => $repeat->{itemnumber},
                 replacementprice => $repeat->{replacementprice},
-                finvoice_date => $y.$m.$d,
+                finvoice_date => $finvoice_date,
                 date_due => $d.'.'.$m.'.'.$y,
                 enumchron => $repeat->{enumchron},
                 itype => $repeat->{itype},
@@ -128,6 +136,8 @@ sub add {
             finvoice_today => $finvoice_now,
             finvoice_duedate => $finvoice_duedate,
             invoice_duedate => $duedate,
+            lastitemduedate => $lastdatedue,
+            lastitemissuedate => $lastissuedate,
             totalfines => $totalfines,
             referencenumber => $reference,
             invoicenumber => $invoicenumber,
