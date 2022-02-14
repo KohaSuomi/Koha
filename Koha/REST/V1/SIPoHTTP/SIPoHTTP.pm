@@ -111,6 +111,10 @@ sub process {
 }
 
 sub tradeSip {
+    
+    my $sip_request_start_time;
+    my $sip_response_recv_time;
+    my $response_time;
 
     my ($login, $password, $host, $port, $command_message, $c) = @_;
 
@@ -131,11 +135,21 @@ sub tradeSip {
 
     my $respdata = "";
     
+    $sip_request_start_time = time();
+    
     print $sipsock $loginsip . $terminator;
     
     $log->debug($login . " ---> ". $loginsip);
 
     $sipsock->recv($respdata, 1024);
+    
+    $sip_response_recv_time = time();
+    
+    $response_time = ($sip_response_recv_time - $sip_request_start_time);
+    
+    if ($response_time > 4) {
+            $log->warn("Slow response (+5sec) from sip server for login message (93).");
+        }
     
     $log->debug($login . " <--- " . $respdata);
     
@@ -150,6 +164,8 @@ sub tradeSip {
     if ($respdata eq '941') {
 
         $log->info("Login OK. Sending: $command_message");
+        
+        $sip_request_start_time = time();
 
         print $sipsock $command_message . $terminator;
         
@@ -157,6 +173,14 @@ sub tradeSip {
 
         $sipsock->recv($respdata, 8192);
         
+        $sip_response_recv_time = time();
+        
+        $response_time = ($sip_response_recv_time - $sip_request_start_time);
+        
+        if ($response_time > 4) {
+            $log->warn("Slow response (+5sec) from sip server for command message : ". $command_message);
+        }
+             
         $log->debug($login . " <--- ". $respdata);
         
         $sipsock->flush;
