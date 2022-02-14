@@ -148,7 +148,7 @@ sub tradeSip {
     $response_time = ($sip_response_recv_time - $sip_request_start_time);
     
     if ($response_time > 4) {
-            $log->warn("Slow response (+5sec) from sip server for login message (93).");
+            $log->warn("Slow response (". $response_time . "sec) from sip server for login message (93).");
         }
     
     $log->debug($login . " <--- " . $respdata);
@@ -178,7 +178,7 @@ sub tradeSip {
         $response_time = ($sip_response_recv_time - $sip_request_start_time);
         
         if ($response_time > 4) {
-            $log->warn("Slow response (+5sec) from sip server for command message : ". $command_message);
+            $log->warn("Slow response (". $response_time . "sec)  from sip server for command message : ". $command_message);
         }
              
         $log->debug($login . " <--- ". $respdata);
