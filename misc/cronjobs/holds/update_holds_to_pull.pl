@@ -219,7 +219,10 @@ sub check_issuingrules {
                 reserve_level => $item->reserve_level,
             }
         );
-        if ($issuing_rule->reservesallowed && $issuing_rule->reservesallowed != 0) {
+        if (!defined($issuing_rule)) {
+            warn "No issuing rule for itemnumber ".join(', ', $itemnumber, $borrower->categorycode||'', $data->{l_branch}||'');
+            next;
+        } elsif ($issuing_rule->reservesallowed && $issuing_rule->reservesallowed != 0) {
             my $colid = GetItemsCollection($itemnumber);
             my $cnsort = $item->cn_sort ? $item->cn_sort : ' ';
             if ($colid) {
