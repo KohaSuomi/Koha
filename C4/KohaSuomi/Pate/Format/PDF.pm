@@ -41,7 +41,7 @@ sub toPDF {
                                       height => 297/mm,
                                       line_height => 13,
                                       margin_left => 20/mm,
-                                      margin_top => 13/mm,
+                                      margin_top => 25/mm,
                                       margin_right => 13/mm,
                                       margin_bottom => 20/mm );
 
@@ -68,7 +68,7 @@ sub toPDF {
                 autoflow => 'on', font_size=>"$font_size");
 
     # Three enters after header (might just as well be part of the header)
-    $pdf->text('', autoflow => 'on', autoflow => 'on', font_size=>"$font_size") for ( 0..1 );
+    $pdf->text('', autoflow => 'on', autoflow => 'on', font_size=>"$font_size") for ( 0..3 );
 
     ### RECIPIENT ###
 
