@@ -287,7 +287,7 @@ elsif ($op eq 'add') {
     my $cap_fine_to_replacement_price = ($input->param('cap_fine_to_replacement_price') || '') eq 'on';
     my $note = $input->param('note');
     my $decreaseloanholds = $input->param('decreaseloanholds') || undef;
-    my $holds_pickup_period = strip_non_numeric($input->param('holds_pickup_period'));
+    my $holds_pickup_period = strip_non_numeric( scalar $input->param('holds_pickup_period') );
 
     my $rules = {
         maxissueqty                   => $maxissueqty,

@@ -225,6 +225,8 @@ sub set_waiting {
         $max_pickup_delay = $rule->rule_value;
     }
 
+    my $new_expiration_date = $today->clone->add(days => $max_pickup_delay);
+
     if ( C4::Context->preference("ExcludeHolidaysFromMaxPickUpDelay") ) {
         my $itemtype = $self->item ? $self->item->effective_itemtype : $self->biblio->itemtype;
         my $daysmode = Koha::CirculationRules->get_effective_daysmode(
