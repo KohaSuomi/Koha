@@ -1268,7 +1268,10 @@ sub ModReserveAffect {
 
     $hold->itemnumber($itemnumber);
     $hold->set_waiting($transferToDo);
-
+    
+    # Kuljetustilojen poisto
+    C4::Circulation::DeleteTransfer($itemnumber);
+    
     _koha_notify_reserve( $hold->reserve_id )
       if ( !$transferToDo && !$already_on_shelf );
 

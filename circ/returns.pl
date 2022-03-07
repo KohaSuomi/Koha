@@ -445,9 +445,6 @@ if ( $messages->{'WrongTransfer'} and not $messages->{'WasTransfered'}) {
 #
 if ( $messages->{'ResFound'}) {
     
-    ### Kuljetustilojen poisto
-    DeleteTransfer($itemnumber);
-        
     my $reserve    = $messages->{'ResFound'};
     my $borr = C4::Members::GetMember( borrowernumber => $reserve->{'borrowernumber'} );
     my $holdmsgpreferences =  Koha::Patron::Message::Preferences->find_with_message_name({
