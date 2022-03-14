@@ -541,9 +541,11 @@ sub execute_query {
     # Select can be run on althost if configured, initialize a new database handle 
     $dbh=C4::KohaSuomi::Tweaks->dbh();
 
-    my $sth = $dbh->prepare($sql);
-    $sth->execute(@$sql_params, $offset, $limit);
-    $dbh->disconnect();
+   my $sth = $dbh->prepare($sql);
+    eval {
+        $sth->execute(@$sql_params, $offset, $limit);
+    };
+    warn $@ if $@;
 
     return ( $sth, { queryerr => $sth->errstr } ) if ($sth->err);
     return ( $sth );
