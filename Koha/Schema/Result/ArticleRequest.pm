@@ -132,8 +132,6 @@ optional authorised value AR_CANCELLATION
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-Be careful with two timestamps in one table not allowing NULL
-
 =head2 updated_on
 
   data_type: 'timestamp'
@@ -146,8 +144,6 @@ Be careful with two timestamps in one table not allowing NULL
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-borrower requested table of contents
 
 =cut
 
@@ -302,8 +298,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-10-15 09:05:08
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:U4C1bwfCj048twrT3yRD6Q
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zaTfH/fSBFpeeXod0/BsOw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

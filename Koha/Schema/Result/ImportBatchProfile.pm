@@ -29,29 +29,21 @@ __PACKAGE__->table("import_batch_profiles");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier and primary key
-
 =head2 name
 
   data_type: 'varchar'
   is_nullable: 0
   size: 100
 
-name of this profile
-
 =head2 matcher_id
 
   data_type: 'integer'
   is_nullable: 1
 
-the id of the match rule used (matchpoints.matcher_id)
-
 =head2 template_id
 
   data_type: 'integer'
   is_nullable: 1
-
-the id of the marc modification template
 
 =head2 overlay_action
 
@@ -59,15 +51,11 @@ the id of the marc modification template
   is_nullable: 1
   size: 50
 
-how to handle duplicate records
-
 =head2 nomatch_action
 
   data_type: 'varchar'
   is_nullable: 1
   size: 50
-
-how to handle records where no match is found
 
 =head2 item_action
 
@@ -75,14 +63,10 @@ how to handle records where no match is found
   is_nullable: 1
   size: 50
 
-what to do with item records
-
 =head2 parse_items
 
   data_type: 'tinyint'
   is_nullable: 1
-
-should items be parsed
 
 =head2 record_type
 
@@ -90,15 +74,11 @@ should items be parsed
   is_nullable: 1
   size: 50
 
-type of record in the batch
-
 =head2 encoding
 
   data_type: 'varchar'
   is_nullable: 1
   size: 50
-
-file encoding
 
 =head2 format
 
@@ -106,14 +86,10 @@ file encoding
   is_nullable: 1
   size: 50
 
-marc format
-
 =head2 comments
 
   data_type: 'longtext'
   is_nullable: 1
-
-any comments added when the file was uploaded
 
 =cut
 
@@ -188,8 +164,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:RmvuwPN8RT+tBsxR+Q7unA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:K7QBaxwe5w0HB/WtH8VS9w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

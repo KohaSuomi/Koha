@@ -29,14 +29,10 @@ __PACKAGE__->table("saved_sql");
   is_auto_increment: 1
   is_nullable: 0
 
-unique id and primary key assigned by Koha
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_nullable: 1
-
-the staff member who created this report (borrowers.borrowernumber)
 
 =head2 date_created
 
@@ -44,22 +40,16 @@ the staff member who created this report (borrowers.borrowernumber)
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-the date this report was created
-
 =head2 last_modified
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-the date this report was last edited
-
 =head2 savedsql
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-the SQL for this report
 
 =head2 last_run
 
@@ -74,22 +64,16 @@ the SQL for this report
   is_nullable: 0
   size: 255
 
-the name of this report
-
 =head2 type
 
   data_type: 'varchar'
   is_nullable: 1
   size: 255
 
-always 1 for tabular
-
 =head2 notes
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-the notes or description given to this report
 
 =head2 cache_expiry
 
@@ -186,8 +170,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:198dNG9DGQzop+s5IHy7sw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:tJKTSjhOIvkBbfRiT3eZug
 
 __PACKAGE__->add_columns(
     '+public' => { is_boolean => 1 }

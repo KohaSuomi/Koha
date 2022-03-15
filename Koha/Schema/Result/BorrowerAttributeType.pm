@@ -29,15 +29,11 @@ __PACKAGE__->table("borrower_attribute_types");
   is_nullable: 0
   size: 10
 
-unique key used to identify each custom field
-
 =head2 description
 
   data_type: 'varchar'
   is_nullable: 0
   size: 255
-
-description for each custom field
 
 =head2 repeatable
 
@@ -45,15 +41,11 @@ description for each custom field
   default_value: 0
   is_nullable: 0
 
-defines whether one patron/borrower can have multiple values for this custom field  (1 for yes, 0 for no)
-
 =head2 unique_id
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-defines if this value needs to be unique (1 for yes, 0 for no)
 
 =head2 opac_display
 
@@ -61,15 +53,11 @@ defines if this value needs to be unique (1 for yes, 0 for no)
   default_value: 0
   is_nullable: 0
 
-defines if this field is visible to patrons on their account in the OPAC (1 for yes, 0 for no)
-
 =head2 opac_editable
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-defines if this field is editable by patrons on their account in the OPAC (1 for yes, 0 for no)
 
 =head2 staff_searchable
 
@@ -77,15 +65,11 @@ defines if this field is editable by patrons on their account in the OPAC (1 for
   default_value: 0
   is_nullable: 0
 
-defines if this field is searchable via the patron search in the staff interface (1 for yes, 0 for no)
-
 =head2 authorised_value_category
 
   data_type: 'varchar'
   is_nullable: 1
   size: 32
-
-foreign key from authorised_values that links this custom field to an authorized value category
 
 =head2 display_checkout
 
@@ -93,15 +77,11 @@ foreign key from authorised_values that links this custom field to an authorized
   default_value: 0
   is_nullable: 0
 
-defines if this field displays in checkout screens
-
 =head2 category_code
 
   data_type: 'varchar'
   is_nullable: 1
   size: 10
-
-defines a category for an attribute_type
 
 =head2 class
 
@@ -110,23 +90,17 @@ defines a category for an attribute_type
   is_nullable: 0
   size: 255
 
-defines a class for an attribute_type
-
 =head2 keep_for_pseudonymization
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
 
-defines if this field is copied to anonymized_borrower_attributes (1 for yes, 0 for no)
-
 =head2 mandatory
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-defines if the attribute is mandatory or not
 
 =cut
 
@@ -219,8 +193,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:a/IA2iqSJqg3oOS+o1nXFg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:uBsowMZb+0iIpMsKhLvgbA
 
 __PACKAGE__->add_columns(
     '+keep_for_pseudonymization' => { is_boolean => 1 },

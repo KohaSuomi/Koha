@@ -29,15 +29,11 @@ __PACKAGE__->table("linktracker");
   is_auto_increment: 1
   is_nullable: 0
 
-primary key identifier
-
 =head2 biblionumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-biblionumber of the record the link is from
 
 =head2 itemnumber
 
@@ -45,30 +41,22 @@ biblionumber of the record the link is from
   is_foreign_key: 1
   is_nullable: 1
 
-itemnumber if applicable that the link was from
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
 
-borrowernumber who clicked the link
-
 =head2 url
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-the link itself
 
 =head2 timeclicked
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-the date and time the link was clicked
 
 =cut
 
@@ -166,8 +154,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-08-27 08:42:21
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ksT3i//fQn+HnBKt4YZlhg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YR7+PudkrH+Cl075MXrcpg
 
 sub koha_object_class {
     'Koha::TrackedLink';

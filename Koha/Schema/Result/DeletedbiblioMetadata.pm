@@ -44,7 +44,7 @@ __PACKAGE__->table("deletedbiblio_metadata");
 =head2 schema
 
   data_type: 'varchar'
-  is_nullable: 0
+  is_nullable: 1
   size: 16
 
 =head2 metadata
@@ -69,7 +69,7 @@ __PACKAGE__->add_columns(
   "format",
   { data_type => "varchar", is_nullable => 0, size => 16 },
   "schema",
-  { data_type => "varchar", is_nullable => 0, size => 16 },
+  { data_type => "varchar", is_nullable => 1, size => 16 },
   "metadata",
   { data_type => "longtext", is_nullable => 0 },
   "timestamp",
@@ -132,8 +132,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2019-01-30 11:34:16
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JCOh+FSSTgPlC8lMJOdOOA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:O5yn5DRsIKLpy6iBXOu0/A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

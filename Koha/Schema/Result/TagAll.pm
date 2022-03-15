@@ -29,15 +29,11 @@ __PACKAGE__->table("tags_all");
   is_auto_increment: 1
   is_nullable: 0
 
-unique id and primary key
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-the patron who added the tag (borrowers.borrowernumber)
 
 =head2 biblionumber
 
@@ -45,30 +41,22 @@ the patron who added the tag (borrowers.borrowernumber)
   is_foreign_key: 1
   is_nullable: 0
 
-the bib record this tag was left on (biblio.biblionumber)
-
 =head2 term
 
   data_type: 'varchar'
   is_nullable: 0
   size: 191
 
-the tag
-
 =head2 language
 
   data_type: 'integer'
   is_nullable: 1
-
-the language the tag was left in
 
 =head2 date_created
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 0
-
-the date the tag was added
 
 =cut
 
@@ -141,8 +129,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qQsYlIAUc1KP7M/RUaqd8g
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JdidF+VNHxt6TFD2YzLR6A
 
 sub koha_object_class {
     'Koha::Tag';

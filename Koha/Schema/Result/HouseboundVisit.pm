@@ -29,15 +29,11 @@ __PACKAGE__->table("housebound_visit");
   is_auto_increment: 1
   is_nullable: 0
 
-ID of the visit.
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
-
-Number of the borrower, & the profile, linked to this visit.
 
 =head2 appointment_date
 
@@ -45,15 +41,11 @@ Number of the borrower, & the profile, linked to this visit.
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-Date of visit.
-
 =head2 day_segment
 
   data_type: 'varchar'
   is_nullable: 1
   size: 10
-
-Rough time frame: 'morning', 'afternoon' 'evening'
 
 =head2 chooser_brwnumber
 
@@ -61,15 +53,11 @@ Rough time frame: 'morning', 'afternoon' 'evening'
   is_foreign_key: 1
   is_nullable: 1
 
-Number of the borrower to choose items  for delivery.
-
 =head2 deliverer_brwnumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-Number of the borrower to deliver items.
 
 =cut
 
@@ -158,8 +146,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PJwWk4901BF+CG6AXgjffg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DEj/NyxL98DYtGXaNMifZg
 
 sub koha_object_class {
     'Koha::Patron::HouseboundVisit';

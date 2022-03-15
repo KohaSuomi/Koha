@@ -29,22 +29,16 @@ __PACKAGE__->table("stockrotationrotas");
   is_auto_increment: 1
   is_nullable: 0
 
-Stockrotation rota ID
-
 =head2 title
 
   data_type: 'varchar'
   is_nullable: 0
   size: 100
 
-Title for this rota
-
 =head2 description
 
   data_type: 'text'
-  is_nullable: 0
-
-Description for this rota
+  is_nullable: 1
 
 =head2 cyclical
 
@@ -52,15 +46,11 @@ Description for this rota
   default_value: 0
   is_nullable: 0
 
-Should items on this rota keep cycling?
-
 =head2 active
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-Is this rota currently active?
 
 =cut
 
@@ -70,7 +60,7 @@ __PACKAGE__->add_columns(
   "title",
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "description",
-  { data_type => "text", is_nullable => 0 },
+  { data_type => "text", is_nullable => 1 },
   "cyclical",
   { data_type => "tinyint", default_value => 0, is_nullable => 0 },
   "active",
@@ -88,6 +78,20 @@ __PACKAGE__->add_columns(
 =cut
 
 __PACKAGE__->set_primary_key("rota_id");
+
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<stockrotationrotas_title>
+
+=over 4
+
+=item * L</title>
+
+=back
+
+=cut
+
+__PACKAGE__->add_unique_constraint("stockrotationrotas_title", ["title"]);
 
 =head1 RELATIONS
 
@@ -107,8 +111,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BpWsKESjapNKXaj2bZ1sjg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9pbdTO/Zr7bcfne22UkR4Q
 
 __PACKAGE__->add_columns(
   '+cyclical' => { is_boolean => 1 },

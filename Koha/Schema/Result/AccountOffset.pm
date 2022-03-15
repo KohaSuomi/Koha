@@ -29,15 +29,11 @@ __PACKAGE__->table("account_offsets");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier for each offset
-
 =head2 credit_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-The id of the accountline the increased the patron's balance
 
 =head2 debit_id
 
@@ -45,23 +41,17 @@ The id of the accountline the increased the patron's balance
   is_foreign_key: 1
   is_nullable: 1
 
-The id of the accountline that decreased the patron's balance
-
 =head2 type
 
   data_type: 'enum'
   extra: {list => ["CREATE","APPLY","VOID","OVERDUE_INCREASE","OVERDUE_DECREASE"]}
   is_nullable: 0
 
-The type of offset this is
-
 =head2 amount
 
   data_type: 'decimal'
   is_nullable: 0
   size: [26,6]
-
-The amount of the change
 
 =head2 created_on
 
@@ -159,8 +149,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-06-21 15:27:32
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zCeE/SWvdz898zlfcvfRGg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:o7K75YsLjOFVfeDpBG4M1w
 
 sub koha_object_class {
     'Koha::Account::Offset';

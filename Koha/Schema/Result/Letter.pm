@@ -29,16 +29,12 @@ __PACKAGE__->table("letter");
   is_auto_increment: 1
   is_nullable: 0
 
-primary key identifier
-
 =head2 module
 
   data_type: 'varchar'
   default_value: (empty string)
   is_nullable: 0
   size: 20
-
-Koha module that triggers this notice or slip
 
 =head2 code
 
@@ -47,16 +43,12 @@ Koha module that triggers this notice or slip
   is_nullable: 0
   size: 20
 
-unique identifier for this notice or slip
-
 =head2 branchcode
 
   data_type: 'varchar'
   default_value: (empty string)
   is_nullable: 0
   size: 10
-
-the branch this notice or slip is used at (branches.branchcode)
 
 =head2 name
 
@@ -65,15 +57,11 @@ the branch this notice or slip is used at (branches.branchcode)
   is_nullable: 0
   size: 100
 
-plain text name for this notice or slip
-
 =head2 is_html
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 1
-
-does this notice or slip use HTML (1 for yes, 0 for no)
 
 =head2 title
 
@@ -82,14 +70,10 @@ does this notice or slip use HTML (1 for yes, 0 for no)
   is_nullable: 0
   size: 200
 
-subject line of the notice
-
 =head2 content
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-body text for the notice or slip
 
 =head2 message_transport_type
 
@@ -99,8 +83,6 @@ body text for the notice or slip
   is_nullable: 0
   size: 20
 
-transport type for this notice
-
 =head2 lang
 
   data_type: 'varchar'
@@ -108,16 +90,12 @@ transport type for this notice
   is_nullable: 0
   size: 25
 
-lang of the notice
-
 =head2 updated_on
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
   default_value: current_timestamp
   is_nullable: 0
-
-last modification
 
 =cut
 
@@ -217,8 +195,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2021-02-11 12:33:50
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qqdTVEicMu5rHppY5qsEuA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vAb/FpnHXXypr93Ygucl4g
 
 sub koha_object_class {
     'Koha::Notice::Template';

@@ -35,15 +35,11 @@ __PACKAGE__->table("language_subtag_registry");
   is_nullable: 1
   size: 25
 
-language-script-region-variant-extension-privateuse
-
 =head2 description
 
   data_type: 'varchar'
   is_nullable: 1
   size: 25
-
-only one of the possible descriptions for ease of reference, see language_descriptions for the complete list
 
 =head2 added
 
@@ -101,8 +97,8 @@ __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint("uniq_lang", ["subtag", "type"]);
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-02-07 17:33:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oaYDhSazc2SC0M4gGH9QQw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ssgh46ucRUWwa+s2ol28Sw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

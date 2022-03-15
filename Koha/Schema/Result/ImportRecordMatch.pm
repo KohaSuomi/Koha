@@ -29,22 +29,16 @@ __PACKAGE__->table("import_record_matches");
   is_foreign_key: 1
   is_nullable: 0
 
-the id given to the imported bib record (import_records.import_record_id)
-
 =head2 candidate_match_id
 
   data_type: 'integer'
   is_nullable: 0
-
-the biblio the imported record matches (biblio.biblionumber)
 
 =head2 score
 
   data_type: 'integer'
   default_value: 0
   is_nullable: 0
-
-the match score
 
 =cut
 
@@ -89,8 +83,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-11-03 14:22:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jN0xJqlL5brcUwa3bvEHHQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:FsqrGMZPboFCyYh+gxcJZg
 
 sub koha_object_class {
     'Koha::Import::Record::Match';

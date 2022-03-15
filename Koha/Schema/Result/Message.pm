@@ -29,15 +29,11 @@ __PACKAGE__->table("messages");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier assigned by Koha
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
-
-foreign key linking this message to the borrowers table
 
 =head2 branchcode
 
@@ -45,22 +41,16 @@ foreign key linking this message to the borrowers table
   is_nullable: 1
   size: 10
 
-foreign key linking the message to the branches table
-
 =head2 message_type
 
   data_type: 'varchar'
   is_nullable: 0
   size: 1
 
-whether the message is for the librarians (L) or the patron (B)
-
 =head2 message
 
   data_type: 'mediumtext'
   is_nullable: 0
-
-the text of the message
 
 =head2 message_date
 
@@ -69,15 +59,11 @@ the text of the message
   default_value: current_timestamp
   is_nullable: 0
 
-the date and time the message was written
-
 =head2 manager_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-creator of message
 
 =cut
 
@@ -153,8 +139,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EvxjiNgWGReZ9rEVmS5YVw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rPSQXkF10qkKsxhC87y6hQ
 
 sub koha_object_class {
     'Koha::Patron::Message';

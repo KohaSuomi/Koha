@@ -30,16 +30,11 @@ __PACKAGE__->table("biblio_framework");
   is_nullable: 0
   size: 4
 
-the unique code assigned to the framework
-
 =head2 frameworktext
 
   data_type: 'varchar'
-  default_value: (empty string)
-  is_nullable: 0
+  is_nullable: 1
   size: 255
-
-the description/name given to the framework
 
 =cut
 
@@ -47,7 +42,7 @@ __PACKAGE__->add_columns(
   "frameworkcode",
   { data_type => "varchar", default_value => "", is_nullable => 0, size => 4 },
   "frameworktext",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 255 },
+  { data_type => "varchar", is_nullable => 1, size => 255 },
 );
 
 =head1 PRIMARY KEY
@@ -63,8 +58,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("frameworkcode");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YdCNaeY5v1WcfcDuA6xE0w
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:huL+HaOPSQbWHrs9T1gqEQ
 
 # FIXME This should not be needed, we need to add the FK at DB level
 # It cannot be done now because the default framework (frameworkcode=='')

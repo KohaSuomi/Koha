@@ -29,56 +29,40 @@ __PACKAGE__->table("housebound_profile");
   is_foreign_key: 1
   is_nullable: 0
 
-Number of the borrower associated with this profile.
-
 =head2 day
 
   data_type: 'mediumtext'
   is_nullable: 0
-
-The preferred day of the week for delivery.
 
 =head2 frequency
 
   data_type: 'mediumtext'
   is_nullable: 0
 
-The Authorised_Value definining the pattern for delivery.
-
 =head2 fav_itemtypes
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-Free text describing preferred itemtypes.
 
 =head2 fav_subjects
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-Free text describing preferred subjects.
-
 =head2 fav_authors
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-Free text describing preferred authors.
 
 =head2 referral
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-Free text indicating how the borrower was added to the service.
-
 =head2 notes
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-Free text for additional notes.
 
 =cut
 
@@ -146,8 +130,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VmCvv8WVQCmAXCfWHsLIdg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2yBQQ6IVg1piyjSjcWKeKg
 
 sub koha_object_class {
     'Koha::Patron::HouseboundProfile';

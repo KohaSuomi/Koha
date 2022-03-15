@@ -29,15 +29,11 @@ __PACKAGE__->table("course_items");
   is_auto_increment: 1
   is_nullable: 0
 
-course item id
-
 =head2 itemnumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-items.itemnumber for the item on reserve
 
 =head2 biblionumber
 
@@ -45,15 +41,11 @@ items.itemnumber for the item on reserve
   is_foreign_key: 1
   is_nullable: 0
 
-biblio.biblionumber for the bibliographic record on reserve
-
 =head2 itype
 
   data_type: 'varchar'
   is_nullable: 1
   size: 10
-
-new itemtype for the item to have while on reserve (optional)
 
 =head2 itype_enabled
 
@@ -61,15 +53,11 @@ new itemtype for the item to have while on reserve (optional)
   default_value: 0
   is_nullable: 0
 
-indicates if itype should be changed while on course reserve
-
 =head2 itype_storage
 
   data_type: 'varchar'
   is_nullable: 1
   size: 10
-
-a place to store the itype when item is on course reserve
 
 =head2 ccode
 
@@ -77,23 +65,23 @@ a place to store the itype when item is on course reserve
   is_nullable: 1
   size: 80
 
-new category code for the item to have while on reserve (optional)
-
 =head2 ccode_enabled
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
 
-indicates if ccode should be changed while on course reserve
+=head2 holdingbranch_storage
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 10
 
 =head2 ccode_storage
 
   data_type: 'varchar'
   is_nullable: 1
   size: 80
-
-a place to store the ccode when item is on course reserve
 
 =head2 homebranch
 
@@ -102,15 +90,11 @@ a place to store the ccode when item is on course reserve
   is_nullable: 1
   size: 10
 
-new home branch for the item to have while on reserve (optional)
-
 =head2 homebranch_enabled
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-indicates if homebranch should be changed while on course reserve
 
 =head2 homebranch_storage
 
@@ -119,8 +103,6 @@ indicates if homebranch should be changed while on course reserve
   is_nullable: 1
   size: 10
 
-a place to store the homebranch when item is on course reserve
-
 =head2 holdingbranch
 
   data_type: 'varchar'
@@ -128,23 +110,11 @@ a place to store the homebranch when item is on course reserve
   is_nullable: 1
   size: 10
 
-new holding branch for the item to have while on reserve (optional)
-
 =head2 holdingbranch_enabled
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-indicates if itype should be changed while on course reserve
-
-=head2 holdingbranch_storage
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 10
-
-a place to store the holdingbranch when item is on course reserve
 
 =head2 location
 
@@ -152,15 +122,11 @@ a place to store the holdingbranch when item is on course reserve
   is_nullable: 1
   size: 80
 
-new shelving location for the item to have while on reseve (optional)
-
 =head2 location_enabled
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-indicates if itype should be changed while on course reserve
 
 =head2 location_storage
 
@@ -168,16 +134,12 @@ indicates if itype should be changed while on course reserve
   is_nullable: 1
   size: 80
 
-a place to store the location when the item is on course reserve
-
 =head2 enabled
 
   data_type: 'enum'
   default_value: 'no'
   extra: {list => ["yes","no"]}
   is_nullable: 0
-
-if at least one enabled course has this item on reseve, this field will be 'yes', otherwise it will be 'no'
 
 =head2 timestamp
 
@@ -205,6 +167,8 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 80 },
   "ccode_enabled",
   { data_type => "tinyint", default_value => 0, is_nullable => 0 },
+  "holdingbranch_storage",
+  { data_type => "varchar", is_nullable => 1, size => 10 },
   "ccode_storage",
   { data_type => "varchar", is_nullable => 1, size => 80 },
   "homebranch",
@@ -217,8 +181,6 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_foreign_key => 1, is_nullable => 1, size => 10 },
   "holdingbranch_enabled",
   { data_type => "tinyint", default_value => 0, is_nullable => 0 },
-  "holdingbranch_storage",
-  { data_type => "varchar", is_nullable => 1, size => 10 },
   "location",
   { data_type => "varchar", is_nullable => 1, size => 80 },
   "location_enabled",
@@ -380,8 +342,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2021-06-11 18:35:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3fFJ3uJr+5pMZniZ1glIpg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PX+bUXckYgG2Tod+jGu7mg
 
 __PACKAGE__->add_columns(
     '+itype_enabled'         => { is_boolean => 1 },

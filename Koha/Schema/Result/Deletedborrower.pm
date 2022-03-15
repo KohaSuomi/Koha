@@ -29,148 +29,107 @@ __PACKAGE__->table("deletedborrowers");
   default_value: 0
   is_nullable: 0
 
-primary key, Koha assigned ID number for patrons/borrowers
-
 =head2 cardnumber
 
   data_type: 'varchar'
   is_nullable: 1
   size: 32
 
-unique key, library assigned ID number for patrons/borrowers
-
 =head2 surname
 
   data_type: 'longtext'
   is_nullable: 1
-
-patron/borrower's last name (surname)
 
 =head2 firstname
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-patron/borrower's first name
-
 =head2 title
 
   data_type: 'longtext'
   is_nullable: 1
 
-patron/borrower's title, for example: Mr. or Mrs.
-
 =head2 othernames
 
-  data_type: 'longtext'
+  data_type: 'varchar'
   is_nullable: 1
-
-any other names associated with the patron/borrower
+  size: 50
 
 =head2 initials
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-initials for your patron/borrower
-
 =head2 streetnumber
 
   data_type: 'tinytext'
   is_nullable: 1
-
-the house number for your patron/borrower's primary address
 
 =head2 streettype
 
   data_type: 'tinytext'
   is_nullable: 1
 
-the street type (Rd., Blvd, etc) for your patron/borrower's primary address
-
 =head2 address
 
   data_type: 'longtext'
   is_nullable: 1
-
-the first address line for your patron/borrower's primary address
 
 =head2 address2
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-the second address line for your patron/borrower's primary address
-
 =head2 city
 
   data_type: 'longtext'
   is_nullable: 1
-
-the city or town for your patron/borrower's primary address
 
 =head2 state
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-the state or province for your patron/borrower's primary address
-
 =head2 zipcode
 
   data_type: 'tinytext'
   is_nullable: 1
-
-the zip or postal code for your patron/borrower's primary address
 
 =head2 country
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-the country for your patron/borrower's primary address
-
 =head2 email
 
   data_type: 'longtext'
   is_nullable: 1
-
-the primary email address for your patron/borrower's primary address
 
 =head2 phone
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-the primary phone number for your patron/borrower's primary address
-
 =head2 mobile
 
   data_type: 'tinytext'
   is_nullable: 1
-
-the other phone number for your patron/borrower's primary address
 
 =head2 fax
 
   data_type: 'longtext'
   is_nullable: 1
 
-the fax number for your patron/borrower's primary address
-
 =head2 emailpro
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-the secondary email addres for your patron/borrower's primary address
-
 =head2 phonepro
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-the secondary phone number for your patron/borrower's primary address
 
 =head2 B_streetnumber
 
@@ -178,15 +137,11 @@ the secondary phone number for your patron/borrower's primary address
   data_type: 'tinytext'
   is_nullable: 1
 
-the house number for your patron/borrower's alternate address
-
 =head2 B_streettype
 
   accessor: 'b_streettype'
   data_type: 'tinytext'
   is_nullable: 1
-
-the street type (Rd., Blvd, etc) for your patron/borrower's alternate address
 
 =head2 B_address
 
@@ -194,15 +149,11 @@ the street type (Rd., Blvd, etc) for your patron/borrower's alternate address
   data_type: 'mediumtext'
   is_nullable: 1
 
-the first address line for your patron/borrower's alternate address
-
 =head2 B_address2
 
   accessor: 'b_address2'
   data_type: 'mediumtext'
   is_nullable: 1
-
-the second address line for your patron/borrower's alternate address
 
 =head2 B_city
 
@@ -210,15 +161,11 @@ the second address line for your patron/borrower's alternate address
   data_type: 'longtext'
   is_nullable: 1
 
-the city or town for your patron/borrower's alternate address
-
 =head2 B_state
 
   accessor: 'b_state'
   data_type: 'mediumtext'
   is_nullable: 1
-
-the state for your patron/borrower's alternate address
 
 =head2 B_zipcode
 
@@ -226,15 +173,11 @@ the state for your patron/borrower's alternate address
   data_type: 'tinytext'
   is_nullable: 1
 
-the zip or postal code for your patron/borrower's alternate address
-
 =head2 B_country
 
   accessor: 'b_country'
   data_type: 'mediumtext'
   is_nullable: 1
-
-the country for your patron/borrower's alternate address
 
 =head2 B_email
 
@@ -242,23 +185,17 @@ the country for your patron/borrower's alternate address
   data_type: 'mediumtext'
   is_nullable: 1
 
-the patron/borrower's alternate email address
-
 =head2 B_phone
 
   accessor: 'b_phone'
   data_type: 'longtext'
   is_nullable: 1
 
-the patron/borrower's alternate phone number
-
 =head2 dateofbirth
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-the patron/borrower's date of birth (YYYY-MM-DD)
 
 =head2 branchcode
 
@@ -267,8 +204,6 @@ the patron/borrower's date of birth (YYYY-MM-DD)
   is_nullable: 0
   size: 10
 
-foreign key from the branches table, includes the code of the patron/borrower's home branch
-
 =head2 categorycode
 
   data_type: 'varchar'
@@ -276,15 +211,11 @@ foreign key from the branches table, includes the code of the patron/borrower's 
   is_nullable: 0
   size: 10
 
-foreign key from the categories table, includes the code of the patron category
-
 =head2 dateenrolled
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-date the patron was added to Koha (YYYY-MM-DD)
 
 =head2 dateexpiry
 
@@ -292,29 +223,21 @@ date the patron was added to Koha (YYYY-MM-DD)
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-date the patron/borrower's card is set to expire (YYYY-MM-DD)
-
 =head2 date_renewed
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-date the patron/borrower's card was last renewed
-
 =head2 gonenoaddress
 
   data_type: 'tinyint'
   is_nullable: 1
 
-set to 1 for yes and 0 for no, flag to note that library marked this patron/borrower as having an unconfirmed address
-
 =head2 lost
 
   data_type: 'tinyint'
   is_nullable: 1
-
-set to 1 for yes and 0 for no, flag to note that library marked this patron/borrower as having lost their card
 
 =head2 debarred
 
@@ -322,43 +245,31 @@ set to 1 for yes and 0 for no, flag to note that library marked this patron/borr
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-until this date the patron can only check-in (no loans, no holds, etc.), is a fine based on days instead of money (YYYY-MM-DD)
-
 =head2 debarredcomment
 
   data_type: 'varchar'
   is_nullable: 1
   size: 255
 
-comment on the stop of patron
-
 =head2 contactname
 
   data_type: 'longtext'
   is_nullable: 1
-
-used for children and profesionals to include surname or last name of guarantor or organization name
 
 =head2 contactfirstname
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-used for children to include first name of guarantor
-
 =head2 contacttitle
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-used for children to include title (Mr., Mrs., etc) of guarantor
-
 =head2 borrowernotes
 
   data_type: 'longtext'
   is_nullable: 1
-
-a note on the patron/borrower's account that is only visible in the staff interface
 
 =head2 relationship
 
@@ -366,15 +277,11 @@ a note on the patron/borrower's account that is only visible in the staff interf
   is_nullable: 1
   size: 100
 
-used for children to include the relationship to their guarantor
-
 =head2 sex
 
   data_type: 'varchar'
   is_nullable: 1
   size: 1
-
-patron/borrower's gender
 
 =head2 password
 
@@ -382,14 +289,10 @@ patron/borrower's gender
   is_nullable: 1
   size: 60
 
-patron/borrower's encrypted password
-
 =head2 flags
 
   data_type: 'integer'
   is_nullable: 1
-
-will include a number associated with the staff member's permissions
 
 =head2 userid
 
@@ -397,14 +300,10 @@ will include a number associated with the staff member's permissions
   is_nullable: 1
   size: 75
 
-patron/borrower's opac and/or staff interface log in
-
 =head2 opacnote
 
   data_type: 'longtext'
   is_nullable: 1
-
-a note on the patron/borrower's account that is visible in the OPAC and staff interface
 
 =head2 contactnote
 
@@ -412,15 +311,11 @@ a note on the patron/borrower's account that is visible in the OPAC and staff in
   is_nullable: 1
   size: 255
 
-a note related to the patron/borrower's alternate address
-
 =head2 sort1
 
   data_type: 'varchar'
   is_nullable: 1
   size: 80
-
-a field that can be used for any information unique to the library
 
 =head2 sort2
 
@@ -428,70 +323,50 @@ a field that can be used for any information unique to the library
   is_nullable: 1
   size: 80
 
-a field that can be used for any information unique to the library
-
 =head2 altcontactfirstname
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-first name of alternate contact for the patron/borrower
 
 =head2 altcontactsurname
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-surname or last name of the alternate contact for the patron/borrower
-
 =head2 altcontactaddress1
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-the first address line for the alternate contact for the patron/borrower
 
 =head2 altcontactaddress2
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-the second address line for the alternate contact for the patron/borrower
-
 =head2 altcontactaddress3
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-the city for the alternate contact for the patron/borrower
 
 =head2 altcontactstate
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-the state for the alternate contact for the patron/borrower
-
 =head2 altcontactzipcode
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-the zipcode for the alternate contact for the patron/borrower
 
 =head2 altcontactcountry
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-the country for the alternate contact for the patron/borrower
-
 =head2 altcontactphone
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-the phone number for the alternate contact for the patron/borrower
 
 =head2 smsalertnumber
 
@@ -499,14 +374,10 @@ the phone number for the alternate contact for the patron/borrower
   is_nullable: 1
   size: 50
 
-the mobile phone number where the patron/borrower would like to receive notices (if SMS turned on)
-
 =head2 sms_provider_id
 
   data_type: 'integer'
   is_nullable: 1
-
-the provider of the mobile phone number defined in smsalertnumber
 
 =head2 privacy
 
@@ -514,23 +385,17 @@ the provider of the mobile phone number defined in smsalertnumber
   default_value: 1
   is_nullable: 0
 
-patron/borrower's privacy settings related to their checkout history  KEY `borrowernumber` (`borrowernumber`),
-
 =head2 privacy_guarantor_fines
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
 
-controls if relatives can see this patron's fines
-
 =head2 privacy_guarantor_checkouts
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-controls if relatives can see this patron's checkouts
 
 =head2 checkprevcheckout
 
@@ -539,24 +404,18 @@ controls if relatives can see this patron's checkouts
   is_nullable: 0
   size: 7
 
-produce a warning for this patron if this item has previously been checked out to this patron if 'yes', not if 'no', defer to category setting if 'inherit'.
-
 =head2 updated_on
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
   default_value: current_timestamp
-  is_nullable: 0
-
-time of last change could be useful for synchronization with external systems (among others)
+  is_nullable: 1
 
 =head2 lastseen
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-last time a patron has been seen (connected at the OPAC or staff interface)
 
 =head2 lang
 
@@ -565,22 +424,16 @@ last time a patron has been seen (connected at the OPAC or staff interface)
   is_nullable: 0
   size: 25
 
-lang to use to send notices to this patron
-
 =head2 login_attempts
 
   data_type: 'integer'
   default_value: 0
   is_nullable: 0
 
-number of failed login attemps
-
 =head2 overdrive_auth_token
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-persist OverDrive auth token
 
 =head2 anonymized
 
@@ -588,23 +441,17 @@ persist OverDrive auth token
   default_value: 0
   is_nullable: 0
 
-flag for data anonymization
-
 =head2 autorenew_checkouts
 
   data_type: 'tinyint'
   default_value: 1
   is_nullable: 0
 
-flag for allowing auto-renewal
-
 =head2 primary_contact_method
 
   data_type: 'varchar'
   is_nullable: 1
   size: 45
-
-useful for reporting purposes
 
 =cut
 
@@ -620,7 +467,7 @@ __PACKAGE__->add_columns(
   "title",
   { data_type => "longtext", is_nullable => 1 },
   "othernames",
-  { data_type => "longtext", is_nullable => 1 },
+  { data_type => "varchar", is_nullable => 1, size => 50 },
   "initials",
   { data_type => "mediumtext", is_nullable => 1 },
   "streetnumber",
@@ -757,7 +604,7 @@ __PACKAGE__->add_columns(
     data_type => "timestamp",
     datetime_undef_if_invalid => 1,
     default_value => \"current_timestamp",
-    is_nullable => 0,
+    is_nullable => 1,
   },
   "lastseen",
   {
@@ -784,9 +631,23 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 45 },
 );
 
+=head1 UNIQUE CONSTRAINTS
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-07-12 13:40:00
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9q8LmKrfO6bAAFaJ4Z3Jrg
+=head2 C<othernames>
+
+=over 4
+
+=item * L</othernames>
+
+=back
+
+=cut
+
+__PACKAGE__->add_unique_constraint("othernames", ["othernames"]);
+
+
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YYOMBKDsjRHUi/avTj7AOw
 
 __PACKAGE__->add_columns(
     '+anonymized'    => { is_boolean => 1 },

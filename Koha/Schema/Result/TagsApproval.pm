@@ -29,15 +29,11 @@ __PACKAGE__->table("tags_approval");
   is_nullable: 0
   size: 191
 
-the tag
-
 =head2 approved
 
   data_type: 'integer'
   default_value: 0
   is_nullable: 0
-
-whether the tag is approved or not (1=yes, 0=pending, -1=rejected)
 
 =head2 date_approved
 
@@ -45,23 +41,17 @@ whether the tag is approved or not (1=yes, 0=pending, -1=rejected)
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-the date this tag was approved
-
 =head2 approved_by
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
 
-the librarian who approved the tag (borrowers.borrowernumber)
-
 =head2 weight_total
 
   data_type: 'integer'
   default_value: 1
   is_nullable: 0
-
-the total number of times this tag was used
 
 =cut
 
@@ -132,8 +122,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PR7rfXKXExWpmkdxcXRrbQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:UyXCuPgZuJaXvbraZsjw+Q
 
 sub koha_object_class {
     'Koha::Tags::Approval';

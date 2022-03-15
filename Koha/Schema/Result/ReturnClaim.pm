@@ -29,22 +29,16 @@ __PACKAGE__->table("return_claims");
   is_auto_increment: 1
   is_nullable: 0
 
-Unique ID of the return claim
-
 =head2 itemnumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
-ID of the item
-
 =head2 issue_id
 
   data_type: 'integer'
   is_nullable: 1
-
-ID of the checkout that triggered the claim
 
 =head2 borrowernumber
 
@@ -52,14 +46,10 @@ ID of the checkout that triggered the claim
   is_foreign_key: 1
   is_nullable: 0
 
-ID of the patron
-
 =head2 notes
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-Notes about the claim
 
 =head2 created_on
 
@@ -67,15 +57,11 @@ Notes about the claim
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-Time and date the claim was created
-
 =head2 created_by
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-ID of the staff member that registered the claim
 
 =head2 updated_on
 
@@ -83,15 +69,11 @@ ID of the staff member that registered the claim
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-Time and date of the latest change on the claim (notes)
-
 =head2 updated_by
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-ID of the staff member that updated the claim
 
 =head2 resolution
 
@@ -99,23 +81,17 @@ ID of the staff member that updated the claim
   is_nullable: 1
   size: 80
 
-Resolution code (RETURN_CLAIM_RESOLUTION AVs)
-
 =head2 resolved_on
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-Time and date the claim was resolved
-
 =head2 resolved_by
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-ID of the staff member that resolved the claim
 
 =cut
 
@@ -277,8 +253,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-11-17 10:01:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ik93SD3kLNecIyRgsBVKDQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZtpdmegRRLL/YObp72j8nQ
 
 =head2 checkout
 

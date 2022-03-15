@@ -28,15 +28,11 @@ __PACKAGE__->table("old_issues");
   data_type: 'integer'
   is_nullable: 0
 
-primary key for issues table
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-foreign key, linking this to the borrowers table for the patron this item was checked out to
 
 =head2 issuer_id
 
@@ -44,15 +40,11 @@ foreign key, linking this to the borrowers table for the patron this item was ch
   is_foreign_key: 1
   is_nullable: 1
 
-foreign key, linking this to the borrowers table for the user who checked out this item
-
 =head2 itemnumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-foreign key, linking this to the items table for the item that was checked out
 
 =head2 date_due
 
@@ -60,15 +52,11 @@ foreign key, linking this to the items table for the item that was checked out
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-date the item is due (yyyy-mm-dd)
-
 =head2 branchcode
 
   data_type: 'varchar'
   is_nullable: 1
   size: 10
-
-foreign key, linking to the branches table for the location the item was checked out
 
 =head2 returndate
 
@@ -76,15 +64,11 @@ foreign key, linking to the branches table for the location the item was checked
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-date the item was returned
-
 =head2 lastreneweddate
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-date the item was last renewed
 
 =head2 renewals
 
@@ -92,15 +76,11 @@ date the item was last renewed
   default_value: 0
   is_nullable: 0
 
-lists the number of times the item was renewed
-
 =head2 unseen_renewals
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-lists the number of consecutive times the item was renewed without being seen
 
 =head2 auto_renew
 
@@ -108,15 +88,11 @@ lists the number of consecutive times the item was renewed without being seen
   default_value: 0
   is_nullable: 1
 
-automatic renewal
-
 =head2 auto_renew_error
 
   data_type: 'varchar'
   is_nullable: 1
   size: 32
-
-automatic renewal error
 
 =head2 timestamp
 
@@ -125,15 +101,11 @@ automatic renewal error
   default_value: current_timestamp
   is_nullable: 0
 
-the date and time this record was last touched
-
 =head2 issuedate
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-date the item was checked out or issued
 
 =head2 onsite_checkout
 
@@ -141,14 +113,10 @@ date the item was checked out or issued
   default_value: 0
   is_nullable: 0
 
-in house use flag
-
 =head2 note
 
   data_type: 'longtext'
   is_nullable: 1
-
-issue note text
 
 =head2 notedate
 
@@ -156,14 +124,10 @@ issue note text
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-datetime of issue note (yyyy-mm-dd hh:mm::ss)
-
 =head2 noteseen
 
   data_type: 'integer'
   is_nullable: 1
-
-describes whether checkout note has been seen 1, not been seen 0 or doesn't exist null
 
 =cut
 
@@ -306,8 +270,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BWwXBAuls9a0HhscR0WlGQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+j0IZlf79XVlBMhi6qna8w
 
 __PACKAGE__->add_columns(
     '+auto_renew'      => { is_boolean => 1 },

@@ -29,14 +29,10 @@ __PACKAGE__->table("aqinvoices");
   is_auto_increment: 1
   is_nullable: 0
 
-ID of the invoice, primary key
-
 =head2 invoicenumber
 
   data_type: 'longtext'
   is_nullable: 0
-
-Name of invoice
 
 =head2 booksellerid
 
@@ -44,15 +40,11 @@ Name of invoice
   is_foreign_key: 1
   is_nullable: 0
 
-foreign key to aqbooksellers
-
 =head2 shipmentdate
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-date of shipment
 
 =head2 billingdate
 
@@ -60,15 +52,11 @@ date of shipment
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-date of billing
-
 =head2 closedate
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-invoice close date, NULL means the invoice is open
 
 =head2 shipmentcost
 
@@ -76,23 +64,17 @@ invoice close date, NULL means the invoice is open
   is_nullable: 1
   size: [28,6]
 
-shipment cost
-
 =head2 shipmentcost_budgetid
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
 
-foreign key to aqbudgets, link the shipment cost to a budget
-
 =head2 message_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-foreign key to edifact invoice message
 
 =cut
 
@@ -217,8 +199,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LkekSbup37Z2WVnU/c9K+g
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GOLsXDsqmp4cep5c1NbkQw
 
 sub koha_object_class {
     'Koha::Acquisition::Invoice';

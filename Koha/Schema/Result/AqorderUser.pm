@@ -29,15 +29,11 @@ __PACKAGE__->table("aqorder_users");
   is_foreign_key: 1
   is_nullable: 0
 
-the order this patrons receive notifications from (aqorders.ordernumber)
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
-
-the borrowernumber for the patron receiving notifications for this order (borrowers.borrowernumber)
 
 =cut
 
@@ -95,8 +91,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:G5LCF3HRXk7YKl8/t7HIyg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:AfK/F87x6xIvYxS691sxKg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

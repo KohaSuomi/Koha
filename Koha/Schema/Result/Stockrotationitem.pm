@@ -29,15 +29,11 @@ __PACKAGE__->table("stockrotationitems");
   is_foreign_key: 1
   is_nullable: 0
 
-Itemnumber to link to a stage & rota
-
 =head2 stage_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
-
-stage ID to link the item to
 
 =head2 indemand
 
@@ -45,15 +41,11 @@ stage ID to link the item to
   default_value: 0
   is_nullable: 0
 
-Should this item be skipped for rotation?
-
 =head2 fresh
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-Flag showing item is only just added to rota
 
 =cut
 
@@ -113,8 +105,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:k/nuwkR8IxEq2D/L6PxmxA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Xv7FcdnTtq6eR8hVHGCx0g
 
 __PACKAGE__->add_columns(
   '+indemand' => { is_boolean => 1 },

@@ -29,15 +29,11 @@ __PACKAGE__->table("api_keys");
   is_nullable: 0
   size: 191
 
-API client ID
-
 =head2 secret
 
   data_type: 'varchar'
   is_nullable: 0
   size: 191
-
-API client secret used for API authentication
 
 =head2 description
 
@@ -45,23 +41,17 @@ API client secret used for API authentication
   is_nullable: 0
   size: 255
 
-API client description
-
 =head2 patron_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
-Foreign key to the borrowers table
-
 =head2 active
 
   data_type: 'tinyint'
   default_value: 1
   is_nullable: 0
-
-0 means this API key is revoked
 
 =cut
 
@@ -122,8 +112,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2yvvoid4Taq7cjXFDuMoAA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0aGMG5OKU+uh3BMxbB2gmw
 
 __PACKAGE__->add_columns(
     '+active' => { is_boolean => 1 }

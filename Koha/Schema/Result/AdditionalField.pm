@@ -29,16 +29,12 @@ __PACKAGE__->table("additional_fields");
   is_auto_increment: 1
   is_nullable: 0
 
-primary key identifier
-
 =head2 tablename
 
   data_type: 'varchar'
   default_value: (empty string)
   is_nullable: 0
   size: 255
-
-tablename of the new field
 
 =head2 name
 
@@ -47,16 +43,12 @@ tablename of the new field
   is_nullable: 0
   size: 255
 
-name of the field
-
 =head2 authorised_value_category
 
   data_type: 'varchar'
   default_value: (empty string)
   is_nullable: 0
   size: 32
-
-is an authorised value category
 
 =head2 marcfield
 
@@ -65,15 +57,11 @@ is an authorised value category
   is_nullable: 0
   size: 16
 
-contains the marc field to copied into the record
-
 =head2 searchable
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
-
-is the field searchable?
 
 =cut
 
@@ -138,8 +126,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-02-07 11:25:42
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cTNN3Jyge89wBitQxnaqBQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Ue3jRrHj2T64/RLD/4jX1Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

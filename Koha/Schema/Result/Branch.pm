@@ -30,35 +30,25 @@ __PACKAGE__->table("branches");
   is_nullable: 0
   size: 10
 
-a unique key assigned to each branch
-
 =head2 branchname
 
   data_type: 'longtext'
   is_nullable: 0
-
-the name of your library or branch
 
 =head2 branchaddress1
 
   data_type: 'longtext'
   is_nullable: 1
 
-the first address line of for your library or branch
-
 =head2 branchaddress2
 
   data_type: 'longtext'
   is_nullable: 1
 
-the second address line of for your library or branch
-
 =head2 branchaddress3
 
   data_type: 'longtext'
   is_nullable: 1
-
-the third address line of for your library or branch
 
 =head2 branchzip
 
@@ -66,84 +56,60 @@ the third address line of for your library or branch
   is_nullable: 1
   size: 25
 
-the zip or postal code for your library or branch
-
 =head2 branchcity
 
   data_type: 'longtext'
   is_nullable: 1
-
-the city or province for your library or branch
 
 =head2 branchstate
 
   data_type: 'longtext'
   is_nullable: 1
 
-the state for your library or branch
-
 =head2 branchcountry
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-the county for your library or branch
 
 =head2 branchphone
 
   data_type: 'longtext'
   is_nullable: 1
 
-the primary phone for your library or branch
-
 =head2 branchfax
 
   data_type: 'longtext'
   is_nullable: 1
-
-the fax number for your library or branch
 
 =head2 branchemail
 
   data_type: 'longtext'
   is_nullable: 1
 
-the primary email address for your library or branch
-
 =head2 branchillemail
 
   data_type: 'longtext'
   is_nullable: 1
-
-the ILL staff email address for your library or branch
 
 =head2 branchreplyto
 
   data_type: 'longtext'
   is_nullable: 1
 
-the email to be used as a Reply-To
-
 =head2 branchreturnpath
 
   data_type: 'longtext'
   is_nullable: 1
-
-the email to be used as Return-Path
 
 =head2 branchurl
 
   data_type: 'longtext'
   is_nullable: 1
 
-the URL for your library or branch's website
-
 =head2 issuing
 
   data_type: 'tinyint'
   is_nullable: 1
-
-unused in Koha
 
 =head2 branchip
 
@@ -151,21 +117,15 @@ unused in Koha
   is_nullable: 1
   size: 15
 
-the IP address for your library or branch
-
 =head2 branchnotes
 
   data_type: 'longtext'
   is_nullable: 1
 
-notes related to your library or branch
-
 =head2 opac_info
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-HTML that displays in OPAC
 
 =head2 geolocation
 
@@ -173,15 +133,11 @@ HTML that displays in OPAC
   is_nullable: 1
   size: 255
 
-geolocation of your library
-
 =head2 marcorgcode
 
   data_type: 'varchar'
   is_nullable: 1
   size: 16
-
-MARC Organization Code, see http://www.loc.gov/marc/organizations/orgshome.html, when empty defaults to syspref MARCOrgCode
 
 =head2 pickup_location
 
@@ -189,15 +145,11 @@ MARC Organization Code, see http://www.loc.gov/marc/organizations/orgshome.html,
   default_value: 1
   is_nullable: 0
 
-the ability to act as a pickup location
-
 =head2 public
 
   data_type: 'tinyint'
   default_value: 1
   is_nullable: 0
-
-whether this library should show in the opac
 
 =cut
 
@@ -551,6 +503,36 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 collections_tracking_origin_branchcodes
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::CollectionsTracking>
+
+=cut
+
+__PACKAGE__->has_many(
+  "collections_tracking_origin_branchcodes",
+  "Koha::Schema::Result::CollectionsTracking",
+  { "foreign.origin_branchcode" => "self.branchcode" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 collections_tracking_transfer_branches
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::CollectionsTracking>
+
+=cut
+
+__PACKAGE__->has_many(
+  "collections_tracking_transfer_branches",
+  "Koha::Schema::Result::CollectionsTracking",
+  { "foreign.transfer_branch" => "self.branchcode" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 course_items
 
 Type: has_many
@@ -641,6 +623,36 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 floating_matrixes_from_branch
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::FloatingMatrix>
+
+=cut
+
+__PACKAGE__->has_many(
+  "floating_matrixes_from_branch",
+  "Koha::Schema::Result::FloatingMatrix",
+  { "foreign.from_branch" => "self.branchcode" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 floating_matrixes_to_branch
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::FloatingMatrix>
+
+=cut
+
+__PACKAGE__->has_many(
+  "floating_matrixes_to_branch",
+  "Koha::Schema::Result::FloatingMatrix",
+  { "foreign.to_branch" => "self.branchcode" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 hold_fill_targets
 
 Type: has_many
@@ -653,6 +665,21 @@ __PACKAGE__->has_many(
   "hold_fill_targets",
   "Koha::Schema::Result::HoldFillTarget",
   { "foreign.source_branchcode" => "self.branchcode" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 holdings
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::Holding>
+
+=cut
+
+__PACKAGE__->has_many(
+  "holdings",
+  "Koha::Schema::Result::Holding",
+  { "foreign.holdingbranch" => "self.branchcode" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
@@ -867,8 +894,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-11-19 14:20:11
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:v83MNP0UpFzlnax8rSQWSA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:eoNW4LRHl2bWEJq9Pce20A
 
 __PACKAGE__->add_columns(
     '+pickup_location' => { is_boolean => 1 },

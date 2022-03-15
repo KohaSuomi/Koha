@@ -29,15 +29,11 @@ __PACKAGE__->table("cash_register_actions");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier for each account register action
-
 =head2 code
 
   data_type: 'varchar'
   is_nullable: 0
   size: 24
-
-action code denoting the type of action recorded (enum),
 
 =head2 register_id
 
@@ -45,23 +41,17 @@ action code denoting the type of action recorded (enum),
   is_foreign_key: 1
   is_nullable: 0
 
-id of cash_register this action belongs to,
-
 =head2 manager_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
-staff member performing the action
-
 =head2 amount
 
   data_type: 'decimal'
   is_nullable: 1
   size: [28,6]
-
-amount recorded in action (signed)
 
 =head2 timestamp
 
@@ -137,8 +127,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Fo6979mQEueJrDQw38Bh0w
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1wb0zBVN03l3/C2XULnpJQ
 
 sub koha_objects_class {
     'Koha::Cash::Register::Actions';

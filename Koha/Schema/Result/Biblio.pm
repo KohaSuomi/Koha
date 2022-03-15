@@ -29,8 +29,6 @@ __PACKAGE__->table("biblio");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier assigned to each bibliographic record
-
 =head2 frameworkcode
 
   data_type: 'varchar'
@@ -38,70 +36,50 @@ unique identifier assigned to each bibliographic record
   is_nullable: 0
   size: 4
 
-foreign key from the biblio_framework table to identify which framework was used in cataloging this record
-
 =head2 author
 
   data_type: 'longtext'
   is_nullable: 1
-
-statement of responsibility from MARC record (100$a in MARC21)
 
 =head2 title
 
   data_type: 'longtext'
   is_nullable: 1
 
-title (without the subtitle) from the MARC record (245$a in MARC21)
-
 =head2 medium
 
   data_type: 'longtext'
   is_nullable: 1
-
-medium from the MARC record (245$h in MARC21)
 
 =head2 subtitle
 
   data_type: 'longtext'
   is_nullable: 1
 
-remainder of the title from the MARC record (245$b in MARC21)
-
 =head2 part_number
 
   data_type: 'longtext'
   is_nullable: 1
-
-part number from the MARC record (245$n in MARC21)
 
 =head2 part_name
 
   data_type: 'longtext'
   is_nullable: 1
 
-part name from the MARC record (245$p in MARC21)
-
 =head2 unititle
 
   data_type: 'longtext'
   is_nullable: 1
-
-uniform title (without the subtitle) from the MARC record (240$a in MARC21)
 
 =head2 notes
 
   data_type: 'longtext'
   is_nullable: 1
 
-values from the general notes field in the MARC record (500$a in MARC21) split by bar (|)
-
 =head2 serial
 
   data_type: 'tinyint'
   is_nullable: 1
-
-Boolean indicating whether biblio is for a serial
 
 =head2 seriestitle
 
@@ -113,8 +91,6 @@ Boolean indicating whether biblio is for a serial
   data_type: 'smallint'
   is_nullable: 1
 
-publication or copyright date from the MARC record
-
 =head2 timestamp
 
   data_type: 'timestamp'
@@ -122,22 +98,16 @@ publication or copyright date from the MARC record
   default_value: current_timestamp
   is_nullable: 0
 
-date and time this record was last touched
-
 =head2 datecreated
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 0
 
-the date this record was added to Koha
-
 =head2 abstract
 
   data_type: 'longtext'
   is_nullable: 1
-
-summary from the MARC record (520$a in MARC21)
 
 =cut
 
@@ -311,6 +281,21 @@ Related object: L<Koha::Schema::Result::HoldFillTarget>
 __PACKAGE__->has_many(
   "hold_fill_targets",
   "Koha::Schema::Result::HoldFillTarget",
+  { "foreign.biblionumber" => "self.biblionumber" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 holdings
+
+Type: has_many
+
+Related object: L<Koha::Schema::Result::Holding>
+
+=cut
+
+__PACKAGE__->has_many(
+  "holdings",
+  "Koha::Schema::Result::Holding",
   { "foreign.biblionumber" => "self.biblionumber" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
@@ -526,8 +511,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-09-20 12:00:15
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:troBZEbpX+2RhgH2jptVZQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/ozYB0tIS+k2x0seq0Hw2Q
 
 __PACKAGE__->has_many(
   "biblioitem",

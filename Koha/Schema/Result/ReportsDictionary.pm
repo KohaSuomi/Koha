@@ -29,22 +29,16 @@ __PACKAGE__->table("reports_dictionary");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier assigned by Koha
-
 =head2 name
 
   data_type: 'varchar'
   is_nullable: 1
   size: 255
 
-name for this definition
-
 =head2 description
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-description for this definition
 
 =head2 date_created
 
@@ -52,30 +46,22 @@ description for this definition
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-date and time this definition was created
-
 =head2 date_modified
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-date and time this definition was last modified
-
 =head2 saved_sql
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-SQL snippet for us in reports
 
 =head2 report_area
 
   data_type: 'varchar'
   is_nullable: 1
   size: 6
-
-Koha module this definition is for Circulation, Catalog, Patrons, Acquistions, Accounts)
 
 =cut
 
@@ -117,8 +103,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7r8vJ2yWD3yQCyri+uNSRw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LZKNLlpf8txNx+5wyrtTcw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

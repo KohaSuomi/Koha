@@ -29,29 +29,21 @@ __PACKAGE__->table("aqbasket");
   is_auto_increment: 1
   is_nullable: 0
 
-primary key, Koha defined number
-
 =head2 basketname
 
   data_type: 'varchar'
   is_nullable: 1
   size: 50
 
-name given to the basket at creation
-
 =head2 note
 
   data_type: 'longtext'
   is_nullable: 1
 
-the internal note added at basket creation
-
 =head2 booksellernote
 
   data_type: 'longtext'
   is_nullable: 1
-
-the vendor note added at basket creation
 
 =head2 contractnumber
 
@@ -59,23 +51,17 @@ the vendor note added at basket creation
   is_foreign_key: 1
   is_nullable: 1
 
-links this basket to the aqcontract table (aqcontract.contractnumber)
-
 =head2 creationdate
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-the date the basket was created
-
 =head2 closedate
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-the date the basket was closed
 
 =head2 booksellerid
 
@@ -84,22 +70,16 @@ the date the basket was closed
   is_foreign_key: 1
   is_nullable: 0
 
-the Koha assigned ID for the vendor (aqbooksellers.id)
-
 =head2 authorisedby
 
   data_type: 'varchar'
   is_nullable: 1
   size: 10
 
-the borrowernumber of the person who created the basket
-
 =head2 booksellerinvoicenumber
 
   data_type: 'longtext'
   is_nullable: 1
-
-appears to always be NULL
 
 =head2 basketgroupid
 
@@ -107,23 +87,17 @@ appears to always be NULL
   is_foreign_key: 1
   is_nullable: 1
 
-links this basket to its group (aqbasketgroups.id)
-
 =head2 deliveryplace
 
   data_type: 'varchar'
   is_nullable: 1
   size: 10
 
-basket delivery place
-
 =head2 billingplace
 
   data_type: 'varchar'
   is_nullable: 1
   size: 10
-
-basket billing place
 
 =head2 branch
 
@@ -132,23 +106,17 @@ basket billing place
   is_nullable: 1
   size: 10
 
-basket branch
-
 =head2 is_standing
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 0
 
-orders in this basket are standing
-
 =head2 create_items
 
   data_type: 'enum'
   extra: {list => ["ordering","receiving","cataloguing"]}
   is_nullable: 1
-
-when items should be created for orders in this basket
 
 =cut
 
@@ -341,8 +309,8 @@ Composing rels: L</aqbasketusers> -> borrowernumber
 __PACKAGE__->many_to_many("borrowernumbers", "aqbasketusers", "borrowernumber");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6NoSiMu1GqEqT7F5wAVeig
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:cp+kOnvZGpyX1w5RKra6eQ
 
 __PACKAGE__->has_many(
   "additional_field_values",

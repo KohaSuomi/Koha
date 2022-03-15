@@ -29,15 +29,11 @@ __PACKAGE__->table("borrower_files");
   is_auto_increment: 1
   is_nullable: 0
 
-unique key
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
-
-foreign key linking to the patron via the borrowernumber
 
 =head2 file_name
 
@@ -45,15 +41,11 @@ foreign key linking to the patron via the borrowernumber
   is_nullable: 0
   size: 255
 
-file name
-
 =head2 file_type
 
   data_type: 'varchar'
   is_nullable: 0
   size: 255
-
-type of file
 
 =head2 file_description
 
@@ -61,14 +53,10 @@ type of file
   is_nullable: 1
   size: 255
 
-description given to the file
-
 =head2 file_content
 
   data_type: 'longblob'
   is_nullable: 0
-
-the file
 
 =head2 date_uploaded
 
@@ -76,8 +64,6 @@ the file
   datetime_undef_if_invalid: 1
   default_value: current_timestamp
   is_nullable: 0
-
-date and time the file was added
 
 =cut
 
@@ -133,8 +119,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fWpDdEeF4RHkIiD71sGvsQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:42f9cDybh5Q1EFMLnRjEgA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -30,23 +30,17 @@ __PACKAGE__->table("tags_index");
   is_nullable: 0
   size: 191
 
-the tag
-
 =head2 biblionumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
-the bib record this tag was used on (biblio.biblionumber)
-
 =head2 weight
 
   data_type: 'integer'
   default_value: 1
   is_nullable: 0
-
-the number of times this term was used on this bib record
 
 =cut
 
@@ -106,8 +100,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:s+HP8nlAKZz2S7PI8MQBOA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GuZD9EZ/zaJjn6zaj8LkCg
 
 sub koha_object_class {
     'Koha::Tags::Index';

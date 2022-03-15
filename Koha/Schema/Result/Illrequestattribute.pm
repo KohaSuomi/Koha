@@ -30,30 +30,22 @@ __PACKAGE__->table("illrequestattributes");
   is_foreign_key: 1
   is_nullable: 0
 
-ILL request number
-
 =head2 type
 
   data_type: 'varchar'
   is_nullable: 0
   size: 200
 
-API ILL property name
-
 =head2 value
 
   data_type: 'mediumtext'
   is_nullable: 0
-
-API ILL property value
 
 =head2 readonly
 
   data_type: 'tinyint'
   default_value: 1
   is_nullable: 0
-
-Is this attribute read only
 
 =cut
 
@@ -105,8 +97,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qNhL5kiGVR8WroCHQY5DyQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HE7s79JVe32XHosr7XPGTA
 
 __PACKAGE__->add_columns(
     '+readonly' => { is_boolean => 1 }

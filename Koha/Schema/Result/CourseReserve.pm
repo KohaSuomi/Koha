@@ -35,29 +35,21 @@ __PACKAGE__->table("course_reserves");
   is_foreign_key: 1
   is_nullable: 0
 
-foreign key to link to courses.course_id
-
 =head2 ci_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
-foreign key to link to courses_items.ci_id
-
 =head2 staff_note
 
   data_type: 'longtext'
   is_nullable: 1
 
-staff only note
-
 =head2 public_note
 
   data_type: 'longtext'
   is_nullable: 1
-
-public, OPAC visible note
 
 =head2 timestamp
 
@@ -149,8 +141,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:K3co29iVHAcF2/S0tGT1LA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gIVnNyI+iY0WsLdC5/wc/Q
 
 sub koha_objects_class {
     'Koha::Course::Reserves';

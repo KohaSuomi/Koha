@@ -313,11 +313,6 @@ __PACKAGE__->table("borrower_modifications");
   is_nullable: 1
   size: 30
 
-=head2 flags
-
-  data_type: 'integer'
-  is_nullable: 1
-
 =head2 userid
 
   data_type: 'varchar'
@@ -421,15 +416,11 @@ __PACKAGE__->table("borrower_modifications");
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-data processing consent
-
 =head2 primary_contact_method
 
   data_type: 'varchar'
   is_nullable: 1
   size: 45
-
-useful for reporting purposes
 
 =cut
 
@@ -561,8 +552,6 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 1 },
   "password",
   { data_type => "varchar", is_nullable => 1, size => 30 },
-  "flags",
-  { data_type => "integer", is_nullable => 1 },
   "userid",
   { data_type => "varchar", is_nullable => 1, size => 75 },
   "opacnote",
@@ -622,8 +611,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("verification_token", "borrowernumber");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-07-12 13:40:00
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6giYT5URks8+6VnAs/rtkg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:++l/bbfJu1sfi/n8A3HgDA
 
 sub koha_object_class {
     'Koha::Patron::Modification';

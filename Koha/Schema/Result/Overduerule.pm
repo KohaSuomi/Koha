@@ -29,16 +29,12 @@ __PACKAGE__->table("overduerules");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier for the overduerules
-
 =head2 branchcode
 
   data_type: 'varchar'
   default_value: (empty string)
   is_nullable: 0
   size: 10
-
-foreign key from the branches table to define which branch this rule is for (if blank it's all libraries)
 
 =head2 categorycode
 
@@ -47,22 +43,16 @@ foreign key from the branches table to define which branch this rule is for (if 
   is_nullable: 0
   size: 10
 
-foreign key from the categories table to define which patron category this rule is for
-
 =head2 delay1
 
   data_type: 'integer'
   is_nullable: 1
-
-number of days after the item is overdue that the first notice is sent
 
 =head2 letter1
 
   data_type: 'varchar'
   is_nullable: 1
   size: 20
-
-foreign key from the letter table to define which notice should be sent as the first notice
 
 =head2 debarred1
 
@@ -71,14 +61,16 @@ foreign key from the letter table to define which notice should be sent as the f
   is_nullable: 1
   size: 1
 
-is the patron restricted when the first notice is sent (1 for yes, 0 for no)
+=head2 fine1
+
+  data_type: 'float'
+  default_value: 0
+  is_nullable: 0
 
 =head2 delay2
 
   data_type: 'integer'
   is_nullable: 1
-
-number of days after the item is overdue that the second notice is sent
 
 =head2 debarred2
 
@@ -87,22 +79,22 @@ number of days after the item is overdue that the second notice is sent
   is_nullable: 1
   size: 1
 
-is the patron restricted when the second notice is sent (1 for yes, 0 for no)
-
 =head2 letter2
 
   data_type: 'varchar'
   is_nullable: 1
   size: 20
 
-foreign key from the letter table to define which notice should be sent as the second notice
+=head2 fine2
+
+  data_type: 'float'
+  default_value: 0
+  is_nullable: 0
 
 =head2 delay3
 
   data_type: 'integer'
   is_nullable: 1
-
-number of days after the item is overdue that the third notice is sent
 
 =head2 letter3
 
@@ -110,15 +102,17 @@ number of days after the item is overdue that the third notice is sent
   is_nullable: 1
   size: 20
 
-foreign key from the letter table to define which notice should be sent as the third notice
-
 =head2 debarred3
 
   data_type: 'integer'
   default_value: 0
   is_nullable: 1
 
-is the patron restricted when the third notice is sent (1 for yes, 0 for no)
+=head2 fine3
+
+  data_type: 'float'
+  default_value: 0
+  is_nullable: 0
 
 =cut
 
@@ -135,18 +129,24 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 20 },
   "debarred1",
   { data_type => "varchar", default_value => 0, is_nullable => 1, size => 1 },
+  "fine1",
+  { data_type => "float", default_value => 0, is_nullable => 0 },
   "delay2",
   { data_type => "integer", is_nullable => 1 },
   "debarred2",
   { data_type => "varchar", default_value => 0, is_nullable => 1, size => 1 },
   "letter2",
   { data_type => "varchar", is_nullable => 1, size => 20 },
+  "fine2",
+  { data_type => "float", default_value => 0, is_nullable => 0 },
   "delay3",
   { data_type => "integer", is_nullable => 1 },
   "letter3",
   { data_type => "varchar", is_nullable => 1, size => 20 },
   "debarred3",
   { data_type => "integer", default_value => 0, is_nullable => 1 },
+  "fine3",
+  { data_type => "float", default_value => 0, is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -195,8 +195,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pORigxtC5qztZWHI29mZ/g
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kJniDQnmP4gxxFPF/xarNw
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

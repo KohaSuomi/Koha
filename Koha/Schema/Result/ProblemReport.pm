@@ -29,8 +29,6 @@ __PACKAGE__->table("problem_reports");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier assigned by Koha
-
 =head2 title
 
   data_type: 'varchar'
@@ -38,14 +36,10 @@ unique identifier assigned by Koha
   is_nullable: 0
   size: 40
 
-report subject line
-
 =head2 content
 
   data_type: 'text'
   is_nullable: 0
-
-report message content
 
 =head2 borrowernumber
 
@@ -53,8 +47,6 @@ report message content
   default_value: 0
   is_foreign_key: 1
   is_nullable: 0
-
-the user who created the problem report
 
 =head2 branchcode
 
@@ -64,22 +56,16 @@ the user who created the problem report
   is_nullable: 0
   size: 10
 
-borrower's branch
-
 =head2 username
 
   data_type: 'varchar'
   is_nullable: 1
   size: 75
 
-OPAC username
-
 =head2 problempage
 
   data_type: 'text'
   is_nullable: 1
-
-page the user triggered the problem report form from
 
 =head2 recipient
 
@@ -88,8 +74,6 @@ page the user triggered the problem report form from
   extra: {list => ["admin","library"]}
   is_nullable: 0
 
-the 'to-address' of the problem report
-
 =head2 created_on
 
   data_type: 'timestamp'
@@ -97,16 +81,12 @@ the 'to-address' of the problem report
   default_value: current_timestamp
   is_nullable: 0
 
-timestamp of report submission
-
 =head2 status
 
   data_type: 'varchar'
   default_value: 'New'
   is_nullable: 0
   size: 6
-
-status of the report. New, Viewed, Closed
 
 =cut
 
@@ -199,8 +179,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2021-04-12 13:27:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YdCX1Hak6UwiJo1iBJqqzg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vOfl1i1595IHtRcei/BwUw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

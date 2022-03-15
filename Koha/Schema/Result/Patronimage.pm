@@ -29,22 +29,16 @@ __PACKAGE__->table("patronimage");
   is_foreign_key: 1
   is_nullable: 0
 
-the borrowernumber of the patron this image is attached to (borrowers.borrowernumber)
-
 =head2 mimetype
 
   data_type: 'varchar'
   is_nullable: 0
   size: 15
 
-the format of the image (png, jpg, etc)
-
 =head2 imagefile
 
   data_type: 'mediumblob'
   is_nullable: 0
-
-the image
 
 =cut
 
@@ -87,8 +81,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:DWbMgbxlYcZhGF1YK9fDIA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1LOLuAP/7UCrqT9EZ9pT5g
 
 sub koha_object_class {
     'Koha::Patron::Image';

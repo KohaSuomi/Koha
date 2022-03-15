@@ -29,22 +29,16 @@ __PACKAGE__->table("additional_field_values");
   is_auto_increment: 1
   is_nullable: 0
 
-primary key identifier
-
 =head2 field_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
-foreign key references additional_fields(id)
-
 =head2 record_id
 
   data_type: 'integer'
   is_nullable: 0
-
-record_id
 
 =head2 value
 
@@ -52,8 +46,6 @@ record_id
   default_value: (empty string)
   is_nullable: 0
   size: 255
-
-value for this field
 
 =cut
 
@@ -114,8 +106,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6Y4sBMbKYSbGN7fAy7OhEQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:XlRRaDZ5QKsAipvMD9qvUg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

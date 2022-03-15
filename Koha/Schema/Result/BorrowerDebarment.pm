@@ -29,23 +29,17 @@ __PACKAGE__->table("borrower_debarments");
   is_auto_increment: 1
   is_nullable: 0
 
-unique key for the restriction
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
-foreign key for borrowers.borrowernumber for patron who is restricted
-
 =head2 expiration
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-expiration date of the restriction
 
 =head2 type
 
@@ -54,21 +48,15 @@ expiration date of the restriction
   extra: {list => ["SUSPENSION","OVERDUES","MANUAL","DISCHARGE"]}
   is_nullable: 0
 
-type of restriction
-
 =head2 comment
 
   data_type: 'mediumtext'
   is_nullable: 1
 
-comments about the restriction
-
 =head2 manager_id
 
   data_type: 'integer'
   is_nullable: 1
-
-foreign key for borrowers.borrowernumber for the librarian managing the restriction
 
 =head2 created
 
@@ -77,15 +65,11 @@ foreign key for borrowers.borrowernumber for the librarian managing the restrict
   default_value: current_timestamp
   is_nullable: 0
 
-date the restriction was added
-
 =head2 updated
 
   data_type: 'timestamp'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-date the restriction was updated
 
 =cut
 
@@ -152,8 +136,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vQL2xYGB5GI//2l4FdIR9w
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2KGWAhr+GtVZlqZyEz/llA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

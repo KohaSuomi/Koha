@@ -29,22 +29,16 @@ __PACKAGE__->table("stockrotationstages");
   is_auto_increment: 1
   is_nullable: 0
 
-Unique stage ID
-
 =head2 position
 
   data_type: 'integer'
   is_nullable: 0
-
-The position of this stage within its rota
 
 =head2 rota_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
-
-The rota this stage belongs to
 
 =head2 branchcode_id
 
@@ -53,15 +47,11 @@ The rota this stage belongs to
   is_nullable: 0
   size: 10
 
-Branch this stage relates to
-
 =head2 duration
 
   data_type: 'integer'
   default_value: 4
   is_nullable: 0
-
-The number of days items shoud occupy this stage
 
 =cut
 
@@ -138,8 +128,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qNvTMdYD3BCwd0McGICpFg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hHospglzJjJUUW8JxdjOBQ
 
 # We use DBIx::Class::Ordered to handle stages manipulation.
 __PACKAGE__->load_components(qw( Ordered ));

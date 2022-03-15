@@ -29,30 +29,22 @@ __PACKAGE__->table("subscriptionroutinglist");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier assigned by Koha
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
-foreign key from the borrowers table, defines with patron is on the routing list
-
 =head2 ranking
 
   data_type: 'integer'
   is_nullable: 1
-
-where the patron stands in line to receive the serial
 
 =head2 subscriptionid
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
-
-foreign key from the subscription table, defines which subscription this routing list is for
 
 =cut
 
@@ -128,8 +120,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:L/6xUg+37bAUntrGWWYlaw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u+txfyc9oTWpdw0l5cS0jg
 
 sub koha_object_class {
     'Koha::Subscription::Routinglist';

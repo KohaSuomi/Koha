@@ -29,8 +29,6 @@ __PACKAGE__->table("pseudonymized_borrower_attributes");
   is_auto_increment: 1
   is_nullable: 0
 
-Row id field
-
 =head2 transaction_id
 
   data_type: 'integer'
@@ -44,15 +42,11 @@ Row id field
   is_nullable: 0
   size: 10
 
-foreign key from the borrower_attribute_types table, defines which custom field this value was entered for
-
 =head2 attribute
 
   data_type: 'varchar'
   is_nullable: 1
   size: 255
-
-custom patron field value
 
 =cut
 
@@ -112,8 +106,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MFvIdRnRrju9z7J9uurEhQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0Sg5e8EdQj/QevxJHgHfDg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

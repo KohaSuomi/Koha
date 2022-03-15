@@ -52,7 +52,12 @@ __PACKAGE__->table("collections");
   is_nullable: 1
   size: 10
 
-'branchcode for branch where item should be held.'
+=head2 owningBranchcode
+
+  accessor: 'owning_branchcode'
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 10
 
 =cut
 
@@ -79,6 +84,13 @@ __PACKAGE__->add_columns(
     accessor => "col_branchcode",
     data_type => "varchar",
     is_foreign_key => 1,
+    is_nullable => 1,
+    size => 10,
+  },
+  "owningBranchcode",
+  {
+    accessor => "owning_branchcode",
+    data_type => "varchar",
     is_nullable => 1,
     size => 10,
   },
@@ -134,8 +146,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-04-29 07:54:20
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:le+rc9BRLaPAApAZSZrKRg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MlKYtEisiY6y91r485ChQA
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

@@ -29,23 +29,17 @@ __PACKAGE__->table("virtualshelves");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier assigned by Koha
-
 =head2 shelfname
 
   data_type: 'varchar'
   is_nullable: 1
   size: 255
 
-name of the list
-
 =head2 owner
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-foreign key linking to the borrowers table (using borrowernumber) for the creator of this list (changed from varchar(80) to int)
 
 =head2 public
 
@@ -62,8 +56,6 @@ If the list is public
   is_nullable: 1
   size: 16
 
-the field this list is sorted on
-
 =head2 lastmodified
 
   data_type: 'timestamp'
@@ -71,15 +63,11 @@ the field this list is sorted on
   default_value: current_timestamp
   is_nullable: 0
 
-date and time the list was last modified
-
 =head2 created_on
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 0
-
-creation time
 
 =head2 allow_change_from_owner
 
@@ -87,15 +75,11 @@ creation time
   default_value: 1
   is_nullable: 1
 
-can owner change contents?
-
 =head2 allow_change_from_others
 
   data_type: 'tinyint'
   default_value: 0
   is_nullable: 1
-
-can others change contents?
 
 =cut
 
@@ -199,8 +183,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-09-07 11:08:02
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:QH2/kScjb+lwTwrChjem1Q
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:bPGg/WNXjwj3nw8UWitwOA
 
 sub koha_object_class {
     'Koha::Virtualshelf';

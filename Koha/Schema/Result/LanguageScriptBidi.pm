@@ -29,15 +29,11 @@ __PACKAGE__->table("language_script_bidi");
   is_nullable: 1
   size: 25
 
-script subtag, Arab, Hebr, etc.
-
 =head2 bidi
 
   data_type: 'varchar'
   is_nullable: 1
   size: 3
-
-rtl ltr
 
 =cut
 
@@ -49,8 +45,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GSnruAebthrEidJqzPY6Yg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qPSMqWRsq6KiJXsnew+hPQ
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration

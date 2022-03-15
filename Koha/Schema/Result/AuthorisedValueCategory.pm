@@ -26,7 +26,6 @@ __PACKAGE__->table("authorised_value_categories");
 =head2 category_name
 
   data_type: 'varchar'
-  default_value: (empty string)
   is_nullable: 0
   size: 32
 
@@ -40,7 +39,7 @@ __PACKAGE__->table("authorised_value_categories");
 
 __PACKAGE__->add_columns(
   "category_name",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 32 },
+  { data_type => "varchar", is_nullable => 0, size => 32 },
   "is_system",
   { data_type => "tinyint", default_value => 0, is_nullable => 1 },
 );
@@ -105,8 +104,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2020-04-28 09:07:15
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EfBQNJN5wgpFPlWVP4U+qw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Mq6bwLGZAZVV8hHTitHLXg
 
 __PACKAGE__->add_columns(
     '+is_system' => { is_boolean => 1 },

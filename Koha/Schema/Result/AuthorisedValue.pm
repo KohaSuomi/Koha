@@ -29,8 +29,6 @@ __PACKAGE__->table("authorised_values");
   is_auto_increment: 1
   is_nullable: 0
 
-unique key, used to identify the authorized value
-
 =head2 category
 
   data_type: 'varchar'
@@ -39,8 +37,6 @@ unique key, used to identify the authorized value
   is_nullable: 0
   size: 32
 
-key used to identify the authorized value category
-
 =head2 authorised_value
 
   data_type: 'varchar'
@@ -48,15 +44,11 @@ key used to identify the authorized value category
   is_nullable: 0
   size: 80
 
-code use to identify the authorized value
-
 =head2 lib
 
   data_type: 'varchar'
   is_nullable: 1
   size: 200
-
-authorized value description as printed in the staff interface
 
 =head2 lib_opac
 
@@ -64,15 +56,11 @@ authorized value description as printed in the staff interface
   is_nullable: 1
   size: 200
 
-authorized value description as printed in the OPAC
-
 =head2 imageurl
 
   data_type: 'varchar'
   is_nullable: 1
   size: 200
-
-authorized value URL
 
 =cut
 
@@ -173,8 +161,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LH9dpEEzlVVsjNVv/jnONg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:konndWmBhAUcsdEl+5DbWg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -29,16 +29,12 @@ __PACKAGE__->table("branchtransfers");
   is_auto_increment: 1
   is_nullable: 0
 
-primary key
-
 =head2 itemnumber
 
   data_type: 'integer'
   default_value: 0
   is_foreign_key: 1
   is_nullable: 0
-
-the itemnumber that it is in transit (items.itemnumber)
 
 =head2 daterequested
 
@@ -47,15 +43,11 @@ the itemnumber that it is in transit (items.itemnumber)
   default_value: current_timestamp
   is_nullable: 0
 
-the date the transfer was requested
-
 =head2 datesent
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-the date the transfer was initialized
 
 =head2 frombranch
 
@@ -65,23 +57,17 @@ the date the transfer was initialized
   is_nullable: 0
   size: 10
 
-the branch the transfer is coming from
-
 =head2 datearrived
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-the date the transfer arrived at its destination
-
 =head2 datecancelled
 
   data_type: 'datetime'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-the date the transfer was cancelled
 
 =head2 tobranch
 
@@ -91,14 +77,10 @@ the date the transfer was cancelled
   is_nullable: 0
   size: 10
 
-the branch the transfer was going to
-
 =head2 comments
 
   data_type: 'longtext'
   is_nullable: 1
-
-any comments related to the transfer
 
 =head2 reason
 
@@ -106,15 +88,11 @@ any comments related to the transfer
   extra: {list => ["Manual","StockrotationAdvance","StockrotationRepatriation","ReturnToHome","ReturnToHolding","RotatingCollection","Reserve","LostReserve","CancelReserve","TransferCancellation"]}
   is_nullable: 1
 
-what triggered the transfer
-
 =head2 cancellation_reason
 
   data_type: 'enum'
   extra: {list => ["Manual","StockrotationAdvance","StockrotationRepatriation","ReturnToHome","ReturnToHolding","RotatingCollection","Reserve","LostReserve","CancelReserve","ItemLost","WrongTransfer"]}
   is_nullable: 1
-
-what triggered the transfer cancellation
 
 =cut
 
@@ -272,8 +250,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-06-08 08:13:08
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+ABUZOo6IHbiRH1LTy3t+A
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/pFdKEqypxleKrF8aWheSA
 
 sub koha_object_class {
     'Koha::Item::Transfer';

@@ -108,6 +108,11 @@ __PACKAGE__->table("message_queue");
   data_type: 'mediumtext'
   is_nullable: 1
 
+=head2 provider_response
+
+  data_type: 'mediumtext'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -154,6 +159,8 @@ __PACKAGE__->add_columns(
   "content_type",
   { data_type => "mediumtext", is_nullable => 1 },
   "failure_code",
+  { data_type => "mediumtext", is_nullable => 1 },
+  "provider_response",
   { data_type => "mediumtext", is_nullable => 1 },
 );
 
@@ -207,8 +214,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-08-05 08:57:36
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NwbN8wPMAlucrw6iQ2XQ5g
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:AwpTlwwC/9PSifxrBiwKTA
 
 sub koha_object_class {
     'Koha::Notice::Message';

@@ -61,8 +61,6 @@ Is autogeneration of credit number enabled for this credit type
   default_value: 0
   is_nullable: 0
 
-boolean flag to denote if this till is archived or not
-
 =cut
 
 __PACKAGE__->add_columns(
@@ -125,8 +123,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pqgg1XzDq/zm/epjihLT8Q
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:su1n2QydoF8jwl+TH4xSgg
 
 __PACKAGE__->add_columns(
     '+is_system'             => { is_boolean => 1 },

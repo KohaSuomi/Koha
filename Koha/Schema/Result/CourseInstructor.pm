@@ -29,15 +29,11 @@ __PACKAGE__->table("course_instructors");
   is_foreign_key: 1
   is_nullable: 0
 
-foreign key to link to courses.course_id
-
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
-
-foreign key to link to borrowers.borrowernumber for instructor information
 
 =cut
 
@@ -95,8 +91,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8JrMgWOtc6LGT7EjOzyjrQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:x4+8hH5VKmhvJgbf7mx0gA
 
 sub koha_objects_class {
     'Koha::Course::Instructors';

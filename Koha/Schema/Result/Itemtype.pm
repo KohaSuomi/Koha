@@ -30,8 +30,6 @@ __PACKAGE__->table("itemtypes");
   is_nullable: 0
   size: 10
 
-unique key, a code associated with the item type
-
 =head2 parent_type
 
   data_type: 'varchar'
@@ -39,14 +37,10 @@ unique key, a code associated with the item type
   is_nullable: 1
   size: 10
 
-unique key, a code associated with the item type
-
 =head2 description
 
   data_type: 'longtext'
   is_nullable: 1
-
-a plain text explanation of the item type
 
 =head2 rentalcharge
 
@@ -54,15 +48,11 @@ a plain text explanation of the item type
   is_nullable: 1
   size: [28,6]
 
-the amount charged when this item is checked out/issued
-
 =head2 rentalcharge_daily
 
   data_type: 'decimal'
   is_nullable: 1
   size: [28,6]
-
-the amount charged for each day between checkout date and due date
 
 =head2 rentalcharge_daily_calendar
 
@@ -70,15 +60,11 @@ the amount charged for each day between checkout date and due date
   default_value: 1
   is_nullable: 0
 
-controls if the daily rental fee is calculated directly or using finesCalendar
-
 =head2 rentalcharge_hourly
 
   data_type: 'decimal'
   is_nullable: 1
   size: [28,6]
-
-the amount charged for each hour between checkout date and due date
 
 =head2 rentalcharge_hourly_calendar
 
@@ -86,15 +72,11 @@ the amount charged for each hour between checkout date and due date
   default_value: 1
   is_nullable: 0
 
-controls if the hourly rental fee is calculated directly or using finesCalendar
-
 =head2 defaultreplacecost
 
   data_type: 'decimal'
   is_nullable: 1
   size: [28,6]
-
-default replacement cost
 
 =head2 processfee
 
@@ -102,14 +84,10 @@ default replacement cost
   is_nullable: 1
   size: [28,6]
 
-default text be recorded in the column note when the processing fee is applied
-
 =head2 notforloan
 
   data_type: 'smallint'
   is_nullable: 1
-
-1 if the item is not for loan, 0 if the item is available for loan
 
 =head2 imageurl
 
@@ -117,22 +95,16 @@ default text be recorded in the column note when the processing fee is applied
   is_nullable: 1
   size: 200
 
-URL for the item type icon
-
 =head2 summary
 
   data_type: 'mediumtext'
   is_nullable: 1
-
-information from the summary field, may include HTML
 
 =head2 checkinmsg
 
   data_type: 'varchar'
   is_nullable: 1
   size: 255
-
-message that is displayed when an item with the given item type is checked in
 
 =head2 checkinmsgtype
 
@@ -141,15 +113,11 @@ message that is displayed when an item with the given item type is checked in
   is_nullable: 0
   size: 16
 
-type (CSS class) for the checkinmsg, can be 'alert' or 'message'
-
 =head2 sip_media_type
 
   data_type: 'varchar'
   is_nullable: 1
   size: 3
-
-SIP2 protocol media type for this itemtype
 
 =head2 hideinopac
 
@@ -157,15 +125,11 @@ SIP2 protocol media type for this itemtype
   default_value: 0
   is_nullable: 0
 
-Hide the item type from the search options in OPAC
-
 =head2 searchcategory
 
   data_type: 'varchar'
   is_nullable: 1
   size: 80
-
-Group this item type with others with the same value on OPAC search options
 
 =head2 automatic_checkin
 
@@ -312,8 +276,8 @@ __PACKAGE__->belongs_to(
   {
     is_deferrable => 1,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "RESTRICT",
+    on_update     => "RESTRICT",
   },
 );
 
@@ -333,8 +297,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2021-04-22 09:12:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/kFAnQQ7q1KaLJ9h7vk0vg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GyeWSJTL6LyaPEv/8yW/xg
 
 __PACKAGE__->add_columns(
     '+rentalcharge_hourly_calendar' => { is_boolean => 1 },

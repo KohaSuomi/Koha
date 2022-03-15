@@ -30,8 +30,6 @@ __PACKAGE__->table("additional_contents");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier for the additional content
-
 =head2 category
 
   data_type: 'varchar'
@@ -45,8 +43,6 @@ category for the additional content
   data_type: 'varchar'
   is_nullable: 0
   size: 100
-
-code to group content per lang
 
 =head2 location
 
@@ -63,8 +59,6 @@ location of the additional content
   is_nullable: 1
   size: 10
 
-branch code users to create branch specific additional content, NULL is every branch.
-
 =head2 title
 
   data_type: 'varchar'
@@ -72,14 +66,10 @@ branch code users to create branch specific additional content, NULL is every br
   is_nullable: 0
   size: 250
 
-title of the additional content
-
 =head2 content
 
   data_type: 'mediumtext'
   is_nullable: 0
-
-the body of your additional content
 
 =head2 lang
 
@@ -88,15 +78,11 @@ the body of your additional content
   is_nullable: 0
   size: 50
 
-location for the additional content(koha is the staff interface, slip is the circulation receipt and language codes are for the opac)
-
 =head2 published_on
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 1
-
-publication date
 
 =head2 updated_on
 
@@ -105,30 +91,22 @@ publication date
   default_value: current_timestamp
   is_nullable: 0
 
-last modification
-
 =head2 expirationdate
 
   data_type: 'date'
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-date the additional content is set to expire or no longer be visible
-
 =head2 number
 
   data_type: 'integer'
   is_nullable: 1
-
-the order in which this additional content appears in that specific location
 
 =head2 borrowernumber
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
-
-The user who created the additional content
 
 =cut
 
@@ -249,8 +227,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-02-07 17:33:51
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8XBxGaOBL30SKzof8rThAw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BGAjEm1bufuBsVTzwmeXuQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

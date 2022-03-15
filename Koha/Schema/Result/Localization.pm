@@ -47,8 +47,6 @@ __PACKAGE__->table("localization");
   is_nullable: 0
   size: 25
 
-could be a foreign key
-
 =head2 translation
 
   data_type: 'mediumtext'
@@ -100,8 +98,8 @@ __PACKAGE__->set_primary_key("localization_id");
 __PACKAGE__->add_unique_constraint("entity_code_lang", ["entity", "code", "lang"]);
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Elbup2i+1JON+xa38uzd6A
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:bB5xo5hUwHPTYwyE5g+doA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

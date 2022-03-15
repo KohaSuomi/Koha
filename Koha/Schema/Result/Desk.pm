@@ -29,8 +29,6 @@ __PACKAGE__->table("desks");
   is_auto_increment: 1
   is_nullable: 0
 
-unique identifier
-
 =head2 desk_name
 
   data_type: 'varchar'
@@ -38,16 +36,12 @@ unique identifier
   is_nullable: 0
   size: 100
 
-name of the desk
-
 =head2 branchcode
 
   data_type: 'varchar'
   is_foreign_key: 1
   is_nullable: 0
   size: 10
-
-library the desk is located at
 
 =cut
 
@@ -105,8 +99,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2021-01-21 13:39:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7qeCP25arGQpM4xxnTmWbw
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9IKu9yODccC5mDr+CqZhMg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
