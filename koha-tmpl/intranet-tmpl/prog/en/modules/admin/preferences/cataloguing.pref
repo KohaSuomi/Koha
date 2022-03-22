@@ -123,6 +123,7 @@ Cataloging:
                   annual: generated in the form <year>-0001, <year>-0002.
                   hbyymmincr: generated in the form <branchcode>yymm0001.
                   EAN13: incremental EAN-13 barcodes.
+                  preyyyymmincr: generated in the from <prefix>yyyymm0001.
                   "OFF": not generated automatically.
         -
             - When a new item is added,
@@ -165,6 +166,12 @@ Cataloging:
             - and record's last modifier name in MARC subfield
             - pref: MarcFieldForModifierName
             - ". <br/><strong>NOTE:</strong> Use a dollar sign between field and subfield like 123$a."
+        -
+            - "Define branch specific barcode prefix:"
+            - "This is a YAML config."
+            - pref: BarcodePrefix
+              type: textarea
+              class: code
     Display:
         -
             - 'Separate main entry and subdivisions with '
