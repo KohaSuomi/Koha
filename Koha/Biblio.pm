@@ -546,7 +546,7 @@ sub get_marc_components {
                 }
             );
         }
-        $components = $results if defined($results) && @$results;
+        @$components = sort { $searcher->extract_biblionumber($a) <=> $searcher->extract_biblionumber($b) } @$results if defined($results) && @$results;
     }
 
     return $components // [];
