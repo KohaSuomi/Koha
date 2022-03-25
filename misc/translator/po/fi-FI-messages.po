@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-19 16:24-0300\n"
+"POT-Creation-Date: 2022-03-16 18:30-0300\n"
 "PO-Revision-Date: 2021-11-25 11:44+0000\n"
 "Last-Translator: Lari Taskula <lari.taskula@hypernova.fi>\n"
 "Language-Team: none\n"
@@ -88,7 +88,7 @@ msgstr "Luoja:"
 msgid "Elasticsearch is currently disabled."
 msgstr "Elasticsearch on tällä hetkellä epäkunnossa."
 
-#: koha-tmpl/intranet-tmpl/prog/en/modules/reserve/request.tt:961
+#: koha-tmpl/intranet-tmpl/prog/en/modules/reserve/request.tt:971
 msgid "Hold"
 msgid_plural "Holds"
 msgstr[0] "Varaus"
@@ -173,7 +173,7 @@ msgctxt "Semester"
 msgid "Term:"
 msgstr "Lukukausi:"
 
-#: koha-tmpl/intranet-tmpl/prog/en/modules/catalogue/detail.tt:837
+#: koha-tmpl/intranet-tmpl/prog/en/modules/catalogue/detail.tt:845
 #, perl-brace-format
 msgctxt "pluralization"
 msgid "There is one archived suggestion."
@@ -186,6 +186,7 @@ msgid "Unknown reason"
 msgstr "Tuntematon syy"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/members/tables/members_results.tt:22
+#: koha-tmpl/intranet-tmpl/prog/en/modules/reserve/tables/members_results.tt:14
 msgid "View"
 msgstr "Näytä"
 
@@ -228,7 +229,7 @@ msgid_plural "overdues"
 msgstr[0] "myöhässä"
 msgstr[1] "myöhässä"
 
-#: koha-tmpl/intranet-tmpl/prog/en/modules/catalogue/results.tt:555
+#: koha-tmpl/intranet-tmpl/prog/en/modules/catalogue/results.tt:558
 #, perl-brace-format
 msgid "{count} item"
 msgid_plural "{count} items"
