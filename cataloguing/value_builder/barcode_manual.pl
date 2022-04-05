@@ -57,7 +57,7 @@ my $builder = sub {
         ($nextnum, $scr) = C4::Barcodes::ValueBuilder::hbyymmincr::get_barcode(\%args);
     }
     elsif ($autoBarcodeType eq 'preyyyymmincr') {      # Generates a barcode where pre = branch specific prefix set on systempreference BarcodePrefix, yyyymm = year/month catalogued, incr = incremental number
-        ($nextnum, $scr) = C4::Barcodes::ValueBuilder::hbyymmincr::get_barcode(\%args);
+        ($nextnum, $scr) = C4::Barcodes::ValueBuilder::preyyyymmincr::get_barcode(\%args);
     }
 
 # default js body (if not filled by hbyymmincr)
