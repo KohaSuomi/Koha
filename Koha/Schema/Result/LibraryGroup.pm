@@ -77,6 +77,12 @@ __PACKAGE__->table("library_groups");
   default_value: 0
   is_nullable: 0
 
+=head2 ft_local_float_group
+
+  data_type: 'tinyint'
+  default_value: 0
+  is_nullable: 0
+
 =head2 created_on
 
   data_type: 'timestamp'
@@ -110,6 +116,8 @@ __PACKAGE__->add_columns(
   "ft_search_groups_staff",
   { data_type => "tinyint", default_value => 0, is_nullable => 0 },
   "ft_local_hold_group",
+  { data_type => "tinyint", default_value => 0, is_nullable => 0 },
+  "ft_local_float_group",
   { data_type => "tinyint", default_value => 0, is_nullable => 0 },
   "created_on",
   {
@@ -224,8 +232,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lsrNGmbid5/aGHDe59Xgjg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-04-06 19:21:30
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rj//9fTj9KyFxPePL39XKQ
 
 sub koha_object_class {
     'Koha::Library::Group';
