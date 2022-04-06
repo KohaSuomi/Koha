@@ -123,12 +123,6 @@ __PACKAGE__->table("old_reserves");
   datetime_undef_if_invalid: 1
   is_nullable: 1
 
-=head2 pickupexpired
-
-  data_type: 'date'
-  datetime_undef_if_invalid: 1
-  is_nullable: 1
-
 =head2 lowestPriority
 
   accessor: 'lowest_priority'
@@ -208,8 +202,6 @@ __PACKAGE__->add_columns(
   "waitingdate",
   { data_type => "date", datetime_undef_if_invalid => 1, is_nullable => 1 },
   "expirationdate",
-  { data_type => "date", datetime_undef_if_invalid => 1, is_nullable => 1 },
-  "pickupexpired",
   { data_type => "date", datetime_undef_if_invalid => 1, is_nullable => 1 },
   "lowestPriority",
   {
@@ -329,8 +321,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7YdOeBbWms44GtYpv8R7ew
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-04-06 08:16:46
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:T0fL/ox3ozsVKJ7qhy/DeQ
 
 __PACKAGE__->belongs_to(
   "item",
