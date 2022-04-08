@@ -702,7 +702,7 @@ sub FineSlip {
     my @issueslist;
 
     while (my $line = $lines->next) {
-        next if ($line->amountoutstanding =~ /^0.0+$/);
+        next if ( !$line->amountoutstanding || $line->amountoutstanding =~ /^0.0+$/ );
 
         my $item = Koha::Items->find({itemnumber => $line->itemnumber});
         $item = $item ? $item->unblessed : undef;
