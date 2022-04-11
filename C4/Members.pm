@@ -697,6 +697,9 @@ WHERE borrowernumber = 0 AND DATEDIFF( NOW(), timestamp ) > ?|;
 sub FineSlip {
     my ($borrowernumber, $branch) = @_;
 
+    my $patron = Koha::Patrons->find( $borrowernumber );
+    return unless $patron;
+
     my $lines = Koha::Account::Lines->search({ borrowernumber => $borrowernumber });
     my $total = $lines->total_outstanding;
     my @issueslist;
@@ -732,6 +735,7 @@ sub FineSlip {
         module => 'circulation',
         letter_code => 'FINESLIP',
         branchcode => $branch,
+        lang => $patron->lang,
         tables => {
             'branches'    => $branch,
             'borrowers'   => $borrowernumber,
