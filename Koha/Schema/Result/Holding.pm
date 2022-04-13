@@ -226,24 +226,9 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 items
 
-Type: has_many
-
-Related object: L<Koha::Schema::Result::Item>
-
-=cut
-
-__PACKAGE__->has_many(
-  "items",
-  "Koha::Schema::Result::Item",
-  { "foreign.holding_id" => "self.holding_id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dnY78UFjNNH9FGg+syomzA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-04-13 19:55:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PRSWNYBtrGbXmzQGHHvtww
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

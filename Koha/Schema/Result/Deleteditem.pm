@@ -272,20 +272,15 @@ __PACKAGE__->table("deleteditems");
   is_nullable: 1
   size: 32
 
-=head2 exclude_from_local_holds_priority
-
-  data_type: 'tinyint'
-  is_nullable: 1
-
 =head2 sub_location
 
   data_type: 'varchar'
   is_nullable: 1
   size: 10
 
-=head2 holding_id
+=head2 exclude_from_local_holds_priority
 
-  data_type: 'integer'
+  data_type: 'tinyint'
   is_nullable: 1
 
 =head2 itemnotes_nonpublic
@@ -399,12 +394,10 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 32 },
   "new_status",
   { data_type => "varchar", is_nullable => 1, size => 32 },
-  "exclude_from_local_holds_priority",
-  { data_type => "tinyint", is_nullable => 1 },
   "sub_location",
   { data_type => "varchar", is_nullable => 1, size => 10 },
-  "holding_id",
-  { data_type => "integer", is_nullable => 1 },
+  "exclude_from_local_holds_priority",
+  { data_type => "tinyint", is_nullable => 1 },
   "itemnotes_nonpublic",
   { data_type => "longtext", is_nullable => 1 },
 );
@@ -422,8 +415,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("itemnumber");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HQXA8euIUKUI5gz75vDFug
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-04-13 19:55:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:e2HE5pI8vJAgWKX4tPesPw
 
 __PACKAGE__->add_columns(
     '+exclude_from_local_holds_priority' => { is_boolean => 1 },

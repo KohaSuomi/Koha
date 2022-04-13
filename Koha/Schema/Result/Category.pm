@@ -141,12 +141,6 @@ __PACKAGE__->table("categories");
   data_type: 'tinyint'
   is_nullable: 1
 
-=head2 passwordpolicy
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 40
-
 =head2 BlockExpiredPatronOpacActions
 
   accessor: 'block_expired_patron_opac_actions'
@@ -209,8 +203,6 @@ __PACKAGE__->add_columns(
   { data_type => "tinyint", is_nullable => 1 },
   "exclude_from_local_holds_priority",
   { data_type => "tinyint", is_nullable => 1 },
-  "passwordpolicy",
-  { data_type => "varchar", is_nullable => 1, size => 40 },
   "BlockExpiredPatronOpacActions",
   {
     accessor      => "block_expired_patron_opac_actions",
@@ -295,8 +287,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:0SKb1CZwMYQJFI6uo04PqQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-04-13 19:55:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:n80w34+mLz4mK23hjMDUUw
 
 __PACKAGE__->add_columns(
     '+exclude_from_local_holds_priority' => { is_boolean => 1 },

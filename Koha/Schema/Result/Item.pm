@@ -276,21 +276,15 @@ __PACKAGE__->table("items");
   is_nullable: 1
   size: 32
 
-=head2 exclude_from_local_holds_priority
-
-  data_type: 'tinyint'
-  is_nullable: 1
-
 =head2 sub_location
 
   data_type: 'varchar'
   is_nullable: 1
   size: 10
 
-=head2 holding_id
+=head2 exclude_from_local_holds_priority
 
-  data_type: 'integer'
-  is_foreign_key: 1
+  data_type: 'tinyint'
   is_nullable: 1
 
 =head2 itemnotes_nonpublic
@@ -414,12 +408,10 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 32 },
   "new_status",
   { data_type => "varchar", is_nullable => 1, size => 32 },
-  "exclude_from_local_holds_priority",
-  { data_type => "tinyint", is_nullable => 1 },
   "sub_location",
   { data_type => "varchar", is_nullable => 1, size => 10 },
-  "holding_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  "exclude_from_local_holds_priority",
+  { data_type => "tinyint", is_nullable => 1 },
   "itemnotes_nonpublic",
   { data_type => "longtext", is_nullable => 1 },
 );
@@ -617,26 +609,6 @@ __PACKAGE__->might_have(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 holding
-
-Type: belongs_to
-
-Related object: L<Koha::Schema::Result::Holding>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "holding",
-  "Koha::Schema::Result::Holding",
-  { holding_id => "holding_id" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
-);
-
 =head2 holdingbranch
 
 Type: belongs_to
@@ -828,8 +800,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:byf4AcvCxV4YA3ONEpK05w
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-04-13 19:55:11
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JZY1gAvlj1YeAPE+izG9+w
 
 __PACKAGE__->belongs_to( biblioitem => "Koha::Schema::Result::Biblioitem", "biblioitemnumber" );
 
