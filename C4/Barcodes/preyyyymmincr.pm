@@ -20,7 +20,86 @@ package C4::Barcodes::preyyyymmincr;
 use strict;
 use warnings;
 
+use Carp qw( carp );
+
+use C4::Context;
+
+use Koha::DateUtils qw( dt_from_string output_pref );
+
 use vars qw(@ISA);
+
+BEGIN {
+    @ISA = qw(C4::Barcodes);
+}
+
+sub new_object {
+    my $class = shift;
+	my $type = ref($class) || $class;
+	my $self = $type->default_self('preyyyymmincr');
+
+    my $branchcode = C4::Context->userenv->{'branch'};
+    my $branchPrefixes = C4::Context->preference("BarcodePrefix");
+    my $yaml = YAML::XS::Load(
+                    Encode::encode(
+                        'UTF-8',
+                        $branchPrefixes,
+                        Encode::FB_CROAK
+                    )
+                );
+    my $prefix = $yaml->{$branchcode} || $yaml->{'Default'};
+
+    $self->{prefix} = $prefix;
+    $self->{datetime} = output_pref({ dt => dt_from_string, dateformat => 'iso', dateonly => 1 });
+
+	return bless $self, $type;
+}
+
+sub initial {
+    my $self = shift;
+
+    my $prefix = $self->{prefix};
+    my ($year, $month, $day) = split('-', $self->{datetime});
+
+    return $prefix.$year.$month.'00001';
+}
+
+sub db_max {
+    my $self = shift;
+
+    my $prefix = $self->{prefix};
+    my ($year, $month, $day) = split('-', $self->{datetime});
+
+    my $query = "SELECT MAX(CAST(SUBSTRING(barcode,-4) AS signed)) from items where barcode REGEXP ?";
+    my $sth=C4::Context->dbh->prepare($query);
+    $sth->execute("^$prefix$year$month");
+
+    my $nextnum;
+    while (my ($count)= $sth->fetchrow_array) {
+        $nextnum = $count if $count;
+        $nextnum = 0 if $nextnum && $nextnum == 9999;
+    }
+
+    $nextnum = sprintf("%0*d", "5",$nextnum);
+
+    return $nextnum;
+}
+
+sub parse {
+    my $self = shift;
+
+    my $prefix = $self->{prefix};
+    my ($year, $month, $day) = split('-', $self->{datetime});
+
+    my $head = $prefix.$year.$month;
+    my $incr = (@_) ? shift : $self->value;
+    my $barcode = $head.$incr;
+    unless ($incr){
+        carp "Barcode '$barcode' has no incrementing part!";
+		return ($barcode,undef,undef);
+    }
+
+    return ($head, $incr, '');
+}
 
 BEGIN {
     @ISA = qw(C4::Barcodes);
