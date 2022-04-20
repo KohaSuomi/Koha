@@ -223,6 +223,7 @@ INSERT INTO systempreferences ( `variable`, `value`, `options`, `explanation`, `
 ('FinesIncludeGracePeriod','1',NULL,'If enabled, fines calculations will include the grace period.','YesNo'),
 ('FinesLog','1',NULL,'If ON, log fines','YesNo'),
 ('finesMode','off','off|production','Choose the fines mode, \'off\' (no charges), \'production\' (accrue overdue fines).  Requires accruefines cronjob.','Choice'),
+('FloatRules','','','Define float rules by items table columns and biblioitems table itemtype column','textarea'),
 ('FRBRizeEditions','0','','If ON, Koha will query one or more ISBN web services for associated ISBNs and display an Editions tab on the details pages','YesNo'),
 ('GDPR_Policy','','Enforced|Permissive|Disabled','General Data Protection Regulation - policy', 'Choice'),
 ('TaxRates','0','','Default Goods and Services tax rate NOT in %, but in numeric form (0.12 for 12%), set to 0 to disable GST','Integer'),

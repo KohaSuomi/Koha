@@ -1271,3 +1271,26 @@ Circulation:
               class: integer
             - days.
             - <span class="hint">This system preference is used by the cleanup_database.pl cronjob.</span>
+    Floating:
+        -
+            - pref: FloatRules
+              type: textarea
+              syntax: text/x-yaml
+            - "Define float rules by columns of items table and biblioitems column itemtype. NOTE! Rules can't be applied to other columns from biblioitems table.</br>"
+            - 'Example rule: <code>A->B: itemtype eq "KIRJA"</code></br></br>'
+            - 'Rules should start with following syntax:</br>'
+            - '<code>A->B</code> - where <code>-></code> means that rule applies when item is from library B and is checked in from library A.</br>'
+            - 'or: </br>'
+            - '<code>A<>B</code> - where <code><></code> means that rule applies to both libraries.</br></br>'
+            - "Allowed operators are following:</br>"
+            - "<code>eq and ne</code> for strings,<code> <, >, == and !=</code> for numeric values and <code>~=</code> for regular expressions.</br>"
+            - "Use <code>&& and ||</code> operators to join statements together.</br>"
+            - Examples:</br>
+            - <ul>
+            - <li><code>itemtype eq "KIRJA"</code> - all items with item type "KIRJA" will float</li>
+            - <li><code>itemtype eq "KIRJA" || itemtype eq "CD"</code> - all items with item type "KIRJA" or "CD" will float </li>
+            - <li><code>ccode eq "FLOAT"</code> - all items with a collection code "FLOAT" will float </li>
+            - <li><code>itemtype ne "CD" && permanent_location eq "CART"</code> - all items not of item type "CD" and whose permanent location is "CART" will float</li>
+            - <li><code>itemtype =~ "(CD|DVD|KIRJA)"</code> - using a regular expression to match against the item attribute, floats item types "CD" or "DVD" or "KIRJA"</li>
+            - <li><code>notforloan == 0</code> </li>
+            - </ul>

@@ -2005,6 +2005,8 @@ sub AddReturn {
     my $hbr = GetBranchItemRule($item->homebranch, $itemtype)->{'returnbranch'} || "homebranch";
         # check if returnbranch and homebranch belong to the same float group
     my $validate_float = Koha::Libraries->find( $item->homebranch )->validate_float_sibling({ branchcode => $branch });
+        # check if float rules apply to item
+    my $validate_floatrules = _validate_floatrules({ barcode => $barcode, branch => $branch });
         # get the proper branch to which to return the item
     my $returnbranch;
     if($hbr eq 'noreturn'){
@@ -2015,6 +2017,11 @@ sub AddReturn {
         $returnbranch = $validate_float ? $branch : $item->$hbr;
     }else{
         $returnbranch = $item->$hbr;
+    }
+
+    if($validate_floatrules && $validate_floatrules ne "nofloatrule"){
+        $hbr = 'homebranch';
+        $returnbranch = $validate_floatrules eq "float" ? $branch : $item->$hbr;
     }
         # if $hbr was "noreturn" or any other non-item table value, then it should 'float' (i.e. stay at this branch)
     my $transfer_trigger = $hbr eq 'homebranch' ? 'ReturnToHome' : $hbr eq 'holdingbranch' ? 'ReturnToHolding' : undef;
@@ -4375,6 +4382,73 @@ sub _item_denied_renewal {
         }
     }
     return 0;
+}
+
+sub _validate_floatrules {
+    my ( $params ) = @_;
+
+    my $item = Koha::Items->find({ barcode => $params->{ barcode } });
+    my $biblioitem = Koha::Biblioitems->find({ biblionumber => $item->biblionumber});
+
+    my $current_branch = $params->{ branch };
+    my $item_homebranch = $item->homebranch;
+
+    my $yaml = C4::Context->preference('FloatRules');
+    my $rules = eval { YAML::XS::Load(Encode::encode_utf8($yaml)); };
+
+    my $evalCondition = '';
+    foreach my $branches (sort(keys %{$rules})) {
+        my ( $from_branch, $to_branch, $checkrules, $join_rules);
+
+        if($branches =~ m/->/){
+            my @branches = split(/->/, $branches);
+            $from_branch = $branches[0];
+            $to_branch = $branches[1];
+            $checkrules = 1 if $current_branch eq $from_branch && $item_homebranch eq $to_branch;
+        }
+
+        if($branches =~ m/<>/){
+            my @branches = split(/<>/, $branches);
+            $from_branch = $branches[0];
+            $to_branch = $branches[1];
+
+            $checkrules = 1 if ( $current_branch eq $from_branch && $item_homebranch eq $to_branch )
+            || ( $current_branch eq $to_branch && $item_homebranch eq $from_branch );
+            $join_rules = 1;
+        }
+
+        if($checkrules){
+            foreach my $rule (%$rules{$branches}) {
+                if (my @rule = $rule =~ /(\w+)\s+(ne|eq|=~|<|>|==|!=)\s+(\S+)\s*(and|or|xor|&&|\|\|)?/ig) {
+                    $evalCondition .= '&&' if $join_rules && $evalCondition ne '';
+                    $evalCondition .= '(';
+                    for (my $i=0 ; $i<scalar(@rule) ; $i+=4) {
+                        my $column = $rule[$i];
+                        my $operator = $rule[$i+1];
+                        my $value = $rule[$i+2];
+                        my $join = $rule[$i+3] || '';
+
+                        $evalCondition .= $column eq "itemtype"
+                        ? join(' ',"\$biblioitem->$column",$operator,"$value",$join,'')
+                        : join(' ',"\$item->$column",$operator,"$value",$join,'');
+                    }
+                    $evalCondition .= ')';
+                }
+            }
+        }
+
+    }
+
+    if( !$evalCondition){
+        return "nofloatrule";
+    }
+
+    my $ok = eval("return 1 if($evalCondition);");
+    if ( $ok && $evalCondition ) {
+        return "float";
+    } else {
+        return "nofloat";
+    };
 }
 
 1;
