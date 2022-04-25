@@ -440,7 +440,7 @@ legend:hover {
                                                             [% IF category_type == 'I' %]
                                                                 <li class="guarantor-details" data-borrowernumber="[% r.guarantor_id | $raw %]">
                                                                     <span class="label">Organization:</span>
-                                                                    [% INCLUDE 'patron-title.inc' patron=r.guarantor hide_patron_infos_if_needed=1 %]
+                                                                    [% INCLUDE 'patron-title.inc' patron=r.guarantor %]
                                                                 </li>
                                                                 <li>
                                                                     <span class="label">Relationship:</span>
@@ -449,7 +449,7 @@ legend:hover {
                                                             [% ELSE %]
                                                                 <li class="guarantor-details" data-borrowernumber="[% r.guarantor_id | $raw %]">
                                                                     <span class="label">Guarantor:</span>
-                                                                    [% INCLUDE 'patron-title.inc' patron=r.guarantor hide_patron_infos_if_needed=1 %]
+                                                                    [% INCLUDE 'patron-title.inc' patron=r.guarantor %]
                                                                 </li>
                                                                 <li>
                                                                     <span class="label">Relationship:</span>
