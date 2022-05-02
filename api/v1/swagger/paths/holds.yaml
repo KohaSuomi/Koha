@@ -353,6 +353,12 @@
     summary: Cancel hold
     parameters:
       - $ref: ../parameters.yaml#/hold_id_pp
+      - name: body
+        in: body
+        description: Cancellation reason
+        required: false
+        schema:
+          type: string
     produces:
       - application/json
     responses:

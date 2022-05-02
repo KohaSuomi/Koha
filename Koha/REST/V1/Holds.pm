@@ -325,7 +325,8 @@ sub delete {
     }
 
     return try {
-        $hold->cancel;
+        my $cancellation_reason = $c->req->json;
+        $hold->cancel({ cancellation_reason => $cancellation_reason });
 
         return $c->render(
             status  => 204,
