@@ -1062,7 +1062,6 @@
                                                 </div> <!-- /.holds_by_library -->
                                             [% END # /FOREACH b %]
                                         [% END # /IF ( branchcodes.empty ) %]
-
                                     [% ELSE %]
 
                                         [% IF ( biblioloo.reserveloop.size ) %]
@@ -1072,12 +1071,58 @@
                                                 There are no holds on this title.
                                             </div>
                                         [% END %]
-
                                     [% END # /IF HoldsSplitQueue %]
                                 </div> <!-- /hold_title -->
                             [% END # /IF biblioloo.reserveloop %]
                         [% END # FOREACH biblioloo %]
                     </form> <!-- /#existing_holds -->
+                [% ELSE %]
+                    [% IF enqueued %]
+                        <div class="dialog message">
+                            <p>The job has been enqueued! It will be processed as soon as possible.</p>
+                            <p><a href="/cgi-bin/koha/admin/background_jobs.pl?op=view&id=[% job_id | uri %]" title="View detail of the enqueued job">View detail of the enqueued job</a></p>
+                        </div>
+                    [% END %]
+                    <div id="existing_holds"><h2>Existing holds</h2></div>
+                    <div id="toolbar" class="btn-toolbar">
+                    <button class="update_selected_holds">Update holds</button>
+                    <button class="cancel_selected">Cancel selected holds</button>
+                    <fieldset id="cancellation-reason-fieldset" class="action">
+                        [% SET hold_cancellation = AuthorisedValues.GetAuthValueDropbox('HOLD_CANCELLATION') %]
+                        [% IF hold_cancellation %]
+                            <label for="cancellation-reason">Cancellation reason: </label>
+                            <select class="cancellation-reason" name="cancellation-reason" id="cancellation-reason">
+                                <option value="">No reason given</option>
+                                [% FOREACH reason IN hold_cancellation %]
+                                    <option value="[% reason.authorised_value | html %]">[% reason.lib | html %]</option>
+                                [% END %]
+                            </select>
+                        [% END %]
+                    </fieldset>
+                    </div>
+                    <table id="holds-queue" style="width: 100% !Important;">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                [% IF ( CAN_user_reserveforothers_modify_holds_priority ) %]
+                                    <th>Priority</th>
+                                [% ELSE %]
+                                    <th>Delete?</th>
+                                [% END %]
+                                <th>&nbsp;</th>
+                                <th>Patron</th>
+                                <th>Notes</th>
+                                <th>Date</th>
+                                <th>Expiration</th>
+                                <th>Pickup library</th>
+                                <th>Details</th>
+                                <th><img src="[% interface | html %]/[% theme | html %]/img/go-bottom.png" alt="Toggle set to lowest priority" /></th>
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                                <th>Print hold/transfer slip</th>
+                            </tr>
+                        </thead>
+                    </table>
                 [% END # IF reserveloop %]
             [% END # UNLESS patron %]
 
@@ -1121,7 +1166,11 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button id="cancelModalConfirmBtn" type="button" class="btn btn-danger">Confirm cancellation</button>
+                    [% IF ( reserveloop ) %]
+                        <button id="cancelModalConfirmBtn" type="button" class="btn btn-danger">Confirm cancellation</button>
+                    [% ELSE %]
+                        <button id="cancelModalConfirmBtnAPI" type="button" class="btn btn-danger">Confirm cancellation</button>
+                    [% END %]
                     <a href="#" data-dismiss="modal">Cancel</a>
                 </div>
             </div>
@@ -1136,8 +1185,14 @@
     [% INCLUDE 'select2.inc' %]
     [% Asset.js("js/holds.js") | $raw%]
     [% INCLUDE 'calendar.inc' %]
+    [% INCLUDE 'js-date-format.inc' %]
     <script>
         var Sticky;
+        var SuspendHoldsIntranet = [% ( Koha.Preference('SuspendHoldsIntranet') ) ? 1 : 0 | html %];
+        var AutoResumeSuspendedHolds = [% ( Koha.Preference('AutoResumeSuspendedHolds') ) ? 1 : 0 | html %];
+        var AllowHoldDateInFuture = [% ( Koha.Preference('AllowHoldDateInFuture') ) ? 1 : 0 | html %];
+        var HidePatronName = [% ( Koha.Preference('HidePatronName') ) ? 1 : 0 | html %];
+        var CAN_user_reserveforothers_modify_holds_priority = [%CAN_user_reserveforothers_modify_holds_priority ? 1 : 0 | html %]
         var biblionumber = "[% biblionumber | $raw %]";
         var borrowernumber = "[% patron.borrowernumber | $raw %]";
         var patron_homebranch = "[% To.json( Branches.GetName( patron.branchcode ) ) | $raw %]";
@@ -1168,6 +1223,9 @@
         $.fn.select2.defaults.set("dropdownAutoWidth", true );
 
         $(document).ready(function() {
+            [% UNLESS ( multi_hold ) %]
+                load_holds_queue();
+            [% END %]
             $('#cancellation-reason-fieldset').hide();
             $('.rank-request').on('change', function() {
                 if ( $(".rank-request option:selected[value='del']").length ) {
