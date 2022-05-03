@@ -279,6 +279,8 @@ sub edit {
 
         $pickup_library_id //= $hold->branchcode;
         my $priority         = $body->{priority} // $hold->priority;
+        my $hold_date        = $body->{hold_date} // $hold->reservedate;
+        my $expiration_date  = $body->{expiration_date} // $hold->expirationdate;
         # suspended_until can also be set to undef
         my $suspended_until =
           exists $body->{suspended_until}
@@ -292,6 +294,8 @@ sub edit {
             suspend_until => $suspended_until
               ? output_pref({ dt => $suspended_until, dateformat => 'iso', dateonly => 1 })
               : '',
+            reservedate => $hold_date,
+            expirationdate  => $expiration_date,
             itemnumber    => $hold->itemnumber
         };
 

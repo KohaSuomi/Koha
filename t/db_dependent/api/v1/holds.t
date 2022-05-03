@@ -906,7 +906,7 @@ subtest 'pickup_locations() tests' => sub {
 
 subtest 'edit() tests' => sub {
 
-    plan tests => 39;
+    plan tests => 47;
 
     $schema->storage->txn_begin;
 
@@ -961,6 +961,8 @@ subtest 'edit() tests' => sub {
                 branchcode   => $library_3->branchcode,
                 itemnumber   => undef,
                 priority     => 1,
+                reservedate   => '2022-01-01',
+                expirationdate => '2022-03-01'
             }
         }
     );
@@ -1015,6 +1017,20 @@ subtest 'edit() tests' => sub {
     $biblio_hold->discard_changes;
     is( $biblio_hold->branchcode, $library_2->id, 'Pickup location changed correctly' );
 
+    $biblio_hold_data = {
+        hold_date   => '2022-01-02',
+        expiration_date => '2022-03-02'
+    };
+
+    $t->patch_ok( "//$userid:$password@/api/v1/holds/"
+          . $biblio_hold->id
+          => json => $biblio_hold_data )
+      ->status_is(200);
+    
+    $biblio_hold->discard_changes;
+    is( $biblio_hold->reservedate, '2022-01-02', 'Hold date changed correctly' );
+    is( $biblio_hold->expirationdate, '2022-03-02', 'Expiration date changed correctly' );
+
     # Test item-level holds
     my $item_hold = $builder->build_object(
         {
@@ -1026,6 +1042,8 @@ subtest 'edit() tests' => sub {
                 priority     => 1,
                 suspend       => 0,
                 suspend_until => undef,
+                reservedate   => '2022-01-01',
+                expirationdate => '2022-03-01'
             }
         }
     );
@@ -1079,6 +1097,20 @@ subtest 'edit() tests' => sub {
 
     is( $item_hold->suspend, 0, 'Location change should not activate suspended status' );
     is( $item_hold->suspend_until, undef, 'Location change should keep suspended_until be undef' );
+
+    $item_hold_data = {
+        hold_date   => '2022-01-02',
+        expiration_date => '2022-03-02'
+    };
+
+    $t->patch_ok( "//$userid:$password@/api/v1/holds/"
+          . $item_hold->id
+          => json => $item_hold_data )
+      ->status_is(200);
+    
+    $item_hold->discard_changes;
+    is( $item_hold->reservedate, '2022-01-02', 'Hold date changed correctly' );
+    is( $item_hold->expirationdate, '2022-03-02', 'Expiration date changed correctly' );
 
     $schema->storage->txn_rollback;
 
