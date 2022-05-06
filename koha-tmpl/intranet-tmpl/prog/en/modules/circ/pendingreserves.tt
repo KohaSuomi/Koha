@@ -35,7 +35,8 @@
 
 <div class="main container-fluid">
     <div class="row">
-        <div class="col-sm-10 col-sm-push-2">
+        <!-- <div class="col-sm-10 col-sm-push-2"> -->
+        <div class="col-sm-12">
             <main>
 
         [% FOR m IN messages %]
@@ -58,29 +59,52 @@
         [% END %]
 
 <h2>Holds to pull placed between [% from | $KohaDates %] and [% to | $KohaDates %]</h2>
-<h3>Reported on [% todaysdate | $KohaDates %]</h3>
+<h3>Reported on [% todaysdate | $KohaDates with_hours => 1 %]</h3>
+<!-- | $KohaDates with_hours => 1 -->
 <p>The following holds have not been filled. Please retrieve them and check them in.</p>
 <div id="searchresults">
     [% IF holds_info %]
-    <table id="holdst">
+    <table id="holdst" width="100%">
     <thead>
         <tr>
-        <th>Pull this many items</th>
-        <th>Items available</th>
-        <th>Patrons with holds</th>
-        <th>First patron</th>
+        <td><input type="text" class="filter" data-column_num="0" placeholder="Pull this many items" style="width:95%"/></td>
+        <td><input type="text" class="filter" data-column_num="1" placeholder="Items available" style="width:95%"/></td>
+        <td><input type="text" class="filter" data-column_num="2" placeholder="Holds total" style="width:95%"/></td>
+        <td><input type="text" class="filter" data-column_num="3" placeholder="Next patron" style="width:95%"/></td>
+        <td><input type="text" class="filter" data-column_num="4" placeholder="Title" style="width:95%"/></td>
+        <td id="homebranchfilter"></td>
+        <td id="pickupfilter"></td>
+        <td>-</td>
+        <td><input type="text" class="filter" data-column_num="8" placeholder="Call number" style="width:95%"/></td>
+        <td><input type="text" class="filter" data-column_num="9" placeholder="Available copy" style="width:95%"/></td>
+        <td id="itemtype-filter"></td>
+        <td id="mtypefilter"></td>
+        <td id="locationfilter"></td>
+        <td id="sublocfilter"></td>
+        <td id="ccodefilter"></td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        </tr>
+        <tr>
+        <th>Pull</th>
+        <th>Items</th>
+        <th>Holds</th>
+        <th>Next patron</th>
         <th class="anti-the">Title</th>
-        <th class="string-sort">Libraries</th>
-        <th>Available barcodes</th>
-        <th>Available call numbers</th>
-        <th>Available copy numbers</th>
-        <th>Available enumeration</th>
-        <th class="string-sort">Available item types</th>
-        <th class="string-sort">Available locations</th>
-        <th>Earliest hold date</th>
-        <th>Hold notes</th>
-        <th class="string-sort">Pickup location</th>
-        <th>Action</th>
+        <th class="string-sort">From</th>
+        <th class="string-sort">To</th>
+        <th>Barcodes</th>
+        <th>Call numbers</th>
+        <th>Copy numbers</th>
+        <th class="string-sort">Item types</th>
+        <th class="string-sort">Materials</th>
+        <th class="string-sort">Locations</th>
+        <th class="string-sort">Sublocations</th>
+        <th class="string-sort">Collections</th>
+        <th class="string-sort">Notes</th>
+        <th class="string-sort">Next hold</th>
+        <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -91,20 +115,26 @@
         [% SET hold = hold_info.hold %]
         [% IF patron %]
             [% SET biblio = hold_info.biblio %]
-            <td><p><strong>[% hold_info.pull_count | html %]</strong></p></td>
+            <td><strong>[% hold_info.pull_count | html %]</strong></td>
             <td>[% hold_info.items_count | html %]</td>
             <td>[% hold_info.patrons_count | html %]</td>
-            <td><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% patron.borrowernumber | uri %]">[% patron.firstname | html %] [% patron.surname | html %]</a></td>
+            <td><a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% patron.borrowernumber | uri %]">[% patron.othernames | html %]</a></td>
             <td>
-                <p>
-                    [% INCLUDE 'biblio-title.inc' biblio=biblio link = 1 %]
-                </p>
+                [% INCLUDE 'biblio-title.inc' biblio=biblio link = 1 %]
                 [% IF ( biblio.author ) %]<p> by [% biblio.author | html %]</p>[% END %]
+                [% IF ( biblio.biblioitem.number ) %]<p>part [% biblio.biblioitem.number | html %]</p>[% END %]
                 [% IF ( biblio.biblioitem.editionstatement ) %]<p>[% biblio.biblioitem.editionstatement | html %]</p>[% END %]
                 [% IF ( Koha.Preference('marcflavour') == 'MARC21' ) %]
                     [% IF ( biblio.copyrightdate ) %]<p>[% biblio.copyrightdate | html %]</p>[% END %]
                 [% ELSE %]
                     [% IF ( biblio.biblioitem.publicationyear ) %]<p>[% biblio.biblioitem.publicationyear | html %]</p>[% END %]
+                [% END %]
+                [% IF ( hold_info.enumchrons.size ) %]
+                    <p>Number
+                    [% FOREACH enumchron IN hold_info.enumchrons %]
+                         [% enumchron | html %]
+                    [% END %]
+                    </p>
                 [% END %]
             </td>
         [% ELSE %]
@@ -118,10 +148,13 @@
             [% IF ( hold_info.holdingbranches.size ) %]
             <ul>
                 [% FOREACH holdingbranch IN hold_info.holdingbranches %]
-                    <li>[% Branches.GetName ( holdingbranch ) | html %]</li>
+                    <li>[% Branches.GetName ( holdingbranch ) | html %] ([% holdingbranch | html %])</li>
                 [% END %]
             </ul>
             [% END %]
+        </td>
+        <td>
+            [% Branches.GetName ( hold.branchcode ) | html %] ([% hold.branchcode %])
         </td>
         <td>
             [% IF ( hold_info.barcodes.size ) %]
@@ -152,36 +185,52 @@
             [% END %]
         </td>
         <td>
-            [% IF ( hold_info.enumchrons.size ) %]
-                <ul>
-                    [% FOREACH enumchron IN hold_info.enumchrons %]
-                        <li>
-                            [% enumchron | html %]
-                        </li>
-                    [% END %]
-                </ul>
-            [% END %]
-        </td>
-        <td>
             <ul>
-            [% FOREACH type IN hold_info.itemtypes %]
-                <li>[% ItemTypes.GetDescription( type ) | html %]</li>
+            [% FOREACH itype IN hold_info.itemtypes %]
+                <li>[% ItemTypes.GetDescription( itype ) | html %] ([% itype | html %])</li>
             [% END %]
             </ul>
         </td>
         <td>
             <ul>
+            [% FOREACH mtype IN hold_info.mtypes %]
+                <li>[% mtype | html %]</li>
+            [% END %]
+            </ul>
+        </td>
+         <td>
+            <ul>
             [% FOREACH loc IN hold_info.locations %]
-                <li>[% AuthorisedValues.GetDescriptionByKohaField( kohafield => 'items.location', authorised_value => loc ) | html %]</li>
+                <li>[% AuthorisedValues.GetDescriptionByKohaField( kohafield => 'items.location', authorised_value => loc ) | html %] ([% loc | html %])</li>
+            [% END %]
+            </ul>
+        </td>
+        <td>
+            <ul>
+            [% FOREACH subloc IN hold_info.sub_locations %]
+                <li>[% AuthorisedValues.GetDescriptionByKohaField( kohafield => 'items.sub_location', authorised_value => subloc ) | html %] ([% subloc | html %])</li>
+            [% END %]
+            </ul>
+        </td>
+        <td>
+            <ul>
+            [% FOREACH ccode IN hold_info.ccodes %]
+                <li>[% AuthorisedValues.GetDescriptionByKohaField( kohafield => 'items.ccode', authorised_value => ccode ) | html %] ([% ccode | html %])</li>
+            [% END %]
+            </ul>
+        </td>
+        <td>
+            <ul>
+            [% FOREACH itemnote IN hold_info.itemnotes %]
+                <li>[% itemnote | html %]</li>
+            [% END %]
+            [% IF ( hold.reservenotes ) %]
+                <li>[% hold.reservenotes | html %]</li>
             [% END %]
             </ul>
         </td>
         <td data-order="[% hold.reservedate | html %]">
-            [% hold.reservedate | $KohaDates %] in [% Branches.GetName ( hold.branchcode ) | html %]
-        </td>
-        <td>[% hold.reservenotes | html %]</td>
-        <td>
-            [% Branches.GetName ( hold.branchcode ) | html %]
+            [% hold.reservedate | $KohaDates %] <!-- [% Branches.GetName ( hold.branchcode ) | html %] ([% hold.branchcode | html %]) -->
         </td>
         <td>
             <form name="cancelReserve" action="/cgi-bin/koha/circ/pendingreserves.pl" method="post">
@@ -202,12 +251,13 @@
                 [% END %]
 
                 [% IF item.holdingbranch != item.homebranch %]
-                    <input class="btn btn-default" type="submit" value="Cancel hold and return to : [% Branches.GetName( item.homebranch ) | html %]" />
+                    <input class="btn btn-default" type="submit" value="Cancel and return to [% Branches.GetName( item.homebranch ) | html %]" />
+                    <br/><br/>
                 [% ELSE %]
                     <input class="btn btn-default" type="submit" value="Cancel hold" />
+                    <br/><br/>
                 [% END %]
             </form>
-
         [% IF Koha.Preference('CanMarkHoldsToPullAsLost') != 'do_not_allow' %]
             [% IF hold.itemnumber %]
                 <form name="cancelReserve" action="/cgi-bin/koha/circ/pendingreserves.pl" method="post">
@@ -215,39 +265,21 @@
                     [% IF Koha.Preference('CanMarkHoldsToPullAsLost') == 'allow' %]
                         <input type="hidden" name="op" value="mark_as_lost" />
                         <input type="submit" value="Mark item as lost" />
+                        <br/><br/>
                     [% ELSIF Koha.Preference('CanMarkHoldsToPullAsLost') == 'allow_and_notify' %]
                         <input type="hidden" name="op" value="mark_as_lost_and_notify" />
                         <input type="submit" value="Mark lost and notify patron" />
+                        <br/><br/>
                     [% END %]
                 </form>
             [% ELSE %]
-                <span>Biblio level hold.</span>
+                <!-- <span>Biblio level hold.</span> -->
             [% END %]
         [% END %]
             </td>
         </tr>
         [% END %]
     </tbody>
-    <tfoot>
-        <tr>
-        <td><input type="text" class="filter" data-column_num="0" placeholder="Pull this many items" style="width:95%"/></td>
-        <td><input type="text" class="filter" data-column_num="1" placeholder="Items available" style="width:95%"/></td>
-        <td><input type="text" class="filter" data-column_num="2" placeholder="Patron holds" style="width:95%"/></td>
-        <td><input type="text" class="filter" data-column_num="3" placeholder="Patron name" style="width:95%"/></td>
-        <td><input type="text" class="filter" data-column_num="4" placeholder="Title" style="width:95%"/></td>
-        <td id="homebranchfilter"></td>
-        <td></td>
-        <td><input type="text" class="filter" data-column_num="7" placeholder="Call number" style="width:95%"/></td>
-        <td><input type="text" class="filter" data-column_num="8" placeholder="Available copy" style="width:95%"/></td>
-        <td><input type="text" class="filter" data-column_num="9" placeholder="Available enumeration" style="width:95%"/></td>
-        <td id="itemtype-filter"></td>
-        <td id="locationfilter"></td>
-        <td></td>
-        <td></td>
-        <td id="pickup-location"></td>
-        <td></td>
-        </tr>
-    </tfoot>
     </table>
     [% ELSE %]
         <strong>No items found.</strong>
@@ -261,7 +293,7 @@
         <div class="col-sm-2 col-sm-pull-10">
             <aside>
 
-<div id="filters">
+<!-- <div id="filters">
 
 <form action="/cgi-bin/koha/circ/pendingreserves.pl" method="post" >
 <fieldset class="brief">
@@ -292,6 +324,7 @@
 
 </div>
             </aside>
+-->
         </div> <!-- /.col-sm-2.col-sm-pull-10 -->
      </div> <!-- /.row -->
 
@@ -346,16 +379,34 @@
                   holdst.fnFilter( $(this).val(), 10 );
               });
           });
-          $("#locationfilter").each( function () {
+          $("#mtypefilter").each( function () {
               $(this).html( createSelect( holdst.fnGetColumnData(11) ) );
               $('select', this).change( function () {
                   holdst.fnFilter( $(this).val(), 11 );
               });
           });
-          $("#pickup-location").each( function () {
+           $("#locationfilter").each( function () {
+              $(this).html( createSelect( holdst.fnGetColumnData(12) ) );
+              $('select', this).change( function () {
+                  holdst.fnFilter( $(this).val(), 12 );
+              });
+          });
+          $("#sublocfilter").each( function () {
+              $(this).html( createSelect( holdst.fnGetColumnData(13) ) );
+              $('select', this).change( function () {
+                  holdst.fnFilter( $(this).val(), 13 );
+              });
+          });
+           $("#ccodefilter").each( function () {
               $(this).html( createSelect( holdst.fnGetColumnData(14) ) );
               $('select', this).change( function () {
                   holdst.fnFilter( $(this).val(), 14 );
+              });
+          });
+            $("#pickupfilter").each( function () {
+              $(this).html( createSelect( holdst.fnGetColumnData(6) ) );
+              $('select', this).change( function () {
+                  holdst.fnFilter( $(this).val(), 6 );
               });
           });
         });

@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 # Copyright 2000-2002 Katipo Communications
+# Copyright 2022 Koha-Suomi Oy
 #
 # This file is part of Koha.
 #
@@ -16,6 +17,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Koha; if not, see <http://www.gnu.org/licenses>.
+
+# Customized 2022 Koha-Suomi Oy / Kodo Korkalo
 
 use Modern::Perl;
 
@@ -34,16 +37,32 @@ use Koha::Biblios;
 use Koha::DateUtils qw( dt_from_string );
 use Koha::Holds;
 use DateTime::Duration;
+use Storable;
+use File::stat;
+use Time::Piece;
+use Time::localtime qw ( ctime );
 
-my $input = CGI->new;
-my $startdate = $input->param('from');
-my $enddate = $input->param('to');
+
+my $startdate; # default startdate will be set later for pre-generated list
+my $enddate; # default enddate will be set later for pre-generated list
+my $input;
+my $template;
+my $cookie;
+my $loggedinuser;
+
+my @holds_info;
+my @messages;
+
+# Entering Staff Client land without command line parameters
+if ( ! $ARGV[0] ) {
+
+$input = CGI->new;
 my $theme = $input->param('theme');    # only used if allowthemeoverride is set
 my $op         = $input->param('op') || '';
 my $borrowernumber = $input->param('borrowernumber');
 my $reserve_id = $input->param('reserve_id');
 
-my ( $template, $loggedinuser, $cookie ) = get_template_and_user(
+    ( $template, $loggedinuser, $cookie ) = get_template_and_user(
     {
         template_name   => "circ/pendingreserves.tt",
         query           => $input,
@@ -52,7 +71,6 @@ my ( $template, $loggedinuser, $cookie ) = get_template_and_user(
     }
 );
 
-my @messages;
 if ( $op eq 'cancel_reserve' and $reserve_id ) {
     my $hold = Koha::Holds->find( $reserve_id );
     if ( $hold ) {
@@ -129,6 +147,10 @@ if ( $op eq 'cancel_reserve' and $reserve_id ) {
     } # else the url parameters have been modified and the user is not allowed to continue
 }
 
+}
+
+# ! ARGV[0] ends here, out of Staff Client land. This is where we set the date-defaults.
+# It will always fallback to "unless" parts, because the dates are not set.
 
 my $today = dt_from_string;
 
@@ -152,6 +174,10 @@ unless ( $enddate ) {
     #similarly: calculate end date with ConfirmFutureHolds (days)
     $enddate = $today + DateTime::Duration->new( days => C4::Context->preference('ConfirmFutureHolds') || 0 );
 }
+
+# List building begins here, we'll run this with --update parameter from crontab
+
+if ( "$ARGV[0]" eq "--update" ) {
 
 # building query parameters
 my %where = (
@@ -232,7 +258,6 @@ my $all_holds = {
 };
 
 # make final holds_info array and fill with info
-my @holds_info;
 foreach my $bibnum ( @biblionumbers ){
 
     my $hold_info;
@@ -243,23 +268,24 @@ foreach my $bibnum ( @biblionumbers ){
         next;
     }
 
-    # get available item types for each biblio
-    my @res_itemtypes;
-    if ( C4::Context->preference('item-level_itypes') ){
-        @res_itemtypes = uniq map { defined $_->itype ? $_->itype : () } @$items;
-    } else {
-        @res_itemtypes = Koha::Biblioitems->search(
-            { biblionumber => $bibnum, itemtype => { '!=', undef }  },
-            { columns => 'itemtype',
-              distinct => 1,
-            }
-        )->get_column('itemtype');
-    }
+    # get available item types and mtypes for each biblio
+    my @res_itemtypes = uniq map { defined $_->itype ? $_->itype : () } @$items;
+    push my @res_mtypes, Koha::Biblioitems->search(
+        { biblionumber => $bibnum, itemtype => { '!=', undef }  },
+        { columns => 'itemtype',
+          distinct => 1,
+        }
+    )->get_column('itemtype');
     $hold_info->{itemtypes} = \@res_itemtypes;
+    $hold_info->{mtypes} = \@res_mtypes;
 
     # get available values for each biblio
+    # add ccode and sub_location / KS/KK/14.3.2022
     my $fields = {
         locations       => 'location',
+        sub_locations   => 'sub_location',
+        ccodes          => 'ccode',
+        itemnotes       => 'itemnotes',
         callnumbers     => 'itemcallnumber',
         enumchrons      => 'enumchron',
         copynumbers     => 'copynumber',
@@ -291,10 +317,28 @@ foreach my $bibnum ( @biblionumbers ){
     $hold_info->{hold}   = $res_info;
 
     push @holds_info, $hold_info;
+    # print Dumper $res_info->biblio;
+}
+
+store \@holds_info, "/tmp/pendingreserves.tmp";
+
+}
+
+# "$ARGV[0]" eq "--update" ends here and we're entering Staff-Client land again
+
+if ( ! $ARGV[0] ) {
+
+my $reporteddate;
+if ( -e '/tmp/pendingreserves.tmp' ) {
+    #$reporteddate = ctime(stat('/tmp/pendingreserves.tmp')->mtime);
+    #$reporteddate = Time::Piece->strptime($reporteddate, '%a %b %d %H:%M:%S %Y')->strftime('%Y-%m-%d %H:%M:%S');
+    $reporteddate = Time::Piece->strptime(ctime(stat('/tmp/pendingreserves.tmp')->mtime), '%a %b %d %H:%M:%S %Y')->strftime('%Y-%m-%d %H:%M:%S');
+    my $stored=retrieve('/tmp/pendingreserves.tmp');
+    @holds_info=@{$stored};
 }
 
 $template->param(
-    todaysdate          => $today,
+    todaysdate          => $reporteddate,
     from                => $startdate,
     to                  => $enddate,
     holds_info          => \@holds_info,
@@ -305,3 +349,5 @@ $template->param(
 );
 
 output_html_with_http_headers $input, $cookie, $template->output;
+
+} # "$ARVG[0]" eq "" ends here

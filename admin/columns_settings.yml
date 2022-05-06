@@ -1214,23 +1214,27 @@ modules:
             -
               columnname: libraries
             -
+              columnname: pickup_location
+            -
               columnname: barcodes
             -
               columnname: call_numbers
             -
               columnname: copy_numbers
             -
-              columnname: enumeration
-            -
               columnname: itemtypes
+            -
+              columnname: mtypes
             -
               columnname: locations
             -
+              columnname: sub_locations
+            -
+              columnname: ccodes
+            -
+              columnname: notes
+            -
               columnname: hold_date
-            -
-              columnname: reserve_notes
-            -
-              columnname: pickup_location
             -
               columnname: action
 
