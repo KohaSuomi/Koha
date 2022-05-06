@@ -17,7 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with Koha; if not, see <http://www.gnu.org/licenses>.
 
-use Modern::Perl;
+use strict;
+use warnings;
 use CGI qw ( -utf8 );
 use C4::Context;
 use C4::Output qw( output_html_with_http_headers );
@@ -29,7 +30,7 @@ use Koha::Libraries;
 
 use Koha::Patron::Categories;
 
-our $input = CGI->new;
+our $input = new CGI;
 my $dbh = C4::Context->dbh;
 
 my @patron_categories = Koha::Patron::Categories->search( { overduenoticerequired => { '>' => 0 } } );
@@ -61,7 +62,9 @@ my ( $template, $loggedinuser, $cookie ) = get_template_and_user(
         template_name   => "tools/overduerules.tt",
         query           => $input,
         type            => "intranet",
+        authnotrequired => 0,
         flagsrequired   => { tools => 'edit_notice_status_triggers' },
+        debug           => 1,
     }
 );
 
@@ -74,6 +77,7 @@ $branch =
   : Koha::Libraries->search->count() == 1                              ? undef
   :                                                                      undef;
 $branch ||= q{};
+$branch = q{} if $branch eq 'NO_LIBRARY_SET';
 
 my $op = $input->param('op');
 $op ||= q{};
@@ -87,8 +91,8 @@ if ($op eq 'save') {
     my @names=$input->multi_param();
     my $sth_search = $dbh->prepare("SELECT count(*) AS total FROM overduerules WHERE branchcode=? AND categorycode=?");
 
-    my $sth_insert = $dbh->prepare("INSERT INTO overduerules (branchcode,categorycode, delay1,letter1,debarred1, delay2,letter2,debarred2, delay3,letter3,debarred3) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-    my $sth_update=$dbh->prepare("UPDATE overduerules SET delay1=?, letter1=?, debarred1=?, delay2=?, letter2=?, debarred2=?, delay3=?, letter3=?, debarred3=? WHERE branchcode=? AND categorycode=?");
+    my $sth_insert = $dbh->prepare("INSERT INTO overduerules (branchcode,categorycode, delay1,letter1,debarred1,fine1, delay2,letter2,debarred2,fine2, delay3,letter3,debarred3,fine3) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    my $sth_update=$dbh->prepare("UPDATE overduerules SET delay1=?, letter1=?, debarred1=?, fine1=?, delay2=?, letter2=?, debarred2=?, fine2=?, delay3=?, letter3=?, debarred3=?, fine3=? WHERE branchcode=? AND categorycode=?");
     my $sth_delete=$dbh->prepare("DELETE FROM overduerules WHERE branchcode=? AND categorycode=?");
     my $sth_insert_mtt = $dbh->prepare("
         INSERT INTO overduerules_transport_types(
@@ -104,7 +108,7 @@ if ($op eq 'save') {
 
     foreach my $key (@names){
             # ISSUES
-            if ($key =~ /(delay|letter|debarred)([1-3])-(.*)/) {
+            if ($key =~ /(delay|letter|debarred|fine)([1-3])-(.*)/) {
                     my $type = $1; # data type
                     my $num = $2; # From 1 to 3
                     my $bor = $3; # borrower category
@@ -163,12 +167,15 @@ if ($op eq 'save') {
                             ($temphash{$bor}->{"delay1"}?$temphash{$bor}->{"delay1"}:undef),
                             ($temphash{$bor}->{"letter1"}?$temphash{$bor}->{"letter1"}:""),
                             ($temphash{$bor}->{"debarred1"}?$temphash{$bor}->{"debarred1"}:0),
+                            ($temphash{$bor}->{"fine1"}?$temphash{$bor}->{"fine1"}:0),
                             ($temphash{$bor}->{"delay2"}?$temphash{$bor}->{"delay2"}:undef),
                             ($temphash{$bor}->{"letter2"}?$temphash{$bor}->{"letter2"}:""),
                             ($temphash{$bor}->{"debarred2"}?$temphash{$bor}->{"debarred2"}:0),
+                            ($temphash{$bor}->{"fine2"}?$temphash{$bor}->{"fine2"}:0),
                             ($temphash{$bor}->{"delay3"}?$temphash{$bor}->{"delay3"}:undef),
                             ($temphash{$bor}->{"letter3"}?$temphash{$bor}->{"letter3"}:""),
                             ($temphash{$bor}->{"debarred3"}?$temphash{$bor}->{"debarred3"}:0),
+                            ($temphash{$bor}->{"fine3"}?$temphash{$bor}->{"fine3"}:0),
                             $branch ,$bor
                             );
                     } else {
@@ -176,12 +183,15 @@ if ($op eq 'save') {
                             ($temphash{$bor}->{"delay1"}?$temphash{$bor}->{"delay1"}:0),
                             ($temphash{$bor}->{"letter1"}?$temphash{$bor}->{"letter1"}:""),
                             ($temphash{$bor}->{"debarred1"}?$temphash{$bor}->{"debarred1"}:0),
+                            ($temphash{$bor}->{"fine1"}?$temphash{$bor}->{"fine1"}:0),
                             ($temphash{$bor}->{"delay2"}?$temphash{$bor}->{"delay2"}:0),
                             ($temphash{$bor}->{"letter2"}?$temphash{$bor}->{"letter2"}:""),
                             ($temphash{$bor}->{"debarred2"}?$temphash{$bor}->{"debarred2"}:0),
+                            ($temphash{$bor}->{"fine2"}?$temphash{$bor}->{"fine2"}:0),
                             ($temphash{$bor}->{"delay3"}?$temphash{$bor}->{"delay3"}:0),
                             ($temphash{$bor}->{"letter3"}?$temphash{$bor}->{"letter3"}:""),
-                            ($temphash{$bor}->{"debarred3"}?$temphash{$bor}->{"debarred3"}:0)
+                            ($temphash{$bor}->{"debarred3"}?$temphash{$bor}->{"debarred3"}:0),
+                            ($temphash{$bor}->{"fine3"}?$temphash{$bor}->{"fine3"}:0)
                             );
                     }
 
@@ -212,6 +222,8 @@ my $letters = C4::Letters::GetLettersAvailableForALibrary(
     }
 );
 
+my @line_loop;
+
 my $message_transport_types = C4::Letters::GetMessageTransportTypes();
 my ( @first, @second, @third );
 for my $patron_category (@patron_categories) {
@@ -228,6 +240,7 @@ for my $patron_category (@patron_categories) {
             $row{delay}=$temphash{$patron_category->categorycode}->{"delay$i"};
             $row{debarred}=$temphash{$patron_category->categorycode}->{"debarred$i"};
             $row{selected_lettercode} = $temphash{ $patron_category->categorycode }->{"letter$i"};
+            $row{fine}=$temphash{$patron_category->categorycode}->{"fine$i"};
             my @selected_mtts = @{ GetOverdueMessageTransportTypes( $branch, $patron_category->categorycode, $i) };
             my @mtts;
             for my $mtt ( @$message_transport_types ) {
@@ -260,6 +273,7 @@ for my $patron_category (@patron_categories) {
 
             if ($dat->{"delay$i"}){$row{delay}=$dat->{"delay$i"};}
             if ($dat->{"debarred$i"}){$row{debarred}=$dat->{"debarred$i"};}
+            if ($dat->{"fine$i"}){$row{fine}=$dat->{"fine$i"};}
             my @selected_mtts = @{ GetOverdueMessageTransportTypes( $branch, $patron_category->categorycode, $i) };
             my @mtts;
             for my $mtt ( @$message_transport_types ) {

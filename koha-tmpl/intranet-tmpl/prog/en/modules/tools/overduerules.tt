@@ -68,6 +68,7 @@
             <form method="post" action="/cgi-bin/koha/tools/overduerules.pl">
                 <input type="hidden" name="op" value="save" />
                 <input type="hidden" name="branch" value="[% branch | html %]" />
+                <br/><br/>
                 <h3>Rules for overdue actions: [% IF ( branch ) %][% Branches.GetName( branch ) | html %][% ELSE %] default library [% END %]</h3>
                     [% IF ( datasaved ) %]<div class="dialog message">Changes saved.</div> [% END %]
 
@@ -86,6 +87,7 @@
               <th scope="col">Delay</th>
               <th scope="col">Letter</th>
               <th scope="col">Restrict</th>
+			  <th scope="col">Fine</th>
               [% FOREACH mtt IN message_transport_types %]
                 [% NEXT IF mtt == 'itiva' AND !Koha.Preference('TalkingTechItivaPhoneNotification') %]
                 [% NEXT IF mtt == 'phone' AND !Koha.Preference('PhoneNotification') %]
@@ -135,6 +137,9 @@
               [% ELSE %]
                 <input type="checkbox" name="debarred[% tab.number | html %]-[% value.overduename | html %]" value="1" />
               [% END %]
+              </td>
+              <td>
+                <input type="text" name="fine[% tab.number %]-[% value.overduename %]" size="4" value="[% value.fine %]" />
               </td>
               [% FOREACH mtt IN value.message_transport_types %]
                 [% NEXT IF mtt.value == 'itiva' AND !Koha.Preference('TalkingTechItivaPhoneNotification') %]
