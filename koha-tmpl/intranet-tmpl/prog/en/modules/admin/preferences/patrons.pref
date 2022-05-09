@@ -337,8 +337,8 @@ Patrons:
          - "A child patron"
          - pref: "ChildNeedsGuarantor"
            choices:
-               yes: "must have"
-               no: "doesn't need"
+               1: "must have"
+               0: "doesn't need"
          - a guarantor when adding the patron.
     Privacy:
      -
