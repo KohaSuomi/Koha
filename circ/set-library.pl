@@ -28,6 +28,9 @@ use Koha::Cash::Registers;
 use Koha::Libraries;
 use Koha::Desks;
 
+# KD-4350 This is needed for validating redirects
+my $staffclientbaseurl=C4::Context->preference('StaffClientBaseURL');
+
 my $query = CGI->new();
 
 my ( $template, $borrowernumber, $cookie, $flags ) = get_template_and_user({
@@ -112,6 +115,11 @@ foreach ($query->param()) {
 
 my $referer =  $query->param('oldreferer') || $ENV{HTTP_REFERER};
 $referer =~ /set-library\.pl/ and undef $referer;   # avoid sending them back to this same page.
+
+# KD-4350 Validate redirects
+unless ( grep (/^\//, $referer) || grep (/^https?\/\/$staffclientbaseurl/, $referer) ) {
+    $referer='/cgi-bin/koha/circ/circulation.pl';
+}
 
 if (scalar @updated and not scalar @recycle_loop) {
     # we updated something, and there were no extra params to POST: quick redirect
