@@ -23,7 +23,7 @@
         </li>
         <li>
             <a href="#" aria-current="page">
-                Subscription routing lists for [% INCLUDE 'patron-title.inc' %]
+                Subscription routing lists for [% INCLUDE 'patron-title.inc' no_html = 1 %]
             </a>
         </li>
     </ol>

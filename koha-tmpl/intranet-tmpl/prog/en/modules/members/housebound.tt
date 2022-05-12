@@ -76,7 +76,7 @@
         </li>
         <li>
             <a href="#" aria-current="page">
-                Details for [% INCLUDE 'patron-title.inc' %]
+                Details for [% INCLUDE 'patron-title.inc' no_html = 1 %]
             </a>
         </li>
     </ol>
@@ -398,12 +398,12 @@
                       <td>[% entry.appointment_date | $KohaDates %] ([% entry.day_segment | html %])</td>
                       <td>
                         <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% entry.chooser.borrowernumber | uri %]">
-                          [% INCLUDE 'patron-title.inc' patron = entry.chooser invert_name = 0 %]
+                          [% INCLUDE 'patron-title.inc' patron = entry.chooser invert_name = 0 no_html = 1 %]
                         </a>
                       </td>
                       <td>
                         <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% entry.deliverer.borrowernumber | uri %]">
-                          [% INCLUDE 'patron-title.inc' patron = entry.deliverer invert_name = 0 %]
+                          [% INCLUDE 'patron-title.inc' patron = entry.deliverer invert_name = 0 no_html = 1 %]
                         </a>
                       </td>
                       <td class="actions">

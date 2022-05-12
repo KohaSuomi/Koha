@@ -23,7 +23,7 @@
         </li>
         <li>
             <a href="#" aria-current="page">
-                Files for [% INCLUDE 'patron-title.inc' %]
+                Files for [% INCLUDE 'patron-title.inc' no_html = 1 %]
             </a>
         </li>
     </ol>

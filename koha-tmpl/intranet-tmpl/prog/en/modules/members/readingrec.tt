@@ -25,7 +25,7 @@
         </li>
         <li>
             <a href="#" aria-current="page">
-                Circulation history for [% INCLUDE 'patron-title.inc' %]
+                Circulation history for [% INCLUDE 'patron-title.inc' no_html = 1 %]
             </a>
         </li>
     </ol>

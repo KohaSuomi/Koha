@@ -402,7 +402,7 @@
                                 for <a href="/cgi-bin/koha/catalogue/detail.pl?biblionumber=[% object | url %]">Bibliographic record [% object | html %]</a>
                             [% END %]
                             [% IF ( MEMBERS ) %]
-                                for <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% object | url %]">[% INCLUDE 'patron-title.inc' %]</a>
+                                for <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% object | url %]">[% INCLUDE 'patron-title.inc' no_html = 1 %]</a>
                             [% END %]
                             .
                         </div>

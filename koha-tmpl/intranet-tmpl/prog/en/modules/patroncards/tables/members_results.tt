@@ -9,7 +9,7 @@
                 "dt_cardnumber":
                     "[% data.cardnumber | html %]",
                 "dt_name":
-                    "<a href=\"#\" class=\"patron_preview\" data-borrowernumber=\"[% data.borrowernumber | html %]\" style='white-space:nowrap'>[% INCLUDE 'patron-title.inc' borrowernumber = data.borrowernumber category_type = data.category_type firstname = To.json(data.firstname) surname = To.json(data.surname) othernames = To.json(data.othernames) cardnumber = data.cardnumber invert_name = 1%]</a>",
+                    "<a href=\"#\" class=\"patron_preview\" data-borrowernumber=\"[% data.borrowernumber | html %]\" style='white-space:nowrap'>[% INCLUDE 'patron-title.inc' borrowernumber = data.borrowernumber category_type = data.category_type firstname = To.json(data.firstname) surname = To.json(data.surname) othernames = To.json(data.othernames) cardnumber = data.cardnumber invert_name = 1 no_html = 1%]</a>",
                 "dt_category":
                     "[% data.category_description | html %] <span class=\"patron_category_type\">([% data.category_type | html %])</span>",
                 "dt_branch":

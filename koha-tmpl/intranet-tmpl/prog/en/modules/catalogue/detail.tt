@@ -862,15 +862,15 @@ Note that permanent location is a code, and location may be an authval.
                         [% IF ( suggestion.isbn ) %]; ISBN:<em>[% suggestion.isbn | html %]</em> [% END %][% IF ( suggestion.publishercode ) %]; Published by [% suggestion.publishercode | html %] [% END %][% IF ( suggestion.publicationyear ) %] in <em>[% suggestion.publicationyear | html %]</em> [% END %][% IF ( suggestion.place ) %] in <em>[% suggestion.place | html %]</em> [% END %][% IF ( suggestion.collectiontitle ) %]; [% suggestion.collectiontitle | html %] [% END %][% IF ( suggestion.itemtype ) %]; [% AuthorisedValues.GetByCode( 'SUGGEST_FORMAT', suggestion.itemtype, 0 ) | html %] [% END %]<br />[% IF ( suggestion.note ) %]<div class="suggestion_note"><i class="fa fa-comment"></i> [% suggestion.note | html %]</div>[% END %]
                     </td>
                     <td>
-                        <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% suggestion.suggestedby | uri %]">[% INCLUDE 'patron-title.inc' patron => suggestion.suggester %]</a>
+                        <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% suggestion.suggestedby | uri %]">[% INCLUDE 'patron-title.inc' patron => suggestion.suggester no_html = 1 %]</a>
                         [% IF suggestion.suggesteddate %] - [% suggestion.suggesteddate | $KohaDates %][% END %]
                     </td>
                     <td>
-                        <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% suggestion.managedby | uri %]">[% INCLUDE 'patron-title.inc' patron => suggestion.manager %]</a>
+                        <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% suggestion.managedby | uri %]">[% INCLUDE 'patron-title.inc' patron => suggestion.manager no_html = 1 %]</a>
                         [% IF suggestion.manageddate %] - [% suggestion.manageddate | $KohaDates %][% END %]
                     </td>
                     <td>
-                        <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% suggestion.lastmodificationby | uri %]">[% INCLUDE 'patron-title.inc' patron => suggestion.last_modifier %]</a>
+                        <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% suggestion.lastmodificationby | uri %]">[% INCLUDE 'patron-title.inc' patron => suggestion.last_modifier no_html = 1 %]</a>
                         [% IF suggestion.lastmodificationdate %] - [% suggestion.lastmodificationdate | $KohaDates %][% END %]
                     </td>
                     <td>

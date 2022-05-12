@@ -41,7 +41,7 @@
         [% FOREACH subscriber IN subscribers %]
         <tr>
             <td>
-                <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% subscriber.borrowernumber | uri %]">[% INCLUDE 'patron-title.inc' patron=subscriber %]</a>
+                <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% subscriber.borrowernumber | uri %]">[% INCLUDE 'patron-title.inc' patron=subscriber not_html = 1 %]</a>
             </td>
         </tr>
         [% END %]

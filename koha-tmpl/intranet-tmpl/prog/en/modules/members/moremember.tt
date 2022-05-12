@@ -43,7 +43,7 @@
                 </li>
                 <li>
                     <a href="#" aria-current="page">
-                        Patron details for [% INCLUDE 'patron-title.inc' %]
+                        Patron details for [% INCLUDE 'patron-title.inc' no_html = 1 %]
                     </a>
                 </li>
             [% END %]

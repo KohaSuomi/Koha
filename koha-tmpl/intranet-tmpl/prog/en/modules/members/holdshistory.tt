@@ -26,7 +26,7 @@
         </li>
         <li>
             <a href="#" aria-current="page">
-                Holds history for [% INCLUDE 'patron-title.inc' %]
+                Holds history for [% INCLUDE 'patron-title.inc' no_html = 1 %]
             </a>
         </li>
     </ol>

@@ -61,7 +61,7 @@
                         <td>
                             [% IF l.shared %]
                                 [% IF shared_by_other %]
-                                    by <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% l.owner.id | uri %]">[% INCLUDE 'patron-title.inc' patron=l.owner %]</a>
+                                    by <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% l.owner.id | uri %]">[% INCLUDE 'patron-title.inc' patron=l.owner no_html = 1%]</a>
                                 [% ELSE %]
                                     by you
                                 [% END %]

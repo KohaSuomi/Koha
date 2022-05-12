@@ -137,7 +137,7 @@
                                         </td>
                                         <td>
                                             <a target="_blank" href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% p.borrowernumber | uri %]">
-                                                [% INCLUDE 'patron-title.inc' patron = p %]
+                                                [% INCLUDE 'patron-title.inc' patron = p no_html = 1 %]
                                                 <i class="fa fa-window-restore"></i>
                                             </a>
                                         </td>
@@ -173,7 +173,7 @@
                     <div class="dialog alert">No valid patrons to merge were found.</div>
                 [% ELSE %]
                     <p>
-                        Patron records merged into <a href="moremember.pl?borrowernumber=[% keeper.id | uri %]">[% INCLUDE 'patron-title.inc' patron = keeper %]</a>
+                        Patron records merged into <a href="moremember.pl?borrowernumber=[% keeper.id | uri %]">[% INCLUDE 'patron-title.inc' patron = keeper no_html = 1 %]</a>
                     </p>
 
                     [% FOREACH pair IN results.merged.pairs %]

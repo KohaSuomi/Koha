@@ -28,7 +28,7 @@
         [% IF accountline %]
             [% IF accountline.credit_type_code %]
             <li>
-                <a href="/cgi-bin/koha/members/boraccount.pl?borrowernumber=[% patron.borrowernumber | uri %]">Account for [% INCLUDE 'patron-title.inc' %]</a>
+                <a href="/cgi-bin/koha/members/boraccount.pl?borrowernumber=[% patron.borrowernumber | uri %]">Account for [% INCLUDE 'patron-title.inc' no_html = 1 %]</a>
             </li>
             <li>
                 <a href="#" aria-current="page">
@@ -37,7 +37,7 @@
             </li>
             [% ELSIF accountline.debit_type_code %]
             <li>
-                <a href="/cgi-bin/koha/members/boraccount.pl?borrowernumber=[% patron.borrowernumber | uri %]">Account for [% INCLUDE 'patron-title.inc' %]</a>
+                <a href="/cgi-bin/koha/members/boraccount.pl?borrowernumber=[% patron.borrowernumber | uri %]">Account for [% INCLUDE 'patron-title.inc' no_html = 1 %]</a>
             </li>
             <li>
                 <a href="#" aria-current="page">
@@ -48,7 +48,7 @@
         [% ELSE %]
             <li>
                 <a href="#" aria-current="page">
-                    Account for [% INCLUDE 'patron-title.inc' %]
+                    Account for [% INCLUDE 'patron-title.inc' no_html = 1 %]
                 </a>
             </li>
         [% END %]

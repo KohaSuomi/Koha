@@ -52,7 +52,7 @@ legend:hover {
                 [% IF (firstname || surname ) %]
                     <li>
                         <a href="/cgi-bin/koha/members/moremember.pl?borrowernumber=[% borrowernumber | uri %]">
-                            [% INCLUDE 'patron-title.inc' %]
+                            [% INCLUDE 'patron-title.inc' no_html = 1 %]
                         </a>
                     </li>
                 [% END %]

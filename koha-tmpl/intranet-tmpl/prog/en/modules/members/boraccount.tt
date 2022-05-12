@@ -32,7 +32,7 @@
         </li>
         <li>
             <a href="#" aria-current="page">
-                Account for [% INCLUDE 'patron-title.inc' %]
+                Account for [% INCLUDE 'patron-title.inc' no_html = 1 %]
             </a>
         </li>
     </ol>

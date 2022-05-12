@@ -87,7 +87,7 @@
                     [% END %]</td>
                 <td>[% IF checkout.issuer_id %]
                     <a href="/cgi-bin/koha/circ/circulation.pl?borrowernumber=[% checkout.issuer_id | uri %]">
-                    [% INCLUDE 'patron-title.inc' patron=checkout.issuer %]
+                    [% INCLUDE 'patron-title.inc' patron=checkout.issuer no_html = 1 %]
                     </a>
                     [% END %]</td>
                 <td>[% IF checkout.renewals %]

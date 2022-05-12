@@ -24,7 +24,7 @@
         </li>
         <li>
             <a href="#" aria-current="page">
-                Purchase suggestions for [% INCLUDE 'patron-title.inc' %]
+                Purchase suggestions for [% INCLUDE 'patron-title.inc' no_html = 1 %]
             </a>
         </li>
     </ol>
