@@ -280,8 +280,10 @@ if ($op eq "additem") {
                 if ($barcodevalue) {
 
 # Getting a new barcode (if it is not the first iteration or the barcode we tried already exists)
-                    $barcodevalue = $barcodeobj->next_value($oldbarcode)
-                      if ( $i > 0 || $exist_itemnumber );
+                    my $aBpref = C4::Context->preference('autoBarcode');
+                    my $barcodeobj2 = C4::Barcodes->new($aBpref);
+                    $barcodevalue = $barcodeobj2->value()
+                    if ( $i > 0 || $exist_itemnumber );
 
                     # Putting it into the record
                     if ($barcodevalue) {
