@@ -1,13 +1,12 @@
 #!/usr/bin/perl
 
-# Copyright 2000-2002 Katipo Communications
-# Copyright 2016 Koha-Suomi Oy
+# Copyright 2019 Koha-Suomi Oy
 #
 # This file is part of Koha.
 #
 # Koha is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
-# Foundation; either version 2 of the License, or (at your option) any later
+# Foundation; either version 3 of the License, or (at your option) any later
 # version.
 #
 # Koha is distributed in the hope that it will be useful, but WITHOUT ANY
@@ -18,29 +17,13 @@
 # with Koha; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-use strict;
-use warnings;
-use C4::Context;
+use Modern::Perl;
 
-=head1 plugin_javascript
+my $builder = sub {
+    my ( $params ) = @_;
+    my $function_name = $params->{id};
 
-The javascript function called when the user enters the subfield.
-contain 3 javascript functions :
-* one called when the field is entered (OnFocus). Named FocusXXX
-* one called when the field is leaved (onBlur). Named BlurXXX
-* one called when the ... link is clicked (<a href="javascript:function">) named ClicXXX
-
-returns :
-* a variable containing the 3 scripts.
-the 3 scripts are inserted after the <input> in the html code
-
-=cut
-
-sub plugin_javascript {
-	my $function_name= "signum".(int(rand(100000))+1);
-
-    # Inject this javascript to the page
-    my $js  = <<END_OF_JS;
+    my $js = <<ENDJS;
 <script type="text/javascript">
 //<![CDATA[
 
@@ -50,94 +33,94 @@ function Blur$function_name(index) {
 
 function Focus$function_name(subfield_managed, id, force) {
     // Uncomment the below line to have the signum updated when the field gets focus
-    //return Clic$function_name(id);
+    // return Clic$function_name(id);
 }
 
-function Clic$function_name(id) {
-// Do shelving location
-var shelvingLoc = \$("select[id^='tag_952_subfield_c']").val() ? \$("select[id^='tag_952_subfield_c']").val() : \$("div[id^='subfieldc']").find("select").val();
-if (!shelvingLoc) {
-    shelvingLoc = "";
+function Click$function_name(event) {
+    
+    var bn = \$('input[name="biblionumber"]').val();
+     
+    \$('#' + event.data.id).prop('disabled', true);
+     
+    if (!bn) return false;
+    \$('#' + event.data.id).prop('disabled', true);
+    var url = '../cataloguing/plugin_launcher.pl?plugin_name=fi_JSON_084a_signum_builder_subfields.pl&biblionumber=' + bn;
+    var req = \$.get(url);
+    req.fail(function(jqxhr, text, error){
+	alert(error);
+    \$('#' + event.data.id).prop('disabled', false);
+	});
+    req.done(function(resp){     
+         
+        // Do shelving location
+        var shelvingLoc = \$("select[id^='tag_952_subfield_c']").val() ? \$("select[id^='tag_952_subfield_c']").val() : \$("div[id^='subfieldc']").find("select").val();
+        if (!shelvingLoc) {
+            shelvingLoc = "";
+        }
+        
+        var branch = \$("select[id^='tag_952_subfield_a']").val() ? \$("select[id^='tag_952_subfield_a']").val() : \$("div[id^='subfielda']").find("select").val();
+        if (!branch) {
+            branch = "";
+        }
+
+        var genre = \$("select[id^='tag_952_subfield_G']").val() ? \$("select[id^='tag_952_subfield_G']").val() : \$("div[id^='subfieldG']").find("select").val();
+
+        // Do classification
+        var marc084a = resp.f084a;
+
+        // Do main heading
+        // Actually we should also follow the bypass indicators here
+
+        var marc100a = resp.f100a;
+        var marc110a = resp.f110a;
+        var marc111a = resp.f111a;
+
+        // First indicator is 'bypass'
+         var marc130a = resp.f130a;
+
+        // Second indicator is 'bypass'
+        var marc245a = resp.f245a;
+
+        if (marc100a) {
+            var mainHeading = marc100a;
+        } else if (marc110a) {
+            var mainHeading = marc110a;
+        } else if (marc111a) {
+            var mainHeading = marc111a;
+        } else if (marc130a) {
+            var mainHeading = marc130a;
+        } else if (marc245a) {
+            var mainHeading = marc245a;
+        }    
+
+        mainHeading = mainHeading.substring(0, 3).toUpperCase();
+        var splitted = branch.split('_')[1];
+        if (splitted) {
+            branch = splitted;
+        }
+
+        if (genre && shelvingLoc) {
+            shelvingLoc = shelvingLoc + " " + genre;
+        }
+
+        // This will determine the order of the signum elements
+        // In Lumme it's class mainheading location
+        
+        var dat = marc084a + " " + mainHeading + " " + branch + shelvingLoc;
+
+ 	    \$('#' + event.data.id).val(dat);
+        \$('#' + event.data.id).prop('disabled', false);
+
+     });
+     return false;   
 }
-var branch = \$("select[id^='tag_952_subfield_a']").val() ? \$("select[id^='tag_952_subfield_a']").val() : \$("div[id^='subfielda']").find("select").val();
-if (!branch) {
-    branch = "";
-}
-
-var genre = \$("select[id^='tag_952_subfield_G']").val() ? \$("select[id^='tag_952_subfield_G']").val() : \$("div[id^='subfieldG']").find("select").val();
-
-// Do classification
-var marc084a = \$("input[name^='marcfield084a']").val();
-
-// Do main heading
-// Actually we should also follow the bypass indicators here
-
-var marc100a = \$("input[name^='marcfield100a']").val();
-var marc110a = \$("input[name^='marcfield110a']").val();
-var marc111a = \$("input[name^='marcfield111a']").val();
-
-// First indicator is 'bypass'
-var marc130a = \$("input[name^='marcfield130a']").val();
-
-// Second indicator is 'bypass'
-var marc245a = \$("input[name^='marcfield245a']").val();
-
-if (marc100a) {
-    var mainHeading = marc100a;
-} else if (marc110a) {
-    var mainHeading = marc110a;
-} else if (marc111a) {
-    var mainHeading = marc111a;
-} else if (marc130a) {
-    var mainHeading = marc130a;
-} else if (marc245a) {
-    var mainHeading = marc245a;
-}
-
-mainHeading = mainHeading.substring(0, 3).toUpperCase();
-var splitted = branch.split('_')[1];
-if (splitted) {
-    branch = splitted;
-}
-
-if (genre && shelvingLoc) {
-    shelvingLoc = shelvingLoc + " " + genre;
-}
-
-// This will determine the order of the signum elements
-// In Lumme it's class mainheading location
-\$('#' + id).val(marc084a + " " + mainHeading + " " + branch + shelvingLoc);
-return 0;
-}
-
-// We don't want signums to change without explicit user action (clicking the ...)
-// So these are commented out
-
-//\$("select[id^='tag_952_subfield_c']").change(function(){
-//    \$("a[id^='buttonDot_tag_952_subfield_o']").click();
-//});
-
-//\$("div[id^='subfieldc']").find("select").change(function(){
-//    \$("a[id^='buttonDot_tag_952_subfield_o']").click();
-//});
-
-//\$("select[id^='tag_952_subfield_a']").change(function(){
-//    \$("a[id^='buttonDot_tag_952_subfield_o']").click();
-//});
-
-//\$("select[id^='tag_952_subfield_G']").change(function(){
-//    \$("a[id^='buttonDot_tag_952_subfield_o']").click();
-//});
-
-//\$("div[id^='subfieldG']").find("select").change(function(){
-//    \$("a[id^='buttonDot_tag_952_subfield_o']").click();
-//});
 
 //]]>
 </script>
-END_OF_JS
 
-    return ($function_name, $js);
-}
+ENDJS
 
-1;
+    return $js;
+};
+
+return { builder => $builder };
