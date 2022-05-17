@@ -380,7 +380,7 @@
           $ref: ../definitions.yaml#/error
     x-koha-authorization:
       permissions:
-        reserveforothers: "1"
+        reserveforothers: place_holds
 "/holds/{hold_id}/priority":
   put:
     x-mojo-to: Holds#update_priority
@@ -484,7 +484,7 @@
           $ref: ../definitions.yaml#/error
     x-koha-authorization:
       permissions:
-        reserveforothers: "1"
+        reserveforothers: place_holds
   delete:
     x-mojo-to: Holds#resume
     operationId: resumeHold
@@ -526,7 +526,7 @@
           $ref: ../definitions.yaml#/error
     x-koha-authorization:
       permissions:
-        reserveforothers: "1"
+        reserveforothers: place_holds
 "/holds/{hold_id}/pickup_locations":
   get:
     x-mojo-to: Holds#pickup_locations
