@@ -1238,6 +1238,43 @@ modules:
             -
               columnname: action
 
+      kohasuomi-holds-to-pull:
+        columns:
+            -
+              columnname: pull
+            -
+              columnname: available
+            -
+              columnname: holds
+            -
+              columnname: next_patron
+            -
+              columnname: from
+            -
+              columnname: to
+            -
+              columnname: call_numbers
+            -
+              columnname: title
+            -
+              columnname: copies
+            -
+              columnname: enumeration
+            -
+              columnname: itemtypes
+            -
+              columnname: materials
+            -
+              columnname: locations
+            -
+              columnname: sublocations
+            -
+              columnname: collections
+            -
+              columnname: itemnotes
+            -
+              columnname: next_hold
+
     holdsratios:
       holds-ratios:
         columns:
