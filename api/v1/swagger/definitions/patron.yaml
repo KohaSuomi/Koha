@@ -328,7 +328,7 @@ properties:
     description: patron's extended attributes
     items:
       $ref: patron_extended_attribute.yaml
-additionalProperties: false
+additionalProperties: true
 required:
   - surname
   - address
