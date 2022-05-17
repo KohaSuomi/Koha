@@ -656,3 +656,139 @@
     x-koha-authorization:
       permissions:
         reserveforothers: place_holds
+"/holds/{hold_id}/hold_date":
+  put:
+    x-mojo-to: Holds#update_hold_date
+    operationId: updateHoldDate
+    tags:
+      - holds
+    summary: Update hold date for the hold
+    description: Set an hold date for the hold
+    parameters:
+      - $ref: ../parameters.yaml#/hold_id_pp
+      - name: body
+        in: body
+        description: Hold date
+        required: true
+        schema:
+          type: object
+          properties:
+            hold_date:
+              type: 
+                - string
+                - 'null'
+              description: Hold date
+          additionalProperties: false
+    produces:
+      - application/json
+    responses:
+      "200":
+        description: The hold date value for the hold
+        schema:
+          type: object
+          properties:
+            hold_date:
+              type: 
+                - string
+                - 'null'
+              description: The hold date
+          additionalProperties: false
+      "400":
+        description: Missing or wrong parameters
+        schema:
+          $ref: ../definitions.yaml#/error
+      "401":
+        description: Authentication required
+        schema:
+          $ref: ../definitions.yaml#/error
+      "403":
+        description: Access forbidden
+        schema:
+          $ref: ../definitions.yaml#/error
+      "404":
+        description: Hold not found
+        schema:
+          $ref: ../definitions.yaml#/error
+      "409":
+        description: Unable to perform action on hold
+        schema:
+          $ref: ../definitions.yaml#/error
+      "500":
+        description: Internal error
+        schema:
+          $ref: ../definitions.yaml#/error
+      "503":
+        description: Under maintenance
+        schema:
+          $ref: ../definitions.yaml#/error
+    x-koha-authorization:
+      permissions:
+        reserveforothers: place_holds
+"/holds/{hold_id}/expiration_date":
+  put:
+    x-mojo-to: Holds#update_expiration_date
+    operationId: updateHoldExpirationDate
+    tags:
+      - holds
+    summary: Update expiration date for the hold
+    description: Set an expiration date for the hold
+    parameters:
+      - $ref: ../parameters.yaml#/hold_id_pp
+      - name: body
+        in: body
+        description: Expiration date
+        required: true
+        schema:
+          type: object
+          properties:
+            expiration_date:
+              type: 
+                - string
+                - 'null'
+              description: Expiration date
+          additionalProperties: false
+    produces:
+      - application/json
+    responses:
+      "200":
+        description: The expiration date value for the hold
+        schema:
+          type: object
+          properties:
+            expiration_date:
+              type: 
+                - string
+                - 'null'
+              description: The expiration date
+          additionalProperties: false
+      "400":
+        description: Missing or wrong parameters
+        schema:
+          $ref: ../definitions.yaml#/error
+      "401":
+        description: Authentication required
+        schema:
+          $ref: ../definitions.yaml#/error
+      "403":
+        description: Access forbidden
+        schema:
+          $ref: ../definitions.yaml#/error
+      "404":
+        description: Hold not found
+        schema:
+          $ref: ../definitions.yaml#/error
+      "409":
+        description: Unable to perform action on hold
+        schema:
+          $ref: ../definitions.yaml#/error
+      "500":
+        description: Internal error
+        schema:
+          $ref: ../definitions.yaml#/error
+      "503":
+        description: Under maintenance
+        schema:
+          $ref: ../definitions.yaml#/error
+    x-koha-authorization:
+      permissions:
+        reserveforothers: place_holds
