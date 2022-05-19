@@ -24,7 +24,6 @@ use C4::Context;
 use C4::Output qw( output_html_with_http_headers );
 use CGI qw ( -utf8 );
 use C4::Auth qw( get_template_and_user );
-# use C4::Debug;
 use File::stat;
 use Time::localtime;
 use Time::Piece;
@@ -48,10 +47,9 @@ my ( $template, $loggedinuser, $cookie ) = get_template_and_user(
 my $reporteddate = "UNKNOWN";
 my @reservedata;
 
-if ( -e '/tmp/pendingreserves.tmp' ) {
-    my $stored=retrieve('/tmp/pendingreserves.tmp');
-    # $reporteddate = ctime(stat('/tmp/pendingreserves.tmp')->mtime);
-	$reporteddate = Time::Piece->strptime(ctime(stat('/tmp/pendingreserves.tmp')->mtime), '%a %b %d %H:%M:%S %Y')->strftime('%Y-%m-%d %H:%M:%S');
+if ( -e '/tmp/kohasuomi-pendingreserves.tmp' ) {
+    my $stored=retrieve('/tmp/kohasuomi-pendingreserves.tmp');
+	$reporteddate = Time::Piece->strptime(ctime(stat('/tmp/kohasuomi-pendingreserves.tmp')->mtime), '%a %b %d %H:%M:%S %Y')->strftime('%Y-%m-%d %H:%M:%S');
     @reservedata=@{$stored};
 }
 
