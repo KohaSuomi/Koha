@@ -120,6 +120,7 @@ sub send_sms {
         $sent = $sender->send_sms(
             to   => $params->{destination},
             text => $params->{message},
+            _message_id => $params->{'message_id'},
         );
     };
 
