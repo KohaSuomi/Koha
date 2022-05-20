@@ -426,7 +426,10 @@ sub set_preference {
     if ( $variable eq 'opacbaseurl' && $value && substr( $value, 0, 4 ) !~ /http/ ) {
         $value = 'http://' . $value;
     }
-
+    # die if forbidden tags are found (KD-4346)
+    for ( 'style', 'script', 'link', 'iframe', 'applet' ) {
+        die "Forbidden tag $_ in input" if ( lc ( $value ) =~ /<\/{0,1}\Q$_\E.*>/ );
+    }
     if ($syspref) {
         $syspref->set(
             {   ( defined $value ? ( value       => $value )       : () ),
