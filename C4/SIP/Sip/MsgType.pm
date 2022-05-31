@@ -1057,7 +1057,12 @@ sub handle_patron_info {
             $resp .= maybe_add( FID_SCREEN_MSG, $patron->{branchcode}, $server);
         }
         $resp .= maybe_add( FID_PRINT_LINE, $patron->print_line, $server );
-
+                
+        #---------------
+        #Discussing with Finnish library automation vendors 2018-12-20.
+        # 0 - no access, 1 - welcome to library, 2,3,4,5... different access groups. Currently only supported 1 or 0
+        $resp .= add_field( FID_PAC_ACCESS_TYPE, (check_ss_block($inst_id, $patron_id))); 
+        
         $resp .= $patron->build_custom_field_string( $server );
         $resp .= $patron->build_patron_attributes_string( $server );
     } else {
@@ -1734,6 +1739,30 @@ sub api_auth {
     my ( $status, $cookie, $sessionID ) = check_api_auth( $query, { circulate => 1 }, 'intranet' );
     return $status;
 }
+
+sub check_ss_block {
+    
+    my $dbh = C4::Context->dbh();
+
+    my ( $login_branch, $patron_card_id ) = @_;
+    
+    
+    my $sth = $dbh->prepare("SELECT borrower_ss_blocks.branchcode, borrowers.cardnumber, borrower_ss_blocks.borrowernumber FROM borrower_ss_blocks LEFT JOIN borrowers on borrowers.borrowernumber = borrower_ss_blocks.borrowernumber WHERE borrower_ss_blocks.branchcode = ? and borrowers.cardnumber = ?")
+    or die "prepare statement failed: $dbh->errstr()";
+    
+    $sth->execute($login_branch, $patron_card_id) or die "execution failed: $dbh->errstr()";
+    
+    my($ss_block_branch, $patron_cardnumber, $ss_block_borrowernumber);
+    
+    ($ss_block_branch, $patron_cardnumber, $ss_block_borrowernumber) = $sth->fetchrow;
+    
+    if ($ss_block_borrowernumber && $ss_block_borrowernumber ne ""){
+    return 0;
+    }
+    
+    return 1;
+}
+
 
 1;
 __END__
