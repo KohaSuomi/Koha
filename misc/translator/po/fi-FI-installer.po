@@ -1223,6 +1223,14 @@ msgstr ""
 msgid "Film editor"
 msgstr ""
 
+#: installer/data/mysql/en/mandatory/sample_notices.yml:letter:1:row:64
+msgid "Fines and fees slip"
+msgstr ""
+
+#: installer/data/mysql/en/mandatory/sample_notices.yml:letter:1:row:64:mul:3
+msgid "Fines: %s"
+msgstr ""
+
 #: installer/data/mysql/en/optional/marc21_relatorterms.yml:authorised_values:1:row:102
 msgid "First party"
 msgstr ""
@@ -2218,6 +2226,10 @@ msgstr ""
 msgid "Patron"
 msgstr ""
 
+#: installer/data/mysql/en/mandatory/sample_notices.yml:letter:1:row:64
+msgid "Patron fines -slip"
+msgstr ""
+
 #: installer/data/mysql/en/optional/auth_val.yml:authorised_values:5:row:3
 msgid "Patrons"
 msgstr ""
@@ -3019,6 +3031,10 @@ msgstr ""
 msgid ""
 "To be prepared for war is one of the most effectual means of preserving "
 "peace."
+msgstr ""
+
+#: installer/data/mysql/en/mandatory/sample_notices.yml:letter:1:row:64:mul:13
+msgid "Total: %s"
 msgstr ""
 
 #: installer/data/mysql/en/optional/marc21_relatorterms.yml:authorised_values:1:row:213

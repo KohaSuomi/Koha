@@ -2457,6 +2457,16 @@ msgid ""
 "with "
 msgstr ""
 
+# Cataloging > Record structure
+#, fuzzy
+msgid "cataloguing.pref#BarcodePrefix# Define branch specific barcode prefix:"
+msgstr "Viivakoodit ovat"
+
+# Cataloging > Record structure
+#, fuzzy
+msgid "cataloguing.pref#BarcodePrefix# This is a YAML config."
+msgstr "EAN-13 -muodossa, nouseva numerointi."
+
 # Cataloging > Exporting
 # Cataloging > Exporting
 # Cataloging > Exporting
@@ -3216,6 +3226,11 @@ msgid ""
 msgstr "muotoa <year>-0001, <year>-0002."
 
 # Cataloging > Record structure
+#, fuzzy
+msgid "cataloguing.pref#autoBarcode# generated in the from <prefix>yyyymm0001."
+msgstr "muotoa <branchcode>yymm0001."
+
+# Cataloging > Record structure
 msgid "cataloguing.pref#autoBarcode# incremental EAN-13 barcodes."
 msgstr "EAN-13 -muodossa, nouseva numerointi."
 
@@ -3348,6 +3363,11 @@ msgstr ""
 msgid "circulation.pref Fines Policy"
 msgstr ""
 
+# Circulation
+#, fuzzy
+msgid "circulation.pref Floating"
+msgstr "Lainaus ja palautus"
+
 # Circulation > Holds policy
 msgid "circulation.pref Holds policy"
 msgstr ""
@@ -3363,11 +3383,6 @@ msgstr "Käyttöliittymä"
 # Circulation > Interlibrary loans
 msgid "circulation.pref Interlibrary loans"
 msgstr ""
-
-# Circulation
-#, fuzzy
-msgid "circulation.pref Recalls"
-msgstr "Lainaus ja palautus"
 
 # Circulation > Return claims
 msgid "circulation.pref Return claims"
@@ -4688,6 +4703,111 @@ msgid ""
 "the fine for an overdue item."
 msgstr "anteeksiantoaika kun lasketaan myöhässä olevan aineiston maksua."
 
+# Circulation > Article requests
+#, fuzzy
+msgid "circulation.pref#FloatRules# </ul>"
+msgstr "Salli"
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# <code>SII_PK->SII_AU</code> - where <code>-></"
+"code> means that rule applies when item is from first defined library and is "
+"checked in later library.</br>"
+msgstr ""
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# <code>SII_PK<>SII_AU</code> - where <code><></"
+"code> means that rule applies to both libraries.</br></br>"
+msgstr ""
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# <code>eq and ne</code> for strings,<code> <, >, "
+"== and !=</code> for numeric values and <code>~=</code> for regular "
+"expressions.</br>"
+msgstr ""
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# <li><code>ccode eq \"FLOAT\"</code> - all items "
+"with a collection code \"FLOAT\" will float </li>"
+msgstr ""
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# <li><code>itemtype =~ \"(CD|DVD|KIRJA)\"</code> "
+"- using a regular expression to match against the item attribute, floats "
+"item types \"CD\" or \"DVD\" or \"KIRJA\"</li>"
+msgstr ""
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# <li><code>itemtype eq \"KIRJA\" || itemtype eq "
+"\"CD\"</code> - all items with item type \"KIRJA\" or \"CD\" will float </li>"
+msgstr ""
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# <li><code>itemtype eq \"KIRJA\"</code> - all "
+"items with item type \"KIRJA\" will float</li>"
+msgstr ""
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# <li><code>itemtype ne \"CD\" && "
+"permanent_location eq \"CART\"</code> - all items not of item type \"CD\" "
+"and whose permanent location is \"CART\" will float</li>"
+msgstr ""
+
+# Circulation > Floating > FloatRules
+msgid "circulation.pref#FloatRules# <li><code>notforloan == 0</code> </li>"
+msgstr ""
+
+# Circulation > Article requests
+#, fuzzy
+msgid "circulation.pref#FloatRules# <ul>"
+msgstr "Salli"
+
+# Circulation > Self check-out module
+#, fuzzy
+msgid "circulation.pref#FloatRules# Allowed operators are following:</br>"
+msgstr "Älä salli"
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# Define float rules by columns of items table "
+"and biblioitems column itemtype. NOTE! Rules can't be applied to other "
+"columns from biblioitems table.</br>"
+msgstr ""
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# Example rule: <code>SII_PK->SII_AU: itemtype eq "
+"\"KIRJA\"</code></br></br>"
+msgstr ""
+
+# Circulation > Checkin policy
+#, fuzzy
+msgid "circulation.pref#FloatRules# Examples:</br>"
+msgstr "Esimerkkejä:<br/>"
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# Rules should start with following syntax:</br>"
+msgstr ""
+
+# Circulation > Floating > FloatRules
+msgid ""
+"circulation.pref#FloatRules# Use <code>&& and ||</code> operators to join "
+"statements together.</br>"
+msgstr ""
+
+# Circulation > Article requests
+#, fuzzy
+msgid "circulation.pref#FloatRules# or: </br>"
+msgstr "Älä salli"
+
 # Circulation > Checkin policy
 msgid "circulation.pref#HidePersonalPatronDetailOnCirculation# Don't hide"
 msgstr "Älä piilota"
@@ -5450,19 +5570,6 @@ msgid ""
 "'note', table 'accountlines' when the processing fee (defined for the item "
 "type) is applied:"
 msgstr ""
-
-# Circulation > Holds policy
-#, fuzzy
-msgid ""
-"circulation.pref#RecallsMaxPickUpDelay# Mark a recall as problematic if it "
-"has been waiting to be picked up for"
-msgstr ""
-"Merkitse varaus ongelmalliseksi, jos se on ollut odottamassa noutoa yli"
-
-# Circulation > Holds policy
-#, fuzzy
-msgid "circulation.pref#RecallsMaxPickUpDelay# days."
-msgstr "päivää."
 
 # Circulation > Interface
 msgid "circulation.pref#RecordLocalUseOnReturn# Don't record"
@@ -6291,6 +6398,13 @@ msgstr ""
 "\">CanMarkHoldsToPullAsLost</a> järjestelmäasetuksen)"
 
 # Circulation > Checkin policy
+#, fuzzy
+msgid ""
+"circulation.pref#UpdateNotForLoanStatusOnCheckin# Can be used for showing "
+"only the not for loan message E.g. '-1: ONLYMESSAGE'."
+msgstr "Jokaisen arvoparin pitää olla omalla rivillä."
+
+# Circulation > Checkin policy
 msgid ""
 "circulation.pref#UpdateNotForLoanStatusOnCheckin# Each pair of values should "
 "be on a separate line."
@@ -6309,6 +6423,34 @@ msgstr ""
 # Circulation > Checkin policy
 msgid ""
 "circulation.pref#UpdateNotForLoanStatusOnCheckin# it will be updated to the "
+"right-hand value. For example, '-1: 0' will cause an item that was set to "
+"'Ordered' to now be available for loan."
+msgstr ""
+"se päivitetään oikeanpuoleiseen arvoon. Esim. '-1: 0' tarkoittaa, että nide, "
+"joka oli 'Tilattu'-tilassa on nyt saatavana."
+
+# Circulation > Checkin policy
+#, fuzzy
+msgid ""
+"circulation.pref#UpdateNotForLoanStatusOnCheckout# Each pair of values "
+"should be on a separate line."
+msgstr "Jokaisen arvoparin pitää olla omalla rivillä."
+
+# Circulation > Checkin policy
+#, fuzzy
+msgid ""
+"circulation.pref#UpdateNotForLoanStatusOnCheckout# This is a list of value "
+"pairs. When an item is checked out, if the not for loan value on the left "
+"matches the items not for loan value"
+msgstr ""
+"Tämä on lista arvopareista. Kun nide palautetaan ja niteen 'ei "
+"lainattavissa' -arvo vastaa tässä vasemmalla olevaa 'ei lainattavissa' -"
+"arvoa,"
+
+# Circulation > Checkin policy
+#, fuzzy
+msgid ""
+"circulation.pref#UpdateNotForLoanStatusOnCheckout# it will be updated to the "
 "right-hand value. For example, '-1: 0' will cause an item that was set to "
 "'Ordered' to now be available for loan."
 msgstr ""
@@ -6382,23 +6524,6 @@ msgstr "Käytä"
 
 # Circulation > Course reserves
 msgid "circulation.pref#UseCourseReserves# course reserves."
-msgstr ""
-
-# Circulation > Course reserves
-#, fuzzy
-msgid "circulation.pref#UseRecalls# Don't use"
-msgstr "Älä käytä"
-
-# Circulation > Course reserves
-#, fuzzy
-msgid "circulation.pref#UseRecalls# Use"
-msgstr "Käytä"
-
-# Circulation > Recalls > UseRecalls
-msgid ""
-"circulation.pref#UseRecalls# recalls. Make sure you configure <a href=\"/cgi-"
-"bin/koha/admin/smart-rules.pl\">circulation and fines rules</a> for recalls "
-"once enabled."
 msgstr ""
 
 # Circulation > Checkout policy
@@ -8248,6 +8373,21 @@ msgid "logs.pref#BorrowersLog# changes to patron records."
 msgstr "asiakastietojen muutoksista."
 
 # Logging > Logging
+#, fuzzy
+msgid "logs.pref#BorrowersViewLog# Don't log"
+msgstr "Älä kerää lokia"
+
+# Logging > Logging
+#, fuzzy
+msgid "logs.pref#BorrowersViewLog# Log"
+msgstr "Kerää loki"
+
+# Logging > Logging
+#, fuzzy
+msgid "logs.pref#BorrowersViewLog# when patron data is viewed."
+msgstr "asiakastietojen muutoksista."
+
+# Logging > Logging
 msgid "logs.pref#CataloguingLog# Don't log"
 msgstr "Älä kerää lokia"
 
@@ -8417,25 +8557,6 @@ msgstr "Älä kerää lokia"
 #, fuzzy
 msgid "logs.pref#NoticesLog# Log"
 msgstr "Kerää lokia"
-
-# Logging > Logging
-#, fuzzy
-msgid "logs.pref#RecallsLog# Don't log"
-msgstr "Älä tallenna lokia"
-
-# Logging > Logging
-#, fuzzy
-msgid "logs.pref#RecallsLog# Log"
-msgstr "Kerää loki"
-
-# Logging > Logging
-#, fuzzy
-msgid ""
-"logs.pref#RecallsLog# any actions on recalls (create, cancel, expire, "
-"fulfill)."
-msgstr ""
-"kaikista varauksiin liittyvistä toimista (luonti, poisto, keskeytys, "
-"jatkaminen, jne)."
 
 # Logging > Logging
 msgid "logs.pref#RenewalLog# Don't log"
@@ -9264,11 +9385,67 @@ msgstr ""
 "<br />Huomautus: jos mitään ylläolevista ei valita, on 'Nimeke'-kenttä "
 "oletuksena pakollinen."
 
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionMandatoryFields# Author"
+msgstr "Näytä"
+
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionMandatoryFields# Collection title"
+msgstr "Älä näytä"
+
+# OPAC > Policy
+#, fuzzy
+msgid "opac.pref#OPACSuggestionMandatoryFields# Copyright or publication date"
+msgstr "Pakolliset kentät hankintaehdotuksissa:"
+
 # OPAC > Policy
 msgid ""
 "opac.pref#OPACSuggestionMandatoryFields# Fields that should be mandatory for "
 "patron purchase suggestions:"
 msgstr "Pakolliset kentät hankintaehdotuksissa:"
+
+# OPAC > Policy
+#, fuzzy
+msgid ""
+"opac.pref#OPACSuggestionMandatoryFields# ISBN, ISSN or other standard number"
+msgstr "Pakolliset kentät hankintaehdotuksissa:"
+
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionMandatoryFields# Item type"
+msgstr "Älä näytä"
+
+# OPAC > Policy
+#, fuzzy
+msgid "opac.pref#OPACSuggestionMandatoryFields# Library or branch"
+msgstr "Pakolliset kentät hankintaehdotuksissa:"
+
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionMandatoryFields# Note"
+msgstr "Näytä"
+
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionMandatoryFields# Patron reason"
+msgstr "Älä näytä"
+
+# OPAC > Policy
+#, fuzzy
+msgid "opac.pref#OPACSuggestionMandatoryFields# Publication place"
+msgstr "Pakolliset kentät hankintaehdotuksissa:"
+
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionMandatoryFields# Publisher name"
+msgstr "Näytä"
+
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionMandatoryFields# Title"
+msgstr "Näytä"
 
 # OPAC > Policy > OPACSuggestionUnwantedFields
 msgid ""
@@ -9278,11 +9455,66 @@ msgid ""
 "\">OPACSuggestionMandatoryFields</a> unwanted fields "
 msgstr ""
 
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionUnwantedFields# Author"
+msgstr "Näytä"
+
+# OPAC > Privacy
+#, fuzzy
+msgid "opac.pref#OPACSuggestionUnwantedFields# Collection title"
+msgstr "Salli"
+
+# Searching > Results display
+#, fuzzy
+msgid "opac.pref#OPACSuggestionUnwantedFields# Copyright or publication date"
+msgstr "julkaisuajan mukaan"
+
 # OPAC > Policy
 msgid ""
 "opac.pref#OPACSuggestionUnwantedFields# Fields that should be hidden for "
 "patron purchase suggestions:"
 msgstr ""
+
+# OPAC > Policy > OPACSuggestionUnwantedFields
+msgid ""
+"opac.pref#OPACSuggestionUnwantedFields# ISBN, ISSN or other standard number"
+msgstr ""
+
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionUnwantedFields# Item type"
+msgstr "Älä näytä"
+
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionUnwantedFields# Library or branch"
+msgstr "kotikirjasto"
+
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionUnwantedFields# Note"
+msgstr "Näytä"
+
+# OPAC > Appearance
+#, fuzzy
+msgid "opac.pref#OPACSuggestionUnwantedFields# Patron reason"
+msgstr "Älä näytä"
+
+# OPAC > Features
+#, fuzzy
+msgid "opac.pref#OPACSuggestionUnwantedFields# Publication place"
+msgstr "Älä näytä"
+
+# OPAC > Features
+#, fuzzy
+msgid "opac.pref#OPACSuggestionUnwantedFields# Publisher name"
+msgstr "Näytä"
+
+# OPAC > Features
+#, fuzzy
+msgid "opac.pref#OPACSuggestionUnwantedFields# Quantity"
+msgstr "Älä näytä"
 
 # OPAC > Appearance
 msgid ""
@@ -9310,9 +9542,11 @@ msgid ""
 msgstr "Kaytä verkkokirjastossa seuraavia CSS-määrityksiä:"
 
 # OPAC > Appearance
+#, fuzzy
 msgid ""
 "opac.pref#OPACUserJS# Include the following JavaScript on all pages in the "
-"OPAC:"
+"OPAC. You may need to ask your system administrator to rehash userjs "
+"checksums after changing this."
 msgstr "Sisällytä seuraava JavaScript kaikille sivuille verkkokirjastossa:"
 
 # OPAC > Appearance
@@ -9895,6 +10129,15 @@ msgid ""
 "results (160 characters)."
 msgstr ""
 
+# OPAC > Appearance
+#, fuzzy
+msgid ""
+"opac.pref#OpacMoreSearches# Add additional elements to the \"More Searches\" "
+"bar on the OPAC, with the following HTML (leave blank to disable):"
+msgstr ""
+"Sisällytä \"Hae muualta\" -laatikko verkkokirjaston perustiedot-näytölle "
+"seuraavalla HTML-koodilla (jätä tyhjäksi jos tämä ei ole käytössä):"
+
 # OPAC > Features
 msgid "opac.pref#OpacNewsLibrarySelect# Display"
 msgstr "Näytä"
@@ -10172,18 +10415,6 @@ msgstr ""
 "Seuraavat <a href='http://schema.koha-community.org/__VERSION__/tables/"
 "borrowers.html' target='blank'>tietokannan sarakkeet</a> eivät näy asiakkaan "
 "itserekisteröitymissivulla:"
-
-# OPAC > Self registration and modification
-#, fuzzy
-msgid ""
-"opac.pref#PatronSelfModificationMandatoryField# The following <a "
-"href='http://schema.koha-community.org/__VERSION__/tables/borrowers.html' "
-"target='blank'>database columns</a> must be filled in on the patron "
-"modification screen:"
-msgstr ""
-"Seuraavat <a href='http://schema.koha-community.org/__VERSION__/tables/"
-"borrowers.html' target='blank'>tietokannan sarakkeet</a> ovat pakollisia "
-"asiakastietojen rekisteröimissivulla:"
 
 # OPAC > Self registration and modification > PatronSelfRegistration
 msgid ""
@@ -10972,6 +11203,25 @@ msgid "patrons.pref#CheckPrevCheckoutDelay# days ago."
 msgstr "päivää sitten."
 
 # Patrons > Patron forms
+#, fuzzy
+msgid "patrons.pref#ChildNeedsGuarantor# A child patron"
+msgstr "Takaajan tiedot"
+
+# Patrons > Patron forms
+#, fuzzy
+msgid "patrons.pref#ChildNeedsGuarantor# a guarantor when adding the patron."
+msgstr "Takaajan tiedot"
+
+# Patrons > Notices and notifications
+#, fuzzy
+msgid "patrons.pref#ChildNeedsGuarantor# doesn't need"
+msgstr "Älä lähetä"
+
+# Patrons > Patron relationships > ChildNeedsGuarantor
+msgid "patrons.pref#ChildNeedsGuarantor# must have"
+msgstr ""
+
+# Patrons > Patron forms
 msgid ""
 "patrons.pref#CollapseFieldsPatronAddForm# Additional attributes and "
 "identifiers"
@@ -11042,6 +11292,46 @@ msgstr ""
 "Kun lisätään uusia asiakkaita tai muokataan olemassaolevan asiakkaan "
 "tietoja, piilota seuraavat kentät lomakkeesta (voidaan silti näyttää "
 "myöhemmin):"
+
+# Patrons > General > DebarmentsToLiftAfterPayment
+msgid ""
+"patrons.pref#DebarmentsToLiftAfterPayment# <p>Example, debarment with "
+"message of exactly 'Debarment message' is lifted after payment with "
+"outstanding fees less or equal than 5:</p>"
+msgstr ""
+
+# Patrons > General > DebarmentsToLiftAfterPayment
+msgid ""
+"patrons.pref#DebarmentsToLiftAfterPayment# <p>Example, debarments with "
+"comment (either exact match or dynamic content, e.g. 'Debarment message for "
+"Patron 123') that match 'Debarment message' are lifted after all fees are "
+"paid:</p>"
+msgstr ""
+
+# Patrons > General > DebarmentsToLiftAfterPayment
+msgid ""
+"patrons.pref#DebarmentsToLiftAfterPayment# <pre>Debarment message:</pre> "
+"<pre>  outstanding: 0</pre>"
+msgstr ""
+
+# Patrons > General > DebarmentsToLiftAfterPayment
+msgid ""
+"patrons.pref#DebarmentsToLiftAfterPayment# <pre>^Debarment message$:</pre> "
+"<pre>  outstanding: 5.00</pre>"
+msgstr ""
+
+# Patrons > General > DebarmentsToLiftAfterPayment
+msgid ""
+"patrons.pref#DebarmentsToLiftAfterPayment# Lift these debarments after "
+"Borrower has paid their charges. Matches dynamic content in debarment "
+"comment."
+msgstr ""
+
+# Patrons > General > DebarmentsToLiftAfterPayment
+msgid ""
+"patrons.pref#DebarmentsToLiftAfterPayment# You can use regex in the "
+"definitions to match your needs."
+msgstr ""
 
 # Patrons > General
 msgid ""
@@ -11216,6 +11506,25 @@ msgstr ""
 # Patrons > Privacy
 msgid "patrons.pref#GDPR_Policy# permissive"
 msgstr ""
+
+# Patrons > Patron relationships > GuarantorHasToBePatron
+msgid "patrons.pref#GuarantorHasToBePatron# The guarantor"
+msgstr ""
+
+# Patrons > General
+#, fuzzy
+msgid "patrons.pref#GuarantorHasToBePatron# a patron."
+msgstr "asiakkaiden toimia."
+
+# Patrons > General
+#, fuzzy
+msgid "patrons.pref#GuarantorHasToBePatron# doesn't have to be"
+msgstr "Älä salli"
+
+# Patrons > General
+#, fuzzy
+msgid "patrons.pref#GuarantorHasToBePatron# has to be"
+msgstr "Seuraa"
 
 # Patrons > General > LockExpiredDelay
 msgid ""
@@ -12973,9 +13282,11 @@ msgstr ""
 "Käytä seuraavaa CSS-tyylitiedostoa virkailijaliittymän kaikilla sivuilla:"
 
 # Staff interface > Appearance
+#, fuzzy
 msgid ""
 "staff_interface.pref#IntranetUserJS# Include the following JavaScript on all "
-"pages in the staff interface:"
+"pages in the staff interface. You may need to ask your system administrator "
+"to rehash userjs checksums after changing this."
 msgstr "Sisällytä seuraava JavaScript kaikille virkailijaliittymän sivuille:"
 
 # Staff interface > Appearance
@@ -13796,11 +14107,39 @@ msgid ""
 "reports web service."
 msgstr "riviä raportista, joka on tehty nettipalvelun kautta."
 
+# Circulation
+#, fuzzy
+#~ msgid "circulation.pref Recalls"
+#~ msgstr "Lainaus ja palautus"
+
 # Circulation > Holds policy
 #~ msgid ""
 #~ "circulation.pref#OPACHoldsIfAvailableAtPickupExceptions# (list of patron "
 #~ "categories separated with a pipe '|')"
 #~ msgstr "(lista asiakastyypeistä putkimerkillä \"|\" eroteltuna)"
+
+# Circulation > Holds policy
+#, fuzzy
+#~ msgid ""
+#~ "circulation.pref#RecallsMaxPickUpDelay# Mark a recall as problematic if "
+#~ "it has been waiting to be picked up for"
+#~ msgstr ""
+#~ "Merkitse varaus ongelmalliseksi, jos se on ollut odottamassa noutoa yli"
+
+# Circulation > Holds policy
+#, fuzzy
+#~ msgid "circulation.pref#RecallsMaxPickUpDelay# days."
+#~ msgstr "päivää."
+
+# Circulation > Course reserves
+#, fuzzy
+#~ msgid "circulation.pref#UseRecalls# Don't use"
+#~ msgstr "Älä käytä"
+
+# Circulation > Course reserves
+#, fuzzy
+#~ msgid "circulation.pref#UseRecalls# Use"
+#~ msgstr "Käytä"
 
 # Circulation > Holds policy
 #~ msgid "circulation.pref#maxreserves# holds at once."
@@ -13813,6 +14152,25 @@ msgstr "riviä raportista, joka on tehty nettipalvelun kautta."
 # Logging > Logging
 #~ msgid "logs.pref#LetterLog# Log"
 #~ msgstr "Kerää lokia"
+
+# Logging > Logging
+#, fuzzy
+#~ msgid "logs.pref#RecallsLog# Don't log"
+#~ msgstr "Älä tallenna lokia"
+
+# Logging > Logging
+#, fuzzy
+#~ msgid "logs.pref#RecallsLog# Log"
+#~ msgstr "Kerää loki"
+
+# Logging > Logging
+#, fuzzy
+#~ msgid ""
+#~ "logs.pref#RecallsLog# any actions on recalls (create, cancel, expire, "
+#~ "fulfill)."
+#~ msgstr ""
+#~ "kaikista varauksiin liittyvistä toimista (luonti, poisto, keskeytys, "
+#~ "jatkaminen, jne)."
 
 # OPAC > Payments
 #~ msgid "opac.pref Payments"
@@ -13867,6 +14225,18 @@ msgstr "riviä raportista, joka on tehty nettipalvelun kautta."
 #~ "pääsivun ja asiakastilin vasemman palkin <a href=\"/cgi-bin/koha/admin/"
 #~ "preferences.pl?op=search&searchfield=OpacNav\">navigointilinkkien</a> "
 #~ "jälkeen ja ennen mahdollisia asiakastilin linkkejä:"
+
+# OPAC > Self registration and modification
+#, fuzzy
+#~ msgid ""
+#~ "opac.pref#PatronSelfModificationMandatoryField# The following <a "
+#~ "href='http://schema.koha-community.org/__VERSION__/tables/borrowers.html' "
+#~ "target='blank'>database columns</a> must be filled in on the patron "
+#~ "modification screen:"
+#~ msgstr ""
+#~ "Seuraavat <a href='http://schema.koha-community.org/__VERSION__/tables/"
+#~ "borrowers.html' target='blank'>tietokannan sarakkeet</a> ovat pakollisia "
+#~ "asiakastietojen rekisteröimissivulla:"
 
 # OPAC > Payments
 #~ msgid ""
