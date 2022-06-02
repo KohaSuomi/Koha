@@ -4710,15 +4710,15 @@ msgstr "Salli"
 
 # Circulation > Floating > FloatRules
 msgid ""
-"circulation.pref#FloatRules# <code>SII_PK->SII_AU</code> - where <code>-></"
-"code> means that rule applies when item is from first defined library and is "
-"checked in later library.</br>"
+"circulation.pref#FloatRules# <code>A->B</code> - where <code>-></code> means "
+"that rule applies when item is from library B and is checked in from library "
+"A.</br>"
 msgstr ""
 
 # Circulation > Floating > FloatRules
 msgid ""
-"circulation.pref#FloatRules# <code>SII_PK<>SII_AU</code> - where <code><></"
-"code> means that rule applies to both libraries.</br></br>"
+"circulation.pref#FloatRules# <code>A<>B</code> - where <code><></code> means "
+"that rule applies to both libraries.</br></br>"
 msgstr ""
 
 # Circulation > Floating > FloatRules
@@ -4781,11 +4781,12 @@ msgid ""
 "columns from biblioitems table.</br>"
 msgstr ""
 
-# Circulation > Floating > FloatRules
+# Circulation > Checkin policy
+#, fuzzy
 msgid ""
-"circulation.pref#FloatRules# Example rule: <code>SII_PK->SII_AU: itemtype eq "
-"\"KIRJA\"</code></br></br>"
-msgstr ""
+"circulation.pref#FloatRules# Example rule: <code>A->B: itemtype eq \"KIRJA"
+"\"</code></br></br>"
+msgstr "Esimerkkejä:<br/>"
 
 # Circulation > Checkin policy
 #, fuzzy
