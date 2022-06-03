@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-05-31 09:29+0300\n"
-"PO-Revision-Date: 2022-02-25 10:49+0000\n"
+"PO-Revision-Date: 2022-06-02 10:50+0300\n"
 "Last-Translator: pknuuti <paivi.knuutinen@joensuu.fi>\n"
 "Language-Team: none\n"
 "Language: fi\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.8\n"
+"X-Generator: Poedit 2.4.1\n"
 "X-Pootle-Path: /fi/21.05/fi-FI-messages-js.po\n"
 "X-Pootle-Revision: 1\n"
 "X-POOTLE-MTIME: 1645786178.689187\n"
@@ -643,14 +643,14 @@ msgid "Internal Server Error, please reload the page"
 msgstr "Palvelinvirhe, lataa sivu uudestaan"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:583
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Item being processed at <strong>%s</strong>"
-msgstr "Nide <strong>odottaa</strong>"
+msgstr "Nidettä käsitellään pisteessä <strong>%s</strong>"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:581
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Item being transferred to <strong>%s</strong>"
-msgstr "Nide <strong>odottaa</strong>"
+msgstr "Nidettä kuljetetaan kohteeseen <strong>%s</strong>"
 
 #: koha-tmpl/opac-tmpl/bootstrap/js/overdrive.js:384
 msgid "Item cannot be checked out. There are no available formats"
@@ -675,9 +675,9 @@ msgid "Item is <strong>waiting</strong>"
 msgstr "Nide <strong>odottaa</strong>"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:585
-#, fuzzy, javascript-format
+#, javascript-format
 msgid "Item waiting at <strong>%s</strong> since %s"
-msgstr "Nide on <strong>kuljetettavana</strong> yksiköstä %s lähtien %s"
+msgstr "Nide on noudettavana pisteessä <strong>%s</strong> %s lähtien"
 
 #: koha-tmpl/intranet-tmpl/prog/js/basket.js:415
 #: koha-tmpl/intranet-tmpl/prog/js/basket.js:418
@@ -801,9 +801,8 @@ msgid "Next"
 msgstr "Seuraava"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:605
-#, fuzzy
 msgid "Next available"
-msgstr "Seuraava vapaa %s nide"
+msgstr "Seuraava vapaa"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:249
 #, javascript-format
@@ -1035,9 +1034,8 @@ msgid "Print"
 msgstr "Tulosta"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:658
-#, fuzzy
 msgid "Print slip"
-msgstr "Tulosta"
+msgstr "Tulosta kuitti"
 
 #: koha-tmpl/intranet-tmpl/prog/js/datatables.js:21
 msgid "Processing..."
@@ -1091,11 +1089,11 @@ msgstr "Jatka"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:629
 msgid "Revert transit status"
-msgstr ""
+msgstr "Peruuta kuljetustila"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:631
 msgid "Revert waiting status"
-msgstr ""
+msgstr "Peruuta odottava-tila"
 
 #: koha-tmpl/intranet-tmpl/prog/js/calendar.js:120
 msgid "Sa"
@@ -1215,14 +1213,12 @@ msgid "Suspend hold on"
 msgstr "Keskeytä varaus"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:643
-#, fuzzy
 msgid "Suspend on"
-msgstr "Keskeytä"
+msgstr "Keskeytetty tähän saakka"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:645
-#, fuzzy
 msgid "Suspend until"
-msgstr "Keskeytä varaus tähän saakka:"
+msgstr "Keskeytä tähän saakka"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:363
 msgid "Suspend until:"
@@ -1392,7 +1388,6 @@ msgid "Unable to resume, hold not found"
 msgstr "Ei voida jatkaa, varausta ei löytynyt"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:393
-#, fuzzy
 msgid "Unable to suspend hold, hold not found"
 msgstr "Varausta ei voitu keskeyttää, koska varausta ei löytynyt"
 
