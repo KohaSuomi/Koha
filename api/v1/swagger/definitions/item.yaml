@@ -208,6 +208,11 @@ properties:
       - string
       - "null"
     description: "'new' value, whatever free-text information."
+  sub_location:
+    type:
+      - string
+      - "null"
+    description: sub_location for this item
   exclude_from_local_holds_priority:
     type: boolean
     description: Exclude this item from local holds priority.

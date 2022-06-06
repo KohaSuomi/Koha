@@ -388,6 +388,7 @@ Note that permanent location is a code, and location may be an authval.
                             [% ELSE %]
                                 [% item.location | html %]
                             [% END %]
+                            [% IF ( item.sub_location ) %]<span class="sub_location"> ([% item.sub_location | html %])</span>[% END %]
                         </span>
                     </td>
                     [% IF ( itemdata_ccode ) %]<td>[% item.ccode | html %]</td>[% END %]

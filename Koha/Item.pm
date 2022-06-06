@@ -1288,7 +1288,8 @@ sub to_api_mapping {
         enumchron                => 'serial_issue_number',
         copynumber               => 'copy_number',
         stocknumber              => 'inventory_number',
-        new_status               => 'new_status'
+        new_status               => 'new_status',
+        sub_location             => 'sub_location'
     };
 }
 
