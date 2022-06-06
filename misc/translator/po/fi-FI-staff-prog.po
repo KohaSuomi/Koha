@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-05-31 09:29+0300\n"
-"PO-Revision-Date: 2022-06-02 16:16+0300\n"
+"PO-Revision-Date: 2022-06-06 14:41+0300\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
@@ -3315,10 +3315,9 @@ msgid ""
 "&rsaquo; %s %s %s Confirm deletion of record matching rule &quot;%s&quot; "
 "&rsaquo; %s Record matching rules &rsaquo; Administration &rsaquo; Koha "
 msgstr ""
-"%s %s Muokkaa tietueiden yhdistämissääntöjä &rsaquo; %s Lisää "
-"yhdistämissääntö &rsaquo; %s %s %s Vahvista yhdistämissäännön poisto &quot;"
-"%s&quot; &rsaquo; %s Tietueiden yhdistämissäännöt &rsaquo; Ylläpito &rsaquo; "
-"Koha "
+"%s %s Muokkaa tietueiden täsmäytyssääntöjä &rsaquo; %s Lisää täsmäytyssääntö "
+"&rsaquo; %s %s %s Vahvista täsmäytyssäännön poisto &quot;%s&quot; &rsaquo; "
+"%s Tietueiden täsmäytyssäännöt &rsaquo; Ylläpito &rsaquo; Koha "
 
 #. %1$s:  IF ( add_form )
 #. %2$s:  IF ( modify )
@@ -6542,7 +6541,7 @@ msgstr ""
 #, c-format
 msgid "%s Modify record matching rule %s Add record matching rule %s "
 msgstr ""
-"%s Muokkaa tietueiden yhdistämissääntöä %s Lisää tietueiden yhdistämissääntö "
+"%s Muokkaa tietueiden täsmäytyssääntöä %s Lisää tietueiden täsmäytyssääntö "
 "%s "
 
 #. %1$s:  IF split_rule
@@ -13323,7 +13322,7 @@ msgstr "Lisää vastaanottajia"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:117
 #, c-format
 msgid "Add record matching rule"
-msgstr "Lisää tietueiden yhdistämissääntö"
+msgstr "Lisää tietueiden täsmäytyssääntö"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/circulation.tt:383
 #, c-format
@@ -13560,7 +13559,7 @@ msgstr "Lisättiin asiakasmääre &quot;%s&quot;"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:449
 #, c-format
 msgid "Added record matching rule &quot;%s&quot;"
-msgstr "Lisättiin tietueiden yhdistämissääntö &quot;%s&quot;"
+msgstr "Lisättiin tietueiden täsmäytyssääntö &quot;%s&quot;"
 
 #. SCRIPT
 #: koha-tmpl/intranet-tmpl/prog/en/modules/offline_circ/list.tt:111
@@ -15204,8 +15203,7 @@ msgstr "Sovellettu"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/tools/manage-marc-import.tt:105
 #, c-format
 msgid "Applied different matching rule. Number of records matched now %s "
-msgstr ""
-"Käytettiin toista yhdistämissääntöä. Vastaavia tietueita on nyt %s kpl "
+msgstr "Käytettiin toista täsmäytyssääntöä. Vastaavia tietueita on nyt %s kpl "
 
 #. SCRIPT
 #: koha-tmpl/intranet-tmpl/prog/en/includes/str/tinymce_i18n.inc:2
@@ -15220,7 +15218,7 @@ msgstr "Käytä "
 #. INPUT type=submit
 #: koha-tmpl/intranet-tmpl/prog/en/modules/tools/manage-marc-import.tt:231
 msgid "Apply different matching rules"
-msgstr "Käytä eri yhdistämissääntöjä"
+msgstr "Käytä eri täsmäytyssääntöjä"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/members/boraccount.tt:137
 #: koha-tmpl/intranet-tmpl/prog/en/modules/members/boraccount.tt:294
@@ -23124,13 +23122,13 @@ msgstr "Vahvista asiakasmääreen &quot;%s&quot; poisto"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:428
 #, c-format
 msgid "Confirm deletion of record matching rule "
-msgstr "Vahvista tietueiden yhdistämissäännön poisto "
+msgstr "Vahvista tietueiden täsmäytyssäännön poisto "
 
 #. %1$s:  code | html
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:93
 #, c-format
 msgid "Confirm deletion of record matching rule &quot;%s&quot; "
-msgstr "Vahvista tietueiden yhdistämissäännön &quot;%s&quot; poisto "
+msgstr "Vahvista tietueiden täsmäytyssäännön &quot;%s&quot; poisto "
 
 #. %1$s:  mss.tagsubfield | html
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/marc_subfields_structure.tt:336
@@ -26412,7 +26410,7 @@ msgstr "Poistettiin asiakasmääre &quot;%s&quot;"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:455
 #, c-format
 msgid "Deleted record matching rule &quot;%s&quot;"
-msgstr "Poistettiin tietueiden yhdistämissääntö &quot;%s&quot;"
+msgstr "Poistettiin tietueiden täsmäytyssääntö &quot;%s&quot;"
 
 # sumea arvaus
 #. SCRIPT
@@ -29885,7 +29883,7 @@ msgstr "Ajastetun tehtävän lisääminen epäonnistui"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/tools/manage-marc-import.tt:103
 #, c-format
 msgid "Failed to apply different matching rule"
-msgstr "Toisen yhdistämissäännön käyttäminen epäonnistui"
+msgstr "Toisen täsmäytyssäännön käyttäminen epäonnistui"
 
 #. %1$s:  message_loo.failed_ok | html
 #. %2$s:  ELSIF ( message_loo.failed_rej )
@@ -39583,7 +39581,7 @@ msgstr "Hallinnoida hankintaehdotuksia "
 #: koha-tmpl/intranet-tmpl/prog/en/includes/permissions.inc:194
 #, c-format
 msgid "Manage record matching rules "
-msgstr "Hallinnoida tietueiden yhdistämissääntöjä "
+msgstr "Hallinnoida tietueiden täsmäytyssääntöjä "
 
 #. SCRIPT
 #: koha-tmpl/intranet-tmpl/prog/en/includes/ill-list-table-strings.inc:2
@@ -40037,23 +40035,23 @@ msgstr "Vastaa nimeketietuetta %s (pisteytys=%s):%s"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/tools/manage-marc-import.tt:166
 #, c-format
 msgid "Matching rule applied"
-msgstr "Yhdistämissääntö toteutettu"
+msgstr "Täsmäytyssääntö toteutettu"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/tools/manage-marc-import.tt:149
 #, c-format
 msgid "Matching rule applied:"
-msgstr "Yhdistämissäntö toteutettu:"
+msgstr "Täsmäytyssääntö toteutettu:"
 
 #. SCRIPT
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:598
 msgid "Matching rule code missing"
-msgstr "Yhdistämissäännön tunnus puuttuu"
+msgstr "Täsmäytyssäännön tunnus puuttuu"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:125
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:130
 #, c-format
 msgid "Matching rule code: "
-msgstr "Yhdistämissäännön tunnus: "
+msgstr "Tämsäytyssäännön tunnus: "
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/acqui/addorderiso2709.tt:76
 #, c-format
@@ -40575,7 +40573,7 @@ msgstr "Muokattu asiakasmääre &quot;%s&quot;"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:452
 #, c-format
 msgid "Modified record matching rule &quot;%s&quot;"
-msgstr "Muokattu tietueiden yhdistämissääntö &quot;%s&quot;"
+msgstr "Muokattu tietueiden täsmäytyssääntö &quot;%s&quot;"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/acqui/basket.tt:453
 #: koha-tmpl/intranet-tmpl/prog/en/modules/acqui/basket.tt:590
@@ -40821,7 +40819,7 @@ msgstr "Muokkaa numerointikaavaa: %s"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:115
 #, c-format
 msgid "Modify record matching rule"
-msgstr "Muokkaa tietueiden yhdistämissääntöä"
+msgstr "Muokkaa tietueiden täsmäytyssääntöä"
 
 #: koha-tmpl/intranet-tmpl/prog/en/includes/cat-toolbar.inc:39
 #, c-format
@@ -42048,7 +42046,7 @@ msgstr "Uusi tietue"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:443
 #, c-format
 msgid "New record matching rule"
-msgstr "Uusi yhdistämissääntö"
+msgstr "Uusi täsmäytyssääntö"
 
 #: koha-tmpl/intranet-tmpl/prog/en/includes/reports-toolbar.inc:5
 #, c-format
@@ -50283,13 +50281,12 @@ msgstr "Tietue poistettu"
 #, c-format
 msgid "Record matching failed -- unable to retrieve selected matching rule."
 msgstr ""
-"Tietueiden yhdistäminen epäonnistui -- yhdistämissäännön hakeminen "
-"epäonnistui"
+"Tietueiden täsmäytys epäonnistui -- täsmäytyssäännön hakeminen epäonnistui"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/tools/stage-marc-import.tt:204
 #, c-format
 msgid "Record matching rule:"
-msgstr "Tietueiden yhdistämissääntö:"
+msgstr "Tietueiden täsmäytyssääntö:"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/admin-home.tt:180
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:76
@@ -50298,12 +50295,12 @@ msgstr "Tietueiden yhdistämissääntö:"
 #: koha-tmpl/intranet-tmpl/prog/en/includes/admin-menu.inc:92
 #, c-format
 msgid "Record matching rules"
-msgstr "Tietueiden yhdistämissäännöt"
+msgstr "Tietueiden täsmäytyssäännöt"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:100
 #, c-format
 msgid "Record matching rules "
-msgstr "Tietueiden yhdistämissäännöt "
+msgstr "Tietueiden täsmäytyssäännöt "
 
 #. SCRIPT
 #: koha-tmpl/intranet-tmpl/prog/en/includes/cateditor-ui.inc:42
@@ -60320,7 +60317,7 @@ msgstr "Ei tallennettuja määritelmiä. "
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:478
 #, c-format
 msgid "There are no saved matching rules."
-msgstr "Ei tallennettuja yhdistämissääntöjä."
+msgstr "Ei tallennettuja täsmäytyssääntöjä."
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/patron-attr-types.tt:352
 #, c-format
@@ -65766,7 +65763,7 @@ msgstr "Kyllä, poista asiakasmääretyyppi"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/matching-rules.tt:432
 #, c-format
 msgid "Yes, delete record matching rule"
-msgstr "Kyllä, poista yhdistämissääntö"
+msgstr "Kyllä, poista täsmäytyssääntö"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/currency.tt:190
 #, c-format
