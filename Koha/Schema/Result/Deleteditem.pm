@@ -363,6 +363,12 @@ inventory number (MARC21 952$i)
 
 'new' value, you can put whatever free-text information. This field is intented to be managed by the automatic_item_modification_by_age cronjob.
 
+=head2 sub_location
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 10
+
 =head2 exclude_from_local_holds_priority
 
   data_type: 'tinyint'
@@ -478,6 +484,8 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 32 },
   "new_status",
   { data_type => "varchar", is_nullable => 1, size => 32 },
+  "sub_location",
+  { data_type => "varchar", is_nullable => 1, size => 10 },
   "exclude_from_local_holds_priority",
   { data_type => "tinyint", is_nullable => 1 },
 );
