@@ -17,6 +17,7 @@
 
 use Modern::Perl;
 use JSON qw( decode_json );
+use Encode qw( encode_utf8 );
 use Try::Tiny qw( catch try );
 
 use Koha::BackgroundJobs;
@@ -54,8 +55,11 @@ while (1) {
         }
 
         my $body = $frame->body;
-        my $args = decode_json($body);
-
+        my $args = eval { decode_json( encode_utf8($body) ) };
+        if ($@) {
+            warn "background_jobs_worker: message body error: $@";
+            next;
+        }
         # FIXME This means we need to have create the DB entry before
         # It could work in a first step, but then we will want to handle job that will be created from the message received
         my $job = Koha::BackgroundJobs->find($args->{job_id});
@@ -66,7 +70,11 @@ while (1) {
     } else {
         my $jobs = Koha::BackgroundJobs->search({ status => 'new' });
         while ( my $job = $jobs->next ) {
-            my $args = decode_json($job->data);
+            my $args = eval { decode_json( encode_utf8($job->data) ) };
+            if ($@) {
+                warn "background_jobs_worker: data error: $@";
+                next;
+            }
             process_job( $job, { job_id => $job->id, %$args } );
         }
         sleep 10;
