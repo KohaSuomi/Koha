@@ -933,11 +933,32 @@ sub renewal_branchcode {
         }
         elsif ( $renewal_branchcode eq 'checkoutbranch' ) {
             $branchcode = $self->checkout->branchcode;
+            
         }
         else {
             $branchcode = "";
         }
-    } else {
+    }
+    elsif ( $interface eq 'api' ){
+        my $renewal_branchcode = C4::Context->preference('OpacRenewalBranch');
+        if( !defined $renewal_branchcode || $renewal_branchcode eq 'opacrenew' ){
+            $branchcode = 'OPACRenew';
+        }
+        elsif ( $renewal_branchcode eq 'itemhomebranch' ) {
+            $branchcode = $self->homebranch;
+        }
+        elsif ( $renewal_branchcode eq 'patronhomebranch' ) {
+            $branchcode = $self->checkout->patron->branchcode;
+        }
+        elsif ( $renewal_branchcode eq 'checkoutbranch' ) {
+            $branchcode = $self->checkout->branchcode;
+            
+        }
+        else {
+            $branchcode = "";
+        }
+    }   
+    else {
         $branchcode = ( C4::Context->userenv && defined C4::Context->userenv->{branch} )
             ? C4::Context->userenv->{branch} : $params->{branch};
     }
