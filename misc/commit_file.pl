@@ -45,8 +45,6 @@ if ($list_batches) {
 # in future, probably should tie to a real user account
 C4::Context->set_userenv(0, 'batch', 0, 'batch', 'batch', 'batch', 'batch');
 
-my $dbh = C4::Context->dbh;
-$dbh->{AutoCommit} = 0;
 if ($batch_number =~ /^\d+$/ and $batch_number > 0) {
     my $batch = GetImportBatch($batch_number);
     die "$0: import batch $batch_number does not exist in database\n" unless defined $batch;
@@ -59,7 +57,6 @@ if ($batch_number =~ /^\d+$/ and $batch_number > 0) {
             unless $batch->{'import_status'} eq "staged" or $batch->{'import_status'} eq "reverted";
         process_batch($batch_number);
     }
-    $dbh->commit();
 } else {
     die "$0: please specify a numeric batch ID\n";
 }
@@ -111,7 +108,7 @@ sub revert_batch {
 
     print "... reverting batch -- please wait\n";
     my ($num_deleted, $num_errors, $num_reverted, $num_items_deleted, $num_ignored) =
-        BatchRevertRecords($import_batch_id, 100, \&print_progress_and_commit);
+        BatchRevertRecords($import_batch_id);
     print "... finished reverting batch\n";
 
     print <<_SUMMARY_;
@@ -130,9 +127,8 @@ _SUMMARY_
 
 
 sub print_progress_and_commit {
-    my $recs = shift;
+    my ( $recs, $schema ) = @_;
     print "... processed $recs records\n";
-    $dbh->commit();
 }
 
 sub print_usage {
