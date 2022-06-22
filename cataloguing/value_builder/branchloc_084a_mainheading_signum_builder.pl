@@ -73,7 +73,6 @@ function Click$function_name(event) {
         var marc100a = resp.f100a;
 
         var marc110a = resp.f110a;
-        marc110a =marc110a.substring(1);
 
         var marc111a = resp.f111a;
 
