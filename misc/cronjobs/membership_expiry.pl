@@ -208,6 +208,7 @@ warn 'found ' . $upcoming_mem_expires->count . ' soon expiring members'
 # main loop
 $letter_type = 'MEMBERSHIP_EXPIRY' if !$letter_type;
 while ( my $recent = $upcoming_mem_expires->next ) {
+    next if (!$recent->notice_email_address);
     my $from_address = $recent->library->from_email_address;
     my $letter =  C4::Letters::GetPreparedLetter(
         module      => 'members',
