@@ -55,6 +55,7 @@ BEGIN {
       GetWrappedLetter
       SendAlerts
       GetPrintMessages
+	  GetSuomiFiMessages
       GetQueuedMessages
       GetMessage
       GetMessageTransportTypes
@@ -1104,6 +1105,27 @@ sub GetPrintMessages {
     my $params = shift || {};
     
     return _get_unsent_messages( { message_transport_type => 'print',
+                                   borrowernumber         => $params->{'borrowernumber'},
+                                 } );
+}
+
+=head2 GetSuomiFiMessages
+
+  my $message_list = GetSuomiFiMessages( { borrowernumber => $borrowernumber } )
+
+Returns a arrayref of all queued SuomiFi messages (optionally, for a particular
+person). 
+
+Exporting _get_unsent_messages and writing a separate module for this seemed to make
+very little sense. Let alone duplicating the code of _get_unsent_messages in the new
+module. So this is here. Sorry for the inconvenience.
+
+=cut
+
+sub GetSuomiFiMessages {
+    my $params = shift || {};
+
+    return _get_unsent_messages( { message_transport_type => 'suomifi',
                                    borrowernumber         => $params->{'borrowernumber'},
                                  } );
 }
