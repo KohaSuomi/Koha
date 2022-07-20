@@ -1283,8 +1283,9 @@ Circulation:
             - 'or: </br>'
             - '<code>A<>B</code> - where <code><></code> means that rule applies to both libraries.</br></br>'
             - "Allowed operators are following:</br>"
-            - "<code>eq and ne</code> for strings,<code> <, >, == and !=</code> for numeric values and <code>~=</code> for regular expressions.</br>"
+            - "<code>eq and ne</code> for strings,<code> <, >, == and !=</code> for numeric values and <code>=~</code> for regular expressions.</br>"
             - "Use <code>&& and ||</code> operators to join statements together.</br>"
+            - "You can also use % as a wildcard when defining which libraries rule applies."
             - Examples:</br>
             - <ul>
             - <li><code>itemtype eq "KIRJA"</code> - all items with item type "KIRJA" will float</li>

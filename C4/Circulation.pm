@@ -4398,22 +4398,35 @@ sub _validate_floatrules {
 
     my $evalCondition = '';
     foreach my $branches (sort(keys %{$rules})) {
-        my ( $from_branch, $to_branch, $checkrules, $join_rules);
+        my ( $from_branch, $to_branch, $checkrules, $join_rules, $wildcard);
 
         if($branches =~ m/->/){
-            my @branches = split(/->/, $branches);
+            $wildcard = $branches =~ m/%/ ? 1 : 0;
+
+            my @branches = split(/[%->]+/, $branches);
             $from_branch = $branches[0];
             $to_branch = $branches[1];
-            $checkrules = 1 if $current_branch eq $from_branch && $item_homebranch eq $to_branch;
+
+            if($wildcard){
+                $checkrules = 1 if $current_branch =~ m/$from_branch/ && $item_homebranch =~ m/$to_branch/;
+            } else {
+                $checkrules = 1 if $current_branch eq $from_branch && $item_homebranch eq $to_branch;
+            }
         }
-
         if($branches =~ m/<>/){
-            my @branches = split(/<>/, $branches);
+            $wildcard = $branches =~ m/%/ ? 1 : 0;
+
+            my @branches = split(/[%<>]+/, $branches);
             $from_branch = $branches[0];
             $to_branch = $branches[1];
 
-            $checkrules = 1 if ( $current_branch eq $from_branch && $item_homebranch eq $to_branch )
-            || ( $current_branch eq $to_branch && $item_homebranch eq $from_branch );
+            if($wildcard){
+                $checkrules = 1 if ( $current_branch =~ m/$from_branch/ && $item_homebranch =~ m/$to_branch/ )
+                || ( $current_branch =~ m/$to_branch/ && $item_homebranch =~ m/$from_branch/ );
+            } else {
+                $checkrules = 1 if ( $current_branch eq $from_branch && $item_homebranch eq $to_branch )
+                || ( $current_branch eq $to_branch && $item_homebranch eq $from_branch );
+            }
             $join_rules = 1;
         }
 
