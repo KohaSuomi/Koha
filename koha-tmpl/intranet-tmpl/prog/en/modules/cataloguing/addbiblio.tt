@@ -804,6 +804,14 @@ function PopupMARCFieldDoc(field) {
 
                 <div id="check_errors"></div>
 
+                [% IF ( before_addbiblio_errors ) %]
+                <ul id="before_addbiblio_errors" class="error">
+                    [% FOREACH err IN before_addbiblio_errors %]
+                    <li>[% err %]</li>
+                    [% END %]
+                </ul>
+                [% END %]
+
                 <h1>
                     [% IF ( biblionumber ) %]
                         Editing <em>[% title | html %]</em> (Record number [% biblionumber | html %])

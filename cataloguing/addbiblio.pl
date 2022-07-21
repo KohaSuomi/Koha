@@ -847,6 +847,42 @@ if ($biblionumber) {
     ($biblioitemnumber) = $sth->fetchrow;
 }
 
+sub process_before_addbiblio_plugins {
+    my ($biblionumber, $record) = @_;
+    my @plugins = Koha::Plugins->new()->GetPlugins({ method => 'before_addbiblio_errors' });
+    my @errors;
+
+    foreach my $plugin (@plugins) {
+        my $error = $plugin->before_addbiblio_errors({
+            cgi => $input,
+            biblionumber => $biblionumber,
+            record => $record
+        });
+        if (scalar(@{$error}) > 0) {
+            foreach my $err (@{$error}) {
+                push @errors, $error;
+            }
+        }
+    }
+
+    if (scalar(@errors) > 0) {
+        $template->param(
+            title => $record->title, # FIXME
+            before_addbiblio_errors => @errors,
+            popup => $mode,
+            frameworkcode => $frameworkcode,
+            itemtype => $frameworkcode,
+            borrowernumber => $loggedinuser,
+            biblionumber => $biblionumber,
+            tab => scalar $input->param('tab')
+            );
+        $template->{'VARS'}->{'searchid'} = $searchid;
+        build_tabs ($template, $record, $dbh,$encoding,$input);
+        output_html_with_http_headers $input, $cookie, $template->output;
+        exit;
+    }
+}
+
 #-------------------------------------------------------------------------------------
 if ( $op eq "addbiblio" ) {
 #-------------------------------------------------------------------------------------
@@ -856,6 +892,9 @@ if ( $op eq "addbiblio" ) {
     # getting html input
     my @params = $input->multi_param();
     $record = TransformHtmlToMarc( $input, 1 );
+
+    process_before_addbiblio_plugins($biblionumber, $record) if ($record ne '-1');
+
     # check for a duplicate
     my ( $duplicatebiblionumber, $duplicatetitle );
     if ( !$is_a_modif ) {
