@@ -90,7 +90,7 @@ my $strsth =
             AND reservedate >= ?
             AND reservedate <= ?
             AND (reserves.itemnumber IS NULL OR reserves.itemnumber = items.itemnumber)
-            AND items.itemnumber NOT IN (SELECT itemnumber FROM branchtransfers WHERE datearrived IS NULL)
+            AND items.itemnumber NOT IN (SELECT itemnumber FROM branchtransfers WHERE datearrived IS NULL AND datecancelled IS NULL)
             AND items.itemnumber NOT IN (SELECT itemnumber FROM reserves WHERE found IS NOT NULL)
             AND issues.itemnumber IS NULL
             AND reserves.priority <> 0
