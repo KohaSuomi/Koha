@@ -121,6 +121,7 @@ while ( my $data = $sth->fetchrow_hashref ) {
     $data->{l_ccode}='' unless $data->{l_ccode};
     $data->{l_itemnotes}='' unless $data->{l_itemnotes};
 
+
     if ($data->{l_itemcallnumber}) {
         push(
             @reservedata, {
@@ -135,20 +136,20 @@ while ( my $data = $sth->fetchrow_hashref ) {
                 collectionvolume=> $data->{collectionvolume},
                 borrowernumber  => $data->{borrowernumber},
                 biblionumber    => $data->{biblionumber},
-                holdingbranches => [split('\|', $data->{l_holdingbranch})],
+                holdingbranches => [sort(split('\|', $data->{l_holdingbranch}))],
                 branch          => $data->{l_branch},
-                itemcallnumber  => [split('\|', $data->{l_itemcallnumber})],
+                itemcallnumber  => [sort(split('\|', $data->{l_itemcallnumber}))],
                 enumchron       => $data->{l_enumchron},
                 copyno          => $data->{l_copynumber},
-                itemnotes       => [split('\|', $data->{l_itemnotes})],
+                itemnotes       => [sort(split('\|', $data->{l_itemnotes}))],
                 count           => $data->{icount},
                 rcount          => $data->{rcount},
-                itypes          => [split('\|', $data->{l_itype})],
-                mtypes          => [split('\|', $data->{l_mtype})],
+                itypes          => [sort(split('\|', $data->{l_itype}))],
+                mtypes          => [sort(split('\|', $data->{l_mtype}))],
                 pullcount       => $data->{icount} <= $data->{rcount} ? $data->{icount} : $data->{rcount},
-                locations       => [split('\|', $data->{l_location})],
-                sublocations    => [split('\|', $data->{l_sub_location})],
-                ccodes          => [split('\|', $data->{l_ccode})]
+                locations       => [sort(split('\|', $data->{l_location}))],
+                sublocations    => [sort(split('\|', $data->{l_sub_location}))],
+                ccodes          => [sort(split('\|', $data->{l_ccode}))]
             }
         );
     }
