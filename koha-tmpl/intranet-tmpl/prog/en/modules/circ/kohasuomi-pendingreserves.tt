@@ -163,8 +163,8 @@
 							<th>Available</th>
 							<th>Holds</th>
 							<th>Next patron</th>
-							<th class="string-sort">From</th>
-							<th class="string-sort">To</th>
+							<th class="string-sort">On shelf</th>
+							<th class="string-sort">Hold at</th>
 							<th>Call numbers</th>
 							<th>Title</th>
 							<th>Copies</th>
