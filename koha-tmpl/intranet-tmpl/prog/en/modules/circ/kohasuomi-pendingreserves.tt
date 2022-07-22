@@ -175,7 +175,7 @@
 							<th class="string-sort">Sublocations</th>
 							<th class="string-sort">Collections</th>
 							<th>Item notes</th>
-							<th>Next hold</th>
+							<th class="string-sort" data-order="[% reserveloo.reservedate | html %]">Next hold</th>
 						</tr>
 
 					</thead>
