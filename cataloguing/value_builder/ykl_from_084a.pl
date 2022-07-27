@@ -19,34 +19,55 @@
 
 use Modern::Perl;
 
-# Get value from the first 084a with ind1 != 9 and trim the value
-
-my $builder= sub {
+my $builder = sub {
     my ( $params ) = @_;
     my $function_name = $params->{id};
 
-    my $js = qq|
+    my $js = <<ENDJS;
 <script type="text/javascript">
 //<![CDATA[
- function Click$function_name(event) {
-   \$("div[id='tag_084_']").each(function() {
-      var ind1 = \$( this ).find("input[name^='tag_084_indicator1_']").val();
-      var inp = \$( this ).find("input[id^='tag_084_subfield_a_']");
-      console.log("084a");
-      if (ind1 != "9" && inp) {
-         var v = inp.val() ? inp.val().trim() : "";
-         if (v !== "") {
-            \$('#' + event.data.id).val(v);
-            return false;
-         }
-      }
-   });
-   return false;
- }
+
+function Blur$function_name(index) {
+    // No action
+}
+
+function Focus$function_name(subfield_managed, id, force) {
+    // Uncomment the below line to have the signum updated when the field gets focus
+    // return Clic$function_name(id);
+}
+
+function Click$function_name(event) {
+    
+    var bn = \$('input[name="biblionumber"]').val();
+     
+    \$('#' + event.data.id).prop('disabled', true);
+     
+    if (!bn) return false;
+    \$('#' + event.data.id).prop('disabled', true);
+    var url = '../cataloguing/plugin_launcher.pl?plugin_name=fi_JSON_084a_signum_builder_subfields.pl&biblionumber=' + bn;
+    var req = \$.get(url);
+    req.fail(function(jqxhr, text, error){
+	alert(error);
+    \$('#' + event.data.id).prop('disabled', false);
+	});
+    req.done(function(resp){ 
+    
+        // Do classification
+        var marc084a = resp.f084a;
+
+ 	    \$('#' + event.data.id).val(marc084a);
+        \$('#' + event.data.id).prop('disabled', false);
+
+     });
+     return false;   
+}
+
 //]]>
 </script>
-|;
+
+ENDJS
+
     return $js;
 };
 
-return { builder => $builder };
+return { builder => $builder };    
