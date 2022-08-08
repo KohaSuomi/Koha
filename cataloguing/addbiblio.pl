@@ -848,17 +848,21 @@ if ($biblionumber) {
 }
 
 sub process_before_addbiblio_plugins {
-    my ($biblionumber, $record) = @_;
+    my ($biblionumber, $record, $input) = @_;
     my @plugins = Koha::Plugins->new()->GetPlugins({ method => 'before_addbiblio_errors' });
     my @errors;
 
     foreach my $plugin (@plugins) {
-        my $error = $plugin->before_addbiblio_errors({
-            cgi => $input,
-            biblionumber => $biblionumber,
-            record => $record
+        my $error = Koha::Plugins::Handler->run({
+	    cgi => $input,
+            class => ref $plugin,
+            method => 'before_addbiblio_errors',
+            params => {
+                biblionumber => $biblionumber,
+                record => $record
+            }
         });
-        if (scalar(@{$error}) > 0) {
+        if (defined($error) && scalar(@{$error}) > 0) {
             foreach my $err (@{$error}) {
                 push @errors, $error;
             }
@@ -893,7 +897,7 @@ if ( $op eq "addbiblio" ) {
     my @params = $input->multi_param();
     $record = TransformHtmlToMarc( $input, 1 );
 
-    process_before_addbiblio_plugins($biblionumber, $record) if ($record ne '-1');
+    process_before_addbiblio_plugins($biblionumber, $record, $input) if ($record ne '-1');
 
     # check for a duplicate
     my ( $duplicatebiblionumber, $duplicatetitle );
