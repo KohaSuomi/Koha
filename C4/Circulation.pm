@@ -4398,7 +4398,7 @@ sub _validate_floatrules {
 
     my $evalCondition = '';
     foreach my $branches (sort(keys %{$rules})) {
-        my ( $from_branch, $to_branch, $checkrules, $join_rules, $wildcard);
+        my ( $from_branch, $to_branch, $checkrules, $wildcard);
 
         if($branches =~ m/->/){
             $wildcard = $branches =~ m/%/ ? 1 : 0;
@@ -4427,13 +4427,12 @@ sub _validate_floatrules {
                 $checkrules = 1 if ( $current_branch eq $from_branch && $item_homebranch eq $to_branch )
                 || ( $current_branch eq $to_branch && $item_homebranch eq $from_branch );
             }
-            $join_rules = 1;
         }
 
         if($checkrules){
             foreach my $rule (%$rules{$branches}) {
                 if (my @rule = $rule =~ /(\w+)\s+(ne|eq|=~|<|>|==|!=)\s+(\S+)\s*(and|or|xor|&&|\|\|)?/ig) {
-                    $evalCondition .= '&&' if $join_rules && $evalCondition ne '';
+                    $evalCondition .= '||' if $evalCondition ne '';
                     $evalCondition .= '(';
                     for (my $i=0 ; $i<scalar(@rule) ; $i+=4) {
                         my $column = $rule[$i];
