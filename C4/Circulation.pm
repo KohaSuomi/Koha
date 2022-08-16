@@ -4408,7 +4408,7 @@ sub _validate_floatrules {
             $to_branch = $branches[1];
 
             if($wildcard){
-                $checkrules = 1 if $current_branch =~ m/$from_branch/ && $item_homebranch =~ m/$to_branch/;
+                $checkrules = 1 if $current_branch =~ m/^$from_branch/ && $item_homebranch =~ m/^$to_branch/;
             } else {
                 $checkrules = 1 if $current_branch eq $from_branch && $item_homebranch eq $to_branch;
             }
@@ -4421,8 +4421,8 @@ sub _validate_floatrules {
             $to_branch = $branches[1];
 
             if($wildcard){
-                $checkrules = 1 if ( $current_branch =~ m/$from_branch/ && $item_homebranch =~ m/$to_branch/ )
-                || ( $current_branch =~ m/$to_branch/ && $item_homebranch =~ m/$from_branch/ );
+                $checkrules = 1 if ( $current_branch =~ m/^$from_branch/ && $item_homebranch =~ m/^$to_branch/ )
+                || ( $current_branch =~ m/^$to_branch/ && $item_homebranch =~ m/^$from_branch/ );
             } else {
                 $checkrules = 1 if ( $current_branch eq $from_branch && $item_homebranch eq $to_branch )
                 || ( $current_branch eq $to_branch && $item_homebranch eq $from_branch );
