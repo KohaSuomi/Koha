@@ -899,7 +899,16 @@ elsif ($phase eq 'Export'){
             while (my $row = $sth->fetchrow_arrayref()) {
                 $content .= join("\t", map { $_ // '' } @$row) . "\n";
             }
-        } else {
+        } elsif ($format eq 'finna') {
+            $type = 'application/json';
+            my @biblios;
+            while (my $row = $sth->fetchrow_hashref()) {
+                push(@biblios, $row->{'biblionumber'}) if ($row->{'biblionumber'});
+            }
+            $reportfilename = $reportfilename.".json";
+            $content = finnajson(\@biblios, $reportname);
+        }
+         else {
             my $delimiter = C4::Context->preference('CSVDelimiter') || ',';
             if ( $format eq 'csv' ) {
                 $delimiter = "\t" if $delimiter eq 'tabulation';
@@ -1000,6 +1009,32 @@ elsif ( $phase eq 'Create report from SQL' || $phase eq 'Create report from exis
 
     );
 }
+
+#################################################
+# pick shelves data from array-reference and make json string (finna format)
+sub  finnajson {
+  my @args=@_;
+  my $biblios_ref=$args[0];
+  my $shelfname=$args[1];
+  my $finnaprefix = C4::Context->preference('finnaprefix');
+  my $json_string="{\n \"lists\":[{\n\"description\": null,\n\"public\": 0,\n\"records\":[\n";
+  my $i=0;
+  my $count=scalar @$biblios_ref;
+     while($i < $count)
+     {
+       if($i >0)
+       {
+         $json_string.=",";
+       }
+       
+       $json_string.="{\n\"id\":\"".$finnaprefix.$biblios_ref->[$i]."\",\n";
+       $json_string.="\"notes\":null,\n\"order\":$i,\n\"source\":\"Solr\",\n\"tags\":[]\n}";
+       $i++;
+     }
+     $json_string.="\n],\n\"title\":\"".$shelfname."\"\n\}\n],\"searches\":[]\n}";
+     $json_string = Encode::encode('UTF-8', $json_string);
+     return($json_string);
+} 
 
 # pass $sth, get back an array of names for the column headers
 sub header_cell_values {
