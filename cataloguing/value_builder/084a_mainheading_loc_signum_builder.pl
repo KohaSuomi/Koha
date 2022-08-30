@@ -87,7 +87,7 @@ function Click$function_name(event) {
         }
 
         mainHeading = mainHeading.substring(0, 3).toUpperCase();
-        
+        mainHeading = mainHeading.replace(/ /g,"_");
         // This will determine the order of the signum elements
         // In Lumme it's class mainheading location
         

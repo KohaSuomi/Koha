@@ -89,6 +89,7 @@ function Click$function_name(event) {
         }
         
         mainHeading = mainHeading.substring(0, 3).toUpperCase();
+        mainHeading = mainHeading.replace(/ /g,"_");
 
         if (ccode && shelvingLoc) {
             shelvingLoc = shelvingLoc + "_" + ccode;

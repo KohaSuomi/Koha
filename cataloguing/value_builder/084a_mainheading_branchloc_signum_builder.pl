@@ -93,6 +93,7 @@ function Click$function_name(event) {
         }
 
         mainHeading = mainHeading.substring(0, 3).toUpperCase();
+        mainHeading = mainHeading.replace(/ /g,"_");
         var splitted = branch.split('_')[1];
         if (splitted) {
             branch = splitted;
