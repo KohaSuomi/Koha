@@ -1104,11 +1104,7 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                [% IF ( CAN_user_reserveforothers_modify_holds_priority ) %]
-                                    <th>Priority</th>
-                                [% ELSE %]
-                                    <th>Delete?</th>
-                                [% END %]
+                                <th>Priority</th>
                                 <th>&nbsp;</th>
                                 <th>Patron</th>
                                 <th>Notes</th>

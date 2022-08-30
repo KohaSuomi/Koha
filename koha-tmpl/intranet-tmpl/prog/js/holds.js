@@ -460,7 +460,7 @@ async function load_holds_queue() {
                 className: 'dt-body-nowrap'
             },
             {
-                targets: [1, 2, 9],
+                targets: [2, 9],
                 visible: CAN_user_reserveforothers_modify_holds_priority ? true : false
             },
 
@@ -510,7 +510,7 @@ async function load_holds_queue() {
                         select += '</select>';
                         return select;
                     }else {
-                        return null;
+                        return data.priority;
                     }
                 }
             },
