@@ -4,6 +4,7 @@ about: Ilmoita järjestelmässä havaitusta bugista.
 title: "[BUG]"
 labels: 'bug'
 assignees: ''
+projects: 'Tikettien seuranta'
 
 ---
 
