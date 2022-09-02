@@ -4,9 +4,17 @@ about: Ilmoita järjestelmässä havaitusta bugista.
 title: "[BUG]"
 labels: 'bug'
 assignees: ''
-projects: 'Tikettien seuranta'
-status: 'To do'
-
+body:
+ - type: dropdown
+    id: kimppa
+    attributes:
+      label: Missä kimpassa ongelma esiintyy
+      multiple: true
+      options:
+        - Kaikki
+        - Lappi
+        - OUTI
+        - Vaski
 ---
 
 **Kuvaus**
