@@ -2,7 +2,7 @@
 name: Tukipyyntö
 about: Tee tukipyyntö Koha-Suomelle.
 title: "[REQUESTE]"
-labels: ''
+labels: 'help wanted'
 assignees: ''
 
 ---
