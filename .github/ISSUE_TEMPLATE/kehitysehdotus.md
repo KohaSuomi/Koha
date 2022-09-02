@@ -2,7 +2,7 @@
 name: Kehitysehdotus
 about: Ehdota ominaisuutta kehitykseen.
 title: "[FEATURE]"
-labels: ''
+labels: 'enhancement'
 assignees: ''
 
 ---
