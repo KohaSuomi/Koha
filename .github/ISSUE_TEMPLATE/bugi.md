@@ -5,6 +5,7 @@ title: "[BUG]"
 labels: 'bug'
 assignees: ''
 projects: 'Tikettien seuranta'
+status: 'To do'
 
 ---
 
