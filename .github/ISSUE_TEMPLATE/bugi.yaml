@@ -1,6 +1,6 @@
 name: Bugi
 description: Lisää bugi-ilmoitus
-title: "[Bugi] <title>"
+title: "[Bugi] "
 labels: [bug]
 body:
 - type: textarea
