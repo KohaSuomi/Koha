@@ -21,7 +21,7 @@ body:
     description: Kuinka voi toistaa ongelman/asian?
     placeholder: |
       1. Kohan osio...
-      2. Järjestelmäastus...
+      2. Järjestelmäasetus...
       3. Aja '...'
       4. Virheilmoitus...
   validations:
@@ -32,12 +32,8 @@ body:
     description: |
       examples:
         - Firefox versio x.xx
-        - Chrome
-        - Edge
-    value: |
-        - Firefox:
-        - Chrome:
-        - Edge:
+        - Chrome versio x.xx
+        - Edge versio x.xx
     render: markdown
   validations:
     required: false
