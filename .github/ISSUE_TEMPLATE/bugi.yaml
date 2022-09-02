@@ -1,12 +1,12 @@
 name: Bugi
-description: Lisää bugi-ilmoitus
+description: Lisää bugi-ilmoitus. Muista lisätä [Bugi]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
 title: "[Bugi] "
 labels: [bug]
 body:
 - type: textarea
   attributes:
     label: Mikä vikana?
-    description: Kerro, mikä on vikana.
+    description: Kerro mahdollisimman tarkasti, mikä on vikana. Asiakastietoja ei saa lisätä tikettiin, linkki asiakastietoon riittää.
   validations:
     required: false
 - type: textarea
