@@ -1,5 +1,5 @@
 name: Bugi
-description: Lisää tukipyyntö liittyen Kirkes-konversioon
+description: Lisää bugi-ilmoitus
 title: "[Bugi] <title>"
 labels: [bug]
 body:
