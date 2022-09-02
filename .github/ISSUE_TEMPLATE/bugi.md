@@ -5,19 +5,9 @@ title: "[BUG]"
 labels: 'bug'
 assignees: ''
 body:
- - type: dropdown
-    id: kimppa
+  - type: markdown
     attributes:
-      label: Missä kimpassa ongelma esiintyy
-      multiple: true
-      options:
-        - Kaikki
-        - Lappi
-        - OUTI
-        - Vaski
-
----
-
+      value: 
 **Kuvaus**
 Selkeä kuvaus siitä mitä teit, missä teit ja mitä tapahtui.
 
@@ -37,3 +27,16 @@ Jos mahdollista, niin kuvakaappaus tapahtumasta.
 
 **Muuta lisättävää**
 Lisää jotain muuta bugiin liittyen.
+  - type: dropdown
+    id: kimppa
+    attributes:
+      label: Missä kimpassa ongelma esiintyy
+      multiple: true
+      options:
+        - Kaikki
+        - Lappi
+        - OUTI
+        - Vaski
+
+---
+
