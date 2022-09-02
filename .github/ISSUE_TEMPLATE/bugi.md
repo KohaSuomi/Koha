@@ -1,3 +1,4 @@
+---
 name: Bugi
 about: Ilmoita järjestelmässä havaitusta bugista.
 title: "[BUG]"
@@ -14,3 +15,4 @@ body:
         - Lappi
         - OUTI
         - Vaski
+---
