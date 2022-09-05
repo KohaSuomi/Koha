@@ -49,7 +49,7 @@ body:
   id: osio
   attributes:
     label: Kohan osio
-    description: Mihin Kohan osioon ehdotus liittyy?
+    description: Mihin Kohan osioon bugi liittyy?
     options:
       - Asiakastiedot
       - Automaatit
