@@ -15,25 +15,25 @@ body:
     label: Kohan osio
     description: Mihin Kohan osioon ehdotus liittyy?
     options:
-      Asiakastiedot
-      Automaatit
-      Hankinta
-      Itsepalvelu
-      Kausijulkaisut
-      Kieliasu
-      Kuvailu
-      Lainaus
-      Laskutus
-      Maksut
-      Niteet
-      Palautus
-      Raportit ja tilastot
-      Tiedonhaku
-      Työkalut
-      Varaukset
-      Verkkokirjasto
-      Viestit
-      Ylläpito
+      - Asiakastiedot
+      - Automaatit
+      - Hankinta
+      - Itsepalvelu
+      - Kausijulkaisut
+      - Kieliasu
+      - Kuvailu
+      - Lainaus
+      - Laskutus
+      - Maksut
+      - Niteet
+      - Palautus
+      - Raportit ja tilastot
+      - Tiedonhaku
+      - Työkalut
+      - Varaukset
+      - Verkkokirjasto
+      - Viestit
+      - Ylläpito
   validations:
     required: false
 - type: textarea
