@@ -15,7 +15,6 @@ body:
     label: Kohan osio
     description: Mihin Kohan osioon ehdotus liittyy?
     options:
-      |
       Asiakastiedot
       Automaatit
       Hankinta
