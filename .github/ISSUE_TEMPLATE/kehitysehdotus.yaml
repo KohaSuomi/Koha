@@ -1,4 +1,3 @@
----
 name: Kehitysehdotus
 description: Lisää kehitysehdotus. Muista lisätä [Bugi]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
 title: "[Kehitysehdotus] "
@@ -45,4 +44,3 @@ body:
       Vinkki: Voit liittää kuvia tai tiedostoja klikkaamalla tätä aluetta ja vetämällä kuvan tai tiedoston tänne.
   validations:
     required: false
----
