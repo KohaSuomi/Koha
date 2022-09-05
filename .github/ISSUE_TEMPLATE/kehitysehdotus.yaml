@@ -1,0 +1,48 @@
+---
+name: Kehitysehdotus
+description: Lisää kehitysehdotus. Muista lisätä [Bugi]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
+title: "[Kehitysehdotus] "
+labels: [enhancement]
+body:
+- type: textarea
+  attributes:
+    label: Kehitysehdotukseni
+    description: Kerro mahdollisimman tarkasti, minkälaista ominaisuutta tai toiminnallisuutta toivot. Asiakastietoja ei saa lisätä tikettiin, linkki asiakastietoon riittää.
+  validations:
+    required: false
+- type: dropdown
+  id: osio
+  attributes:
+    label: Kohan osio
+    description: Mihin Kohan osioon ehdotus liittyy?
+    options: |
+      Asiakastiedot
+      Automaatit
+      Hankinta
+      Itsepalvelu
+      Kausijulkaisut
+      Kieliasu
+      Kuvailu
+      Lainaus
+      Laskutus
+      Maksut
+      Niteet
+      Palautus
+      Raportit ja tilastot
+      Tiedonhaku
+      Työkalut
+      Varaukset
+      Verkkokirjasto
+      Viestit
+      Ylläpito
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Jotain muuta?
+    description: |
+     Lisätietoja aiheesta.
+      Vinkki: Voit liittää kuvia tai tiedostoja klikkaamalla tätä aluetta ja vetämällä kuvan tai tiedoston tänne.
+  validations:
+    required: false
+---
