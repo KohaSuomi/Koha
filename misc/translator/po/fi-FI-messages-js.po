@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-31 09:29+0300\n"
+"POT-Creation-Date: 2022-09-08 12:30+0300\n"
 "PO-Revision-Date: 2022-06-02 10:50+0300\n"
 "Last-Translator: pknuuti <paivi.knuutinen@joensuu.fi>\n"
 "Language-Team: none\n"
@@ -147,6 +147,12 @@ msgstr "Oletuskirje, jonka tunnus on '%s', on jo olemassa."
 #: koha-tmpl/intranet-tmpl/prog/js/letter.js:23
 #, javascript-format
 msgid "A letter with the code '%s' already exists for '%s'."
+msgstr "Kirje, jonka tunnus on '%s', on jo olemassa kohteelle '%s'."
+
+#: koha-tmpl/intranet-tmpl/prog/js/letter.js:47
+#, fuzzy, javascript-format
+msgid ""
+"A letter with the code '%s' already exists for '%s'. Overwrite this letter?"
 msgstr "Kirje, jonka tunnus on '%s', on jo olemassa kohteelle '%s'."
 
 #: koha-tmpl/intranet-tmpl/prog/js/pages/tags-review.js:159
@@ -359,7 +365,7 @@ msgstr "Ei voi enää uusia automaattisesti - lainapäivien määrä ylitetty"
 
 #: koha-tmpl/intranet-tmpl/prog/js/checkouts.js:1134
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:372
-#: koha-tmpl/intranet-tmpl/prog/js/holds.js:623
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:627
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -800,7 +806,8 @@ msgstr "Uusi emobudjetti on alle budjetin"
 msgid "Next"
 msgstr "Seuraava"
 
-#: koha-tmpl/intranet-tmpl/prog/js/holds.js:605
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:606
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:608
 msgid "Next available"
 msgstr "Seuraava vapaa"
 
@@ -874,6 +881,10 @@ msgstr "Ei uusintaa ennen %s"
 #: koha-tmpl/intranet-tmpl/prog/js/select2.js:24
 msgid "No results found"
 msgstr "Ei hakutuloksia"
+
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:606
+msgid "Non priority hold"
+msgstr ""
 
 #: koha-tmpl/intranet-tmpl/prog/js/checkouts.js:202
 #: koha-tmpl/intranet-tmpl/prog/js/checkouts.js:494
@@ -981,7 +992,7 @@ msgstr "Syötä vähintään %s merkkiä"
 msgid "Please enter a valid date (should match %s)."
 msgstr "Syötä kelvollinen päivämäärä (pitää olla muodossa %s)."
 
-#: koha-tmpl/intranet-tmpl/prog/js/letter.js:96
+#: koha-tmpl/intranet-tmpl/prog/js/letter.js:114
 msgid "Please fill at least one template."
 msgstr "Täytä vähintään yksi pohja."
 
@@ -998,7 +1009,7 @@ msgstr "Valitse CSV (.csv) tai ODS (.ods) -taulukkotiedosto."
 msgid "Please select or enter a sound."
 msgstr "Valitse tai lisää ääni."
 
-#: koha-tmpl/intranet-tmpl/prog/js/letter.js:87
+#: koha-tmpl/intranet-tmpl/prog/js/letter.js:105
 #, javascript-format
 msgid "Please specify title and content for %s"
 msgstr "Määrittele otsikko ja sisältö kohteelle %s"
@@ -1033,7 +1044,7 @@ msgstr "Edelliset lainat"
 msgid "Print"
 msgstr "Tulosta"
 
-#: koha-tmpl/intranet-tmpl/prog/js/holds.js:658
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:662
 msgid "Print slip"
 msgstr "Tulosta kuitti"
 
@@ -1083,15 +1094,15 @@ msgid "Results"
 msgstr "Hakutulos"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:229
-#: koha-tmpl/intranet-tmpl/prog/js/holds.js:637
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:641
 msgid "Resume"
 msgstr "Jatka"
 
-#: koha-tmpl/intranet-tmpl/prog/js/holds.js:629
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:633
 msgid "Revert transit status"
 msgstr "Peruuta kuljetustila"
 
-#: koha-tmpl/intranet-tmpl/prog/js/holds.js:631
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:635
 msgid "Revert waiting status"
 msgstr "Peruuta odottava-tila"
 
@@ -1204,7 +1215,7 @@ msgstr "Sunnuntai"
 
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:232
 #: koha-tmpl/intranet-tmpl/prog/js/holds.js:371
-#: koha-tmpl/intranet-tmpl/prog/js/holds.js:639
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:643
 msgid "Suspend"
 msgstr "Keskeytä"
 
@@ -1212,11 +1223,11 @@ msgstr "Keskeytä"
 msgid "Suspend hold on"
 msgstr "Keskeytä varaus"
 
-#: koha-tmpl/intranet-tmpl/prog/js/holds.js:643
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:647
 msgid "Suspend on"
 msgstr "Keskeytetty tähän saakka"
 
-#: koha-tmpl/intranet-tmpl/prog/js/holds.js:645
+#: koha-tmpl/intranet-tmpl/prog/js/holds.js:649
 msgid "Suspend until"
 msgstr "Keskeytä tähän saakka"
 
