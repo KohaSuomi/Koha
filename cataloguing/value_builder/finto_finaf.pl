@@ -45,53 +45,62 @@ my $builder = sub {
     my $js  = <<END_OF_JS;
 <script type="text/javascript">
 //<![CDATA[
-	\$(function () {
+	\$( document ).ready(function() {
 	 \$($function_name).css("margin-bottom", "5px");
 	 \$($function_name).after('<select class="$function_name"></select>');
-	 \$('.$function_name').select2({
-		ajax: {
-			url: 'https://api.finto.fi/rest/v1/search',
-			dataType: 'json',
-			data: function(params) {
-				var query = {
-				vocab: '$vocab',
-				query: '*' + params.term + '*',
-				type: 'skos:Concept',
-				unique: 1,
-				}
-				return query;
-	        },
-			processResults: function(data) {
-				var tmp = \$.map(data.results, function(obj){
-								var sl = obj.prefLabel;
-								if (obj.altLabel) { sl += " <i>("+obj.altLabel+")</i>" };
-					if (obj.vocab && / /.test("$vocab")) { sl += " <i>("+obj.vocab+")</i>" }
-								return { id: obj.prefLabel,
-										text: sl,
-										uri: obj.uri,
-										vocab: obj.vocab,
-										localname: obj.localname }
-						});
-				return { results: tmp };
-	      	},
-			cache: true
-		},
-		minimumInputLength: 2,
-		templateSelection: formatSelection,
-		escapeMarkup: function(m) { return m; },
+	 selectBox$function_name();
+	});
+	
+	\$(".buttonPlus").click(function (){
+		selectBox$function_name();
+	});
+
+	function selectBox$function_name() {
+		\$('.$function_name').select2({
+			ajax: {
+				url: 'https://api.finto.fi/rest/v1/search',
+				dataType: 'json',
+				data: function(params) {
+					var query = {
+					vocab: '$vocab',
+					query: '*' + params.term + '*',
+					type: 'skos:Concept',
+					unique: 1,
+					}
+					return query;
+				},
+				processResults: function(data) {
+					var tmp = \$.map(data.results, function(obj){
+									var sl = obj.prefLabel;
+									if (obj.altLabel) { sl += " <i>("+obj.altLabel+")</i>" };
+						if (obj.vocab && / /.test("$vocab")) { sl += " <i>("+obj.vocab+")</i>" }
+									return { id: obj.prefLabel,
+											text: sl,
+											uri: obj.uri,
+											vocab: obj.vocab,
+											localname: obj.localname }
+							});
+					return { results: tmp };
+				},
+				cache: true
+			},
+			minimumInputLength: 2,
+			templateSelection: formatSelection$function_name,
+			escapeMarkup: function(m) { return m; },
 		});
 
-		function formatSelection (data) {
-			if (data.id === '') {
-				return 'Etsi Fintosta';
-			}
-			var id = \$($function_name).attr('id');
-			if(data.localname) {
-				newin=window.open(\"../cataloguing/plugin_launcher.pl?plugin_name=finto_finaf.pl&index=\"+ id +\"&localname=\"+data.localname,\"tag_editor\",'width=1000,height=600,toolbar=false,scrollbars=yes');
-			}
-			\$('.$function_name').empty();
+	}
+
+	function formatSelection$function_name (data) {
+		if (data.id === '') {
+			return 'Etsi Fintosta';
 		}
-	});
+		var id = \$($function_name).attr('id');
+		if(data.localname) {
+			newin=window.open(\"../cataloguing/plugin_launcher.pl?plugin_name=finto_finaf.pl&index=\"+ id +\"&localname=\"+data.localname,\"tag_editor\",'width=1000,height=600,toolbar=false,scrollbars=yes');
+		}
+		\$('.$function_name').empty();
+	}
 
 	 function Click$function_name(event) {
 
