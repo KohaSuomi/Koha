@@ -50,7 +50,7 @@ my $builder = sub {
 	 \$($function_name).after('<select class="$function_name"></select>');
 	 selectBox$function_name();
 	});
-	
+
 	\$(".buttonPlus").click(function (){
 		selectBox$function_name();
 	});
@@ -102,7 +102,11 @@ my $builder = sub {
 		\$('.$function_name').empty();
 	}
 
-	 function Click$function_name(event) {
+	function MouseOver$function_name(event) {
+		selectBox$function_name();
+	}
+
+	function Click$function_name(event) {
 
 		var re = /^(tag_...)/;
 	    var found = event.data.id.match(re);
