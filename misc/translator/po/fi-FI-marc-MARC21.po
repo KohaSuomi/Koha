@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-09-08 12:30+0300\n"
-"PO-Revision-Date: 2022-06-02 12:13+0300\n"
+"PO-Revision-Date: 2022-09-08 13:20+0300\n"
 "Last-Translator: pknuuti <paivi.knuutinen@joensuu.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -112,12 +112,12 @@ msgstr "#- Ei määritelty"
 msgid "#record"
 msgstr "#tietue"
 
-#. %1$s:  IF ( total ) 
-#. %2$s:  from | html 
-#. %3$s:  to | html 
-#. %4$s:  total | html 
-#. %5$s:  ELSE 
-#. %6$s:  END 
+#. %1$s:  IF ( total )
+#. %2$s:  from | html
+#. %3$s:  to | html
+#. %4$s:  total | html
+#. %5$s:  ELSE
+#. %6$s:  END
 #: koha-tmpl/intranet-tmpl/prog/en/modules/cataloguing/value_builder/marc21_linking_section.tt:56
 #, c-format
 msgid "%sResults %s to %s of %s %sNo results found %s"
@@ -1747,17 +1747,17 @@ msgstr "; Visuaalisen aineiston tyyppi: "
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:1845
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-"
-"param name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name="
-"\"axis\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:with-"
-"param> </xsl:call-template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
+"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
+"with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:with-param> </xsl:"
+"call-template> </xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-"
-"param name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name="
-"\"axis\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:with-"
-"param> </xsl:call-template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
+"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
+"with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:with-param> </xsl:"
+"call-template> </xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1252
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1440
@@ -1767,17 +1767,17 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:1810
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-"
-"param name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name="
-"\"axis\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-"
-"param> </xsl:call-template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
+"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
+"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
+"template> </xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-"
-"param name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name="
-"\"axis\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-"
-"param> </xsl:call-template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
+"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
+"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
+"template> </xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1331
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1514
@@ -1787,32 +1787,32 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:1884
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-"
-"param name=\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis"
-"\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> "
-"</xsl:call-template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
+"\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
+"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
+"template> </xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-"
-"param name=\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis"
-"\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> "
-"</xsl:call-template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
+"\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
+"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
+"template> </xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:132
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3.xsl:129
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:137
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">a</xsl:with-param> </xsl:call-template> </xsl:with-param> </"
-"xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">a</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
+"template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">a</xsl:with-param> </xsl:call-template> </xsl:with-param> </"
-"xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">a</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
+"template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1361
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1543
@@ -1822,59 +1822,57 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:1913
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">adfgklmorsv</xsl:with-param> </xsl:call-template> </xsl:with-"
-"param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">adfgklmorsv</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
+"call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">adfgklmorsv</xsl:with-param> </xsl:call-template> </xsl:with-"
-"param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">adfgklmorsv</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
+"call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:2193
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3.xsl:2420
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-"
-"param> </xsl:call-template> <xsl:call-template name=\"part\"/> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
+"call-template> <xsl:call-template name=\"part\"/> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-"
-"param> </xsl:call-template> <xsl:call-template name=\"part\"/> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
+"call-template> <xsl:call-template name=\"part\"/> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:2643
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-"
-"param> </xsl:call-template> <xsl:call-template name=\"part\"></xsl:call-"
-"template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
+"call-template> <xsl:call-template name=\"part\"></xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-"
-"param> </xsl:call-template> <xsl:call-template name=\"part\"></xsl:call-"
-"template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
+"call-template> <xsl:call-template name=\"part\"></xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:206
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3.xsl:216
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:215
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">ah</xsl:with-param> </xsl:call-template> </xsl:with-param> </"
-"xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">ah</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
+"template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">ah</xsl:with-param> </xsl:call-template> </xsl:with-param> </"
-"xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">ah</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
+"template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1183
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1199
@@ -1884,15 +1882,15 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:1569
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">av</xsl:with-param> </xsl:call-template> </xsl:with-param> </"
-"xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">av</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
+"template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name="
-"\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
-"name=\"codes\">av</xsl:with-param> </xsl:call-template> </xsl:with-param> </"
-"xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
+"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
+"\">av</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
+"template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1031
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1216
@@ -1914,13 +1912,13 @@ msgstr ""
 msgid ""
 "<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
 "\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:"
-"call-template> "
+"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
+"template> "
 msgstr ""
 "<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
 "\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:"
-"call-template> "
+"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
+"template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1078
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1256
@@ -1928,13 +1926,13 @@ msgstr ""
 msgid ""
 "<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
 "\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:"
-"call-template> "
+"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
+"template> "
 msgstr ""
 "<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
 "\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:"
-"call-template> "
+"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
+"template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:69
 #, c-format
@@ -2076,8 +2074,7 @@ msgstr "?q=se,phr:\""
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:1381
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:1395
 #, c-format
-msgid ""
-"A date specified by the code in 008/06 (Type of date/Publication status)"
+msgid "A date specified by the code in 008/06 (Type of date/Publication status)"
 msgstr "Päivämäärä määritelty kohdassa 008/06"
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/xslt/MARC21slim2OPACDetail.xsl:752
@@ -2281,9 +2278,9 @@ msgid "Afroasiatic (Other)"
 msgstr "afroaasialaiset kielet"
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:452
-#, fuzzy, c-format
+#, c-format
 msgid "Age restriction: "
-msgstr "Kuvaus: "
+msgstr "Ikäraja: "
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/xslt/MARC21Languages.xsl:17
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21Languages.xsl:17
@@ -2558,7 +2555,7 @@ msgstr "Anna seuraava"
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:568
 #, c-format
 msgid "Associated place: "
-msgstr ""
+msgstr "Liittyvä paikka: "
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/xslt/MARC21Languages.xsl:37
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21Languages.xsl:37
@@ -3257,9 +3254,9 @@ msgid "Canzonas"
 msgstr "Canzonat"
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:606
-#, fuzzy, c-format
+#, c-format
 msgid "Captions language: "
-msgstr "Puhuttu kieli: "
+msgstr "Tekstityksen kieli: "
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:1080
 #, c-format
@@ -4105,9 +4102,9 @@ msgid "Country music"
 msgstr "Kantrimusiikki"
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:551
-#, fuzzy, c-format
+#, c-format
 msgid "Creation time: "
-msgstr "[Otsikkonimeke]"
+msgstr "Luontiaika: "
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/xslt/MARC21slim2OPACDetail.xsl:108
 #, c-format
@@ -4163,9 +4160,9 @@ msgid "Croatian"
 msgstr "kroatia"
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:478
-#, fuzzy, c-format
+#, c-format
 msgid "Current publication frequency: "
-msgstr "Virallisjulkaisu"
+msgstr "Nykyinen julkaisutiheys: "
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/xslt/MARC21Languages.xsl:107
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21Languages.xsl:107
@@ -4566,8 +4563,8 @@ msgstr "Diagrammi"
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:988
 #, c-format
 msgid ""
-"Diameter of an open reel or disc, or the dimensions of a cassette, "
-"cartridge, or cylinder."
+"Diameter of an open reel or disc, or the dimensions of a cassette, cartridge, "
+"or cylinder."
 msgstr "Kelan tai levyn halkaisija, tai kasetin tai lieriön mitat."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:489
@@ -5085,9 +5082,9 @@ msgstr "Bittitarkkuus 001-999"
 #, c-format
 msgid ""
 "Exact bit depth of the scanned image(s) that comprise the electronic "
-"resource, or a three-character alphabetic code which indicates that the "
-"exact bit depth cannot be recorded. Since only exact bit depth is useful, "
-"coding should not include missing digits represented by hyphens (-)."
+"resource, or a three-character alphabetic code which indicates that the exact "
+"bit depth cannot be recorded. Since only exact bit depth is useful, coding "
+"should not include missing digits represented by hyphens (-)."
 msgstr ""
 "Skannatun kuvan/kuvien bittitarkkuus voidaan merkitä kolmella numerolla. Jos "
 "tarkkuutta ei tiedetä, käytetään kirjainkoodeja. Koska bittitarkkuus on "
@@ -5118,12 +5115,12 @@ msgstr "Jäljennös"
 #, c-format
 msgid ""
 "Family of braille to which the item belongs. This is not the particular "
-"braille code, but the type of braille code used, representing different "
-"types of written symbols. Up to two braille types may be indicated, or the "
+"braille code, but the type of braille code used, representing different types "
+"of written symbols. Up to two braille types may be indicated, or the "
 "cataloging agency can choose to encode only the predominate type. Multiple "
-"codes are coded in order of predominance, if any. If fewer than two codes "
-"are assigned, the codes are left justified and unused positions contain "
-"blanks (#)."
+"codes are coded in order of predominance, if any. If fewer than two codes are "
+"assigned, the codes are left justified and unused positions contain blanks "
+"(#)."
 msgstr ""
 "Kohokirjoituksen laji. Voidaan tallentaa ainoastaan hallitsevin koodi tai "
 "kaksi koodia tärkeysjärjestyksessä. Jos tallennetaan vain yksi koodi, se "
@@ -5614,8 +5611,7 @@ msgstr "Yleinen"
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:830
 #, c-format
-msgid ""
-"General angle of the device from which the remote-sensing image is made."
+msgid "General angle of the device from which the remote-sensing image is made."
 msgstr "Missä kulmassa laite on ollut kuvattaessa."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:821
@@ -6027,9 +6023,8 @@ msgid ""
 "should be coded for the original capture and storage technique, even though "
 "such re-releases may have been enhanced using another technique."
 msgstr ""
-"Miten ääni alunperin tallennettiin ja varastoitiin. Uudelleenjulkaistu "
-"äänite koodataan sen mukaan, miten ääni alunperin tallennettiin ja "
-"varastoitiin."
+"Miten ääni alunperin tallennettiin ja varastoitiin. Uudelleenjulkaistu äänite "
+"koodataan sen mukaan, miten ääni alunperin tallennettiin ja varastoitiin."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:122
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:320
@@ -6276,8 +6271,8 @@ msgstr "Infometrinen SAR"
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:154
 #, c-format
 msgid ""
-"Information about the source of a digital file important to the creation, "
-"use and management of digitally reformatted materials. "
+"Information about the source of a digital file important to the creation, use "
+"and management of digitally reformatted materials. "
 msgstr ""
 "Alkuperätiedolla on merkitystä, kun digitoituja aineistoja tuotetaan, "
 "käytetään ja hallinnoidaan. "
@@ -8053,8 +8048,8 @@ msgstr "mossi"
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:734
 #, c-format
 msgid ""
-"More specific color characteristics of the moving image than are contained "
-"in 007/03 (Color). "
+"More specific color characteristics of the moving image than are contained in "
+"007/03 (Color). "
 msgstr ""
 "Tarkempi elokuvan määritys kuin kohdassa 007/03 (Väritys). Koodeilla b-m on "
 "ainoastaan historiallista merkitystä. "
@@ -9361,18 +9356,17 @@ msgid ""
 "image files, digitized audio and video tapes, etc.)."
 msgstr ""
 "Yksikirjaiminen koodi, jolla ilmaistaan aineistotyypin olevan elektroninen "
-"aineisto (esim. ohjelmat, tiedostot, kuvat, digitoidut ääni- ja "
-"videokasetit, jne.)."
+"aineisto (esim. ohjelmat, tiedostot, kuvat, digitoidut ääni- ja videokasetit, "
+"jne.)."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:182
 #, c-format
 msgid ""
 "One-character alphabetic code that indicates the category of material to "
-"which the item belongs is globe, which is defined as the model of a "
-"celestial body, usually the Earth or the celestial sphere, depicted on the "
-"surface of a sphere. Code d is used when 008/25 (Type of cartographic "
-"material) contains code d. A fill character (|) is not allowed in this "
-"position."
+"which the item belongs is globe, which is defined as the model of a celestial "
+"body, usually the Earth or the celestial sphere, depicted on the surface of a "
+"sphere. Code d is used when 008/25 (Type of cartographic material) contains "
+"code d. A fill character (|) is not allowed in this position."
 msgstr ""
 "Yksikirjaiminen koodi, joka ilmaisee karttapallon tyypin. Karttapallo on "
 "taivaankappaleen kuvaus pallon pinnalla. Ks. merkkipaikkojen 01-05 tarkemmat "
@@ -9383,16 +9377,16 @@ msgstr ""
 msgid ""
 "One-character alphabetic code that indicates the category of material to "
 "which the item belongs is microform. Microform is a generic term for any "
-"medium, transparent or opaque, bearing microimages. A microimage is a unit "
-"(e.g., a page) of textual, graphic, or computer-generated material that is "
+"medium, transparent or opaque, bearing microimages. A microimage is a unit (e."
+"g., a page) of textual, graphic, or computer-generated material that is "
 "contained on aperture cards, microfiche, microfilm, microopaques, or other "
 "microformats and that is too small to be read without magnification. "
 "Microforms may be reproductions of existing textual or graphic materials or "
 "they may be original publications. A fill character (|) is not allowed in "
 "this position."
 msgstr ""
-"Yksikirjaiminen koodi, joka ilmaisee mikrotallenteen muodon. Mikrotallenne "
-"on läpinäkyvä tai -näkymätön viestin, joka sisältää suurennuslaitteen avulla "
+"Yksikirjaiminen koodi, joka ilmaisee mikrotallenteen muodon. Mikrotallenne on "
+"läpinäkyvä tai -näkymätön viestin, joka sisältää suurennuslaitteen avulla "
 "luettavia mikrokuvia. Mikrotallenne voi olla alkuperäisjulkaisu tai kopio "
 "olemassa olevasta teksti- tai graafisesta aineistosta. Täyttömerkki | ei ole "
 "sallittu tässä merkkipaikassa."
@@ -9428,10 +9422,10 @@ msgid ""
 "One-character alphabetic code that indicates the category of material to "
 "which the item belongs is unspecified, which means that the item is not "
 "identified by one of the other 007 code values or that its multiple physical "
-"forms are not being specifically denoted (for instance, when the item in "
-"hand is a collection containing different material categories and an "
-"institution chooses not to input separate 007 fields for the various "
-"components). A fill character (|) is not allowed in this position."
+"forms are not being specifically denoted (for instance, when the item in hand "
+"is a collection containing different material categories and an institution "
+"chooses not to input separate 007 fields for the various components). A fill "
+"character (|) is not allowed in this position."
 msgstr ""
 "Yksikirjaiminen koodi, joka ilmaisee materiaalin olevan tarkemmin "
 "määrittelemätön. Kohteen ulkoasu ei sovi mihinkään muuhun kentän 007 "
@@ -9448,10 +9442,10 @@ msgid ""
 "registered. It is designed for playback on a television receiver, or video "
 "monitor. A fill character (|) is not allowed in this position."
 msgstr ""
-"Yksikirjaiminen koodi, joka ilmaisee videotallenteen tyypin. Videotallenne "
-"on (liikkuvista) visuaalisista kuvista koostuva, yleensä myös ääntä "
-"sisältävä tallenne, joka on suunniteltu toistettavaksi "
-"televisiovastaanottimen tai videomonitorin kautta."
+"Yksikirjaiminen koodi, joka ilmaisee videotallenteen tyypin. Videotallenne on "
+"(liikkuvista) visuaalisista kuvista koostuva, yleensä myös ääntä sisältävä "
+"tallenne, joka on suunniteltu toistettavaksi televisiovastaanottimen tai "
+"videomonitorin kautta."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:296
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:639
@@ -9465,8 +9459,8 @@ msgstr "Nimekkeen materiaali."
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:1048
 #, c-format
 msgid ""
-"One-character alphabetic code that indicates the form of material in which "
-"an item was originally published."
+"One-character alphabetic code that indicates the form of material in which an "
+"item was originally published."
 msgstr "Materiaali, missä nimeke on julkaistu alkuperäisesti."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:521
@@ -9555,8 +9549,8 @@ msgstr "Jatkuvan julkaisun tyyppi."
 #, c-format
 msgid ""
 "One-character alphabetic code that indicates the type of dates given in "
-"008/07-10 (Date 1) and 008/11-14 (Date 2). For continuing resources, the "
-"code in 008/06 also indicates the publication status."
+"008/07-10 (Date 1) and 008/11-14 (Date 2). For continuing resources, the code "
+"in 008/06 also indicates the publication status."
 msgstr ""
 "Kentissä 008/07-10 (Date 1) ja 008/11-14 (Date 2) annettujen vuosien tyyppi. "
 "Jatkuvissa julkaisuissa koodi kentässä 008/06 ilmaisee julkaisun tilan."
@@ -9588,8 +9582,7 @@ msgid ""
 "One-character alphabetic code that indicates whether or not an item contains "
 "biographical material, and if so, what the biographical characteristics are."
 msgstr ""
-"Sisältääkö kuvailun kohde elämäkerrallista aineistoa ja minkä tyyppistä se "
-"on."
+"Sisältääkö kuvailun kohde elämäkerrallista aineistoa ja minkä tyyppistä se on."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:181
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:452
@@ -9601,17 +9594,17 @@ msgid ""
 "types), any subdivision of such a body and, if so, the jurisdictional level "
 "of the agency."
 msgstr ""
-"Onko tietokonetiedosto virallisen tai julkishallinnollisen tahon tuottama "
-"tai sen käyttöön tarkoitettu ja mikä on kyseisen tahon toimivalta."
+"Onko tietokonetiedosto virallisen tai julkishallinnollisen tahon tuottama tai "
+"sen käyttöön tarkoitettu ja mikä on kyseisen tahon toimivalta."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:282
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:625
 #, c-format
 msgid ""
-"One-character alphabetic code that indicates whether the item is published "
-"or produced by or for an international, national, provincial, state, or "
-"local government agency, or by any subdivision of such a body, and, if so, "
-"the jurisdictional level of the agency."
+"One-character alphabetic code that indicates whether the item is published or "
+"produced by or for an international, national, provincial, state, or local "
+"government agency, or by any subdivision of such a body, and, if so, the "
+"jurisdictional level of the agency."
 msgstr ""
 "Onko kohde virallisen tai julkishallinnollisen tahon tuottama tai sen "
 "käyttöön tarkoitettu ja mikä on kyseisen tahon toimivalta."
@@ -9620,10 +9613,10 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:1277
 #, c-format
 msgid ""
-"One-character alphabetic code that indicates whether the item is published "
-"or produced by or for an international, provincial, national, state, or "
-"local government agency, or by any subdivision of such a body, and, if so, "
-"the jurisdictional level of the agency."
+"One-character alphabetic code that indicates whether the item is published or "
+"produced by or for an international, provincial, national, state, or local "
+"government agency, or by any subdivision of such a body, and, if so, the "
+"jurisdictional level of the agency."
 msgstr ""
 "Onko kohde virallisen tai julkishallinnollisen tahon tuottama tai sen "
 "käyttöön tarkoitettu ja mikä on kyseisen tahon toimivalta."
@@ -9633,8 +9626,7 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:428
 #, c-format
 msgid ""
-"One-character alphabetic code that specifies the form of material for the "
-"item"
+"One-character alphabetic code that specifies the form of material for the item"
 msgstr "Kohteen materiaalin muoto."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:574
@@ -9696,8 +9688,8 @@ msgstr ""
 #, c-format
 msgid ""
 "One-character code that indicates the original cataloging source of the "
-"record. If the cataloging source is known, it is identified in subfield $a "
-"of field 040 (Cataloging Source)."
+"record. If the cataloging source is known, it is identified in subfield $a of "
+"field 040 (Cataloging Source)."
 msgstr ""
 "Tietueen alkueräisen luetteloinnin lähde. Jos luetteloinnin lähde on "
 "tunnettu, se ilmoitetaan kentässä 040$a (Alkuperäinen luetteloiva "
@@ -9713,12 +9705,12 @@ msgstr ""
 #, c-format
 msgid ""
 "One-character code that indicates whether any data in a bibliographic record "
-"is a modification of information that appeared on the item being cataloged "
-"or that was intended to be included in the MARC record."
+"is a modification of information that appeared on the item being cataloged or "
+"that was intended to be included in the MARC record."
 msgstr ""
 "Yksimerkkinen koodi, joka ilmaisee onko tietueessa muunneltua tietoa "
-"verrattuna kuvailun kohteeseen. Koodia ei käytetä jatkuvassa "
-"luetteloinnissa, vaan lähinnä takautuvissa konversioissa."
+"verrattuna kuvailun kohteeseen. Koodia ei käytetä jatkuvassa luetteloinnissa, "
+"vaan lähinnä takautuvissa konversioissa."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:86
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:284
@@ -9753,8 +9745,8 @@ msgstr "Onko kuvailun kohde juhlajulkaisu."
 msgid ""
 "One-character code used to indicate the literary form of an item. Numeric "
 "codes 0 and 1 provide a generic identification of whether or not the item is "
-"a work of fiction. Alphabetic codes may be used to identify specific "
-"literary forms."
+"a work of fiction. Alphabetic codes may be used to identify specific literary "
+"forms."
 msgstr ""
 "Numerokoodeilla 0 ja 1 voidaan määritellä onko kuvailun kohde kauno- vai "
 "tietokirjallisuutta. Kirjainkoodeja voidaan käyttää tarkempien "
@@ -10306,9 +10298,9 @@ msgid "Pending hold"
 msgstr "Odottava varaus"
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:499
-#, fuzzy, c-format
+#, c-format
 msgid "Performance medium: "
-msgstr "Heijastettava kuva tai viestin"
+msgstr "Esityskokoonpano"
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:421
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:834
@@ -10503,10 +10495,10 @@ msgstr "Soita näyte"
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:1065
 #, c-format
 msgid ""
-"Playback characteristics for sound recordings, including special equipment "
-"or equalization necessary for proper playback. This code is not used to "
-"indicate special processes used during recording unless those processes must "
-"be applied during playback."
+"Playback characteristics for sound recordings, including special equipment or "
+"equalization necessary for proper playback. This code is not used to indicate "
+"special processes used during recording unless those processes must be "
+"applied during playback."
 msgstr ""
 "Äänentoiston erityispiirteet, myös erikoislaitteet tai tasaus, joita "
 "tarvitaan kunnolliseen äänentoistoon. Koodilla ei ilmaista äänitteen "
@@ -10768,9 +10760,9 @@ msgid "Producer: "
 msgstr "Tuottaja: "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:534
-#, fuzzy, c-format
+#, c-format
 msgid "Producing country: "
-msgstr "Tuotantoon osallistujat: "
+msgstr "Tuottajan maa: "
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/xslt/MARC21slim2OPACDetail.xsl:116
 #, c-format
@@ -11074,10 +11066,10 @@ msgstr "Laatu ja käyttötarkoitus"
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:172
 #, c-format
 msgid ""
-"Reformatting quality of the electronic resource; an overall assessment of "
-"the physical quality of the electronic resource in relation to its intended "
-"use. It can be used to judge the level of quality of a file, and an "
-"institution's commitment to maintain its availability over time."
+"Reformatting quality of the electronic resource; an overall assessment of the "
+"physical quality of the electronic resource in relation to its intended use. "
+"It can be used to judge the level of quality of a file, and an institution's "
+"commitment to maintain its availability over time."
 msgstr ""
 "Elektronisen aineiston laatu ja käyttötarkoitus. Onko aineiston laatu "
 "suhteessa käyttötarkoitukseen (onko esim. alkuperäisen veroinen, "
@@ -12081,8 +12073,8 @@ msgstr "\"Spanner short form scoring\""
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:10
 #, c-format
 msgid ""
-"Special class of cartographic material to which the item belongs. Usually "
-"the class of physical object, e.g., a diagram."
+"Special class of cartographic material to which the item belongs. Usually the "
+"class of physical object, e.g., a diagram."
 msgstr ""
 "Kartografisen aineiston (lukuunottamatta karttapalloja) tyyppi. Yleensä "
 "aineiston fyysinen tyyppi, esim. diagrammi."
@@ -12126,8 +12118,7 @@ msgstr "Mikrotallenteen erityistyyppi, esim. mikrokortti."
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:615
 #, c-format
 msgid ""
-"Special class of motion picture to which the item belongs., e.g., a film "
-"reel."
+"Special class of motion picture to which the item belongs., e.g., a film reel."
 msgstr "Elokuvan erityismääre, mihin aineisto kuuluu, esim. filmikela."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:524
@@ -12146,8 +12137,7 @@ msgstr "Heijastettavan kuvan erityismääre, esim. dia."
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:934
 #, c-format
 msgid ""
-"Special class of sound recording to which the item belongs (e.g., a "
-"cylinder)."
+"Special class of sound recording to which the item belongs (e.g., a cylinder)."
 msgstr "Äänitteen erityismääre, esim. äänilieriö."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:231
@@ -12237,8 +12227,8 @@ msgid ""
 "the projected graphic or separate) and the type of sound playback required "
 "for the item."
 msgstr ""
-"Millaiselle viestimelle ääni on tallennettu (joko mukana heijastettavan "
-"kuvan viestimellä tai erikseen) ja millainen äänentoisto tarvitaan."
+"Millaiselle viestimelle ääni on tallennettu (joko mukana heijastettavan kuvan "
+"viestimellä tai erikseen) ja millainen äänentoisto tarvitaan."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:1158
 #, c-format
@@ -12928,12 +12918,12 @@ msgstr "Kolmimerkkinen koodi"
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:264
 #, c-format
 msgid ""
-"Three-character code that indicates the braille music format of the item. "
-"The music formats are the way measures, sections, parts, and related "
-"information, such as words, are presented in relation to each other. Up to "
-"three formats may be indicated, left justified in order of predominance. If "
-"fewer than three codes are assigned, the codes are left justified and unused "
-"positions contain blanks (#)."
+"Three-character code that indicates the braille music format of the item. The "
+"music formats are the way measures, sections, parts, and related information, "
+"such as words, are presented in relation to each other. Up to three formats "
+"may be indicated, left justified in order of predominance. If fewer than "
+"three codes are assigned, the codes are left justified and unused positions "
+"contain blanks (#)."
 msgstr ""
 "Kolmimerkkinen koodi ilmaisee pistenuottikirjoituksen muodon. Miten tahdit, "
 "sektiot, äänet ja muut niihin liittyvä tieto kuten sanat esitetään suhteessa "
@@ -13219,9 +13209,9 @@ msgid ""
 "Two-character alphabetic code that indicates the form of composition. Codes "
 "are based on Library of Congress subject headings. If more than one code is "
 "appropriate, the code mu (Multiple forms) is used in 008/18-19 and all "
-"appropriate specific codes are given in field 047 (Form of Composition). "
-"Code mu (Multiple forms) may also signify that field 047 (Form of "
-"Composition) contains non-MARC composition codes."
+"appropriate specific codes are given in field 047 (Form of Composition). Code "
+"mu (Multiple forms) may also signify that field 047 (Form of Composition) "
+"contains non-MARC composition codes."
 msgstr ""
 "Kaksikirjaiminen koodi, joka ilmoittaa musiikinlajin. Musiikinlajit "
 "perustuvat Library of Congressin asiasanoihin. Jos useampi kuin yksi koodi "
@@ -13234,8 +13224,8 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:561
 #, c-format
 msgid ""
-"Two-character alphabetic code that indicates the projection used in "
-"producing the item."
+"Two-character alphabetic code that indicates the projection used in producing "
+"the item."
 msgstr "Kaksikirjaiminen koodi, joka ilmoittaa projektion."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:695
@@ -13274,11 +13264,11 @@ msgstr "Elektronisen aineiston tyyppi"
 #, c-format
 msgid ""
 "Type of construction of the platform serving as the base for the remote-"
-"sensing device. For the purposes of this data element, \"platform\" refers "
-"to any structure that serves as a base, not only flat surfaces."
+"sensing device. For the purposes of this data element, \"platform\" refers to "
+"any structure that serves as a base, not only flat surfaces."
 msgstr ""
-"Alustan rakenne, millaisella alustalla laite on ollut kuvattaessa. Alusta "
-"voi tässä viitata muihinkin kuin tasaisiin pintoihin."
+"Alustan rakenne, millaisella alustalla laite on ollut kuvattaessa. Alusta voi "
+"tässä viitata muihinkin kuin tasaisiin pintoihin."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:551
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:1038
@@ -13318,8 +13308,8 @@ msgid ""
 "Type of material (other than normal museum matting) to which the primary "
 "support (007/04) is attached."
 msgstr ""
-"Kehys, tuki tai montaasi, johon kuva (materiaali ilmaistu 007/04 kohdassa) "
-"on liitetty."
+"Kehys, tuki tai montaasi, johon kuva (materiaali ilmaistu 007/04 kohdassa) on "
+"liitetty."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:356
 #, c-format
@@ -13338,8 +13328,8 @@ msgstr "Heijastettavan kuvan kehys, tuki tai kokoonpano."
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:559
 #, c-format
 msgid ""
-"Type of material used for the support or base on which an image is printed "
-"or executed."
+"Type of material used for the support or base on which an image is printed or "
+"executed."
 msgstr "Kuvan pohjan ensisijainen materiaali."
 
 #. SELECT name=f6
@@ -13479,8 +13469,8 @@ msgstr "Määrittelemätön"
 #, c-format
 msgid "Undefined; Each contains a blank (#) or a fill character (|)"
 msgstr ""
-"Määrittelemätön; kukin merkkipaikka sisältää tyhjämerkin (#) tai "
-"täyttömerkin (|)"
+"Määrittelemätön; kukin merkkipaikka sisältää tyhjämerkin (#) tai täyttömerkin "
+"(|)"
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:268
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:505
@@ -13509,8 +13499,8 @@ msgstr "Määrittelemätön; sisältää tyhjämerkin (#) tai täyttömerkin (|)
 #, c-format
 msgid "Undefined; each contains a blank (#) or a fill character (|)."
 msgstr ""
-"Määrittelemätön; kukin merkkipaikka sisältää tyhjämerkin (#) tai "
-"täyttömerkin (|)"
+"Määrittelemätön; kukin merkkipaikka sisältää tyhjämerkin (#) tai täyttömerkin "
+"(|)"
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/xslt/MARC21Languages.xsl:462
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21Languages.xsl:462
@@ -13736,9 +13726,9 @@ msgstr ""
 #, c-format
 msgid ""
 "Up to four one-character alphabetic codes that indicate the relief type "
-"specified on the item. Codes are recorded in order of their importance to "
-"the described item. If fewer than four codes are assigned, the codes are "
-"left justified and each unused position contains a blank (#)"
+"specified on the item. Codes are recorded in order of their importance to the "
+"described item. If fewer than four codes are assigned, the codes are left "
+"justified and each unused position contains a blank (#)"
 msgstr ""
 "Nelimerkkinen koodi ilmaisee miten korkeuserot on esitetty. Koodit "
 "luetteloidaan tärkeysjärjestyksessä. Jos tallennetaan vähemmän kuin neljä "
@@ -13795,8 +13785,8 @@ msgstr ""
 msgid ""
 "Up to two one-character alphabetic codes that indicate the special format "
 "characteristics of the map. Codes are recorded in order of their importance "
-"to the described item. If only one code is assigned, it is left justified "
-"and the unused position contains a blank (#)."
+"to the described item. If only one code is assigned, it is left justified and "
+"the unused position contains a blank (#)."
 msgstr ""
 "Tärkeysjärjestyksessä voidaan tallentaa kaksi eri kirjainkoodia, jotka "
 "ilmaisevat kartan luonnetta. Jos tallennetaan vain yksi koodi, käyttämätön "
@@ -14093,8 +14083,7 @@ msgstr "waray"
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slimUtils-MODS31.xsl:164
 #, c-format
 msgid ""
-"Warning: string contains a character that is out of range! Substituting \"?"
-"\"."
+"Warning: string contains a character that is out of range! Substituting \"?\"."
 msgstr ""
 "Huomaa: Merkkijonossa on epäkelpo merkki. Sen tilalla käytetään "
 "kysymysmerkkiä."
@@ -14181,10 +14170,9 @@ msgstr "Sisältääkö elektroninen aineisto yhden vai useampia tiedostomuotoja.
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:691
 #, c-format
 msgid ""
-"Whether the film is part of a complete production or is a preliminary or "
-"post-production element."
-msgstr ""
-"Tuotantoprosessiin liittyviä tietoja, mistä elokuvan vaiheesta on kyse."
+"Whether the film is part of a complete production or is a preliminary or post-"
+"production element."
+msgstr "Tuotantoprosessiin liittyviä tietoja, mistä elokuvan vaiheesta on kyse."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:703
 #, c-format
@@ -14214,8 +14202,7 @@ msgstr "Elektronisen aineiston väritys (yksi- vai monivärinen)."
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:128
 #, c-format
 msgid ""
-"Whether the production of sound is an integral part of an electronic "
-"resource."
+"Whether the production of sound is an integral part of an electronic resource."
 msgstr "Tuottaako elektroninen aineisto ääntä."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:367
@@ -14245,8 +14232,8 @@ msgstr "Filmin leveys."
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:980
 #, c-format
 msgid ""
-"Width of the groove of the recording for discs or the pitch of the groove "
-"for cylinders."
+"Width of the groove of the recording for discs or the pitch of the groove for "
+"cylinders."
 msgstr "Uran leveys äänilevyssä tai uran kaltevuus äänilieriössä."
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:1004
@@ -18630,7 +18617,7 @@ msgstr "i- Videolevy"
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:502
 #, c-format
 msgid "ind1-"
-msgstr ""
+msgstr "ind1-"
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:285
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:361
@@ -20899,7 +20886,7 @@ msgstr "sarja "
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:506
 #, c-format
 msgid "sf-"
-msgstr ""
+msgstr "sf-"
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:390
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:462
