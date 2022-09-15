@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-09-08 12:30+0300\n"
-"PO-Revision-Date: 2022-09-08 13:35+0300\n"
+"PO-Revision-Date: 2022-09-15 15:50+0300\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
@@ -8513,7 +8513,7 @@ msgstr "Salasana vaihdettu"
 #: koha-tmpl/opac-tmpl/bootstrap/en/includes/overdrive-login.inc:13
 #, c-format
 msgid "Password:"
-msgstr "Salasana:"
+msgstr "PIN-koodi:"
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/modules/opac-memberentry.tt:95
 #, c-format
@@ -10766,7 +10766,7 @@ msgstr "Ei hakutuloksia. Kokeile toista hakutermiä."
 #: koha-tmpl/opac-tmpl/bootstrap/en/modules/sco/sco-main.tt:56
 #, c-format
 msgid "Sorry, this item cannot be checked out at this station."
-msgstr "Nidettä ei voi lainata tästä lainauspisteestä."
+msgstr "Nidettä ei voi lainata. Tarkista, lainasitko jo sen."
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/modules/sci/sci-main.tt:66
 #, c-format
@@ -12698,7 +12698,7 @@ msgstr "Et voi tehdä enää hankintaehdotuksia"
 #: koha-tmpl/opac-tmpl/bootstrap/en/modules/sco/sco-main.tt:69
 #, c-format
 msgid "You cannot renew this item again."
-msgstr "Et voi uusia tätä nidettä uudestaan."
+msgstr "Lainaa ei voi uusia."
 
 #. %1$s:  IF ( renewal_blocked_fines ) > 0
 #: koha-tmpl/opac-tmpl/bootstrap/en/modules/opac-user.tt:158
@@ -14015,7 +14015,7 @@ msgid ""
 "next available item of item type '%s' %s Pending %s %s %s "
 msgstr ""
 "%s lähtien %s Nidettä käsitellään %s Keskeytetty %s saakka %s %s %s %s "
-"Odottaa seuraavaa vapautuvaa nidettä, jonka nidetyyppi on '%s' %s Odottaa %s "
+"Odottaa seuraavaa vapautuvaa nidettä, jonka nidetyyppi on '%s' %s Jonossa %s "
 "%s %s "
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/modules/maintenance.tt:46
