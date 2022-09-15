@@ -46,17 +46,13 @@ my $builder = sub {
 <script type="text/javascript">
 //<![CDATA[
 	\$( document ).ready(function() {
-	 \$($function_name).css("margin-bottom", "5px");
-	 \$($function_name).after('<select class="$function_name"></select>');
-	 selectBox$function_name();
+		\$($function_name).css("margin-bottom", "5px");
+	 	\$($function_name).after('<select class="$function_name"></select>');
+	 	selectBox$function_name(\$($function_name).attr('id'));
 	});
 
-	\$(".buttonPlus").click(function (){
-		selectBox$function_name();
-	});
-
-	function selectBox$function_name() {
-		\$('.$function_name').select2({
+	function selectBox$function_name(selecttag) {
+		\$('.' + selecttag).select2({
 			ajax: {
 				url: 'https://api.finto.fi/rest/v1/search',
 				dataType: 'json',
@@ -78,7 +74,8 @@ my $builder = sub {
 											text: sl,
 											uri: obj.uri,
 											vocab: obj.vocab,
-											localname: obj.localname }
+											localname: obj.localname,
+											field: selecttag }
 							});
 					return { results: tmp };
 				},
@@ -95,15 +92,19 @@ my $builder = sub {
 		if (data.id === '') {
 			return 'Etsi Fintosta';
 		}
-		var id = \$($function_name).attr('id');
+		var id = \$("#"+data.field).attr('id');
+		
 		if(data.localname) {
 			newin=window.open(\"../cataloguing/plugin_launcher.pl?plugin_name=finto_finaf.pl&index=\"+ id +\"&localname=\"+data.localname,\"tag_editor\",'width=1000,height=600,toolbar=false,scrollbars=yes');
 		}
-		\$('.$function_name').empty();
+
+		\$('.'+data.field).empty();
 	}
 
 	function MouseOver$function_name(event) {
-		selectBox$function_name();
+		var tag = event.data.id;
+		\$("#"+tag).next().attr('class', tag);
+		selectBox$function_name(tag);
 	}
 
 	function Click$function_name(event) {
