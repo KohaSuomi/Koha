@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-09-08 12:30+0300\n"
-"PO-Revision-Date: 2022-09-15 15:50+0300\n"
+"PO-Revision-Date: 2022-09-19 12:28+0300\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
@@ -6681,7 +6681,7 @@ msgstr "Ei lainata"
 #: koha-tmpl/opac-tmpl/bootstrap/en/modules/sco/sco-main.tt:221
 #, c-format
 msgid "Item checked in"
-msgstr "Item checked in"
+msgstr "Nide palautettu"
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/modules/sco/sco-main.tt:201
 #, c-format
