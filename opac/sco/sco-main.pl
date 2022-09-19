@@ -181,57 +181,60 @@ if ( ( $op eq "checkin" && $uibarcode ) || $patron && $op eq "returnbook" && $al
     if( !$checkinitem ){
         $checkinmessage = "Item not found.";
     }
-    my $tobranch = $checkinitem->homebranch;
+    if($checkinitem ){
+        my $tobranch = $checkinitem->homebranch;
 
-    my ($return_success,$messages,$issueinformation,$borrower) = AddReturn($uibarcode,$branch,undef,$today) unless !$success;
+        my ($return_success,$messages,$issueinformation,$borrower) = AddReturn($uibarcode,$branch,undef,$today) unless !$success;
 
-    my $needstransfer = $messages->{'NeedsTransfer'};
-    if($messages->{'ResFound'}) {
-        my $reserve = $messages->{'ResFound'};
-        my $reserve_id = $reserve->{'reserve_id'};
-        my $resborrower = $reserve->{'borrowernumber'};
-        my $diffBranchReturned = $reserve->{'branchcode'};
-        my $itemnumber = $checkinitem->itemnumber;
-        my $diffBranchSend = ($branch ne $diffBranchReturned) ? $diffBranchReturned : undef;
-        if($diffBranchSend) {
-            ModReserveAffect( $itemnumber, $resborrower, $diffBranchSend, $reserve_id);
-            ModItemTransfer($itemnumber,$branch,$diffBranchReturned, 'ResFound');
+        my $needstransfer = $messages->{'NeedsTransfer'};
+        if($messages->{'ResFound'}) {
+            my $reserve = $messages->{'ResFound'};
+            my $reserve_id = $reserve->{'reserve_id'};
+            my $resborrower = $reserve->{'borrowernumber'};
+            my $diffBranchReturned = $reserve->{'branchcode'};
+            my $itemnumber = $checkinitem->itemnumber;
+            my $diffBranchSend = ($branch ne $diffBranchReturned) ? $diffBranchReturned : undef;
+            if($diffBranchSend) {
+                ModReserveAffect( $itemnumber, $resborrower, $diffBranchSend, $reserve_id);
+                ModItemTransfer($itemnumber,$branch,$diffBranchReturned, 'ResFound');
+            }
+            else {
+                my $settransit = C4::Context->preference('RequireSCCheckInBeforeNotifyingPickups') ? 1 : 0;
+                ModReserveAffect( $itemnumber, $resborrower, $settransit, $reserve_id);
+            }
+            $borrower = Koha::Patrons->find({ cardnumber => $patronid });
         }
         else {
-            my $settransit = C4::Context->preference('RequireSCCheckInBeforeNotifyingPickups') ? 1 : 0;
-            ModReserveAffect( $itemnumber, $resborrower, $settransit, $reserve_id);
+            if($needstransfer) {
+                ModItemTransfer($checkinitem->itemnumber, $branch, $tobranch, 'NeedsTransfer');
+            }
         }
-        $borrower = Koha::Patrons->find({ cardnumber => $patronid });
-    }
-    else {
-         if($needstransfer) {
-             ModItemTransfer($checkinitem->itemnumber, $branch, $tobranch, 'NeedsTransfer');
-         }
-    }
 
-    if($messages->{'WrongTransfer'}) {
-       updateWrongTransfer($checkinitem->itemnumber,$tobranch,$branch);
-    }
+        if($messages->{'WrongTransfer'}) {
+        updateWrongTransfer($checkinitem->itemnumber,$tobranch,$branch);
+        }
 
-    my $biblio = Koha::Biblios->find({ biblionumber => $checkinitem->biblionumber });
-    if ( $biblio && ( $success || $return_success )) {
-        $checkinmessage = "Returned ".$biblio->title;
-    }
+        my $biblio = Koha::Biblios->find({ biblionumber => $checkinitem->biblionumber });
+        if ( $biblio && ( $success || $return_success )) {
+            $checkinmessage = "Returned ".$biblio->title;
+        }
 
-    if ( $issuer ) {
-        $checkinbranchcode = $issuer->{branchcode};
-        #home branch of item
-        if ($checkinbranchcode) {
-            my $checkinlibrary = Koha::Libraries->find( $checkinbranchcode );
-            $checkinmessage.=", ".$checkinlibrary->branchname;
+        if ( $issuer ) {
+            $checkinbranchcode = $issuer->{branchcode};
+            #home branch of item
+            if ($checkinbranchcode) {
+                my $checkinlibrary = Koha::Libraries->find( $checkinbranchcode );
+                $checkinmessage.=", ".$checkinlibrary->branchname;
+            }
+        }
+
+        $template->param(checkinmessage => $checkinmessage || undef);
+        $template->param(SelfCheckTimeout => 10000); #don't show returns long
+        $template->param(uibarcode => $uibarcode);
+        $template->param( returned => $success );
         }
     }
-
-    $template->param(checkinmessage => $checkinmessage || undef);
-    $template->param(SelfCheckTimeout => 10000); #don't show returns long
-    $template->param(uibarcode => $uibarcode);
-    $template->param( returned => $success );
-}
+    
 elsif ( $patron && ( $op eq 'checkout' ) ) {
 
     my $item = Koha::Items->find( { barcode => $barcode } );
