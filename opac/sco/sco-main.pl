@@ -179,7 +179,7 @@ if ( ( $op eq "checkin" && $uibarcode ) || $patron && $op eq "returnbook" && $al
     $uibarcode =~ s/^\s+|\s+$//g;
     $checkinitem = Koha::Items->find({ barcode => $uibarcode });
     if( !$checkinitem ){
-        $checkinmessage = "Item not found.";
+        $checkinmessage = Encode::decode_utf8( "Viivakoodia ei löytynyt." );
     }
     if($checkinitem ){
         my $tobranch = $checkinitem->homebranch;
@@ -216,7 +216,7 @@ if ( ( $op eq "checkin" && $uibarcode ) || $patron && $op eq "returnbook" && $al
 
         my $biblio = Koha::Biblios->find({ biblionumber => $checkinitem->biblionumber });
         if ( $biblio && ( $success || $return_success )) {
-            $checkinmessage = "Returned ".$biblio->title;
+            $checkinmessage = "Palautettu ".$biblio->title;
         }
 
         if ( $issuer ) {
@@ -227,13 +227,19 @@ if ( ( $op eq "checkin" && $uibarcode ) || $patron && $op eq "returnbook" && $al
                 $checkinmessage.=", ".$checkinlibrary->branchname;
             }
         }
-
-        $template->param(checkinmessage => $checkinmessage || undef);
-        $template->param(SelfCheckTimeout => 10000); #don't show returns long
-        $template->param(uibarcode => $uibarcode);
-        $template->param( returned => $success );
-        }
     }
+
+    $template->param(checkinmessage => $checkinmessage || undef);
+    $template->param(SelfCheckTimeout => 10000); #don't show returns long
+    $template->param(uibarcode => $uibarcode);
+    if( !$checkinitem ){
+        $template->param( returned => 0 );
+    }
+    else {
+        $template->param( returned => $success );
+    }
+}
+
     
 elsif ( $patron && ( $op eq 'checkout' ) ) {
 
