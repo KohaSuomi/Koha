@@ -79,7 +79,6 @@ my $builder = sub {
 				processResults: function(data) {
 					var tmp = \$.map(data.results, function(obj){
 									var sl = obj.prefLabel;
-                                    console.log("sl: " + sl);
 									if (obj.altLabel) { sl += " <i>("+obj.altLabel+")</i>" };
 						if (obj.vocab && / /.test("$vocab")) { sl += " <i>("+obj.vocab+")</i>" }
 									return { id: obj.prefLabel,
@@ -127,7 +126,7 @@ my $builder = sub {
             \$('#'+data.field).fadeIn(500);
        
             var potentials = document.querySelectorAll("[name*="+ind2+"]");
-            console.log(potentials.length);
+
             var ind2array = [];
 
             for (var i = 0; i < potentials.length; i++) {
@@ -139,7 +138,7 @@ my $builder = sub {
             
             
             var potentials = document.querySelectorAll("[name*="+sfid0+"]");
-            console.log(potentials.length);
+
             var ind2array = [];
 
             for (var i = 0; i < potentials.length; i++) {
@@ -150,7 +149,7 @@ my $builder = sub {
             \$(ind2array[ind2array.length-1]).fadeIn(500);
             
             var potentials = document.querySelectorAll("[name*="+sfid2+"]");
-            console.log(potentials.length);
+
             var ind2array = [];
 
             for (var i = 0; i < potentials.length; i++) {

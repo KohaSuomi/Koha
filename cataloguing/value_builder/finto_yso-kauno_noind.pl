@@ -40,7 +40,7 @@ my $builder = sub {
     my $function_name = $params->{id};
     my %args;
 
-    my $vocab = "yso-paikat";
+    my $vocab = "yso kauno";
 
     my $language = C4::Languages::getlanguage() || 'fi';
     $language = (split(/-/, $language))[0];
@@ -117,26 +117,15 @@ my $builder = sub {
             var re = /^(tag_..._)/;
             var found = fid.match(re);
 
-            var ind2 = found[1] + 'indicator2_';
             var sfid0 = found[1] + 'subfield_0_';
             var sfid2 = found[1] + 'subfield_2_';
                        
             \$('#'+data.field).val(data.id);
             \$('#'+data.field).fadeOut(500);
             \$('#'+data.field).fadeIn(500);
-       
-            var potentials = document.querySelectorAll("[name*="+ind2+"]");
-            var ind2array = [];
-
-            for (var i = 0; i < potentials.length; i++) {
-                ind2array.push(potentials[i]);
-            }
-            ind2array[ind2array.length-1].value="7";
-            \$(ind2array[ind2array.length-1]).fadeOut(500);
-            \$(ind2array[ind2array.length-1]).fadeIn(500);
-            
             
             var potentials = document.querySelectorAll("[name*="+sfid0+"]");
+
             var ind2array = [];
 
             for (var i = 0; i < potentials.length; i++) {
@@ -147,13 +136,13 @@ my $builder = sub {
             \$(ind2array[ind2array.length-1]).fadeIn(500);
             
             var potentials = document.querySelectorAll("[name*="+sfid2+"]");
+
             var ind2array = [];
 
             for (var i = 0; i < potentials.length; i++) {
                 ind2array.push(potentials[i]);
             }
-			var simplifiedVocab = data.vocab.replace('-paikat','');
-            ind2array[ind2array.length-1].value=simplifiedVocab+ "/$langcode";
+            ind2array[ind2array.length-1].value=data.vocab+ "/$langcode";
             \$(ind2array[ind2array.length-1]).fadeOut(500);
             \$(ind2array[ind2array.length-1]).fadeIn(500);
 	
