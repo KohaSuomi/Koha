@@ -148,7 +148,7 @@ my $builder = sub {
             for (var i = 0; i < potentials.length; i++) {
                 ind2array.push(potentials[i]);
             }
-			ind2array[ind2array.length-1].value="local" + "/$langcode";
+			ind2array[ind2array.length-1].value=data.vocab+ "/$langcode";
             \$(ind2array[ind2array.length-1]).fadeOut(500);
             \$(ind2array[ind2array.length-1]).fadeIn(500);
 	
@@ -182,7 +182,7 @@ my $builder = sub {
             for (var i = 0; i < potentials.length; i++) {
                 ind2array.push(potentials[i]);
             }
-			ind2array[ind2array.length-1].value="local"+ "/$langcode";
+			ind2array[ind2array.length-1].value="local";
 			
 			var potentials = document.querySelectorAll("[name*="+ind2+"]");
             var ind2array = [];
