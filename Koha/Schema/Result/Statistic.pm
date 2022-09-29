@@ -86,6 +86,14 @@ __PACKAGE__->table("statistics");
   is_nullable: 1
   size: 80
 
+=head2 categorycode
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 10
+
+foreign key from the borrowers table, links transaction to a specific borrower category
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -115,11 +123,13 @@ __PACKAGE__->add_columns(
   { data_type => "integer", is_nullable => 1 },
   "ccode",
   { data_type => "varchar", is_nullable => 1, size => 80 },
+  "categorycode",
+  { data_type => "varchar", is_nullable => 1, size => 10 },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ha4UqxzaUBxq2/6lpJOw8g
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-09-29 12:40:50
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/oKD0mbtb4nU4Ay//Xplxg
 
 
 # You can replace this text with custom content, and it will be preserved on regeneration
