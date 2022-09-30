@@ -1531,6 +1531,26 @@ sub has_valid_userid {
     return $already_exists ? 0 : 1;
 }
 
+sub has_valid_othernames {
+    my ($self) = @_;
+
+    return 0 unless $self->othernames;
+
+    return 0 if ( $self->othernames eq C4::Context->config('user') );    # DB user
+
+    my $already_exists = Koha::Patrons->search(
+        {
+            othernames => $self->othernames,
+            (
+                $self->in_storage
+                ? ( borrowernumber => { '!=' => $self->borrowernumber } )
+                : ()
+            ),
+        }
+    )->count;
+    return $already_exists ? 0 : 1;
+}
+
 =head3 generate_userid
 
 my $patron = Koha::Patron->new( $params );

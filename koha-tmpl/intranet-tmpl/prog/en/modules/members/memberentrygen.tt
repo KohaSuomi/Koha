@@ -142,6 +142,9 @@ legend:hover {
                                     [% IF ( ERROR_login_exist ) %]
                                         <li id="ERROR_login_exist">Username/password already exists.</li>
                                     [% END %]
+                                    [% IF ( ERROR_othernames_exist ) %]
+                                        <li id="ERROR_othernames_exist">Holds identifier already exists.</li>
+                                    [% END %]
                                     [% IF ERROR_cardnumber_already_exists %]
                                         <li id="ERROR_cardnumber">Cardnumber already in use.</li>
                                     [% END %]

@@ -374,6 +374,14 @@ if ($op eq 'save' || $op eq 'insert'){
   unless ( $p->has_valid_userid ) {
     push @errors, "ERROR_login_exist";
   }
+  #Check if othernames is unique
+  my $othernames = $newdata{ othernames } // $borrower_data->{ othernames };
+  
+  $p->othernames( $othernames );
+  unless ( $p->has_valid_othernames ) {
+    push @errors, "ERROR_othernames_exist";
+  }
+  
 
   my $password = $input->param('password');
   my $password2 = $input->param('password2');
