@@ -48,7 +48,6 @@ body:
   attributes:
     label: Määräaika
     description: |
-     Määräaika
-      Mihin mennessä tai minä päivänä pyyntö pitää suorittaa?.
+     Mihin mennessä tai minä päivänä pyyntö pitää suorittaa?
   validations:
     required: false
