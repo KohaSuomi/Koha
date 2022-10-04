@@ -2,22 +2,6 @@ name: Kehitysehdotus
 description: Lisää kehitysehdotus. Muista lisätä [Bugi]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
 title: "[Kehitysehdotus] "
 labels: ["enhancement"]
-created:
-    type: date
-    options:
-        default: 0
-        nullable: true
-    gedmo:
-        timestampable:
-            on: create
-updated:
-    type: datetime
-    options:
-         default: 0
-         nullable: true
-    gedmo:
-         timestampable:
-             on: update
 body:
 - type: textarea
   attributes:
