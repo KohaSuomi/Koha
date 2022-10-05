@@ -3,7 +3,6 @@ name: Kehitysehdotus
 title: "[DATE]: [FEATURE NAME]"
 labels: ["enhancement"]
 description: Lisää kehitysehdotus. Muista lisätä [Bugi]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
----
 body:
 - type: textarea
   attributes:
