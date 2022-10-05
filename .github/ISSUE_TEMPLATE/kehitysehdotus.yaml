@@ -1,7 +1,10 @@
+---
 name: Kehitysehdotus
-description: Lisää kehitysehdotus. Muista lisätä [Bugi]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
+about: Use this template for tracking new features.
 title: "[DATE]: [FEATURE NAME]"
 labels: ["enhancement"]
+description: Lisää kehitysehdotus. Muista lisätä [Bugi]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
+---
 
 body:
 - type: textarea
