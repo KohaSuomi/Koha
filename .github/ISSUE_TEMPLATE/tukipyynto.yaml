@@ -44,10 +44,3 @@ body:
       Vinkki: Voit liittää kuvia tai tiedostoja klikkaamalla tätä aluetta ja vetämällä kuvan tai tiedoston tänne.
   validations:
     required: false
-- type: textarea
-  attributes:
-    label: Määräaika
-    description: |
-     Mihin mennessä tai minä päivänä pyyntö pitää suorittaa?
-  validations:
-    required: false
