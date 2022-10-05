@@ -1,5 +1,5 @@
 name: Kehitysehdotus
-title: [Kehitysehdotus]
+title: [[DATE]" Kehitysehdotus"]
 labels: ["enhancement"]
 description: Lisää kehitysehdotus. Muista lisätä [Bugi]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
 body:
