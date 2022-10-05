@@ -1,7 +1,7 @@
 name: Kehitysehdotus
-title: "Kehitysehdotus"
+title: "[Kehitysehdotus]"
 labels: ["enhancement"]
-description: Lisää kehitysehdotus. Muista lisätä [Bugi]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
+description: Lisää kehitysehdotus. Muista lisätä [Kehitysehdotus]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
 body:
 - type: textarea
   attributes:
