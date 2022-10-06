@@ -567,6 +567,8 @@ my $count = 0;
 my @riloop;
 my $shelflocations =
   { map { $_->{authorised_value} => $_->{lib} } Koha::AuthorisedValues->get_descriptions_by_koha_field( { frameworkcode => '', kohafield => 'items.location' } ) };
+my $sublocation =
+  { map { $_->{authorised_value} => $_->{lib} } Koha::AuthorisedValues->get_descriptions_by_koha_field( { frameworkcode => '', kohafield => 'items.sub_location' } ) };
 foreach ( sort { $a <=> $b } keys %returneditems ) {
     my %ri;
     if ( $count++ < $returned_counter ) {
@@ -621,7 +623,7 @@ foreach ( sort { $a <=> $b } keys %returneditems ) {
         $ri{location} = $item->location;
         my $shelfcode = $ri{'location'};
         $ri{'location'} = $shelflocations->{$shelfcode} if ( defined( $shelfcode ) && defined($shelflocations) && exists( $shelflocations->{$shelfcode} ) );
-
+        $ri{sub_location} = $sublocation->{$item->sub_location} if ( defined( $item->sub_location ) && defined($sublocation) && exists( $sublocation->{$item->sub_location} ) );
     }
     else {
         last;

@@ -917,7 +917,7 @@
                                             [% Branches.GetName( riloo.transferbranch ) | html %]
                                         </td>
                                         <td class="ci-shelvinglocation">
-                                            <span class="shelvingloc">[% riloo.location | html %]</span>
+                                            <span class="shelvingloc">[% riloo.location | html %] [% IF ( riloo.sub_location ) %] ([% riloo.sub_location | html %]) [% END %]</span>
                                         </td>
                                         <td class="ci-callnumber">
                                             [% riloo.itemcallnumber | html %]
