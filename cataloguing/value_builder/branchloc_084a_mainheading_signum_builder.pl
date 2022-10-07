@@ -70,6 +70,8 @@ function Click$function_name(event) {
         // Do main heading
         // Actually we should also follow the bypass indicators here
 
+        var marc942m = resp.resp.f942m;
+
         var marc100a = resp.f100a;
 
         var marc110a = resp.f110a;
@@ -82,7 +84,9 @@ function Click$function_name(event) {
         // Second indicator is 'bypass'
         var marc245a = resp.f245a;
 
-        if (marc100a) {
+        if (marc942m) {
+            var mainHeading = marc942m;
+        } else if (marc100a) {
             var mainHeading = marc100a;
         } else if (marc110a) {
             var mainHeading = marc110a;

@@ -46,6 +46,7 @@ my $launcher = sub {
     my $marc = GetMarcBiblio({ biblionumber => $biblionumber });
     return if (!$marc);
 
+    my $f942m = $marc->subfield('942', 'm') || '';
     my $f084a = $marc->subfield('084', 'a') || '';
     my $f100a = $marc->subfield('100', 'a') || '';
     my $f110a = $marc->subfield('110', 'a') || '';
@@ -54,6 +55,7 @@ my $launcher = sub {
     my $f245a = $marc->subfield('245', 'a') || '';
 
     my %ret = (
+    'f942m' => $f942m,
 	'f084a' => $f084a,
 	'f100a' => $f100a,
 	'f110a' => $f110a,
