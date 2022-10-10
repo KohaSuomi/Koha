@@ -122,8 +122,6 @@ my $builder = sub {
             var sfid2 = found[1] + 'subfield_2_';
                        
             \$('#'+data.field).val(data.id);
-            \$('#'+data.field).fadeOut(500);
-            \$('#'+data.field).fadeIn(500);
        
             var potentials = document.querySelectorAll("[name*="+ind1+"]");
 
@@ -133,9 +131,6 @@ my $builder = sub {
                 ind2array.push(potentials[i]);
             }
             ind2array[ind2array.length-1].value="1";
-            \$(ind2array[ind2array.length-1]).fadeOut(500);
-            \$(ind2array[ind2array.length-1]).fadeIn(500);
-            
             
             var potentials = document.querySelectorAll("[name*="+sfid0+"]");
 
@@ -145,8 +140,6 @@ my $builder = sub {
                 ind2array.push(potentials[i]);
             }
             ind2array[ind2array.length-1].value=data.uri;
-            \$(ind2array[ind2array.length-1]).fadeOut(500);
-            \$(ind2array[ind2array.length-1]).fadeIn(500);
             
             var potentials = document.querySelectorAll("[name*="+sfid2+"]");
 
@@ -157,8 +150,6 @@ my $builder = sub {
             }
 			var simplifiedVocab = data.vocab.replace('-aika','');
             ind2array[ind2array.length-1].value=simplifiedVocab+ "/$langcode";
-            \$(ind2array[ind2array.length-1]).fadeOut(500);
-            \$(ind2array[ind2array.length-1]).fadeIn(500);
 	
         }
  
