@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-10-04 13:57+0300\n"
-"PO-Revision-Date: 2022-10-04 14:08+0300\n"
+"PO-Revision-Date: 2022-10-10 10:27+0300\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -43820,7 +43820,7 @@ msgstr "Ei, älä nollaa määrityksiä"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/acqui/cancelorder.tt:55
 #, c-format
 msgid "No, don't cancel (N)"
-msgstr "Ei, älä peruuta"
+msgstr "Ei, älä peruuta (N)"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/circulation.tt:335
 #, c-format
@@ -44966,7 +44966,7 @@ msgstr "OK"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/returns.tt:611
 #, c-format
 msgid "OK (Y)"
-msgstr "OK"
+msgstr "OK (Y)"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/systempreferences.tt:200
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/systempreferences.tt:435
@@ -49706,7 +49706,7 @@ msgstr "Tulosta tämä tarra"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/returns.tt:465
 #, c-format
 msgid "Print transfer slip (P)"
-msgstr "Tulosta kuljetuskuitti"
+msgstr "Tulosta kuljetuskuitti (P)"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/labels/label-manage.tt:79
 #, c-format
@@ -66417,7 +66417,7 @@ msgstr "Kyllä %s "
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/returns.tt:607
 #, c-format
 msgid "Yes (Y)"
-msgstr "Kyllä"
+msgstr "Kyllä (Y)"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/categories.tt:355
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/categories.tt:359
@@ -66441,7 +66441,7 @@ msgstr "Kyllä, vahvistan"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/acqui/cancelorder.tt:54
 #, c-format
 msgid "Yes, cancel (Y)"
-msgstr "Kyllä, peruuta"
+msgstr "Kyllä, peruuta (Y)"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/circulation.tt:307
 #, c-format
