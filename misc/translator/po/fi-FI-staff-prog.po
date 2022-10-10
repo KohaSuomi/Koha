@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-10-04 13:57+0300\n"
-"PO-Revision-Date: 2022-10-10 10:27+0300\n"
+"PO-Revision-Date: 2022-10-10 13:53+0300\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -10856,13 +10856,13 @@ msgstr "(%s) käyttäjältä "
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/circulation.tt:153
 #, c-format
 msgid "(%s) has been on hold for "
-msgstr "(%s) on ollut varattuna alkaen "
+msgstr "(%s) - teoksesta on hyllyvaraus asiakkaalle "
 
 #. %1$s:  getBarcodeMessageIteminfo | html
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/circulation.tt:141
 #, c-format
 msgid "(%s) has been waiting for "
-msgstr "(%s) on ollut odottamassa asiakasta "
+msgstr "(%s) on noudettavissa asiakkaalle "
 
 #. %1$s:  getBarcodeMessageIteminfo | html
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/circulation.tt:149
