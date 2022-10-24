@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-10-04 13:57+0300\n"
-"PO-Revision-Date: 2022-10-24 13:49+0300\n"
+"PO-Revision-Date: 2022-10-24 15:32+0300\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -19635,7 +19635,7 @@ msgstr "Peruuta tilaus ja poista nimeketietue"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/acqui/parcel.tt:289
 #, c-format
 msgid "Cancel receipt"
-msgstr "Peruuta kuitti"
+msgstr "Peruuta vastaanotto"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/article-requests.tt:46
 #, c-format
