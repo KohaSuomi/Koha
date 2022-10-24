@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-10-04 13:57+0300\n"
-"PO-Revision-Date: 2022-10-10 13:53+0300\n"
+"PO-Revision-Date: 2022-10-24 13:49+0300\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -7409,8 +7409,8 @@ msgid ""
 "%s Set reserve to transit and transfer book to %s: %s %sCancel reservation "
 "and then attempt transfer: %s "
 msgstr ""
-"%sAseta varaus kuljetettavaksi ja kuljeta nide %s: %s %sPeru varaus ja yritä "
-"kuljettaa: %s "
+"%sAseta varaus kuljetettavaksi ja kuljeta teos kirjastoon %s: %s %sPoista "
+"varaus ja tee siirto uudelleen: %s "
 
 #. %1$s:  IF ( proposeimport )
 #. %2$s:  END
@@ -41440,7 +41440,7 @@ msgstr "Kuukausi: "
 #: koha-tmpl/intranet-tmpl/prog/en/modules/acqui/parcel.tt:158
 #, c-format
 msgid "More"
-msgstr "Enemmän"
+msgstr "Lisätietoja"
 
 #: koha-tmpl/intranet-tmpl/prog/en/includes/header.inc:33
 #: koha-tmpl/intranet-tmpl/prog/en/includes/members-toolbar.inc:43
@@ -51305,7 +51305,7 @@ msgid ""
 "attached subscriptions, existing holds, and attached items!"
 msgstr ""
 "Muistutus: tämä toiminto poistaa kaikki valitut nimeketietueet, liittyvät "
-"tilaukset, olemassa olevat varaukset ja liitetyt niteet."
+"lehtitilaukset, olemassa olevat varaukset ja liitetyt niteet."
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/tools/batch_record_modification.tt:233
 #, c-format
