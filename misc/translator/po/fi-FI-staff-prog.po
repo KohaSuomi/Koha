@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-10-04 13:57+0300\n"
-"PO-Revision-Date: 2022-10-24 15:32+0300\n"
+"PO-Revision-Date: 2022-10-26 12:49+0300\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -2815,7 +2815,7 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/categories.tt:645
 #, c-format
 msgid "%s %s Default %s Never %s Forever %s "
-msgstr "%s %s Oletus %s Ei koskaan %s Aina %s "
+msgstr "%s %s Oletus %s Ei koskaan %s Toistaiseksi %s "
 
 #. %1$s:  UNLESS ( basketno )
 #. %2$s:  IF ( delete_confirmed )
@@ -19645,7 +19645,7 @@ msgstr "Poista pyyntö "
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/branchtransfers.tt:84
 #, c-format
 msgid "Cancel reservation and then attempt transfer:"
-msgstr "Peruuta varaus ja yritä sitten kuljetusta:"
+msgstr "Poista varaus ja tee siirto uudelleen:"
 
 #. For the first occurrence,
 #. SCRIPT
@@ -23885,9 +23885,9 @@ msgid ""
 "of history kept is controlled by the cronjob "
 msgstr ""
 "Määrittelee, kuinka kauan tämän asiakastyypin lainahistoriaa säilytetään. "
-"\"Ei koskaan\" anonymisoi historian palautettaessa, ja \"Aina\" säilyttää "
-"lainahistorian aina. Kun asetuksena on \"Oletus\", historian pituus "
-"määritellään cron jobissa "
+"\"Ei koskaan\" anonymisoi historian palautettaessa, ja \"Toistaiseksi\" "
+"säilyttää lainahistorian toistaiseksi. Kun asetuksena on \"Oletus\", "
+"historian pituus määritellään cron jobissa "
 
 #. SCRIPT
 #: koha-tmpl/intranet-tmpl/prog/en/includes/cateditor-ui.inc:42
@@ -31323,7 +31323,7 @@ msgstr "Pakota lainaus jos on rajoitus "
 #: koha-tmpl/intranet-tmpl/prog/en/modules/onboarding/onboardingstep2.tt:100
 #, c-format
 msgid "Forever"
-msgstr "Aina"
+msgstr "Toistaiseksi"
 
 #. %1$s:  holdforclub_name | html
 #: koha-tmpl/intranet-tmpl/prog/en/modules/catalogue/results.tt:156
