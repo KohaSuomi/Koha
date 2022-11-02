@@ -597,6 +597,8 @@ foreach ( sort { $a <=> $b } keys %returneditems ) {
                            # we could handle that better displaying a message in the template
 
         my $biblio = $item->biblio;
+        my $biblioitem = $item->biblioitem;
+
         # FIXME pass $item to the template and we are done here...
         $ri{itembiblionumber}    = $biblio->biblionumber;
         $ri{itemtitle}           = $biblio->title;
@@ -606,7 +608,7 @@ foreach ( sort { $a <=> $b } keys %returneditems ) {
         $ri{itemauthor}          = $biblio->author;
         $ri{itemcallnumber}      = $item->itemcallnumber;
         $ri{dateaccessioned}     = $item->dateaccessioned;
-        $ri{recordtype}          = $biblio->itemtype;
+        $ri{recordtype}          = $biblioitem->itemtype;
         $ri{itemtype}            = $item->itype;
         $ri{itemnote}            = $item->itemnotes;
         $ri{itemnotes_nonpublic} = $item->itemnotes_nonpublic;

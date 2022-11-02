@@ -926,7 +926,7 @@
                                             [% riloo.dateaccessioned | $KohaDates %]
                                         </td>
                                         <td class="ci-recordlevelitemtype">
-                                            [% ItemTypes.GetDescription( riloo.recordtype ) | html %]
+                                            [% riloo.recordtype | html %]
                                         </td>
                                         <td class="ci-itemtype">
                                             [% ItemTypes.GetDescription( riloo.itemtype ) | html %]
