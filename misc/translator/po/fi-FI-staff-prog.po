@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-10-04 13:57+0300\n"
-"PO-Revision-Date: 2022-10-26 12:49+0300\n"
+"PO-Revision-Date: 2022-11-02 13:17+0200\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -20631,7 +20631,7 @@ msgstr "Vaihda kirjasto"
 #. SCRIPT
 #: koha-tmpl/intranet-tmpl/prog/en/modules/members/memberentrygen.tt:1562
 msgid "Change messaging preferences to default for this category?"
-msgstr "Vaihda viestiasetukset oletusasetukseksi tälle ryhmälle?"
+msgstr "Vaihda asiakkaan viestiasetukset asiakastyypin oletusarvoiksi?"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/audio_alerts.tt:105
 #: koha-tmpl/intranet-tmpl/prog/en/modules/tools/marc_modification_templates.tt:119
