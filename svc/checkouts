@@ -212,6 +212,9 @@ while ( my $c = $sth->fetchrow_hashref() ) {
         $materials = $descriptions->{lib} // $c->{materials};
     }
     my @subtitles = split(/ \| /, $c->{'subtitle'} // '' );
+   
+    my $authorised_value_mtype = Koha::AuthorisedValues->get_description_by_koha_field({ kohafield => 'biblioitems.itemtype', authorised_value => $c->{itemtype} });
+    
     my $checkout = {
         DT_RowId             => $c->{itemnumber} . '-' . $c->{borrowernumber},
         title                => $c->{title},
@@ -223,7 +226,7 @@ while ( my $c = $sth->fetchrow_hashref() ) {
         barcode              => $c->{barcode},
         type_for_stat          => $type_for_stat || q{},
         itemtype_description   => $itemtype || q{},
-        recordtype_description => $c->{itemtype} || q{},
+        recordtype_description => $authorised_value_mtype->{lib} || q{},
         collection           => $collection,
         location             => $location,
         homebranch           => $c->{homebranch},
