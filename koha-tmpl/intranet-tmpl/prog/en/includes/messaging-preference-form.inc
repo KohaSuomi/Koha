@@ -8,6 +8,7 @@
         <th>Days in advance</th>
         [% IF Koha.Preference('SMSSendDriver') %]<th>SMS</th>[% END %]
         [% IF Koha.Preference('TalkingTechItivaPhoneNotification') || Koha.Preference('PhoneNotification') %]<th>Phone</th>[% END %]
+        [% IF Koha.Preference('SuomiFiMessaging') %]<th>Suomi.fi</th>[% END %]
         <th>Email</th>
         <th>Digests only <i id="info_digests" data-toggle="tooltip" title="You can ask for a digest to reduce the number of messages. Messages will be saved and sent as a single message." data-placement="right" class="fa fa-info-circle"></i></th>
         <!-- <th>RSS</th> -->
@@ -80,6 +81,40 @@
           </td>
         [% ELSE %]
           <td>-</td>
+        [% END %]
+      [% END %]
+      
+      [% IF Koha.Preference('SuomiFiMessaging') %]
+        [% IF ( messaging_preference.transport_suomifi ) %]
+          <td>
+          [% IF ( messaging_form_inactive ) %]
+              [% IF ( messaging_preference.transports_suomifi ) %]
+                <input type="checkbox"
+                  id="suomifi[% messaging_preference.message_attribute_id | html %]"
+                  name="[% messaging_preference.message_attribute_id | html %]"
+                  value="suomifi" class="pmp_suomifi" checked="checked" disabled="disabled" />
+              [% ELSE %]
+                <input type="checkbox"
+                  id="suomifi[% messaging_preference.message_attribute_id | html %]"
+                  name="[% messaging_preference.message_attribute_id | html %]"
+                  value="suomifi" class="pmp_suomifi" disabled="disabled" />
+              [% END %]
+          [% ELSE %]
+              [% IF ( messaging_preference.transports_suomifi ) %]
+            <input type="checkbox"
+                id="suomifi[% messaging_preference.message_attribute_id | html %]"
+                name="[% messaging_preference.message_attribute_id | html %]"
+                value="suomifi" class="pmp_suomifi_active_notify" checked="checked" class="active_notify" data-attr-id="[% messaging_preference.message_attribute_id | html %]" />
+              [% ELSE %]
+            <input type="checkbox"
+                id="suomifi[% messaging_preference.message_attribute_id | html %]"
+                name="[% messaging_preference.message_attribute_id | html %]"
+                value="suomifi" class="pmp_suomifi_active_notify" data-attr-id="[% messaging_preference.message_attribute_id | html %]" />
+              [% END %]
+          [% END %]
+          </td>
+        [% ELSE %]
+        <td>-</td>
         [% END %]
       [% END %]
 
