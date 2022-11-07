@@ -24,6 +24,7 @@ use Koha::Biblios;
 use Koha::DateUtils qw (dt_from_string output_pref);
 use Koha::CirculationRules qw ( get_effective_rule );
 use DateTime::Duration;
+use List::MoreUtils qw(uniq);
 use Storable;
 
 use constant PULL_INTERVAL => 2;
@@ -99,7 +100,7 @@ my $strsth =
             AND reserves.priority <> 0
             AND reserves.suspend = 0
             AND notforloan = 0 AND damaged = 0 AND itemlost = 0 AND withdrawn = 0
-    
+
     GROUP BY reserves.biblionumber ORDER BY biblio.title
     ";
 
@@ -124,8 +125,7 @@ while ( my $data = $sth->fetchrow_hashref ) {
     $data->{l_ccode}='' unless $data->{l_ccode};
     $data->{l_itemnotes}='' unless $data->{l_itemnotes};
 
-
-    if ($data->{l_itemcallnumber}) {
+    if (($data->{icount}) && ($data->{l_itemcallnumber})) {
         push(
             @reservedata, {
                 reservedate     => $data->{l_reservedate},
@@ -183,14 +183,18 @@ sub check_issuingrules {
             {   categorycode => $borrower->categorycode,
                 itemtype     => $item->itype,
                 branchcode   => $data->{l_branch},
-                permanent_location => $item->permanent_location,
                 rule_name    => 'holdallowed',
             }
         );
-        push @itypes, $item->itype;
-        push @holdingbranches, $item->holdingbranch;
-        $count++;
+        if ( ! $issuing_rule || ( $issuing_rule->rule_value && $issuing_rule->rule_value ne 'not_allowed' ) ) {
+            push @itypes, $item->itype;
+            push @holdingbranches, $item->holdingbranch;
+            $count++;
+        }
     }
 
-    return $data
+    $data->{l_itype} = join('|', uniq(@itypes));
+    $data->{l_holdingbranch} = join('|', uniq(sort(@holdingbranches)));
+    $data->{icount} = $count;
+    return $data;
 }
