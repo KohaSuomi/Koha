@@ -44,7 +44,8 @@ my ( $template, $loggedinuser, $cookie ) = get_template_and_user(
     }
 );
 
-my $reporteddate = "UNKNOWN";
+my $reporteddate = localtime->datetime();
+$reporteddate=~s/T/ /;
 my @reservedata;
 
 if ( -e '/tmp/kohasuomi-pendingreserves.tmp' ) {
