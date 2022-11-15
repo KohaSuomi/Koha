@@ -110,6 +110,7 @@ if ($op eq 'delete') {
                 article_requests                 => undef,
                 note                             => undef,
                 holds_pickup_period              => undef,
+                decreaseloanholds                => undef,
             }
         }
     );
