@@ -9,33 +9,6 @@ body:
     description: Kerro mahdollisimman tarkasti, minkälaista ominaisuutta tai toiminnallisuutta toivot. Asiakastietoja ei saa lisätä tikettiin, linkki asiakastietoon riittää.
   validations:
     required: false
-- type: dropdown
-  id: osio
-  attributes:
-    label: Kohan osio
-    description: Mihin Kohan osioon ehdotus liittyy?
-    options:
-      - Asiakastiedot
-      - Automaatit
-      - Hankinta
-      - Itsepalvelu
-      - Kausijulkaisut
-      - Kieliasu
-      - Kuvailu
-      - Lainaus
-      - Laskutus
-      - Maksut
-      - Niteet
-      - Palautus
-      - Raportit ja tilastot
-      - Tiedonhaku
-      - Työkalut
-      - Varaukset
-      - Verkkokirjasto
-      - Viestit
-      - Ylläpito
-  validations:
-    required: false
 - type: textarea
   attributes:
     label: Jotain muuta?
