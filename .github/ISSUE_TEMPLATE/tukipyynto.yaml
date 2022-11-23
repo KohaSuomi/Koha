@@ -1,6 +1,5 @@
 name: Tukipyyntö
-description: Lisää kehitysehdotus. Muista lisätä [Tukipyyntö]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
-title: "[Tukipyyntö] "
+description: Lisää kehitysehdotus. Muista lisätä otsikko ja oikealle projekti-osioon "Tikettien seuranta".
 labels: ["help wanted"]
 body:
 - type: textarea
