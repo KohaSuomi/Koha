@@ -1,6 +1,6 @@
 name: Bugi
-description: Lisää bugi-ilmoitus. Muista lisätä [Bugi]-riville otsikko ja oikealle projekti-osioon "Tikettien seuranta".
-title: "[Bugi] "
+description: Lisää bugi-ilmoitus. Muista lisätä otsikko ja oikealle projekti-osioon "Tikettien seuranta".
+title: ""
 labels: [bug]
 body:
 - type: textarea
