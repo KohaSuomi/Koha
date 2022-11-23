@@ -1,5 +1,4 @@
 name: Kehitysehdotus
-title: ""
 labels: ["enhancement"]
 description: Lisää kehitysehdotus. Muista lisätä otsikko, mutta älä poista jo siinä olevaa tietoa. Lisää oikealle projekti-osioon "Tikettien seuranta".
 body:
