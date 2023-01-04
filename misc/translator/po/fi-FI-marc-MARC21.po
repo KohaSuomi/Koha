@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2022-09-08 12:30+0300\n"
-"PO-Revision-Date: 2022-09-08 13:20+0300\n"
+"PO-Revision-Date: 2023-01-04 09:52+0200\n"
 "Last-Translator: pknuuti <paivi.knuutinen@joensuu.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-POOTLE-MTIME: 1646205180.299599\n"
 "X-Pootle-Path: /fi/21.05/fi-FI-marc-MARC21.po\n"
 "X-Pootle-Revision: 1\n"
@@ -169,7 +169,7 @@ msgstr "(syötä, jos bittitarkkuus tiedetään; <br />muulloin valitse valikost
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2intranetDetail.xsl:729
 #, c-format
 msgid "(index-term-genre"
-msgstr "(hakutermi-lajityyppi"
+msgstr "(index-term-genre"
 
 #: koha-tmpl/opac-tmpl/bootstrap/en/xslt/MARC21slim2OPACDetail.xsl:753
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2intranetDetail.xsl:670
@@ -1747,17 +1747,17 @@ msgstr "; Visuaalisen aineiston tyyppi: "
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:1845
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:with-param> </xsl:"
-"call-template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:"
+"with-param name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param "
+"name=\"axis\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:"
+"with-param> </xsl:call-template> </xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:with-param> </xsl:"
-"call-template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:"
+"with-param name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param "
+"name=\"axis\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:"
+"with-param> </xsl:call-template> </xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1252
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1440
@@ -1767,17 +1767,17 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:1810
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
-"template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:"
+"with-param name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param "
+"name=\"axis\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:"
+"with-param> </xsl:call-template> </xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
-"template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:"
+"with-param name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param "
+"name=\"axis\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:"
+"with-param> </xsl:call-template> </xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1331
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1514
@@ -1787,32 +1787,32 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:1884
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
-"template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:"
+"with-param name=\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param "
+"name=\"axis\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:"
+"with-param> </xsl:call-template> </xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
-"template> </xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"specialSubfieldSelect\"> <xsl:"
+"with-param name=\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param "
+"name=\"axis\">t</xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:"
+"with-param> </xsl:call-template> </xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:132
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3.xsl:129
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:137
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">a</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
-"template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">a</xsl:with-param> </xsl:call-template> </xsl:with-"
+"param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">a</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
-"template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">a</xsl:with-param> </xsl:call-template> </xsl:with-"
+"param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1361
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1543
@@ -1822,57 +1822,59 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:1913
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">adfgklmorsv</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
-"call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">adfgklmorsv</xsl:with-param> </xsl:call-template> </xsl:"
+"with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">adfgklmorsv</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
-"call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">adfgklmorsv</xsl:with-param> </xsl:call-template> </xsl:"
+"with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:2193
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3.xsl:2420
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
-"call-template> <xsl:call-template name=\"part\"/> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:"
+"with-param> </xsl:call-template> <xsl:call-template name=\"part\"/> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
-"call-template> <xsl:call-template name=\"part\"/> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:"
+"with-param> </xsl:call-template> <xsl:call-template name=\"part\"/> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:2643
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
-"call-template> <xsl:call-template name=\"part\"></xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:"
+"with-param> </xsl:call-template> <xsl:call-template name=\"part\"></xsl:call-"
+"template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:"
-"call-template> <xsl:call-template name=\"part\"></xsl:call-template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">adfhklor</xsl:with-param> </xsl:call-template> </xsl:"
+"with-param> </xsl:call-template> <xsl:call-template name=\"part\"></xsl:call-"
+"template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:206
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3.xsl:216
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:215
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">ah</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
-"template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">ah</xsl:with-param> </xsl:call-template> </xsl:with-"
+"param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">ah</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
-"template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">ah</xsl:with-param> </xsl:call-template> </xsl:with-"
+"param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1183
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS3-1.xsl:1199
@@ -1882,137 +1884,137 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS32.xsl:1569
 #, c-format
 msgid ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">av</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
-"template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">av</xsl:with-param> </xsl:call-template> </xsl:with-"
+"param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param name=\"chopString"
-"\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">av</xsl:with-param> </xsl:call-template> </xsl:with-param> </xsl:call-"
-"template> "
+"<xsl:call-template name=\"chopPunctuation\"> <xsl:with-param "
+"name=\"chopString\"> <xsl:call-template name=\"subfieldSelect\"> <xsl:with-"
+"param name=\"codes\">av</xsl:with-param> </xsl:call-template> </xsl:with-"
+"param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1031
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1216
 #, c-format
 msgid ""
-"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:with-param> </xsl:"
+"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param "
+"name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</"
+"xsl:with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:with-param> </xsl:"
 "call-template> "
 msgstr ""
-"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:with-param> </xsl:"
+"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param "
+"name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</"
+"xsl:with-param> <xsl:with-param name=\"afterCodes\">dg</xsl:with-param> </xsl:"
 "call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:998
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1181
 #, c-format
 msgid ""
-"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
-"template> "
+"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param "
+"name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</"
+"xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:"
+"call-template> "
 msgstr ""
-"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
-"template> "
+"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param "
+"name=\"anyCodes\">tfklmorsv</xsl:with-param> <xsl:with-param name=\"axis\">t</"
+"xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:"
+"call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1078
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1256
 #, c-format
 msgid ""
-"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
-"template> "
+"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param "
+"name=\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis\">t</"
+"xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:"
+"call-template> "
 msgstr ""
-"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param name="
-"\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis\">t</xsl:"
-"with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:call-"
-"template> "
+"<xsl:call-template name=\"specialSubfieldSelect\"> <xsl:with-param "
+"name=\"anyCodes\">tfklsv</xsl:with-param> <xsl:with-param name=\"axis\">t</"
+"xsl:with-param> <xsl:with-param name=\"afterCodes\">g</xsl:with-param> </xsl:"
+"call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:69
 #, c-format
 msgid ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">ab</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">ab</xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">ab</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">ab</xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2ATOM.xsl:38
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2RSS2.xsl:23
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2SRWDC.xsl:41
 #, c-format
 msgid ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">abfghk</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">abfghk</xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">abfghk</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">abfghk</xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:95
 #, c-format
 msgid ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">abfh</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">abfh</xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">abfh</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">abfh</xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:79
 #, c-format
 msgid ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">abh</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">abh</xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">abh</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">abh</xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1105
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1281
 #, c-format
 msgid ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">adfgklmorsv</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">adfgklmorsv</xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">adfgklmorsv</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">adfgklmorsv</xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:1800
 #, c-format
 msgid ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">adfhklor</xsl:with-param> </xsl:call-template> <xsl:call-template name="
-"\"part\"/> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">adfhklor</xsl:with-param> </xsl:call-template> <xsl:call-"
+"template name=\"part\"/> "
 msgstr ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">adfhklor</xsl:with-param> </xsl:call-template> <xsl:call-template name="
-"\"part\"/> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">adfhklor</xsl:with-param> </xsl:call-template> <xsl:call-"
+"template name=\"part\"/> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:122
 #, c-format
 msgid ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">ah</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">ah</xsl:with-param> </xsl:call-template> "
 msgstr ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">ah</xsl:with-param> </xsl:call-template> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">ah</xsl:with-param> </xsl:call-template> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:957
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:970
 #, c-format
 msgid ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">av</xsl:with-param> </xsl:call-template> <xsl:call-template name=\"part\"/"
-"> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">av</xsl:with-param> </xsl:call-template> <xsl:call-template "
+"name=\"part\"/> "
 msgstr ""
-"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param name=\"codes"
-"\">av</xsl:with-param> </xsl:call-template> <xsl:call-template name=\"part\"/"
-"> "
+"<xsl:call-template name=\"subfieldSelect\"> <xsl:with-param "
+"name=\"codes\">av</xsl:with-param> </xsl:call-template> <xsl:call-template "
+"name=\"part\"/> "
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2MODS.xsl:53
 #, c-format
@@ -3256,7 +3258,7 @@ msgstr "Canzonat"
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:606
 #, c-format
 msgid "Captions language: "
-msgstr "Tekstityksen kieli: "
+msgstr "Kuulovammaisille tarkoitetun tekstityksen kieli: "
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:1080
 #, c-format
@@ -10300,7 +10302,7 @@ msgstr "Odottava varaus"
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:499
 #, c-format
 msgid "Performance medium: "
-msgstr "Esityskokoonpano"
+msgstr "Esityskokoonpano: "
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:421
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:834
