@@ -196,12 +196,6 @@ __PACKAGE__->table("deletedbiblioitems");
   data_type: 'integer'
   is_nullable: 1
 
-=head2 datereceived
-
-  data_type: 'timestamp'
-  datetime_undef_if_invalid: 1
-  is_nullable: 1
-
 =cut
 
 __PACKAGE__->add_columns(
@@ -274,12 +268,6 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 255 },
   "totalissues",
   { data_type => "integer", is_nullable => 1 },
-  "datereceived",
-  {
-    data_type => "timestamp",
-    datetime_undef_if_invalid => 1,
-    is_nullable => 1,
-  },
 );
 
 =head1 PRIMARY KEY
@@ -295,8 +283,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("biblioitemnumber");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2022-03-15 19:43:19
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:1Kof62sZKPOpNHhRsUjx7Q
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2023-01-09 13:44:30
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hMST2S1M1O6JpxO05bELKg
 
 sub koha_objects_class {
     'Koha::Old::Biblioitems';
