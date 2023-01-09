@@ -216,7 +216,7 @@
     <!-- koha-suomi: show item type from 942c -->
     <xsl:if test="marc:datafield[@tag=942]/marc:subfield[@code='c']">
       <span class="results_summary item-type">
-        <span class="label">Item type: </span>
+        <span class="label">Material type: </span>
         <xsl:value-of select="marc:datafield[@tag=942]/marc:subfield[@code='c']"/>
       </span>
     </xsl:if>
