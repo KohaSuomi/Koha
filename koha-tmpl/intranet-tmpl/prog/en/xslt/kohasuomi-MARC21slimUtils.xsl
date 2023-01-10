@@ -449,7 +449,7 @@
       <xsl:param name="agelimit"/>
       <xsl:variable name="tagelimit" select="translate($agelimit, ' .-;', '')"/>
       <xsl:if test="starts-with($tagelimit, 'K')">
-        <span class="results_summary age_limit">Age restriction: <xsl:value-of select="$tagelimit"/>.</span>
+        <span class="results_summary age_limit"><span class="label">Age restriction: </span><xsl:value-of select="$tagelimit"/>.</span>
       </xsl:if>
     </xsl:template>
     <!-- /koha-suomi: kielletty alle -->
