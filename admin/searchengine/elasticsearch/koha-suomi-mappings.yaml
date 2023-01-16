@@ -1,0 +1,4379 @@
+---
+authorities:
+  Corporate-name-see-also-from:
+    label: Corporate-name-see-also-from
+    mappings:
+      - facet: ''
+        marc_field: 510(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Corporate-name-see-from:
+    label: Corporate-name-see-from
+    mappings:
+      - facet: ''
+        marc_field: 410(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Descriptive-cataloging-rules:
+    label: Descriptive-cataloging-rules
+    mappings:
+      - facet: ''
+        marc_field: 008_/10
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Heading:
+    label: Heading
+    mappings:
+      - facet: ''
+        marc_field: 100(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 110(abcdefghjklnpqstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 111(acdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 130(adefghjklnpqstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 148(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 150(abgvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 151(agvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 155(avxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 200(abcdfgjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 210(abcdefghjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 215(ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 216(afcjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 220(afjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 230(abhijklmnqrsuwxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 235(abejkmrsuwxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 240(atjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 250(ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 260(abcdjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 280(ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  Heading-Main:
+    label: Heading-Main
+    mappings:
+      - facet: ''
+        marc_field: 035a
+        marc_type: marc21
+        sort: ~
+      - facet: ''
+        marc_field: 100a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 110a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 111a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 130a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 148a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 150a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 151a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 155a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 200a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 210a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 215a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 216a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 220a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 230a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 235a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 240a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 250a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 260a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 280a
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+    type: ''
+  Heading-use-main-or-added-entry:
+    label: Heading-use-main-or-added-entry
+    mappings:
+      - facet: ''
+        marc_field: 008_/14
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Heading-use-series-added-entry:
+    label: Heading-use-series-added-entry
+    mappings:
+      - facet: ''
+        marc_field: 008_/16
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Heading-use-subject-added-entry:
+    label: Heading-use-subject-added-entry
+    mappings:
+      - facet: ''
+        marc_field: 008_/15
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Kind-of-record:
+    label: Kind-of-record
+    mappings:
+      - facet: ''
+        marc_field: 008_/9
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Match:
+    label: Match
+    mappings:
+      - facet: ''
+        marc_field: 100(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 111(acdefghjklnpqstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 400(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 410(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 411(acdefghjklnpqstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 500(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 510(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 511(acdefghjklnpqstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 200(3478abcdfgjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 210(3478abcdefghxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 215(78ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 216(378acfjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 220(378afjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 230(8abhijklmqrsuwxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 235(378abeijkmratsuwxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 240(8abcfjtxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 245(ajtxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 250(8abcdjvxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 260(378abcd)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 280(378ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 400(0234568abcdfgjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 410(02345678abcdefghjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 415(0235678ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 416(acfjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 420(afjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 430(0235678abhijklmnqrsuwxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 435(0235678abejkmrsuwxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 440(0235678abcdfjtxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 445(ajtxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 450(0235678ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 460(abcd)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 480(ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 500(023456789abcdfgjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 510(02345678abcdefghjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 515(0356789ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 516(9acfjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 520(9afjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 530(02356789abhijklmnqrsuwxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 535(02356789abjkmqrsuwxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 540(0235678ajtxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 545(9ajtxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 550(02356789abjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 560(59abcd)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 580(59ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 700(23478abcdfgjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 710(23478abcdefghjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 715(2378ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 716(acfjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 720(afjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 730(2378abhijklmnqrsuwxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 740(2378ajtxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 745(378ajtxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 750(23789abjxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 760(abcd)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 780(ajxyz)
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  Match-heading-see-from:
+    label: Match-heading-see-from
+    mappings:
+      - facet: ''
+        marc_field: 400(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 410(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 411(acdefghjklnpqstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Meeting-name:
+    label: Meeting-name
+    mappings:
+      - facet: ''
+        marc_field: 111(acdefghjklnpqstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Meeting-name-heading:
+    label: Meeting-name-heading
+    mappings:
+      - facet: ''
+        marc_field: 111(acdefghjklnpqstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Meeting-name-see-also-from:
+    label: Meeting-name-see-also-from
+    mappings:
+      - facet: ''
+        marc_field: 511(acdefghjklnpqstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Meeting-name-see-from:
+    label: Meeting-name-see-from
+    mappings:
+      - facet: ''
+        marc_field: 411(acdefghjklnpqstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Personal-name-heading:
+    label: Personal-name-heading
+    mappings:
+      - facet: ''
+        marc_field: 100(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Personal-name-see-also-from:
+    label: Personal-name-see-also-from
+    mappings:
+      - facet: ''
+        marc_field: 500(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Personal-name-see-from:
+    label: Personal-name-see-from
+    mappings:
+      - facet: ''
+        marc_field: 400(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  See-also-from:
+    label: See-also-from
+    mappings:
+      - facet: ''
+        marc_field: 500(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 510(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 511a(bcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 530(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 547(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 548(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 550(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 551(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 555(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 562(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  See-from:
+    label: See-from
+    mappings:
+      - facet: ''
+        marc_field: 400(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 410(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 411(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 430(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 440(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 441(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 444(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 447(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 448(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 462(abcdefghklmnoprstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  Subject-heading-thesaurus:
+    label: Subject-heading-thesaurus
+    mappings:
+      - facet: ''
+        marc_field: 008_/11
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  authtype:
+    label: authtype
+    mappings:
+      - facet: ''
+        marc_field: 942a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 152b
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  lc-card-number:
+    label: lc-card-number
+    mappings:
+      - facet: ''
+        marc_field: 010az
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  local-number:
+    label: local-number
+    mappings:
+      - facet: ''
+        marc_field: 001
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 001
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: string
+  personal-name:
+    label: personal-name
+    mappings:
+      - facet: ''
+        marc_field: 100(abcdefghjklmnopqrstvxyz)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  record-source:
+    label: record-source
+    mappings:
+      - facet: ''
+        marc_field: 040(acd)
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+biblios:
+  abstract:
+    label: abstract
+    mappings:
+      - facet: ''
+        marc_field: 520
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  accessibility-content:
+    label: accessibility-content
+    mappings:
+      - facet: ''
+        marc_field: 341abcde
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  acqsource:
+    label: acqsource
+    mappings:
+      - facet: ''
+        marc_field: 952e
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  arl:
+    label: arl
+    mappings:
+      - facet: ''
+        marc_field: 526c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  arp:
+    label: arp
+    mappings:
+      - facet: ''
+        marc_field: 526d
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  audience-term:
+    label: audience-term
+    mappings:
+      - facet: ''
+        marc_field: 385a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  author:
+    facet_order: 1
+    label: author
+    mappings:
+      - facet: 1
+        marc_field: 100a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 110a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 111a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 700a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 710a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 711a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 800a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 810a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 811a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 900a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 910a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 911a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 200f
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 200g
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 700a
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 701
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 505r
+        marc_type: marc21
+        sort: ~
+        suggestible: 1        
+    type: string
+  author-in-order:
+    label: author-in-order
+    mappings:
+      - facet: ''
+        marc_field: 245c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 505r
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+    type: ''
+  author-name-corporate:
+    label: author-name-corporate
+    mappings:
+      - facet: ''
+        marc_field: 110
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 111
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 710
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 711
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 810
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 811
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  author-name-personal:
+    label: author-name-personal
+    mappings:
+      - facet: ''
+        marc_field: 100
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 400
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 700
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 800
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  author-personal-bibliography:
+    label: author-personal-bibliography
+    mappings:
+      - facet: ''
+        marc_field: 100a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  author-title:
+    label: author-title
+    mappings:
+      - facet: ''
+        marc_field: 100
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 110
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 111
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 400t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 410t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 411t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 700t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 710t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 711t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 800t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 810t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 811t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  barcode:
+    label: barcode
+    mappings:
+      - facet: ''
+        marc_field: 952p
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  bgf-number:
+    label: bgf-number
+    mappings:
+      - facet: ''
+        marc_field: 015
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  bib-level:
+    label: bib-level
+    mappings:
+      - facet: ''
+        marc_field: leader_/7
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  biblioitemnumber:
+    label: biblioitemnumber
+    mappings:
+      - facet: ''
+        marc_field: 999d
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  bio:
+    label: bio
+    mappings:
+      - facet: ''
+        marc_field: 008_/34
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 105a_/12
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  bnb-card-number:
+    label: bnb-card-number
+    mappings:
+      - facet: ''
+        marc_field: 015
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ccode:
+    facet_order: 7
+    label: collection-code
+    mappings:
+      - facet: 1
+        marc_field: 9528
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 9958
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  classification-source:
+    label: classification-source
+    mappings:
+      - facet: ''
+        marc_field: 9522
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  cn-bib-sort:
+    label: cn-bib-sort
+    mappings:
+      - facet: ''
+        marc_field: 9426
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  cn-bib-source:
+    label: cn-bib-source
+    mappings:
+      - facet: ''
+        marc_field: 9422
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  cn-class:
+    label: cn-class
+    mappings:
+      - facet: ''
+        marc_field: 942h
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  cn-item:
+    label: cn-item
+    mappings:
+      - facet: ''
+        marc_field: 942i
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  cn-prefix:
+    label: cn-prefix
+    mappings:
+      - facet: ''
+        marc_field: 942k
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  cn-sort:
+    label: cn-sort
+    mappings:
+      - facet: ''
+        marc_field: 9526
+        marc_type: marc21
+        sort: 1
+        suggestible: ''
+    type: ''
+  cn-suffix:
+    label: cn-suffix
+    mappings:
+      - facet: ''
+        marc_field: 942m
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  code-geographic:
+    label: code-geographic
+    mappings:
+      - facet: ''
+        marc_field: 043
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  code-institution:
+    label: code-institution
+    mappings:
+      - facet: ''
+        marc_field: 040
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  coded-location-qualifier:
+    label: coded-location-qualifier
+    mappings:
+      - facet: ''
+        marc_field: 952f
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  coden:
+    label: coden
+    mappings:
+      - facet: ''
+        marc_field: 030
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  collection-960:
+    label: collection-960
+    mappings:
+      - facet: ''
+        marc_field: 960
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  conference-name:
+    label: conference-name
+    mappings:
+      - facet: ''
+        marc_field: 111
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 411
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 611
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 711
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 811
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  control-number:
+    label: control-number
+    mappings:
+      - facet: ''
+        marc_field: 001
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  control-number-identifier:
+    label: control-number-identifier
+    mappings:
+      - facet: ''
+        marc_field: 003
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  record-control-number-773w:
+    label: record-control-number-773w
+    mappings:
+      - facet: ''
+        marc_field: '773w'
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: string
+
+  system-control-number:
+    label: system-control-number
+    mappings:
+      - facet: ''
+        marc_field: '035a'
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  system-control-number-cancelled:
+    label: system-control-number-cancelled
+    mappings:
+      - facet: ''
+        marc_field: '035z'
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  cni:
+    label: cni
+    mappings:
+      - facet: ''
+        marc_field: 003
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  copydate:
+    label: copydate
+    mappings:
+      - facet: 1
+        marc_field: 008_/7-10
+        marc_type: marc21
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 260c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 264c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: date
+  copynumber:
+    label: copynumber
+    mappings:
+      - facet: ''
+        marc_field: 952t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  corporate-name:
+    label: corporate-name
+    mappings:
+      - facet: ''
+        marc_field: 110
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 410
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 610
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 710
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 810
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  creator-term:
+    label: creator-term
+    mappings:
+      - facet: ''
+        marc_field: 386a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  cross-reference:
+    label: cross-reference
+    mappings:
+      - facet: ''
+        marc_field: 1009
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 2459
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 7009
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ctype:
+    label: ctype
+    mappings:
+      - facet: ''
+        marc_field: 008_/24-27
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 105a_/4-7
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  curriculum:
+    label: curriculum
+    mappings:
+      - facet: ''
+        marc_field: 658abc
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  damaged:
+    label: damaged
+    mappings:
+      - facet: ''
+        marc_field: 9524
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  date-entered-on-file:
+    label: date-entered-on-file
+    mappings:
+      - facet: ''
+        marc_field: 008_/0-5
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 099c
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  date-of-acquisition:
+    label: date-of-acquisition
+    mappings:
+      - facet: ''
+        marc_field: 952d
+        marc_type: marc21
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 9955
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+    type: date
+  date-of-publication:
+    label: date-of-publication
+    mappings:
+      - facet: ''
+        marc_field: 008_/7-10
+        marc_type: marc21
+        sort: 1
+        suggestible: ''
+      - facet: ''
+        marc_field: 260c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 264c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 100a_/9-12
+        marc_type: unimarc
+        sort: 1
+        suggestible: ''
+    type: ''
+  date-time-last-modified:
+    label: date-time-last-modified
+    mappings:
+      - facet: ''
+        marc_field: 005
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 099d
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  datelastborrowed:
+    label: datelastborrowed
+    mappings:
+      - facet: ''
+        marc_field: 952s
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  datelastseen:
+    label: datelastseen
+    mappings:
+      - facet: ''
+        marc_field: 952r
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  dewey-classification:
+    label: dewey-classification
+    mappings:
+      - facet: ''
+        marc_field: 082
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  dissertation-information:
+    label: dissertation-information
+    mappings:
+      - facet: ''
+        marc_field: 502
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  editor:
+    label: editor
+    mappings:
+      - facet: ''
+        marc_field: 100a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 700
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  encoding-format:
+    label: encoding-format
+    mappings:
+      - facet: ''
+        marc_field: 347b
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  extent:
+    label: extent
+    mappings:
+      - facet: ''
+        marc_field: 300
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  content-type-term:
+    label: content-type-term
+    mappings:
+      - facet: ''
+        marc_field: 336a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  media-type-term:
+    label: media-type-term
+    mappings:
+      - facet: ''
+        marc_field: 337a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  carrier-type-term:
+    label: carrier-type-term
+    mappings:
+      - facet: ''
+        marc_field: 338a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  notated-music-format-term:
+    label: notated-music-format-term
+    mappings:
+      - facet: ''
+        marc_field: 348a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  place-of-origin:
+    label: place-of-origin
+    mappings:
+      - facet: ''
+        marc_field: 257a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 370g
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 655z
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  performance-medium:
+    label: performance-medium
+    mappings:
+      - facet: ''
+        marc_field: 382a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  soloist:
+    label: soloist
+    mappings:
+      - facet: ''
+        marc_field: 382b
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  doubling-instrument:
+    label: doubling-instrument
+    mappings:
+      - facet: ''
+        marc_field: 382d
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  alt-performance-medium:
+    label: alt-performance-medium
+    mappings:
+      - facet: ''
+        marc_field: 382p
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  performance-note:
+    label: performance-note
+    mappings:
+      - facet: ''
+        marc_field: 382v
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  musical-serial-number:
+    label: musical-serial-number
+    mappings:
+      - facet: ''
+        marc_field: 383a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  musical-opus-number:
+    label: musical-opus-number
+    mappings:
+      - facet: ''
+        marc_field: 383b
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  musical-thematic-index-number:
+    label: musical-thematic-index-number
+    mappings:
+      - facet: ''
+        marc_field: 383c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  musical-publisher-with-opus:
+    label: musical-publisher-with-opus
+    mappings:
+      - facet: ''
+        marc_field: 383e
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  time-period:
+    label: time-period
+    mappings:
+      - facet: ''
+        marc_field: 388a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 655y
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  awards-note:
+    label: awards-note
+    mappings:
+      - facet: ''
+        marc_field: 586a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  description-source-note:
+    label: description-source-note
+    mappings:
+      - facet: ''
+        marc_field: 588a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  library-specific-notes:
+    label: library-specific-notes
+    mappings:
+      - facet: ''
+        marc_field: 598a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 599a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  location-item-part:
+    label: location-item-part
+    mappings:
+      - facet: ''
+        marc_field: 852i
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ff7-00:
+    label: ff7-00
+    mappings:
+      - facet: ''
+        marc_field: 007_/0
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ff7-01:
+    label: ff7-01
+    mappings:
+      - facet: ''
+        marc_field: 007_/1
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ff7-01-02:
+    label: ff7-01-02
+    mappings:
+      - facet: ''
+        marc_field: 007_/0-1
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ff7-02:
+    label: ff7-02
+    mappings:
+      - facet: ''
+        marc_field: 007_/2
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ff8-23:
+    label: ff8-23
+    mappings:
+      - facet: ''
+        marc_field: 008_/23
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ff8-29:
+    label: ff8-29
+    mappings:
+      - facet: ''
+        marc_field: 008_/29
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 105a_/8
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  geographic-class:
+    label: geographic-class
+    mappings:
+      - facet: ''
+        marc_field: 052
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  holdingbranch:
+    facet_order: 8
+    label: holdinglibrary
+    mappings:
+      - facet: 1
+        marc_field: 952b
+        marc_type: marc21
+        sort: 0
+        suggestible: ''
+      - facet: ''
+        marc_field: 995c
+        marc_type: unimarc
+        sort: 0
+        suggestible: ''
+    type: string
+  homebranch:
+    facet_order: 9
+    label: homelibrary
+    mappings:
+      - facet: 1
+        marc_field: 952a
+        marc_type: marc21
+        sort: 0
+        suggestible: ''
+      - facet: 1
+        marc_field: 995b
+        marc_type: unimarc
+        sort: 0
+        suggestible: ''
+    type: string
+  host-item:
+    label: host-item
+    mappings:
+      - facet: ''
+        marc_field: 773at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  host-item-number:
+    label: host-item-number
+    mappings:
+      - facet: ''
+        marc_field: 7739
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 4619
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: number
+  identifier-other:
+    label: identifier-other
+    mappings:
+      - facet: ''
+        marc_field: 024a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  identifier-publisher-for-music:
+    label: identifier-publisher-for-music
+    mappings:
+      - facet: ''
+        marc_field: 028
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  identifier-standard:
+    label: identifier-standard
+    mappings:
+      - facet: ''
+        marc_field: 010
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 011
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 015
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 017
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 018
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 020a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 022a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 024a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 010az
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 011ayz
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: stdno
+  index-term-genre:
+    label: index-term-genre
+    mappings:
+      - facet: ''
+        marc_field: 655a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 655x
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  index-term-uncontrolled:
+    label: index-term-uncontrolled
+    mappings:
+      - facet: ''
+        marc_field: 653a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  indexed-by:
+    label: indexed-by
+    mappings:
+      - facet: ''
+        marc_field: 510
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  interest-age-level:
+    label: interest-age-level
+    mappings:
+      - facet: ''
+        marc_field: 049c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 521a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  agelevel:
+    label: agelevel
+    mappings:
+      - facet: ''
+        marc_field: 049c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 521a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  interest-grade-level:
+    label: interest-grade-level
+    mappings:
+      - facet: ''
+        marc_field: 521a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  isbn:
+    label: isbn
+    mappings:
+      - facet: ''
+        marc_field: 020a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 010az
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: isbn
+  canceled-isbn:
+    label: canceled-isbn
+    mappings:
+      - facet: ''
+        marc_field: 020z
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: isbn
+  issn:
+    label: issn
+    mappings:
+      - facet: ''
+        marc_field: 022a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 830x
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 011ayz
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: stdno
+  incorrect-issn:
+    label: incorrect-issn
+    mappings:
+      - facet: ''
+        marc_field: 022y
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: stdno
+  canceled-issn:
+    label: canceled-issn
+    mappings:
+      - facet: ''
+        marc_field: 022z
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: stdno
+  issues:
+    label: issues
+    mandatory: 1
+    mappings:
+      - facet: ''
+        marc_field: 952l
+        marc_type: marc21
+        sort: 1
+        suggestible: ''
+    type: sum
+  itemnumber:
+    label: itemnumber
+    mappings:
+      - facet: ''
+        marc_field: 9529
+        marc_type: marc21
+        sort: 0
+        suggestible: ''
+      - facet: ''
+        marc_field: 9959
+        marc_type: unimarc
+        sort: 0
+        suggestible: ''
+    type: number
+  itemtype:
+    label: itemtype
+    mappings:
+      - facet: ''
+        marc_field: 942c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 952y
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  itype:
+    facet_order: 2
+    label: itype
+    mappings:
+      - facet: 1
+        marc_field: 942c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 200b
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 995r
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: string
+  koha-auth-number:
+    label: koha-auth-number
+    mappings:
+      - facet: ''
+        marc_field: 1000
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 1100
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 1110
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 1300
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 2450
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 4000
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 4100
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 4400
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 4900
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6000
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6100
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6110
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6300
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6480
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6500
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6510
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6520
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6530
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6540
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6550
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6560
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6570
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6620
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6900
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6910
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6960
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6970
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6980
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 6990
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 7000
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 7100
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 7110
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 7300
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 7510
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 7960
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 7970
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 7980
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 7990
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 8000
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 8100
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 8110
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 8300
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 8960
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 8970
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 8980
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 8990
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  language-original:
+    label: language-original
+    mappings:
+      - facet: ''
+        marc_field: 041h
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  language-intermediate-translation:
+    label: language-intermediate-translation
+    mappings:
+      - facet: ''
+        marc_field: 041k
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  auth-code:
+    label: auth-code
+    mappings:
+      - facet: ''
+        marc_field: 042a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  lc-call-number:
+    label: lc-call-number
+    mappings:
+      - facet: ''
+        marc_field: 050b
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  lc-card-number:
+    label: lc-card-number
+    mappings:
+      - facet: ''
+        marc_field: 010
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 011
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 995j
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  lexile-number:
+    label: lexile-number
+    mappings:
+      - facet: ''
+        marc_field: 521a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  lf:
+    label: lf
+    mappings:
+      - facet: ''
+        marc_field: 008_/33
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 105a_/11
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  llength:
+    label: llength
+    mappings:
+      - facet: ''
+        marc_field: leader_/0-4
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ln:
+    facet_order: 10
+    label: ln
+    mappings:
+      - facet: 1
+        marc_field: 008_/35-37
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 041a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 041d
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 041j
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 101a
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  ln-audio:
+    label: ln-audio
+    mappings:
+      - facet: ''
+        marc_field: 041a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 041d
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ln-subtitle:
+    label: ln-subtitle
+    mappings:
+      - facet: ''
+        marc_field: 041j
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ln-captions:
+    label: ln-captions
+    mappings:
+      - facet: ''
+        marc_field: 041p
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ln-visual:
+    label: ln-visual
+    mappings:
+      - facet: ''
+        marc_field: 041r
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ln-acaudio:
+    label: ln-acaudio
+    mappings:
+      - facet: ''
+        marc_field: 041q
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  local-classification:
+    label: local-classification
+    mappings:
+      - facet: ''
+        marc_field: 952o
+        marc_type: marc21
+        sort: 0
+        suggestible: 1
+      - facet: ''
+        marc_field: 686
+        marc_type: unimarc
+        sort: 0
+        suggestible: ''
+      - facet: ''
+        marc_field: 995k
+        marc_type: unimarc
+        sort: 0
+        suggestible: 1
+    type: ''
+  local-number:
+    label: local-number
+    mappings:
+      - facet: ''
+        marc_field: 999c
+        marc_type: marc21
+        sort: 0
+        suggestible: ''
+      - facet: ''
+        marc_field: 001
+        marc_type: unimarc
+        sort: 0
+        suggestible: ''
+    type: string
+  location:
+    facet_order: 3
+    label: location
+    mappings:
+      - facet: 1
+        marc_field: 952c
+        marc_type: marc21
+        sort: 0
+        suggestible: ''
+      - facet: 1
+        marc_field: 995e
+        marc_type: unimarc
+        sort: 0
+        suggestible: ''
+    type: ''
+  lost:
+    label: lost
+    mappings:
+      - facet: ''
+        marc_field: 9521
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  map-scale:
+    label: map-scale
+    mappings:
+      - facet: ''
+        marc_field: 034
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  material-type:
+    label: material-type
+    mappings:
+      - facet: ''
+        marc_field: 007
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  materials-specified:
+    label: materials-specified
+    mappings:
+      - facet: ''
+        marc_field: 9523
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  microform-generation:
+    label: microform-generation
+    mappings:
+      - facet: ''
+        marc_field: 007_/11
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  music-key:
+    label: music-key
+    mappings:
+      - facet: ''
+        marc_field: 130r
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 240r
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 243r
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 630r
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 700r
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 730r
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  nal-call-number:
+    label: nal-call-number
+    mappings:
+      - facet: ''
+        marc_field: 070
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  name:
+    label: name
+    mappings:
+      - facet: ''
+        marc_field: 100
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 110
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 111
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 400
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 600a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 610
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 611
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 700
+        marc_type: marc21
+        sort: 0
+        suggestible: ''
+      - facet: ''
+        marc_field: 710
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 711
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 800
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 810
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 811
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  name-and-title:
+    label: name-and-title
+    mappings:
+      - facet: ''
+        marc_field: 100
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 110
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 111
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 400at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 410at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 411at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 600at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 610at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 611at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 700at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 710at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 711at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 800at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 810at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 811at
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  name-geographic:
+    label: name-geographic
+    mappings:
+      - facet: ''
+        marc_field: 651
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 751a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  nlm-call-number:
+    label: nlm-call-number
+    mappings:
+      - facet: ''
+        marc_field: 060
+        marc_type: marc21
+        sort: 0
+        suggestible: ''
+    type: ''
+  not-onloan-count:
+    label: not-onloan-count
+    mappings:
+      - facet: ''
+        marc_field: 999x
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 999x
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  note:
+    label: note
+    mappings:
+      - facet: ''
+        marc_field: 500
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 505
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 509ac
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 546a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 590
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 594a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 598a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 599a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 952z
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  terms-governing-use-and-reproduction:
+    label: terms-governing-use-and-reproduction
+    mappings:
+      - facet: ''
+        marc_field: 540abc
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  terms-of-access:
+    label: terms-of-access
+    mappings:
+      - facet: ''
+        marc_field: 506a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  standardized-terms-of-access:
+    label: standardized-terms-of-access
+    mappings:
+      - facet: ''
+        marc_field: 506f
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  system-details-note:
+    label: system-details-note
+    mappings:
+      - facet: ''
+        marc_field: 538a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  terms-of-use:
+    label: terms-of-use
+    mappings:
+      - facet: ''
+        marc_field: 540a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  terms-of-use-jurisdiction:
+    label: terms-of-use-jurisdiction
+    mappings:
+      - facet: ''
+        marc_field: 540b
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  terms-of-use-authorization:
+    label: terms-of-use-authorization
+    mappings:
+      - facet: ''
+        marc_field: 540c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  ownership-history:
+    label: ownership-history
+    mappings:
+      - facet: ''
+        marc_field: 561a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  methodology-controlled-term:
+    label: methodology-controlled-term
+    mappings:
+      - facet: ''
+        marc_field: 567b
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  mtype:
+    label: mtype
+    mappings:
+      - facet: ''
+        marc_field: 942c
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  notforloan:
+    label: notforloan
+    mappings:
+      - facet: ''
+        marc_field: 9527
+        marc_type: marc21
+        sort: 0
+        suggestible: ''
+      - facet: ''
+        marc_field: 995o
+        marc_type: unimarc
+        sort: 0
+        suggestible: ''
+    type: number
+  number-db:
+    label: number-db
+    mappings:
+      - facet: ''
+        marc_field: 015
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  number-govt-pub:
+    label: number-govt-pub
+    mappings:
+      - facet: ''
+        marc_field: 086
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  number-legal-deposit:
+    label: number-legal-deposit
+    mappings:
+      - facet: ''
+        marc_field: 017
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  number-local-acquisition:
+    label: number-local-acquisition
+    mappings:
+      - facet: ''
+        marc_field: 952i
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  number-natl-biblio:
+    label: number-natl-biblio
+    mappings:
+      - facet: ''
+        marc_field: 015
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  onloan:
+    label: onloan
+    mappings:
+      - facet: ''
+        marc_field: 952q
+        marc_type: marc21
+        sort: 0
+        suggestible: ''
+      - facet: ''
+        marc_field: 995n
+        marc_type: unimarc
+        sort: 0
+        suggestible: ''
+    type: boolean
+  other-control-number:
+    label: other-control-number
+    mappings:
+      - facet: ''
+        marc_field: 035
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  other-classification:
+    label: other-classification
+    mappings:
+      - facet: ''
+        marc_field: 084a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  personal-name:
+    label: personal-name
+    mappings:
+      - facet: ''
+        marc_field: 100
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 400
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 600a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 700
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 800
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  pl:
+    label: pl
+    mappings:
+      - facet: ''
+        marc_field: 008_/15-17
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  price:
+    label: price
+    mappings:
+      - facet: ''
+        marc_field: 952g
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  provider:
+    label: provider
+    mappings:
+      - facet: ''
+        marc_field: 260
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 264
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  place-of-publication:
+    label: place-of-publication
+    mappings:
+      - facet: ''
+        marc_field: 260a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 264a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: string
+  placement:
+    label: placement
+    mappings:
+      - facet: ''
+        marc_field: 852h
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  publisher:
+    label: publisher
+    mappings:
+      - facet: 1
+        marc_field: 264b
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 260b
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 210c
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: string
+  reading-grade-level:
+    label: reading-grade-level
+    mappings:
+      - facet: ''
+        marc_field: 521a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  record-control-number:
+    label: record-control-number
+    mappings:
+      - facet: ''
+        marc_field: 770w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 772w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 773w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 774w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 775w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 776w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 777w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 780w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 785w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 787w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 800w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 810w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 811w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 830w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  control-number-identifier:
+    label: control-number-identifier
+    mappings:
+      - facet: ''
+        marc_field: 003
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  record-source:
+    label: record-source
+    mappings:
+      - facet: ''
+        marc_field: 008_/39
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  related-periodical:
+    label: related-periodical
+    mappings:
+      - facet: ''
+        marc_field: 247
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 780
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 785
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  renewals:
+    label: renewals
+    mappings:
+      - facet: ''
+        marc_field: 952m
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  replacementprice:
+    label: replacementprice
+    mappings:
+      - facet: ''
+        marc_field: 952v
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  replacementpricedate:
+    label: replacementpricedate
+    mappings:
+      - facet: ''
+        marc_field: 952w
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  report-number:
+    label: report-number
+    mappings:
+      - facet: ''
+        marc_field: 027
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  reserves:
+    label: reserves
+    mappings:
+      - facet: ''
+        marc_field: 952n
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  restricted:
+    label: restricted
+    mappings:
+      - facet: ''
+        marc_field: 9525
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  rtype:
+    label: rtype
+    mappings:
+      - facet: ''
+        marc_field: leader_/6
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  stock-number:
+    label: stock-number
+    mappings:
+      - facet: ''
+        marc_field: 037
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  su-geo:
+    facet_order: 4
+    label: su-geo
+    mappings:
+      - facet: 1
+        marc_field: 650z
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 651a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 607a
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: string
+  subject:
+    facet_order: 6
+    label: subject
+    mappings:
+      - facet: 1
+        marc_field: 348a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 600a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 600b
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 600t
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 610a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 610b
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 610t
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 611ancdet
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 630a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 630n
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 630p
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 630r
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 648a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 650a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 650b
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 650c
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 650d
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 650v
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 650x
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 650y
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 650z
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 651a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 653a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 655a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 655x
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 600
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 600a
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 601
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 602
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 604
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 605
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 606
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 607
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 608
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: 1
+        marc_field: 610
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+    type: string
+  subject-name-personal:
+    label: subject-name-personal
+    mappings:
+      - facet: ''
+        marc_field: 600a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  subloc:
+    label: subloc
+    mappings:
+      - facet: ''
+        marc_field: 952j
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  suppress:
+    label: suppress
+    mappings:
+      - facet: ''
+        marc_field: 942n
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 955n
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: boolean
+  ta:
+    label: ta
+    mappings:
+      - facet: ''
+        marc_field: 008_/22
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 100a_/17
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: ''
+  thematic-number:
+    label: thematic-number
+    mappings:
+      - facet: ''
+        marc_field: 130n
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 240n
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 243n
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 630n
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 700n
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 730n
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  title:
+    label: title
+    mappings:
+      - facet: ''
+        marc_field: 130
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 210
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 211
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 212
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 214
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 222
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 240
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 245(ab)
+        marc_type: marc21
+        sort: 1
+        suggestible: 1
+      - facet: ''
+        marc_field: 245p
+        marc_type: marc21
+        sort: 1
+        suggestible: 1
+      - facet: ''
+        marc_field: 245n
+        marc_type: marc21
+        sort: 1
+        suggestible: 1
+      - facet: ''
+        marc_field: 246
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 247
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 490a
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 505t
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 700t
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 710t
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 711t
+        marc_type: marc21
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 730
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 740
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 780
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 785
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 830a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 830n
+        marc_type: marc21
+        sort: ~
+      - facet: ''
+        marc_field: 830p
+        marc_type: marc21
+        sort: ~
+      - facet: ''
+        marc_field: 830v
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 200a
+        marc_type: unimarc
+        sort: 1
+        suggestible: 1
+      - facet: ''
+        marc_field: 200c
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 200d
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 200e
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 200h
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 200i
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 205
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 304a
+        marc_type: unimarc
+        sort: ~
+        suggestible: 1
+      - facet: ''
+        marc_field: 327a
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 327b
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 327c
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 327d
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 327e
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 327f
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 327g
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 327h
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 327i
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 328t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 410t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 411t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 412t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 413t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 421t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 422t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 423t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 424t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 425t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 430t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 431t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 432t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 433t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 434t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 435t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 436t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 437t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 440t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 441t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 442t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 443t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 444t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 445t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 446t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 447t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 448t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 451t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 452t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 453t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 454t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 455t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 456t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 461t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 462t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 463t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 464t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 470t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 481t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 482t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 488t
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: string
+  title-abbreviated:
+    label: title-abbreviated
+    mappings:
+      - facet: ''
+        marc_field: 210
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 211
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 246
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  title-collective:
+    label: title-collective
+    mappings:
+      - facet: ''
+        marc_field: 243
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  title-cover:
+    label: title-cover
+    mappings:
+      - facet: ''
+        marc_field: 245a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  title-expanded:
+    label: title-expanded
+    mappings:
+      - facet: ''
+        marc_field: 214
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 246
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  title-former:
+    label: title-former
+    mappings:
+      - facet: ''
+        marc_field: 246
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 247
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 780
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  title-key:
+    label: title-key
+    mappings:
+      - facet: ''
+        marc_field: 222
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  title-later:
+    label: title-later
+    mappings:
+      - facet: ''
+        marc_field: 785
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  title-other-variant:
+    label: title-other-variant
+    mappings:
+      - facet: ''
+        marc_field: 212
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 247
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 740
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  title-series:
+    facet_order: 5
+    label: title-series
+    mappings:
+      - facet: 1
+        marc_field: 440a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 490a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 800t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 830a
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 830n
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 830p
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 830v
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: 1
+        marc_field: 225a
+        marc_type: unimarc
+        sort: ~
+        suggestible: ''
+    type: string
+  title-uniform:
+    label: title-uniform
+    mappings:
+      - facet: ''
+        marc_field: 130
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 240
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 700t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 710t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 711t
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 730
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+      - facet: ''
+        marc_field: 830a
+        marc_type: marc21
+        sort: ~
+      - facet: ''
+        marc_field: 830n
+        marc_type: marc21
+        sort: ~
+      - facet: ''
+        marc_field: 830p
+        marc_type: marc21
+        sort: ~
+      - facet: ''
+        marc_field: 830v
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  totalissues:
+    label: totalissues
+    mappings:
+      - facet: ''
+        marc_field: 9420
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  udc-classification:
+    label: udc-classification
+    mappings:
+      - facet: ''
+        marc_field: 080
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  udc-aux-subdivision:
+    label: udc-aux-subdivision
+    mappings:
+      - facet: ''
+        marc_field: 080x
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  uri:
+    label: uri
+    mappings:
+      - facet: ''
+        marc_field: 952u
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
+  withdrawn:
+    label: withdrawn
+    mappings:
+      - facet: ''
+        marc_field: 9520
+        marc_type: marc21
+        sort: ~
+        suggestible: ''
+    type: ''
