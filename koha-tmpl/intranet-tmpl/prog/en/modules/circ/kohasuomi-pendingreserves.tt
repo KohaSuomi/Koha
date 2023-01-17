@@ -26,6 +26,7 @@
             function separateData ( ColumnData ){
                 var cD = ColumnData;
                 var new_array = new Array();
+                var fixed_array = new Array();
                 for ( j=0 ; j<cD.length ; j++ ) {
                     var split_array = cD[j].split(/<\/ul>/gi);
                     for ( k=0 ; k<split_array.length ; k++ ){
@@ -36,9 +37,19 @@
                             new_array.push(str);
                         }
                     }
+                    //fix ks-holdingbranch class rows
+                    for ( k=0 ; k<new_array.length ; k++ ){
+                        str = $.trim(new_array[k].replace(/<ul style="padding-left:0"><li style="list-style-type:none" class="ks-holdingbranch">/g, ''));
+                        //str = $.trim(split_array[k].replace(/<ul style="padding-left:0"><li style="list-style-type:none">/g, ''));
+                          <!-- <ul><li>[% ItemTypes.GetDescription( itype ) %]</li></ul> -->
+                        str = $.trim(str.replace(/<\/li>/g, ''));
+                        if ($.inArray(str, fixed_array) == -1 && str.length > 0 ) {
+                            fixed_array.push(str);
+                        }
+                    }
               }
-              new_array.sort();
-              return new_array;
+              fixed_array.sort();
+              return fixed_array;
             }
 
             [%# add SeparateData function into createSelect function, so that it does the createSelect on clean data %]
@@ -113,8 +124,118 @@
                     holdst.fnFilter( filter_value, 14, true, false );
                 } );
             } );
-        });
+        });					
     //]]>
+
+</script>
+
+<script>
+
+function highlight() {
+				
+	//for even rows
+
+	var even = document.getElementsByClassName('even');
+
+	for (var i = 0; i < even.length; ++i) {
+		
+		var holdingarr = [];
+		
+		var holdingbranches = even[i].getElementsByClassName("ks-holdingbranch");
+		
+		var tobranches = even[i].getElementsByClassName("ks-tobranch");
+		
+		for (var j = 0; j < holdingbranches.length; ++j) {
+			
+			holdingarr.push(holdingbranches[j].textContent);
+
+		}
+	}
+
+	checkMatches(even);
+
+	//for odd rows
+
+	var odd = document.getElementsByClassName('odd');
+	
+	for (var i = 0; i < odd.length; ++i) {
+		
+		var holdingarr = [];
+		
+		var holdingbranches = odd[i].getElementsByClassName("ks-holdingbranch");
+		
+		var tobranches = odd[i].getElementsByClassName("ks-tobranch");
+		
+		for (var j = 0; j < holdingbranches.length; ++j) {
+			
+			holdingarr.push(holdingbranches[j].textContent);
+		}
+	}
+
+	checkMatches(odd);
+	
+	function checkMatches(element_array){
+	
+		for (var i = 0; i < element_array.length; ++i) {
+		
+		var holdingarr = [];
+		var toarr = [];
+		
+		var holdingbranches = element_array[i].getElementsByClassName("ks-holdingbranch");
+		
+		var tobranches = element_array[i].getElementsByClassName("ks-tobranch");
+  		
+  		for (var j = 0; j < holdingbranches.length; ++j) {
+			
+			holdingarr.push(holdingbranches[j].textContent);
+        }
+		
+		for (var j = 0; j < tobranches.length; ++j) {
+			
+			toarr.push(tobranches[j].textContent);
+        }
+		
+		var fromelements = [];
+		var toelements = [];
+		
+		Array.from(holdingbranches, child => {
+			
+			fromelements.push(child);
+
+		});
+		
+		Array.from(tobranches, child => {
+			
+		    toelements.push(child);
+		});		
+			
+			for (var k = 0; k < fromelements.length; ++k) {
+				
+				for (var l = 0; l < toelements.length; ++l) {
+					
+					if (fromelements[k].textContent == toelements[l].textContent){
+					
+					fromelements[k].style.color = "#ff5500"; 
+					fromelements[k].style.fontWeight = "bold";
+					//toelements[l].style.color = "#ff5500";
+					//toelements[l].style.fontWeight = "bold";
+					}
+				}
+			}
+		}
+	}	
+}
+
+document.addEventListener("DOMContentLoaded", function(e) {
+
+	highlight();
+
+$(document).click(function(event) {
+ 
+     highlight();
+ 
+ }); 
+});
 
 </script>
 
@@ -145,17 +266,17 @@
                             <td><input type="text" class="filter" data-column_num="1" placeholder="Available" style="width:100%"/></td>     <!--  2 -->
                             <td><input type="text" class="filter" data-column_num="2" placeholder="Holds" style="width:100%"/></td>         <!--  3 -->
                             <td><input type="text" class="filter" data-column_num="3" placeholder="Next patron" style="width:100%"/></td>   <!--  4 -->
-                            <td id="homebranchfilter"></td>                                                                                 <!--  5 -->
-                            <td id="holdatfilter"></td>                                                                                     <!--  6 -->
+                            <td data-column_num="4" id="homebranchfilter"></td>                                                                                 <!--  5 -->
+                            <td data-column_num="5" id="holdatfilter"></td>                                                                                     <!--  6 -->
                             <td><input type="text" class="filter" data-column_num="6" placeholder="Call numbers" style="width:100%"/></td>  <!--  7 -->
                             <td><input type="text" class="filter" data-column_num="7" placeholder="Title" style="width:100%"/></td>         <!--  8 -->
                             <td><input type="text" class="filter" data-column_num="8" placeholder="Copies" style="width:100%"/></td>        <!--  9 -->
                             <td><input type="text" class="filter" data-column_num="9" placeholder="Issues" style="width:100%"/></td>        <!-- 10 -->
-                            <td id="itypefilter"></td>                                                                                      <!-- 11 -->
-                            <td id="mtypefilter"></td>                                                                                      <!-- 12 -->
-                            <td id="locationfilter"></td>                                                                                   <!-- 13 -->
-                            <td id="sublocationfilter"></td>                                                                                <!-- 14 -->
-                            <td id="ccodefilter"></td>                                                                                      <!-- 15 -->
+                            <td data-column_num="10" id="itypefilter"></td>                                                                                      <!-- 11 -->
+                            <td data-column_num="11" id="mtypefilter"></td>                                                                                      <!-- 12 -->
+                            <td data-column_num="12" id="locationfilter"></td>                                                                                   <!-- 13 -->
+                            <td data-column_num="13" id="sublocationfilter"></td>                                                                                <!-- 14 -->
+                            <td data-column_num="14" id="ccodefilter"></td>                                                                                      <!-- 15 -->
                             <td><input type="text" class="filter" data-column_num="15" placeholder="Item notes" style="width:100%"/></td>   <!-- 16 -->
                             <td><input type="text" class="filter" data-column_num="16" placeholder="Next hold" style="width:100%"/></td>    <!-- 17 -->
                         </tr>
@@ -198,10 +319,10 @@
                                     </td>
                                     <td>
                                         [% FOREACH holdingbranch IN reserveloo.holdingbranches %]
-                                            <ul style="padding-left:0"><li style="list-style-type:none">[% holdingbranch %]</li></ul>
+                                            <ul style="padding-left:0"><li style="list-style-type:none" class="ks-holdingbranch">[% holdingbranch %]</li></ul>
                                         [% END %]
                                     </td>
-                                    <td>[% reserveloo.branch %]</td>
+                                    <td class="ks-tobranch">[% reserveloo.branch %]</td>
                                     <td>
                                         [% FOREACH callnumber IN reserveloo.itemcallnumber %]
                                             <ul style="padding-left:0"><li style="list-style-type:none">[% callnumber %]</li></ul>
