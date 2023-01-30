@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Koha 21.05\n"
 "POT-Creation-Date: 2023-01-11 14:49+0200\n"
-"PO-Revision-Date: 2023-01-11 15:32+0200\n"
+"PO-Revision-Date: 2023-01-25 14:25+0200\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -3906,7 +3906,7 @@ msgstr "%s %s%s (%s jäljellä olevat on siirretty)%s"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/circ/kohasuomi-pendingreserves.tt:222
 #, c-format
 msgid "%s %s%s%s %s %s%s %sIssues %s%s "
-msgstr "%s %s%s%s %s %s%s %sNumeroa %s%s "
+msgstr "%s %s%s%s %s %s%s %sNumerot %s%s "
 
 #. %1$s:  END
 #. %2$s:  level_indent | html
@@ -35396,7 +35396,7 @@ msgstr "Kanssajulkaisu:"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/serials/subscription-detail.tt:97
 #, c-format
 msgid "Issues"
-msgstr "Numeroita"
+msgstr "Numerot"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/serials/subscription-frequencies.tt:141
 #, c-format
