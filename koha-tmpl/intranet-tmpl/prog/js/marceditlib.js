@@ -133,6 +133,6 @@ KOHA.MarcEdit = {
         return f;
     },
     GetTitle: function () {
-        return this.GetField('100a') || this.GetField('110a') || this.GetField('111a') || this.GetField('130a') || this.GetField('245a');
+        return this.GetField('100a') || this.GetField('110a') || this.GetField('111a') || this.GetField('245a');
     }
 };

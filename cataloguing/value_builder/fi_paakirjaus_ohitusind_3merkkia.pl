@@ -32,7 +32,6 @@ my $builder= sub {
    if (f === undefined) return false;
    var v = f.value;
    var skip = 0;
-   if (f.tag == '130') skip = f.ind(1);
    if (f.tag == '245') skip = f.ind(2);
 
    if (skip > 0) v = v.slice(skip);

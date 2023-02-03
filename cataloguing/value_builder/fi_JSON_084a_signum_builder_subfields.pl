@@ -51,7 +51,6 @@ my $launcher = sub {
     my $f100a = $marc->subfield('100', 'a') || '';
     my $f110a = $marc->subfield('110', 'a') || '';
     my $f111a = $marc->subfield('111', 'a') || '';
-    my $f130a = $marc->subfield('130', 'a') || '';
     my $f245a = $marc->subfield('245', 'a') || '';
 
     my %ret = (
@@ -60,7 +59,6 @@ my $launcher = sub {
 	'f100a' => $f100a,
 	'f110a' => $f110a,
     'f111a' => $f111a,
-    'f130a' => $f130a,
     'f245a' => $f245a,
 	);
 

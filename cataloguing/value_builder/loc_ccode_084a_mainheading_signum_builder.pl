@@ -72,9 +72,6 @@ function Click$function_name(event) {
         var marc110a = resp.f110a;
         var marc111a = resp.f111a;
 
-        // First indicator is 'bypass'
-         var marc130a = resp.f130a;
-
         // Second indicator is 'bypass'
         var marc245a = resp.f245a;
 
@@ -86,8 +83,6 @@ function Click$function_name(event) {
             var mainHeading = marc110a;
         } else if (marc111a) {
             var mainHeading = marc111a;
-        } else if (marc130a) {
-            var mainHeading = marc130a;
         } else if (marc245a) {
             var mainHeading = marc245a;
         }
