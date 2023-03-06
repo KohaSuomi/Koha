@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Koha 21.05\n"
+"Project-Id-Version: Koha 21.11\n"
 "POT-Creation-Date: 2023-01-11 14:49+0200\n"
-"PO-Revision-Date: 2023-01-25 14:25+0200\n"
+"PO-Revision-Date: 2023-02-23 15:22+0200\n"
 "Last-Translator: Anneli Österman <anneli.osterman@ouka.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -9468,7 +9468,7 @@ msgstr ""
 #: koha-tmpl/intranet-tmpl/prog/en/modules/members/moremember.tt:455
 #, c-format
 msgid "%sForever%s %sDefault%s %sNever%s "
-msgstr "%sAina%s %sOletus%s %sEi koskaan%s "
+msgstr "%sToistaiseksi%s %sOletus%s %sEi koskaan%s "
 
 #. For the first occurrence,
 #. %1$s:  IF (basketgroup.freedeliveryplace)
@@ -57683,7 +57683,7 @@ msgstr "Hankintaehdotus tehty"
 #: koha-tmpl/intranet-tmpl/prog/en/modules/admin/searchengine/elasticsearch/mappings.tt:257
 #, c-format
 msgid "Suggestible"
-msgstr "Altis"
+msgstr "Ehdotettava"
 
 #: koha-tmpl/intranet-tmpl/prog/en/modules/acqui/neworderempty.tt:271
 #: koha-tmpl/intranet-tmpl/prog/en/modules/acqui/newordersuggestion.tt:50

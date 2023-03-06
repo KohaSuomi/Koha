@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Koha 21.05\n"
+"Project-Id-Version: Koha 21.11\n"
 "POT-Creation-Date: 2023-01-11 14:49+0200\n"
-"PO-Revision-Date: 2023-01-11 15:26+0200\n"
+"PO-Revision-Date: 2023-02-23 09:47+0200\n"
 "Last-Translator: pknuuti <paivi.knuutinen@joensuu.fi>\n"
-"Language-Team: \n"
+"Language-Team: Koha-Suomi\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -177,7 +177,7 @@ msgstr "(syötä, jos bittitarkkuus tiedetään; <br />muulloin valitse valikost
 #: koha-tmpl/opac-tmpl/bootstrap/en/xslt/MARC21slim2OPACDetail.xsl:805
 #, c-format
 msgid "(index-term-genre"
-msgstr "(hakutermi-lajityyppi"
+msgstr "(index-term-genre"
 
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/MARC21slim2intranetDetail.xsl:744
 #: koha-tmpl/opac-tmpl/bootstrap/en/xslt/MARC21slim2OPACDetail.xsl:753
@@ -3272,7 +3272,7 @@ msgstr "Canzonat"
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:606
 #, c-format
 msgid "Captions language: "
-msgstr "Tekstityksen kieli: "
+msgstr "Kuulovammaisille tarkoitetun tekstityksen kieli: "
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_007.xml:1080
 #, c-format
@@ -10327,7 +10327,7 @@ msgstr "Odottava varaus"
 #: koha-tmpl/intranet-tmpl/prog/en/xslt/kohasuomi-MARC21slimUtils.xsl:499
 #, c-format
 msgid "Performance medium: "
-msgstr "Esityskokoonpano"
+msgstr "Esityskokoonpano: "
 
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_006.xml:421
 #: koha-tmpl/intranet-tmpl/prog/en/data/marc21_field_008.xml:834
