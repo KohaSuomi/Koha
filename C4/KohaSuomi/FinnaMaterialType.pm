@@ -14,8 +14,72 @@ BEGIN {
     );
 }
 
+my %FinnaMaterialLang = (
+
+    'Article' => { 'fi_FI' => 'ARTIKKELI' },
+    'Atlas' => { 'fi_FI' => 'ATLAS' },
+    'BluRay' => { 'fi_FI' => 'BLURAY' },
+    'BookSection' => { 'fi_FI' => 'KIRJANOSA' },
+    'Book' => { 'fi_FI' => 'KIRJA' },
+    'Braille' => { 'fi_FI' => 'BRAILLE' },
+    'CDROM' => { 'fi_FI' => 'CDROM' },
+    'CD' => { 'fi_FI' => 'CD' },
+    'ChipCartridge' => { 'fi_FI' => 'PIIRIKOT' },
+    'Drawing' => { 'fi_FI' => 'PIIRROS' },
+    'DVD' => { 'fi_FI' => 'DVD' },
+    'eBook' => { 'fi_FI' => 'EKIRJA' },
+    'Electronic' => { 'fi_FI' => 'ELEKTRON' },
+    'Journal' => { 'fi_FI' => 'ALEHTI' },
+    'Kit' => { 'fi_FI' => 'MONIVIES' },
+    'Manuscript' => { 'fi_FI' => 'KASIKIRJ' },
+    'Map' => { 'fi_FI' => 'KARTTA' },
+    'Microfilm' => { 'fi_FI' => 'MIKROF' },
+    'MusicalScore' => { 'fi_FI' => 'NUOTTI' },
+    'MusicRecording' => { 'fi_FI' => 'MUSATAL' },
+    'Newspaper' => { 'fi_FI' => 'SLEHTI' },
+    'NonmusicalCassette' => { 'fi_FI' => 'PUHEKAS' },
+    'NonmusicalCD' => { 'fi_FI' => 'PUHECD' },
+    'NonmusicalDisc' => { 'fi_FI' => 'PUHELEVY' },
+    'NonmusicalRecording' => { 'fi_FI' => 'PUHETAL' },
+    'OnlineVideo' => { 'fi_FI' => 'EVIDEO' },
+    'Painting' => { 'fi_FI' => 'MAALAUS' },
+    'Photo' => { 'fi_FI' => 'VALOKUVA' },
+    'PhysicalObject' => { 'fi_FI' => 'ESINE' },
+    'Print' => { 'fi_FI' => 'MUUPAINATE' },
+    'Serial' => { 'fi_FI' => 'KAUSIJULK' },
+    'Slide' => { 'fi_FI' => 'DIA' },
+    'SoundCassette' => { 'fi_FI' => 'AANIKAS' },
+    'SoundDisc' => { 'fi_FI' => 'AANILEVY' },
+    'SoundRecording' => { 'fi_FI' => 'AANITALL' },
+    'TechnicalDrawing' => { 'fi_FI' => 'TYOPIIR' },
+    'VideoCassette' => { 'fi_FI' => 'VIDEOKAS' },
+    'VideoDisc' => { 'fi_FI' => 'VIDEOLEVY' },
+    'Video' => { 'fi_FI' => 'VIDEO' },
+    'ConsoleGame' => { 'fi_FI' => 'KONSOLIP' },
+    'TapeCartridge' => { 'fi_FI' => 'NAUHAKAS' },
+    'DiscCartridge' => { 'fi_FI' => 'OPTINEN' },
+    'TapeCasette' => { 'fi_FI' => 'DATKAS' },
+    'TapeReel' => { 'fi_FI' => 'MAGNEETTI' },
+    'FloppyDisc' => { 'fi_FI' => 'LEVYKE' },
+    'Filmstrip' => { 'fi_FI' => 'RAINA' },
+    'Transparency' => { 'fi_FI' => 'KALVO' },
+    'Collage' => { 'fi_FI' => 'KOLLAASI' },
+    'Photonegative' => { 'fi_FI' => 'NEGATIIVI' },
+    'Flashcard' => { 'fi_FI' => 'KORTTI' },
+    'Chart' => { 'fi_FI' => 'KAAVIO' },
+    'MotionPicture' => { 'fi_FI' => 'ELOKUVA' },
+    'SensorImage' => { 'fi_FI' => 'KAUKOKART' },
+    'VideoCartridge' => { 'fi_FI' => 'VIDEOSILM' },
+    'VideoReel' => { 'fi_FI' => 'VIDEOKELA' },
+    'Collection' => { 'fi_FI' => 'KOKOELMA' },
+    'SubUnit' => { 'fi_FI' => 'SARJANOSA' },
+    'ContinuouslyUpdatedRecource' => { 'fi_FI' => 'PAIVITTYVA' },
+    'Other' => { 'fi_FI' => 'MUU' },
+
+    );
+
 # Conversion of getFormat() in https://github.com/NatLibFi/RecordManager/blob/dev/src/RecordManager/Finna/Record/Marc.php
-sub getFinnaMaterialType {
+sub getFinnaMaterialType_core {
     my ($record) = @_;
 
     my $leader = $record->leader();
@@ -101,18 +165,20 @@ sub getFinnaMaterialType {
 
     } # 007 fields
 
+    my $field008 = $record->field('008');
+
     return 'MusicalScore'   if ($typeOfRecord eq 'C' || $typeOfRecord eq 'D');
     return 'Map'            if ($typeOfRecord eq 'E' || $typeOfRecord eq 'F');
     return 'Slide'          if ($typeOfRecord eq 'G');
     return 'SoundRecording' if ($typeOfRecord eq 'I');
     return 'MusicRecording' if ($typeOfRecord eq 'J');
     return 'Photo'          if ($typeOfRecord eq 'K');
+    return 'ConsoleGame'    if ($typeOfRecord eq 'M' && uc(substr($field008, 26, 1)) eq 'G');
     return 'Electronic'     if ($typeOfRecord eq 'M');
     return 'Kit'            if ($typeOfRecord eq 'O' || $typeOfRecord eq 'P');
     return 'PhysicalObject' if ($typeOfRecord eq 'R');
     return 'Manuscript'     if ($typeOfRecord eq 'T');
 
-    my $field008 = $record->field('008');
     $online = (substr($field008, 23, 1) eq 'o' ? 1 : 0) if (!$online);
 
     return ($online ? 'eBook' : 'Book') if ($bibliographicLevel eq 'M');
@@ -130,5 +196,13 @@ sub getFinnaMaterialType {
     return 'Other';
 };
 
-1;
+sub getFinnaMaterialType {
+    my ($record, $lang) = @_;
 
+    $lang = 'en' if (!defined($lang));
+    my $fmt = getFinnaMaterialType_core($record);
+    return $FinnaMaterialLang{$fmt}{$lang} if (defined($FinnaMaterialLang{$fmt}) && defined($FinnaMaterialLang{$fmt}{$lang}));
+    return $fmt;
+}
+
+1;
