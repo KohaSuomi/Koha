@@ -1,4 +1,4 @@
-ckage C4::KohaSuomi::FinnaMaterialType;
+package C4::KohaSuomi::FinnaMaterialType;
 
 use strict;
 
