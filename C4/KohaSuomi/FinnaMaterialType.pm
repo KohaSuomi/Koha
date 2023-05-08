@@ -19,7 +19,8 @@ my %FinnaMaterialLang = (
     'Article' => { 'fi_FI' => 'ARTIKKELI' },
     'Atlas' => { 'fi_FI' => 'ATLAS' },
     'BluRay' => { 'fi_FI' => 'BLURAY' },
-    'BookSection' => { 'fi_FI' => 'KIRJANOSA' },
+    'BoardGame' => { 'fi_FI' => 'LAUTAPELI' },
+    'BookSection' => { 'fi_FI' => 'KIRJA' },
     'Book' => { 'fi_FI' => 'KIRJA' },
     'Braille' => { 'fi_FI' => 'BRAILLE' },
     'CDROM' => { 'fi_FI' => 'CDROM' },
@@ -27,7 +28,6 @@ my %FinnaMaterialLang = (
     'ChipCartridge' => { 'fi_FI' => 'PIIRIKOT' },
     'Drawing' => { 'fi_FI' => 'PIIRROS' },
     'DVD' => { 'fi_FI' => 'DVD' },
-    'eBook' => { 'fi_FI' => 'EKIRJA' },
     'Electronic' => { 'fi_FI' => 'ELEKTRON' },
     'Journal' => { 'fi_FI' => 'ALEHTI' },
     'Kit' => { 'fi_FI' => 'MONIVIES' },
@@ -55,7 +55,6 @@ my %FinnaMaterialLang = (
     'VideoCassette' => { 'fi_FI' => 'VIDEOKAS' },
     'VideoDisc' => { 'fi_FI' => 'VIDEOLEVY' },
     'Video' => { 'fi_FI' => 'VIDEO' },
-    'ConsoleGame' => { 'fi_FI' => 'KONSOLIP' },
     'TapeCartridge' => { 'fi_FI' => 'NAUHAKAS' },
     'DiscCartridge' => { 'fi_FI' => 'OPTINEN' },
     'TapeCasette' => { 'fi_FI' => 'DATKAS' },
@@ -70,15 +69,32 @@ my %FinnaMaterialLang = (
     'MotionPicture' => { 'fi_FI' => 'ELOKUVA' },
     'SensorImage' => { 'fi_FI' => 'KAUKOKART' },
     'VideoCartridge' => { 'fi_FI' => 'VIDEOSILM' },
+    'VideoGame' => { 'fi_FI' => 'VIDEOPELI' },
     'VideoReel' => { 'fi_FI' => 'VIDEOKELA' },
     'Collection' => { 'fi_FI' => 'KOKOELMA' },
     'SubUnit' => { 'fi_FI' => 'SARJANOSA' },
     'ContinuouslyUpdatedRecource' => { 'fi_FI' => 'PAIVITTYVA' },
     'Other' => { 'fi_FI' => 'MUU' },
+    'eArticle' => { 'fi_FI' => 'ARTIKKELI' },
+    'eBook' => { 'fi_FI' => 'EKIRJA' },
+    'eBookSection' => { 'fi_FI' => 'EKIRJA' },
+    'eJournal' => { 'fi_FI' => 'ALEHTI' },
+    'eNewspaper' => { 'fi_FI' => 'SLEHTI' },
+    'eSerial' => { 'fi_FI' => 'KAUSIJULK' },
 
     );
 
-# Conversion of getFormat() in https://github.com/NatLibFi/RecordManager/blob/dev/src/RecordManager/Finna/Record/Marc.php
+sub termIn655 {
+    my ($record, $term) = @_;
+
+    foreach my $field ($record->field('655')) {
+        my $s = $field->subfield('a') || '';
+        return 1 if ($s eq $term);
+    }
+    return 0;
+}
+
+# Conversion of getFormatFunc() from https://github.com/NatLibFi/RecordManager-Finna/blob/dev/src/RecordManager/Finna/Record/Marc.php#L1084
 sub getFinnaMaterialType_core {
     my ($record) = @_;
 
@@ -93,6 +109,18 @@ sub getFinnaMaterialType_core {
         my $format1 = uc(substr($contents, 0, 1)); # $formatCode
         my $format2 = uc(substr($contents, 1, 1)); # $formatCode2
         my $formats = uc(substr($contents, 0, 2)); # $formatCode + $formatCode2
+
+
+        my $field008 = '';
+        $field008 = $record->field('008')->data() if $record->field('008');
+
+        if ($typeOfRecord eq 'R') {
+            my $visualType = substr($field008, 33, 1) || '';
+            return 'BoardGame' if ($visualType eq 'g' || termIn655($record, 'lautapelit'));
+        } elsif ($typeOfRecord eq 'M') {
+            my $electronicType = substr($field008, 26, 1) || '';
+            return 'VideoGame' if ($electronicType eq 'g' || termIn655($record, 'videopelit'));
+        }
 
         return 'Atlas' if ($formats eq 'AD');
         return 'Map'   if ($format1 eq 'A');
@@ -165,7 +193,7 @@ sub getFinnaMaterialType_core {
 
     } # 007 fields
 
-    my $field008 = $record->field('008');
+    my $field008 = $record->field('008')->data() if $record->field('008');
 
     return 'MusicalScore'   if ($typeOfRecord eq 'C' || $typeOfRecord eq 'D');
     return 'Map'            if ($typeOfRecord eq 'E' || $typeOfRecord eq 'F');
@@ -173,7 +201,6 @@ sub getFinnaMaterialType_core {
     return 'SoundRecording' if ($typeOfRecord eq 'I');
     return 'MusicRecording' if ($typeOfRecord eq 'J');
     return 'Photo'          if ($typeOfRecord eq 'K');
-    return 'ConsoleGame'    if ($typeOfRecord eq 'M' && uc(substr($field008, 26, 1)) eq 'G');
     return 'Electronic'     if ($typeOfRecord eq 'M');
     return 'Kit'            if ($typeOfRecord eq 'O' || $typeOfRecord eq 'P');
     return 'PhysicalObject' if ($typeOfRecord eq 'R');
