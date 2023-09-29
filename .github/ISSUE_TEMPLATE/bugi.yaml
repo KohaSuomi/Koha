@@ -1,7 +1,7 @@
 name: Bugi
 description: Lisää bugi-ilmoitus. Muista lisätä otsikko ja oikealle projekti-osioon "Tikettien seuranta".
 labels: [bug]
-projects: [Tikettien seuranta]
+projects: Tikettien seuranta
 body:
 - type: textarea
   attributes:
