@@ -1,6 +1,7 @@
 name: Bugi
-description: Lisää bugi-ilmoitus. Muista lisätä otsikko ja oikealle projekti-osioon "Tikettien seuranta".
+description: Lisää bugi-ilmoitus. Muista lisätä tiketille otsikko.
 labels: [bug]
+projects: ["KohaSuomi/4"]
 projects: [Tikettien seuranta]
 body:
 - type: textarea
