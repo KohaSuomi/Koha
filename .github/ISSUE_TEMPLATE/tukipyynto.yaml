@@ -1,6 +1,7 @@
 name: Tukipyyntö
-description: Lisää kehitysehdotus. Muista lisätä otsikko ja oikealle projekti-osioon "Tikettien seuranta".
+description: Lisää tukipyyntö. Muista lisätä tiketille otsikko.
 labels: ["help wanted"]
+projects: ["KohaSuomi/4"]
 body:
 - type: textarea
   attributes:
