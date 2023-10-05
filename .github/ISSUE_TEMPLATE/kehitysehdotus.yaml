@@ -1,7 +1,7 @@
 name: Kehitysehdotus
 labels: ["local enhancement"]
 projects: ["KohaSuomi/4"]
-description: Lisää kehitysehdotus. Muista lisätä otsikko, mutta älä poista jo siinä olevaa tietoa. Lisää oikealle projekti-osioon "Tikettien seuranta".
+description: Lisää kehitysehdotus. Muista tiketille lisätä otsikko.
 body:
 - type: textarea
   attributes:
