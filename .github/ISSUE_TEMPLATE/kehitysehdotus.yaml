@@ -1,7 +1,7 @@
 name: Kehitysehdotus
 labels: ["local enhancement"]
 projects: ["KohaSuomi/4"]
-description: Lisää kehitysehdotus. Muista tiketille lisätä otsikko.
+description: Lisää kehitysehdotus. Muista lisätä tiketin tallennuksen jälkeen tiketille statukseksi "Asiantuntijaryhmään".
 body:
 - type: textarea
   attributes:
