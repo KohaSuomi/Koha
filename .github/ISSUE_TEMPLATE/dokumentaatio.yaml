@@ -1,0 +1,19 @@
+name: Dokumentointi
+description: Mikä tarvitsee dokumentaatiota, kuvaile mahdollisimman tarkkaan.
+labels: ["documentation"]
+projects: ["KohaSuomi/4"]
+body:
+- type: textarea
+  attributes:
+    label: Dokumentointi
+    description: Kerro mahdollisimman tarkasti, mikä tarvitsee dokumentointia. Asiakastietoja ei saa lisätä tikettiin, linkki asiakastietoon riittää.
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: Jotain muuta?
+    description: |
+     Lisätietoja aiheesta.
+      Vinkki: Voit liittää kuvia tai tiedostoja klikkaamalla tätä aluetta ja vetämällä kuvan tai tiedoston tänne.
+  validations:
+    required: false
