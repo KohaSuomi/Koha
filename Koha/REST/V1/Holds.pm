@@ -561,4 +561,31 @@ sub update_pickup_location {
     };
 }
 
+
+
+=head3 set_lowest_priority
+
+Method that handles modifying a Koha::Hold object
+
+=cut
+
+sub set_lowest_priority {
+    my $c = shift->openapi->valid_input or return;
+
+    my $hold_id = $c->param('hold_id');
+    my $hold    = Koha::Holds->find($hold_id);
+
+    return $c->render_resource_not_found("Hold")
+        unless $hold;
+
+    return try {
+        C4::Reserves::ToggleLowestPriority($hold_id);
+        $hold->discard_changes; # refresh
+        return $c->render( status => 200, openapi => $hold_id );
+    } catch {
+        $c->unhandled_exception($_);
+    };
+}
+
+
 1;
