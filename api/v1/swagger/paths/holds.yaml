@@ -104,6 +104,8 @@
             - cancellation_requested
             - biblio
             - pickup_library
+            - patron
+            - item
         collectionFormat: csv
     produces:
       - application/json

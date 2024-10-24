@@ -498,3 +498,559 @@ $(document).ready(function() {
     });
 
 });
+
+function fetch_libraries() {
+    return $.ajax({
+        method: "GET",
+        url: "/api/v1/libraries",
+        data: {_per_page: -1},
+        success: function(data, textStatus, request){
+        },
+        error: function( jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown);
+        },
+    });
+}
+
+async function load_patron_holds_table() {
+    const biblio_id = $("#patron_holds_table").attr('data-biblio-id');
+    const totalHoldsSelect = parseInt(totalHolds)+1;
+    const multiChange = {};
+    const libraries = await fetch_libraries();
+    var holdsQueueTable = $("#patron_holds_table").kohaTable({
+        ajax: {
+            url: "/api/v1/holds/?biblio_id="+biblio_id,
+            data: function (params) {
+                var query = {
+                    "_per_page": params.length,
+                    "_page": params.start / params.length + 1,
+                    "_order_by": "priority",
+                    "_match": "exact"
+                };
+                return query;
+            },
+        },
+        "ordering": false,
+        searching: false,
+        pagination: true,
+        embed: ['patron'],
+        columnDefs: [
+            {
+                targets: [2, 3],
+                className: 'dt-body-nowrap'
+            },
+            {
+                targets: [2, 9],
+                visible: CAN_user_reserveforothers_modify_holds_priority ? true : false
+            },
+
+        ],
+        columns: [
+            {
+                data: "hold_id",
+                orderable: false,
+                render: function( data, type, row, meta ) {
+                    return '<input type="checkbox" class="select_hold" data-id="'+data+'"/>';
+                }
+            },
+            {
+                data: "priority",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    if(CAN_user_reserveforothers_modify_holds_priority) {
+                        let select = '<select name="rank-request" class="rank-request" data-id="'+row.hold_id;
+                        for ( var i=0; i < totalHoldsSelect; i++ ){
+                            let selected;
+                            let value;
+                            let desc;
+                            if (row.priority == i && row.status == 'T') {
+                                select += '" disabled="disabled">';
+                                selected = " selected='selected' ";
+                                value = 'T';
+                                desc = 'In transit';
+                            } else if (row.priority == i && row.status == 'P') {
+                                select += '" disabled="disabled">';
+                                selected = " selected='selected' ";
+                                value = 'P';
+                                desc = 'In processing';
+                            } else if (row.priority == i && row.status == 'W'){
+                                select += '" disabled="disabled">';
+                                selected = " selected='selected' ";
+                                value = 'W';
+                                desc = 'Waiting';
+                            } else if (row.priority == i && !row.status) {
+                                select += '">';
+                                selected = " selected='selected' ";
+                                value = row.priority;
+                                desc = row.priority;
+                            } else {
+                                if (i != 0) {
+                                    select += '">';
+                                    value = i;
+                                    desc = i;
+                                } else {
+                                    select += '">';
+                                }
+                            }
+                            if (value) {
+                                select += '<option value="'+ value +'"'+selected+'>'+desc+'</option>';
+                            }
+                        }
+                        select += '</select>';
+                        return select;
+                    }else {
+                        return data.priority;
+                    }
+                }
+            },
+            {
+                data: "",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    if (row.status) {
+                        return null;
+                    }
+                    let buttons = '<a title="Move hold up" href="#" class="move-hold" data-move-hold="up" data-priority="'+row.priority+'" reserve_id="'+row.hold_id+'"><img src="/intranet-tmpl/prog/img/go-up.png" alt="Go up" /></a>';
+                    buttons += '<a title="Move hold to top" href="#" class="move-hold" data-move-hold="top" data-priority="'+row.priority+'" reserve_id="'+row.hold_id+'"><img src="/intranet-tmpl/prog/img/go-top.png" alt="Go top" /></a>';
+                    buttons += '<a title="Move hold to bottom" href="#" class="move-hold" data-move-hold="bottom" data-priority="'+row.priority+'" reserve_id="'+row.hold_id+'"><img src="/intranet-tmpl/prog/img/go-bottom.png" alt="Go bottom" /></a>';
+                    buttons += '<a title="Move hold down" href="#" class="move-hold" data-move-hold="down" data-priority="'+row.priority+'" reserve_id="'+row.hold_id+'"><img src="/intranet-tmpl/prog/img/go-down.png" alt="Go down" /></a>';
+                    return buttons;
+                }
+            },
+            {
+                data: "patron",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    return '<a href="/cgi-bin/koha/members/moremember.pl?borrowernumber='+data.patron_id+'">'+data.cardnumber+'</a>';
+                }
+            },
+            {
+                data: "notes", 
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    return data;
+                }
+            },
+            {
+                data: "hold_date",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    if (AllowHoldDateInFuture) {
+                        return '<input type="text" class="holddate" value="'+$date(data)+'" size="10" name="hold_date" data-id="'+row.hold_id+'" data-current-date="'+data+'"/>';
+                    } else {
+                        return $date(data);
+                    }
+                }
+            },
+            {
+                data: "expiration_date",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    return '<input type="text" class="expirationdate" value="'+$date(data)+'" size="10" name="expiration_date" data-id="'+row.hold_id+'" data-current-date="'+data+'"/>';
+                }
+            },
+            {
+                data: "pickup_library_id",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    var branchSelect='<select priority='+row.priority+' class="hold_location_select" data-id="'+row.hold_id+'" reserve_id="'+row.hold_id+'" name="pick-location" data-pickup-location-source="hold">';
+                    var libraryname;
+                    for ( var i=0; i < libraries.length; i++ ){
+                        var selectedbranch;
+                        var setbranch;
+                        if( libraries[i].library_id == data ){
+                            selectedbranch = " selected='selected' ";
+                            setbranch = __(" (current) ");
+                            libraryname = libraries[i].name;
+                        } else if ( libraries[i].pickup_location == false ) {
+                            continue;
+                        } else{
+                            selectedbranch = '';
+                            setbranch = '';
+                        }
+                        branchSelect += '<option value="'+ libraries[i].library_id.escapeHtml() +'"'+selectedbranch+'>'+libraries[i].name.escapeHtml()+setbranch+'</option>';
+                    }
+                    branchSelect +='</select>';
+                    if ( row.status == 'T' ) {
+                        return __("Item being transferred to <strong>%s</strong>").format(libraryname);
+                    } else if (row.status == 'P') {
+                        return __("Item being processed at <strong>%s</strong>").format(libraryname);
+                    }
+                    else if (row.status == 'W') {
+                        return __("Item waiting at <strong>%s</strong> since %s").format(libraryname, $date(row.waiting_date));
+                    } else {
+                        return branchSelect;
+                    }
+                }
+            },
+            {
+                data: "item_id",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    let currentCell = $("#patron_holds_table").DataTable().cells({"row":meta.row, "column":meta.col}).nodes(0);
+                    if (data) {
+                        $.ajax({
+                            method: "GET",
+                            url: "/api/v1/items/"+data,
+                            success: function(res){
+                                $(currentCell).html('<a href="/cgi-bin/koha/catalogue/moredetail.pl?biblionumber='+biblio_id+'&itemnumber='+data+'">'+res.external_id+'</a>');
+                            }
+                        });
+                        return '<img src="/intranet-tmpl/prog/img/spinner-small.gif" alt="" /><span class="waiting_msg"></span></div>';
+                    } else if (row.item_group_id) {
+                        $.ajax({
+                            method: "GET",
+                            url: "/api/v1/biblios/"+biblio_id+"/item_groups/"+row.item_group_id,
+                            success: function(res){
+                                $(currentCell).html(__("Next available item group <strong>%s</strong> item").format( res.description ));
+                            }
+                        });
+                        return '<img src="/intranet-tmpl/prog/img/spinner-small.gif" alt="" /><span class="waiting_msg"></span></div>';
+                    } else {
+                        if (row.non_priority) {
+                            return '<em>'+__("Next available")+'</em><br/><i>'+__("Non priority hold")+'</i>';
+                        } else {
+                            return '<em>'+__("Next available")+'</em>';
+                        }
+                    }
+                }
+            },
+            {
+                data: "",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    if (row.item_id) {
+                        return null
+                    } else {
+                        if(row.lowest_priority){
+                            return '<a class="hold-arrow set-lowest-priority" title="Remove lowest priority" data-op="cud-setLowestPriority" data-borrowernumber="'+ row.patron_id +'" data-biblionumber="'+ biblio_id +'" data-reserve_id="'+ row.hold_id +'" data-date="'+ row.hold_date +'"><i class="fa fa-lg fa-rotate-90 icon-unset-lowest" aria-hidden="true"></i></a>';
+                        } else {
+                            return '<a class="hold-arrow set-lowest-priority" title="Set lowest priority" data-op="cud-setLowestPriority" data-borrowernumber="'+ row.patron_id +'" data-biblionumber="'+ biblio_id +'" data-reserve_id="'+ row.hold_id +'" data-date="'+ row.hold_date +'"><i class="fa fa-lg fa-rotate-90 icon-set-lowest" aria-hidden="true"></i></a>';
+                        }
+                    }
+                }
+            },
+            {
+                data: "hold_id",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    return '<a class="btn btn-default btn-xs cancel-hold" reserve_id="'+data+'"><i class="fa fa-trash" aria-hidden="true"></i> '+__("Cancel")+'</a>';
+                }
+            },
+            {
+                data: "hold_id",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    if (row.status) {
+                        var link_value = row.status == 'T' ? __("Revert transit status") : __("Revert waiting status");
+                        return '<a class="btn btn-default submit-form-link" href="#" id="revert_hold_'+data+'" data-op="cud-move" data-where="down" data-first_priority="1" data-last_priority="'+ totalHolds +'" data-prev_priority="0" data-next_priority="1" data-borrowernumber="'+ row.patron_id +'" data-biblionumber="'+ biblio_id +'" data-itemnumber="'+ row.item_id +'" data-reserve_id="'+ row.hold_id +'" data-date="'+ row.hold_date +'" data-action="request.pl" data-method="post">'+ link_value +'</a>';
+                    } else {
+                        let td = '';
+                        if (SuspendHoldsIntranet) {
+                            td += '<button class="btn btn-default btn-xs toggle-suspend" data-id="'+data+'" data-biblionumber="'+biblio_id+'" data-suspended="'+row.suspended+'">'
+                            if ( row.suspended ) {
+                                td += '<i class="fa fa-play" aria-hidden="true"></i> '+__("Resume")+'</button>';
+                            } else {
+                                td += '<i class="fa fa-pause" aria-hidden="true"></i> '+__("Suspend")+'</button>';
+                            }
+                            if (AutoResumeSuspendedHolds) {
+                                if (row.suspended) {
+                                    td += '<label for="suspend_until_'+data+'">'+__("Suspend on")+' </label>';
+                                } else {
+                                    td += '<label for="suspend_until_'+data+'">'+__("Suspend until")+' </label>';
+                                }
+                                td += '<input type="text" name="suspend_until_'+data+'" data-id="'+data+'" size="10" value="'+$date(row.suspended_until)+'" class="suspenddate" data-flatpickr-futuredate="true" data-current-date="'+row.suspended_until+'" />';
+                            }
+                            return td;
+                        } else {
+                            return null;
+                        }
+                    }
+                }
+            },
+            {
+                data: "hold_id",
+                orderable: false,
+                render: function(data, type, row, meta) {
+                    return '<a class="btn btn-default btn-xs printholdslip" data-reserve_id="'+data+'">'+__("Print slip")+'</a>';
+                }
+            },
+        ]
+    });
+    $('#patron_holds_table').on( 'draw.dt', function () {
+        let multiselect = false;
+        var MSG_CANCEL_SELECTED = _("Cancel selected (%s)");
+        $('.cancel_selected_holds').html(MSG_CANCEL_SELECTED.format($('.holds_table .select_hold:checked').length));
+        $('.holds_table .select_hold_all').on("click",function() {
+            var table = $(this).parents('.holds_table');
+            var count = $('.select_hold:checked', table).length;
+            $('.select_hold', table).prop('checked', !count);
+            $(this).prop('checked', !count);
+            $(this).parent().parent().toggleClass('selected');
+            $('.cancel_selected_holds').html(MSG_CANCEL_SELECTED.format($('.holds_table .select_hold:checked').length));
+            localStorage.selectedHolds = $('.holds_table .select_hold:checked').toArray().map(el => $(el).data('id'));
+            multiselect = true;
+
+        });
+        $('.holds_table .select_hold').on("click", function() {
+            var table = $(this).parents('.holds_table');
+            var count = $('.select_hold:not(:checked)', table).length;
+            $('.select_hold_all', table).prop('checked', !count);
+            $(this).parent().parent().toggleClass('selected');
+            $('.cancel_selected_holds').html(MSG_CANCEL_SELECTED.format($('.holds_table .select_hold:checked').length));
+            localStorage.selectedHolds = $('.holds_table .select_hold:checked').toArray().map(el => $(el).data('id'));
+            multiselect = true;
+        });
+        $(".cancel-hold").on("click",function(e) {
+            e.preventDefault;
+            var res_id = $(this).attr('reserve_id');
+            $('.select_hold').prop('checked', false);
+            $('.select_hold_all').prop('checked', false);
+            $('.cancel_selected_holds').html(MSG_CANCEL_SELECTED.format(0));
+            $('#cancelModal').modal('show').find('#cancelModalConfirmBtn').attr("data-id", res_id);
+        });
+        $('.cancel_selected_holds').click(function(e) {
+            e.preventDefault();
+            if($('.holds_table .select_hold:checked').length) {
+                delete localStorage.selectedHolds;
+                $('#cancelModal').modal('show');
+            }
+            return false;
+        });
+        $("#cancelModalConfirmBtn").one("click",function(e) {
+            e.preventDefault();
+            let hold_ids;
+            const hold_id = $(this).data('id');
+            hold_ids = [hold_id];
+            let reason = $("#modal-cancellation-reason").val();
+            hold_ids = $('.holds_table .select_hold:checked').toArray().map(el => $(el).data('id'));
+            $('#cancelModal').find('.modal-footer #cancelModalConfirmBtnAPI').before('<img src="/intranet-tmpl/prog/img/spinner-small.gif" alt="" style="padding-right: 10px;"/>');
+            deleteHolds(hold_ids, reason);
+        });
+        async function deleteHolds (hold_ids, reason) {
+            for (const hold_id of hold_ids) {
+                await deleteHold(hold_id, reason);
+                $('#cancelModal').find('.modal-body').append('<p class="hold-cancelled">'+__("Hold")+' '+hold_id+' '+__("cancelled")+'</p>');
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            holdsQueueTable.api().ajax.reload(null, false);
+            setTimeout(() => {
+                $('#cancelModal').modal('hide');
+                $('#cancelModal').find('.modal-footer #cancelModalConfirmBtn').prev('img').remove();
+                $('#cancelModal').find('.modal-body').find('.hold-cancelled').remove();
+            });
+            
+        }
+        async function deleteHold(hold_id, reason) {
+            try {
+                await $.ajax({
+                    method: "DELETE",
+                    url: '/api/v1/holds/' + encodeURIComponent(hold_id),
+                    data: JSON.stringify(reason),
+                });
+            } catch (error) {
+                console.error("Error when deleting hold: " + hold_id);
+            }
+        }
+        $(".holddate, .expirationdate").flatpickr({
+            dateFormat: flatpickr_dateformat_string,
+            onChange: function (selectedDates, dateStr, instance){
+                let hold_id = $(instance.input).attr('data-id');
+                let fieldname = $(instance.input).attr('name');
+                let current_date = $(instance.input).attr('data-current-date');
+                const date = new Date(selectedDates);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                let newdate;
+                if (year && month && day) {
+                    newdate = [year, month, day].join('-');
+                }
+                multiChange[hold_id] = fieldname == "hold_date" ? {"hold_date": newdate} : { "expiration_date": dateStr };
+                let req = fieldname == "hold_date" ? { "hold_date": newdate } : { "expiration_date": newdate };
+                if (current_date != newdate && !multiselect) {
+                    $.ajax({
+                        method: "PATCH",
+                        url: '/api/v1/holds/' + encodeURIComponent(hold_id),
+                        contentType: 'application/json',
+                        data: JSON.stringify(req),
+                        success: function( data ){ holdsQueueTable.api().ajax.reload(null, false); },
+                        error: function( jqXHR, textStatus, errorThrown) {
+                            holdsQueueTable.api().ajax.reload(null, false);
+                        },
+                    });
+                }
+            }
+        });
+        $(".suspenddate").flatpickr({
+            dateFormat: flatpickr_dateformat_string,
+            onChange: function (selectedDates, dateStr, instance){
+                let hold_id = $(instance.input).data('id');
+                let current_date = $(instance.input).attr('data-current-date');
+                const date = new Date(selectedDates);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const newdate = [year, month, day].join('-');
+                const method = dateStr ? 'POST' : 'DELETE';
+                multiChange[hold_id] = {suspended_until: dateStr};
+                if (current_date != newdate && !multiselect) {
+                    $.ajax({
+                        method: method,
+                        url: '/api/v1/holds/' + encodeURIComponent(hold_id) +'/suspension',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ "end_date": newdate }),
+                        success: function( data ){ holdsQueueTable.api().ajax.reload(null, false); },
+                        error: function( jqXHR, textStatus, errorThrown) {
+                            holdsQueueTable.api().ajax.reload(null, false);
+                        },
+                    });
+                }
+            }
+        });
+        $(".toggle-suspend").one("click",function(e) {
+            e.preventDefault();
+            const hold_id = $(this).data('id');
+            const suspended = $(this).attr('data-suspended');
+            const method = suspended == 'true' ? 'DELETE' : 'POST';
+            if (!multiselect) {
+                $.ajax({
+                    method: method,
+                    url: '/api/v1/holds/' + encodeURIComponent(hold_id) +'/suspension',
+                    success: function( data ){ holdsQueueTable.api().ajax.reload(null, false); },
+                    error: function( jqXHR, textStatus, errorThrown) {
+                        holdsQueueTable.api().ajax.reload(null, false);
+                        alert('There was an error:'+textStatus+" "+errorThrown);
+                    },
+                });
+            }
+        });
+        $(".rank-request").on("change", function(e){
+            e.preventDefault();
+            const hold_id = $(this).data('id');
+            let priority = e.target.value;
+            multiChange[hold_id] = {priority: priority};
+            if (!multiselect) {
+                $.ajax({
+                    method: "PUT",
+                    url: '/api/v1/holds/' + encodeURIComponent(hold_id) +'/priority',
+                    data: JSON.stringify(priority),
+                    success: function( data ){ holdsQueueTable.api().ajax.reload(null, false); },
+                    error: function( jqXHR, textStatus, errorThrown) {
+                        alert('There was an error:'+textStatus+" "+errorThrown);
+                    },
+                });
+            }
+        });
+        $(".move-hold").one("click", function(e){
+            e.preventDefault();
+            let toPosition = $(this).attr('data-move-hold');
+            let priority = $(this).attr('data-priority');
+            var res_id = $(this).attr('reserve_id');
+            var moveTo;
+            if (toPosition == 'up'){
+                moveTo = parseInt(priority)-1;
+            }
+            if (toPosition == 'down'){
+                moveTo = parseInt(priority)+1;
+            }
+            if (toPosition == 'top'){
+                moveTo = 1;
+            }
+            if (toPosition == 'bottom'){
+                moveTo = totalHolds;
+            }
+            if (!multiselect) {
+                $.ajax({
+                    method: "PUT",
+                    url: '/api/v1/holds/' + encodeURIComponent(res_id) +'/priority',
+                    data: JSON.stringify(moveTo),
+                    success: function( data ){
+                        holdsQueueTable.api().ajax.reload(null, false);
+                    },
+                    error: function( jqXHR, textStatus, errorThrown) {
+                        alert('There was an error:'+textStatus+" "+errorThrown);
+                    },
+                });
+            }
+        });
+        $(".set-lowest-priority").one("click", function(e){
+            e.preventDefault();
+            var res_id = $(this).attr('data-reserve_id');
+            $.ajax({
+                method: "PUT",
+                url: '/api/v1/holds/' + encodeURIComponent(res_id) +'/set_lowest_priority',
+                success: function( data ){ holdsQueueTable.api().ajax.reload(null, false); },
+                error: function( jqXHR, textStatus, errorThrown) {
+                    alert('There was an error:'+textStatus+" "+errorThrown);
+                },
+            });
+        });
+        $(".hold_location_select").on("change", function(){
+            $(this).prop("disabled",true);
+            var cur_select = $(this);
+            var res_id = $(this).attr('reserve_id');
+            multiChange[res_id] = {pickup_library_id: $(this).val()};
+            if (!multiselect) {
+                $(this).after('<div id="updating_reserveno'+res_id+'" class="waiting"><img src="/intranet-tmpl/prog/img/spinner-small.gif" alt="" /><span class="waiting_msg"></span></div>');
+                let api_url = '/api/v1/holds/' + encodeURIComponent(res_id) + '/pickup_location';
+                $.ajax({
+                    method: "PUT",
+                    url: api_url,
+                    data: JSON.stringify({ "pickup_library_id": $(this).val() }),
+                    headers: { "x-koha-override": "any" },
+                    success: function( data ){ holdsQueueTable.api().ajax.reload(null, false); },
+                    error: function( jqXHR, textStatus, errorThrown) {
+                        alert('There was an error:'+textStatus+" "+errorThrown);
+                        cur_select.prop("disabled",false);
+                        $("#updating_reserveno"+res_id).remove();
+                        cur_select.val( cur_select.children('option[selected="selected"]').val() );
+                    },
+                });
+            }
+        });
+        $('.printholdslip').one('click', function(){
+            var reserve_id = $(this).attr('data-reserve_id');
+            window.open("/cgi-bin/koha/circ/hold-transfer-slip.pl?reserve_id=" + reserve_id);
+            return false;
+        });
+    });
+    // Needs to be fixed
+    $('.update_selected_holds').on('click', function () {
+        const data = []
+        holdsQueueTable.rows('.selected').every(function (index, element) {
+            data.push(this.data());
+        });
+        fieldNames = {
+            hold_id: 'reserve_id',
+            hold_date: 'reservedate',
+            pickup_library_id: 'pickup',
+            item_id: 'itemnumber',
+            expiration_date: 'expirationdate',
+            suspended_until: 'suspend_until',
+            priority: 'rank-request',
+        };
+        let formData = new FormData();
+        data.forEach((row) => {
+            Object.keys(row).forEach((key) => {
+                let update = multiChange[row.hold_id];
+                if (update && update[key]) {
+                    row[key] = update[key];
+                }
+                if (fieldNames[key] && row[key] != null) {
+                    formData.append(fieldNames[key], row[key])
+                }
+            });
+        });
+
+        $.ajax({
+            url         : '/cgi-bin/koha/reserve/modrequest.pl',
+            data        : formData,
+            processData : false,
+            contentType : false,
+            type: 'POST'
+        }).done(function(data){
+            holdsQueueTable.api().ajax.reload(null, false);
+        });
+    });
+}

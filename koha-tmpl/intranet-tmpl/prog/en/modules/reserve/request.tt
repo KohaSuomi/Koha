@@ -1229,7 +1229,7 @@
                         [% END %]
                     [% END %]
                 [% END %]
-                [% IF ( reserveloop ) %]
+                [% IF ( total_holds ) %]
                     <form id="existing_holds" name="T[% time | html %]" action="modrequest.pl" method="post" style="display:block">
                         [% INCLUDE 'csrf-token.inc' %]
                         [% IF ( multi_hold ) %]
@@ -1400,8 +1400,8 @@
 
                                     [% ELSE %]
 
-                                        [% IF ( biblioloo.reserveloop.size ) %]
-                                            [% INCLUDE holds_table.inc holds=biblioloo.reserveloop %]
+                                        [% IF ( biblioloo.total_holds ) %]
+                                            [% INCLUDE holds_table.inc biblio_id=biblioloo.biblionumber %]
                                         [% ELSE %]
                                             <div class="note">
                                                 There are no holds on this title.
@@ -1492,14 +1492,13 @@
     [% END %]
 
     <script>
-        $(document).ready(function () {
-            hold_table_settings = [% TablesSettings.GetTableSettings( 'circ', 'holds', 'patron_holds_table', 'json' ) | $raw %];
-            KohaTable("patron_holds_table", {
-                "bPaginate":false,
-                "bKohaColumnsUseNames": true,
-           }, hold_table_settings);
-        });
         var biblionumbers = [[% biblionumbers.join(', ') | $raw %]];
+        var SuspendHoldsIntranet = [% ( Koha.Preference('SuspendHoldsIntranet') ) ? 1 : 0 | html %];
+        var AutoResumeSuspendedHolds = [% ( Koha.Preference('AutoResumeSuspendedHolds') ) ? 1 : 0 | html %];
+        var AllowHoldDateInFuture = [% ( Koha.Preference('AllowHoldDateInFuture') ) ? 1 : 0 | html %];
+        var HidePatronName = [% ( Koha.Preference('HidePatronName') ) ? 1 : 0 | html %];
+        var CAN_user_reserveforothers_modify_holds_priority = [%CAN_user_reserveforothers_modify_holds_priority ? 1 : 0 | html %];
+        var totalHolds = [% total_holds | html %];
         var borrowernumber = "[% patron.borrowernumber | $raw %]";
         var patron_homebranch = "[% To.json( Branches.GetName( patron.branchcode ) ) | $raw %]";
         var override_items = {[% FOREACH biblio_info IN biblioloop %][% FOREACH itemloo IN biblio_info.itemloop %][% IF ( itemloo.override ) %]
@@ -1529,6 +1528,7 @@
         $.fn.select2.defaults.set("dropdownAutoWidth", true );
 
         $(document).ready(function() {
+            load_patron_holds_table();
             $('#cancellation-reason-fieldset').hide();
             $('.rank-request').on('change', function() {
                 if ( $(".rank-request option:selected[value='del']").length ) {
@@ -1879,118 +1879,6 @@
                 localStorage.selectedHolds = [];
             }
 
-            $('.holds_table .select_hold').each(function() {
-                if(localStorage.selectedHolds.includes($(this).data('id'))) {
-                    $(this).prop('checked', true);
-                }
-            });
-
-            $('.holds_table .select_hold_all').each(function() {
-                var table = $(this).parents('.holds_table');
-                var count = $('.select_hold:not(:checked)', table).length;
-                $('.select_hold_all', table).prop('checked', !count);
-            });
-
-            $('.cancel_selected_holds').html(MSG_CANCEL_SELECTED.format($('.holds_table .select_hold:checked').length));
-
-            $('.holds_table .select_hold_all').click(function() {
-                var table = $(this).parents('.holds_table');
-                var count = $('.select_hold:checked', table).length;
-                $('.select_hold', table).prop('checked', !count);
-                $(this).prop('checked', !count);
-                $('.cancel_selected_holds').html(MSG_CANCEL_SELECTED.format($('.holds_table .select_hold:checked').length));
-                $('#cancel_hold_alert').html( MSG_CANCEL_ALERT.format($('.holds_table .select_hold:checked').length));
-                $('#cancel_hold_alert').show();
-                localStorage.selectedHolds = $('.holds_table .select_hold:checked').toArray().map(el => $(el).data('id'));
-            });
-
-            $('.holds_table .select_hold').click(function() {
-                var table = $(this).parents('.holds_table');
-                var count = $('.select_hold:not(:checked)', table).length;
-                $('.select_hold_all', table).prop('checked', !count);
-                $('.cancel_selected_holds').html(MSG_CANCEL_SELECTED.format($('.holds_table .select_hold:checked').length));
-                $('#cancel_hold_alert').html( MSG_CANCEL_ALERT.format($('.holds_table .select_hold:checked').length));
-                $('#cancel_hold_alert').show();
-                localStorage.selectedHolds = $('.holds_table .select_hold:checked').toArray().map(el => $(el).data('id'));
-            });
-
-            $('.cancel_selected_holds').click(function(e) {
-                e.preventDefault();
-                if($('.holds_table .select_hold:checked').length) {
-                    cancel_link = $(this);
-                    $("#cancel_modal_form #inputs").empty;
-                    biblionumbers.forEach( function(biblionumber){
-                        $("#cancel_modal_form #inputs").append('<input type="hidden" name="biblionumber" value="'+biblionumber+'">');
-                    });
-                    $("#cancel_modal_form #inputs").append('<input type="hidden" name="op" value="cud-cancel_bulk">');
-                    let hold_ids= $('.holds_table .select_hold:checked').toArray().map(el => $(el).data('id')).join(',');
-                    $("#cancel_modal_form #inputs").append('<input type="hidden" name="ids" value="' + hold_ids + '">');
-                    delete localStorage.selectedHolds;
-                    $('#cancelModal').modal('show');
-                }
-                return false;
-            });
-
-            $(".hold-arrow").click(function(e) {
-                e.preventDefault();
-                let arrowForm = $("#hold-actions-form").attr({
-                    action: 'request.pl',
-                    method: 'post'
-                });
-                let arrow_op = $("<input />").attr({
-                    name: 'op',
-                    type: 'hidden',
-                    value: $(this).data('op')
-                });
-                let arrow_where = $("<input />").attr({
-                    name: 'where',
-                    type: 'hidden',
-                    value: $(this).data('where')
-                });
-                let arrow_fp = $("<input />").attr({
-                    name: 'first_priority',
-                    type: 'hidden',
-                    value: $(this).data('first_priority')
-                });
-                let arrow_lp = $("<input />").attr({
-                    name: 'last_priority',
-                    type: 'hidden',
-                    value: $(this).data('last_priority')
-                });
-                let arrow_pp = $("<input />").attr({
-                    name: 'prev_priority',
-                    type: 'hidden',
-                    value: $(this).data('prev_priority')
-                });
-                let arrow_np = $("<input />").attr({
-                    name: 'next_priority',
-                    type: 'hidden',
-                    value: $(this).data('next_priority')
-                });
-                let arrow_bn = $("<input />").attr({
-                    name: 'borrowernumber',
-                    type: 'hidden',
-                    value: $(this).data('borrowernumber')
-                });
-                let arrow_bb = $("<input />").attr({
-                    name: 'biblionumber',
-                    type: 'hidden',
-                    value: $(this).data('biblionumber')
-                });
-                let arrow_ri = $("<input />").attr({
-                    name: 'reserve_id',
-                    type: 'hidden',
-                    value: $(this).data('reserve_id')
-                });
-                let arrow_date = $("<input />").attr({
-                    name: 'date',
-                    type: 'hidden',
-                    value: $(this).data('date')
-                });
-                arrowForm.append(arrow_op,arrow_where,arrow_fp,arrow_lp,arrow_pp,arrow_np,arrow_bn,arrow_bb,arrow_ri,arrow_date);
-                $("#hold-actions-form").submit();
-                return true;
-            })
         });
 </script>
 
