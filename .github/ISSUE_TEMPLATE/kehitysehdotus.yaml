@@ -12,6 +12,6 @@ body:
 - type: textarea
   attributes:
     label: Vaikuttavuus ja kiireellisyys
-    description: Miten moneen käyttäjään vaikuttaa (henkilökunta/asiakkaat), helpottaako työntekoa, minkälainen hyöty muutoksesta on asiakkaille, vaikuttaako tietosuojaan ja datan eheyteen, kuinka kiireellinen asia on, onko taustalla esim. lakimuutos? Lisätietoja aiheesta. Vinkki: Voit liittää kuvia tai tiedostoja klikkaamalla tätä aluetta ja vetämällä kuvan tai tiedoston tänne.
+    description: Miten moneen käyttäjään vaikuttaa (henkilökunta, asiakkaat), helpottaako työntekoa, minkälainen hyöty muutoksesta on asiakkaille, vaikuttaako tietosuojaan ja datan eheyteen, kuinka kiireellinen asia on, onko taustalla esim. lakimuutos? Lisätietoja aiheesta. Vinkki: Voit liittää kuvia tai tiedostoja klikkaamalla tätä aluetta ja vetämällä kuvan tai tiedoston tänne.
   validations:
     required: false
