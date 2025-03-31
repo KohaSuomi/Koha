@@ -28,17 +28,6 @@ body:
     required: false
 - type: textarea
   attributes:
-    label: Selain
-    description: |
-      examples:
-        - Firefox versio x.xx
-        - Chrome versio x.xx
-        - Edge versio x.xx
-    render: markdown
-  validations:
-    required: false
-- type: textarea
-  attributes:
     label: Jotain muuta?
     description: |
      Lisätietoja aiheesta.
