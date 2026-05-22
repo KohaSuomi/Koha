@@ -2,6 +2,7 @@ name: Tukipyyntö
 description: Lisää tukipyyntö. Muista lisätä tiketille otsikko.
 labels: ["help wanted"]
 projects: ["KohaSuomi/4"]
+type: Task
 body:
 - type: textarea
   attributes:
