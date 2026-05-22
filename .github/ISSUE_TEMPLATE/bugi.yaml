@@ -2,7 +2,7 @@ name: Bugi
 description: Lisää bugi-ilmoitus. Muista lisätä tiketille otsikko.
 labels: [bug]
 projects: ["KohaSuomi/4"]
-type: [Bug]
+type: Bug
 body:
 - type: textarea
   attributes:
