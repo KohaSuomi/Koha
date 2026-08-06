@@ -1,9 +1,0 @@
-{
-  "checkoutIdPathParam": {
-    "name": "checkout_id",
-    "in": "path",
-    "description": "Internal checkout identifier",
-    "required": true,
-    "type": "integer"
-  }
-}

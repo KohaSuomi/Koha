@@ -1,9 +1,0 @@
-{
-    "cityidPathParam": {
-      "name": "cityid",
-      "in": "path",
-      "description": "City id",
-      "required": true,
-      "type": "integer"
-    }
-}

@@ -1,1 +1,0 @@
-Auktorisoidut arvot, kuten hyllypaikat ja niteen tilat. Voit muuttaa näitä arvoja myöhemmin hallintapaneelista.

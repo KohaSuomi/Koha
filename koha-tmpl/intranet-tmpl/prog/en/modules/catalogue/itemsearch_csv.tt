@@ -1,4 +1,0 @@
-[% INCLUDE csv_headers/catalogue/itemsearch.tt %]
-[% FOREACH item IN results -%]
-  [% INCLUDE 'catalogue/itemsearch_item.csv.inc' item = item +%]
-[%- END -%]

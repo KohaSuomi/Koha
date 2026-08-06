@@ -1,3 +1,0 @@
-[submodule "swagger-ui"]
-	path = api/v1/swagger-ui
-	url = https://github.com/KohaSuomi/swagger-ui.git

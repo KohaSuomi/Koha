@@ -1,9 +1,0 @@
-{
-    "message_id_pp": {
-      "name": "message_id",
-      "in": "path",
-      "description": "Message internal identifier",
-      "required": true,
-      "type": "integer"
-    }
-}

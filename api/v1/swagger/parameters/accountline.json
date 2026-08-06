@@ -1,9 +1,0 @@
-{
-  "accountlinesIdPathParam": {
-    "name": "accountlines_id",
-    "in": "path",
-    "description": "Internal accountline identifier",
-    "required": true,
-    "type": "integer"
-  }
-}

@@ -1,5 +1,0 @@
-<form id="vetuma-request" name="VETUMA" method="POST" action="[% requestUrl %]">
-    [% FOREACH key IN request.keys %]
-        <input type="hidden" name="[% key %]" value="[% request.$key %]" />
-    [% END %]
-</form>

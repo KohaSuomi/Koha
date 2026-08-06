@@ -1,9 +1,0 @@
-{
-  "batchOverlayReportContainerIdPathParam": {
-    "name": "reportContainerId",
-    "in": "path",
-    "description": "Internal biblio identifier",
-    "required": true,
-    "type": "integer"
-  }
-}

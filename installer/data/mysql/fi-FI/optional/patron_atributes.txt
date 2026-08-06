@@ -1,4 +1,0 @@
-Hyödyllisiä asiakasmääreitä:
-* SHOW_BCODE - Näytä viivakoodi niteiden yhteenvetosivulla
-* SSBAN - Omatoimikirjaston käyttökiellossa
-* SST&C - Omatoimikirjaston käyttösäännöt hyväksytty
